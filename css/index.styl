@@ -6,10 +6,36 @@ c4=#4E7F60
 c5=#BACCC0
 
 body
-	background c1
+	background white
 	font-family arial-regular
 	font-size 14px
-
+//menu de navegación
+nav
+	display inline-block
+	position fixed
+	top 0
+	width 100%
+	z-index 10
+	text-align center
+	.menu
+		overflow-x auto
+		background black
+		margin 0
+		padding 0
+		li
+			display inline-block
+			padding 1em
+			a
+				color c4
+				text-decoration none
+			a.ico_nav
+				&:hover
+					color white
+			a.ico_logout
+				color white
+				&:hover
+					color c4
+//login
 .login
 	.bloque_login
 		overflow-x auto
@@ -91,7 +117,149 @@ body
 			button:active
 				background c2
 				box-shadow inset 0 0 5px rgba(0,0,0,0.3), inset 0 3px 4px rgba(0,0,0,0.3)
-
+//botones de acción
+.caja_acciones
+	background c5
+	margin-top 5em
+	padding 2px
+	position fixed
+	//text-align center
+	width 100%
+	z-index 11
+	.menu_acciones
+		overflow-x auto
+		margin 4px
+		padding 2px
+		li
+			display inline-block
+			padding-left 1em
+			a
+				color c1
+				text-decoration none
+			a.ico_acciones
+				&:hover
+					color black
+			input.buscar
+				background url('search-white.png') no-repeat 10px 6px white
+				border 1px solid c1
+				font bold 12px Arial,Helvetica,Sans-serif
+				color black
+				width 150px
+				padding 6px 15px 6px 35px
+				text-shadow 0 2px 3px rgba(0, 0, 0, 0.1)
+				-webkit-box-shadow 0 1px 3px rgba(0, 0, 0, 0.15) inset
+				-moz-box-shadow 0 1px 3px rgba(0, 0, 0, 0.15) inset
+				box-shadow 0 1px 3px rgba(0, 0, 0, 0.15) inset
+				-webkit-transition all 0.7s ease 0s
+				-moz-transition all 0.7s ease 0s
+				-o-transition all 0.7s ease 0s
+				transition all 0.7s ease 0s
+				&:focus
+					width 200px
+.contenido
+	font-family arial-regular
+	.bloque
+		display inline-block
+		width 30%
+		vertical-align top
+		margin-right 1%
+		margin-left 1%
+		margin-top 10em
+		margin-bottom 4em
+		.titulo_bloque
+			background c4
+			//border-radius 5px 5px 0 0
+			color white
+			font-family arial-regular
+			font-size 16px
+			text-align center
+		.caja_bloque
+			//border-radius 0 0 5px 5px
+			background c5
+			.campos_bloque
+				.ul_bloque
+					width 800px
+					list-style-type none
+					margin 0
+					padding 0.1em
+					.li_bloque
+						color black
+						font-family arial-regular
+						font-size 14px
+						padding 0.2em
+						.etiquetas_bloque
+							width 135px
+							margin-top 2px
+							display inline-block
+							float left
+							padding 2px
+						.inputs_bloque
+							color black
+							height 16px
+							width 220px
+							padding 2px 8px
+							border 2px solid lightgreen
+							box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+							border-radius 1px
+							&:focus
+								border 1px solid white
+							&:valid
+								border 1px solid c1
+							&:valid ~ .viñeta::before
+								content "\2713"
+								color c4
+							&:invalid
+								border 1px solid red
+							&:invalid ~ .viñeta::before
+								content "\2613"
+								color red
+						.viñeta
+							display inline-block
+						.textarea_bloque
+							color black
+							height 80px
+							width 220px
+							resize vertical
+							padding 2px 8px
+							border 1px solid lightgreen
+							box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+							border-radius 1px
+							&:focus
+								border 1px solid white
+							&:valid
+								border 1px solid c1
+							&:valid ~ .viñeta::before
+								content "\2713"
+								color c4
+							&:invalid
+								border 1px solid red
+							&:invalid ~ .viñeta::before
+								content "\2613"
+								color red
+						.viñeta
+							display inline-block
+						.select_bloque
+							color black
+							height 22px
+							width 238px
+							padding 2px 8px
+							border 1px solid lightgreen
+							box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+							border-radius 1px
+							&:focus
+								border 1px solid white
+							&:valid
+								border 1px solid c1
+							&:valid ~ .viñeta::before
+								content "\2713"
+								color c4
+							&:invalid
+								border 1px solid red
+							&:invalid ~ .viñeta::before
+								content "\2613"
+								color red
+						.viñeta
+							display inline-block
 // mensajes-inicia
 .message
 	box-shadow inset 0 -1px 0 rgba(255,255,255,.4)
@@ -106,28 +274,60 @@ body
 	z-index 10
 	top 0
 	display none
-
 .info
 	background-color #4ea5cd
 	border-color #3b8eb5
-
 .error
 	background-color #de4343
 	border-color #c43d3d
-
 .warning
 	background-color #eaaf51
 	border-color #d99a36
-
 .success
 	background-color #61b832
 	border-color #55a12c
-
 .message h3
 	margin 0 0 0 0
 	text-align center
-
 .message p
 	margin 0
 	text-align center
 // mensajes-termina
+
+// para celulares
+@media only screen and (min-width : 320px) and (max-width : 767px)
+	nav
+		.menu
+			li
+				padding 0.2em
+	.caja_acciones
+		margin-top 3.4em
+		.menu_acciones
+			li
+				padding-left 0.2em
+	.contenido
+		.bloque
+			width 100%
+			vertical-align top
+			margin-right 0
+			margin-left 0
+			margin-top 8em
+
+// para tablets
+@media only screen and (min-width : 768px) and (max-width : 1024px)
+	nav
+		.menu
+			li
+				padding 0.6em
+	.caja_acciones
+		margin-top 4em
+		.menu_acciones
+			li
+				padding-left 0.6em
+	.contenido
+		.bloque
+			width 100%
+			vertical-align top
+			margin-right 0
+			margin-left 0
+			margin-top 9em
