@@ -1,0 +1,13 @@
+
+{
+  "private": true,
+  "dependencies": {
+    "backbone": "^1.2.3",
+    "backbone.localstorage": "^1.1.7",
+    "jquery": "^2.1.0",
+    "react": "^0.14.4",
+    "react-dom": "^0.14.0",
+    "underscore": "^1.6.0",
+    "backbone-react-component": "~0.10.0"
+  }
+}

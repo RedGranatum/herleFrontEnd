@@ -1,0 +1,333 @@
+//colores usados
+c1=#747F78
+c2=#9CFFC0
+c3=#E8FFF1
+c4=#4E7F60
+c5=#BACCC0
+
+body
+	background white
+	font-family arial-regular
+	font-size 14px
+//menu de navegación
+nav
+	display inline-block
+	position fixed
+	top 0
+	width 100%
+	z-index 10
+	text-align center
+	.menu
+		overflow-x auto
+		background black
+		margin 0
+		padding 0
+		li
+			display inline-block
+			padding 1em
+			a
+				color c4
+				text-decoration none
+			a.ico_nav
+				&:hover
+					color white
+			a.ico_logout
+				color white
+				&:hover
+					color c4
+//login
+.login
+	.bloque_login
+		overflow-x auto
+		background c5
+		text-align center
+		position fixed
+		height 100%
+		.form
+			.field
+				position relative
+				//display inline-block
+			.field i
+					left 14px
+					top 0px
+					position absolute
+					height 25px
+					width 25px
+					border-right 1px solid rgba(0, 0, 0, 0.1)
+					box-shadow 1px 0 0 rgba(255, 255, 255, 0.7)
+					color c1
+					text-align center
+					line-height 28px
+					transition all 0.1s ease-out
+					pointer-events none
+				input[type=text],input[type=password]
+					font-family 'Lato', Calibri, Arial, sans-serif
+					font-size 12px
+					font-weight 200
+					text-shadow 0 1px 0 rgba(255,255,255,0.8)
+					/* Size and position */
+					width 60%
+					//padding 10px 18px 10px 45px
+					padding 5px 5px 5px 40px
+					/* Styles */
+					border none /* Remove the default border */
+					box-shadow inset 0 0 5px rgba(0,0,0,0.1), inset 0 3px 2px rgba(0,0,0,0.1)
+					border-radius 3px
+					background #f9f9f9
+					color black
+					transition color 0.1s ease-out
+				input[type=text]
+					margin-bottom 2px
+				input[type=text]:hover ~ i,input[type=password]:hover ~ i
+					color c4
+				input[type=text]:focus ~ i,input[type=password]:focus ~ i
+					color black
+				input[type=text]:focus,input[type=password]:focus,button[type=submit]:focus
+					outline out
+			.submit
+				display inline-block
+				width 40px
+				height 40px
+				//padding 1px
+				z-index 16
+				background c5
+				//border-radius 50%
+				box-shadow 0 0 2px rgba(0,0,0,0.1), 0 3px 2px rgba(0,0,0,0.1),inset 0 -3px 2px rgba(0,0,0,0.2)
+			.submit:after
+				width 10px
+				height 10px
+				position absolute
+				top -2px
+				left 30px
+				background #ffffff
+				box-shadow 0 62px white, -32px 31px white
+			button
+				width 100%
+				height 100%
+				line-height 1.75
+				color white
+				border none
+				border-radius inherit
+				background linear-gradient(c4, c4)
+				box-shadow inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.35), inset 0 3px 2px rgba(255,255,255,0.2), inset 0 -3px 2px rgba(0,0,0,0.1)
+				cursor pointer
+			button:hover,button[type=submit]:focus
+				background c4
+				transition all 0.1s ease-out
+			button:active
+				background c2
+				box-shadow inset 0 0 5px rgba(0,0,0,0.3), inset 0 3px 4px rgba(0,0,0,0.3)
+//botones de acción
+.caja_acciones
+	background c5
+	margin-top 5em
+	padding 2px
+	position fixed
+	//text-align center
+	width 100%
+	z-index 11
+	.menu_acciones
+		overflow-x auto
+		margin 4px
+		padding 2px
+		li
+			display inline-block
+			padding-left 1em
+			a
+				color c1
+				text-decoration none
+			a.ico_acciones
+				&:hover
+					color black
+			input.buscar
+				background url('search-white.png') no-repeat 10px 6px white
+				border 1px solid c1
+				font bold 12px Arial,Helvetica,Sans-serif
+				color black
+				width 150px
+				padding 6px 15px 6px 35px
+				text-shadow 0 2px 3px rgba(0, 0, 0, 0.1)
+				-webkit-box-shadow 0 1px 3px rgba(0, 0, 0, 0.15) inset
+				-moz-box-shadow 0 1px 3px rgba(0, 0, 0, 0.15) inset
+				box-shadow 0 1px 3px rgba(0, 0, 0, 0.15) inset
+				-webkit-transition all 0.7s ease 0s
+				-moz-transition all 0.7s ease 0s
+				-o-transition all 0.7s ease 0s
+				transition all 0.7s ease 0s
+				&:focus
+					width 200px
+.contenido
+	font-family arial-regular
+	.bloque
+		display inline-block
+		width 30%
+		vertical-align top
+		margin-right 1%
+		margin-left 1%
+		margin-top 10em
+		margin-bottom 4em
+		.titulo_bloque
+			background c4
+			//border-radius 5px 5px 0 0
+			color white
+			font-family arial-regular
+			font-size 16px
+			text-align center
+		.caja_bloque
+			//border-radius 0 0 5px 5px
+			background c5
+			.campos_bloque
+				.ul_bloque
+					width 800px
+					list-style-type none
+					margin 0
+					padding 0.1em
+					.li_bloque
+						color black
+						font-family arial-regular
+						font-size 14px
+						padding 0.2em
+						.etiquetas_bloque
+							width 135px
+							margin-top 2px
+							display inline-block
+							float left
+							padding 2px
+						.inputs_bloque
+							color black
+							height 16px
+							width 220px
+							padding 2px 8px
+							border 2px solid lightgreen
+							box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+							border-radius 1px
+							&:focus
+								border 1px solid white
+							&:valid
+								border 1px solid c1
+							&:valid ~ .viñeta::before
+								content "\2713"
+								color c4
+							&:invalid
+								border 1px solid red
+							&:invalid ~ .viñeta::before
+								content "\2613"
+								color red
+						.viñeta
+							display inline-block
+						.textarea_bloque
+							color black
+							height 80px
+							width 220px
+							resize vertical
+							padding 2px 8px
+							border 1px solid lightgreen
+							box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+							border-radius 1px
+							&:focus
+								border 1px solid white
+							&:valid
+								border 1px solid c1
+							&:valid ~ .viñeta::before
+								content "\2713"
+								color c4
+							&:invalid
+								border 1px solid red
+							&:invalid ~ .viñeta::before
+								content "\2613"
+								color red
+						.viñeta
+							display inline-block
+						.select_bloque
+							color black
+							height 22px
+							width 238px
+							padding 2px 8px
+							border 1px solid lightgreen
+							box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+							border-radius 1px
+							&:focus
+								border 1px solid white
+							&:valid
+								border 1px solid c1
+							&:valid ~ .viñeta::before
+								content "\2713"
+								color c4
+							&:invalid
+								border 1px solid red
+							&:invalid ~ .viñeta::before
+								content "\2613"
+								color red
+						.viñeta
+							display inline-block
+// mensajes-inicia
+.message
+	box-shadow inset 0 -1px 0 rgba(255,255,255,.4)
+	width 100%
+	border 1px solid
+	color #fff
+	padding 10px
+	position fixed
+	_position absolute
+	text-shadow 0 1px 0 rgba(0,0,0,.5)
+	height 35px
+	z-index 10
+	top 0
+	display none
+.info
+	background-color #4ea5cd
+	border-color #3b8eb5
+.error
+	background-color #de4343
+	border-color #c43d3d
+.warning
+	background-color #eaaf51
+	border-color #d99a36
+.success
+	background-color #61b832
+	border-color #55a12c
+.message h3
+	margin 0 0 0 0
+	text-align center
+.message p
+	margin 0
+	text-align center
+// mensajes-termina
+
+// para celulares
+@media only screen and (min-width : 320px) and (max-width : 767px)
+	nav
+		.menu
+			li
+				padding 0.2em
+	.caja_acciones
+		margin-top 3.4em
+		.menu_acciones
+			li
+				padding-left 0.2em
+	.contenido
+		.bloque
+			width 100%
+			vertical-align top
+			margin-right 0
+			margin-left 0
+			margin-top 8em
+
+// para tablets
+@media only screen and (min-width : 768px) and (max-width : 1024px)
+	nav
+		.menu
+			li
+				padding 0.6em
+	.caja_acciones
+		margin-top 4em
+		.menu_acciones
+			li
+				padding-left 0.6em
+	.contenido
+		.bloque
+			width 100%
+			vertical-align top
+			margin-right 0
+			margin-left 0
+			margin-top 9em
