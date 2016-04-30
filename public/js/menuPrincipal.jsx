@@ -1,8 +1,6 @@
-var app = app || {};
+var React=require('react');
 
-(function () {
-	'use strict';
-	appmvc.Componentes.menuprincipal = React.createClass({
+module.exports  = React.createClass({
 		
 		render: function () {
 			return (
@@ -21,4 +19,3 @@ var app = app || {};
 			);  
 		}
 	});
-})();

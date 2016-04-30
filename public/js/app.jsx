@@ -1,8 +1,6 @@
-var app = app || {};
+var React=require('react');
 
-(function () {
-	'use strict';
-	appmvc.Componentes.app = React.createClass({
+module.exports = React.createClass({
 		
 		render: function () {
 			var MenuPrincipal= appmvc.Componentes.menuprincipal;
@@ -20,7 +18,6 @@ var app = app || {};
   </div>
 			);  
 		}
+
+	
 	});
-	var App=appmvc.Componentes.app;
-	ReactDOM.render((<App/>),document.getElementById('app'));
-})();

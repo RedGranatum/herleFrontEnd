@@ -1,8 +1,6 @@
-var app = app || {};
+var React=require('react');
 
-(function () {
-	'use strict';
-	app.MenuAcciones = React.createClass({
+module.exports =  React.createClass({
 		
 		render: function () {
 			return (
@@ -28,4 +26,3 @@ var app = app || {};
 						);  
 		}
 	});
-})();

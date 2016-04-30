@@ -1,8 +1,6 @@
-var app = app || {};
+var React=require('react');
 
-(function () {
-	'use strict';
-	appmvc.Componentes.proveedores = React.createClass({
+module.exports = React.createClass({
 		
 		render: function () {
 			return (
@@ -82,4 +80,3 @@ var app = app || {};
 					);  
 		}
 	});
-})();
