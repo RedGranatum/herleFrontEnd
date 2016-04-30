@@ -1,21 +1,24 @@
-var React=require('react');
+var React         = require('react');
+var MenuPrincipal = require('menuPrincipal');
+//var MenuAcciones  = require('menuAcciones');
+var Proveedores   = require('proveedores');
 
 module.exports = React.createClass({
 		
 		render: function () {
-			var MenuPrincipal= appmvc.Componentes.menuprincipal;
-			var MenuAcciones= appmvc.Componentes.menuacciones;
-			var Proveedores= appmvc.Componentes.proveedores;
-			return (
+		return (
+
   <div>
 	<header>
 	</header>
 	<MenuPrincipal/>
-	<MenuAcciones/>
+	
 	<section className="contenido">
 		<Proveedores/>
 	</section>
   </div>
+
+
 			);  
 		}
 
