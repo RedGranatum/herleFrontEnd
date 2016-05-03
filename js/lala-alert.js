@@ -32,19 +32,10 @@ window.onload = function() {
             button_array[i].addEventListener("click", function() {
                 var message = this.getAttribute("alert-message");
                 var status =this.getAttribute("alert-status");
-                if (num<= 5){
-                    createAlert(message, status, timeout);
-                }
+                createAlert(message, status, timeout);
             });
     };
 };
-
-$(document).ready(function(){
-   num=0;
-   $("#alert-success").click(function(){
-      num++;
-   });
-});
 
 /**
 * Creates an alert div element
