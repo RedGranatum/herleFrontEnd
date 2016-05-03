@@ -1,7 +1,7 @@
 var React         = require('react');
-var MenuPrincipal = require('menuPrincipal');
-//var MenuAcciones  = require('menuAcciones');
-var Proveedores   = require('proveedores');
+var MenuPrincipal = require('../js/menuPrincipal.jsx');
+var MenuAcciones  = require('../js/menuAcciones.jsx');
+var Proveedores   = require('../js/proveedores.jsx');
 
 module.exports = React.createClass({
 		
@@ -12,7 +12,7 @@ module.exports = React.createClass({
 	<header>
 	</header>
 	<MenuPrincipal/>
-	
+	<MenuAcciones/>
 	<section className="contenido">
 		<Proveedores/>
 	</section>

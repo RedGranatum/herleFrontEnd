@@ -1,4 +1,6 @@
 var React=require('react');
+var BotonMenu=require('../js/botonMenu.jsx');
+
 
 module.exports  = React.createClass({
 		
@@ -6,14 +8,14 @@ module.exports  = React.createClass({
 			return (
     <nav>
 		<ul className="menu">
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-truck fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-group fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-shopping-cart fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-dollar fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-money fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-info fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_nav" href="#"><i className="fa fa-th fa-3x"></i></a></li>
-			<li className="li_menu"><a className="ico_logout" href=""><i className="fa fa-sign-out fa-2x"></i></a></li>
+		    <BotonMenu colorLink={"ico_nav"} icono={"truck"} tam={"3x"}/>
+		    <BotonMenu colorLink={"ico_nav"} icono={"group"}  tam={"3x"}/>
+			<BotonMenu colorLink={"ico_nav"} icono={"shopping-cart"}  tam={"3x"}/>
+			<BotonMenu colorLink={"ico_nav"} icono={"dollar"}  tam={"3x"}/>
+			<BotonMenu colorLink={"ico_nav"} icono={"money"}  tam={"3x"}/>
+			<BotonMenu colorLink={"ico_nav"} icono={"info"}  tam={"3x"}/>
+			<BotonMenu colorLink={"ico_nav"} icono={"th"}  tam={"3x"}/>
+			<BotonMenu colorLink={"ico_logout"} icono={"sign-out"}  tam={"3x"}/>
 		</ul>
 	</nav>
 			);  

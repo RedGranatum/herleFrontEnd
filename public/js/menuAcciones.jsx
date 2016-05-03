@@ -1,5 +1,6 @@
 var React=require('react');
-
+var BotonMenu=require('../js/botonMenu.jsx');
+var CajaDeBusqueda=require('../js/cajaDeBusqueda.jsx');
 module.exports = React.createClass({
 		
 		render: function () {
@@ -7,10 +8,10 @@ module.exports = React.createClass({
 
 	<div className="caja_acciones">
 		<ul className="menu_acciones">
-			<li><a className="ico_acciones" href="#"><i className="fa fa-file fa-2x"></i></a></li>
-			<li><a className="ico_acciones" href="#"><i className="fa fa-remove fa-2x"></i></a></li>
-			<li><a className="ico_acciones" href="#"><i className="fa fa-save fa-2x"></i></a></li>
-			<li><input type="text" placeholder="Proveedor..." className="buscar"/></li>
+		    <BotonMenu colorLink={"ico_acciones"} icono={"file"} tam={"2x"}/>
+		    <BotonMenu colorLink={"ico_acciones"} icono={"remove"} tam={"2x"}/>
+		    <BotonMenu colorLink={"ico_acciones"} icono={"save"} tam={"2x"}/>
+		    <CajaDeBusqueda textoIndicativo={"Proveedor..."}/>
 		</ul>
 	</div>
 
