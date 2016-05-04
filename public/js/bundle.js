@@ -272,16 +272,14 @@ var OpcionCombo = require('../js/opcionCombo.jsx');
 var estados = [];
 estados[({ valor: "estado_de_mexico", titulo: "Estado de México" }, { valor: "distrito_federal", titulo: "Distrito Federal" })];
 
-var Estados = estados.map(function (tupla) {
-	return React.createElement(OpcionCombo, { valorOpcion: tupla.valor, tituloOpcion: tupla.titulo });
-});
-
 module.exports = React.createClass({
 	displayName: 'exports',
 
 
 	render: function () {
-
+		var Estados = estados.map(function (tupla) {
+			return React.createElement(OpcionCombo, { valorOpcion: tupla.valor, tituloOpcion: tupla.titulo });
+		});
 		return React.createElement(
 			'article',
 			{ className: 'bloque' },

@@ -8,17 +8,17 @@ estados[
 {valor:"distrito_federal",titulo:"Distrito Federal"}
 ]
 
-	var Estados = estados.map(function(tupla) {
-      return (
-        <OpcionCombo valorOpcion={tupla.valor} tituloOpcion={tupla.titulo}/>
-       );
-    });
+
 
 
 module.exports = React.createClass({
 		
 		render: function () {
-
+	var Estados = estados.map(function(tupla) {
+      return (
+        <OpcionCombo valorOpcion={tupla.valor} tituloOpcion={tupla.titulo}/>
+       );
+    });
 			return (
 
 <article className="bloque">
