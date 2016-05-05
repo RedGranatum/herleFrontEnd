@@ -8,7 +8,9 @@
     "page": "^1.7.1",
     "react": "^0.14.4",
     "react-dom": "^0.14.0",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "babelify": "~7.3.0",
+    "babel-preset-react": "~6.5.0"
   },
   "scripts": {
     "observar": "watchify -t [babelify --presets [react] ] js/main.jsx -v -o js/bundle.js",

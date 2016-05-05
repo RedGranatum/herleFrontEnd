@@ -23,22 +23,19 @@ module.exports = React.createClass({
 			 self=this;
              Page('/',function(){
                  console.log("Estas en el indice");
+                   self.llamar('');
              });
 
              Page('/proveedores',function(){
              	console.log("Estas en el menu de proveedores");
                 self.llamar(FORM_PROVEEDORES);
-            
-              //  var forma2 = ReactDOM.findDOMNode(self.refs.formClientes);   
-              //  forma2.style.display='none';
-
              });
              Page('/clientes',function(){
              	console.log("Estas en el menu de clientes");
              	self.llamar(FORM_CLIENTES);
-          
-             //   var forma2 = ReactDOM.findDOMNode(self.refs.formClientes);   
-              //  forma2.style.display='block';
+             });
+             Page('*',function(){
+             	self.llamar('');
              });
              Page();
 		},
@@ -59,20 +56,30 @@ module.exports = React.createClass({
                  
                   for (var i=0;i<FORMULARIOS.length;i++){
                        var estilo=(FORMULARIOS[i]===this.state.formMostrar) ? 'inline-block' : 'none';
-                       var forma1 = ReactDOM.findDOMNode(this.refs[FORMULARIOS[i]]);   
-			           forma1.style.display=estilo;
-                       
+                       var forma1 = ReactDOM.findDOMNode(this.refs[FORMULARIOS[i]]); 
+                       if(forma1!== null){
+			           		forma1.style.display=estilo;
+                       }  
                   }
 	                                                                                                          
 		},
-		render: function () {
-			
-			if((this.formProveedores===undefined || this.formProveedores===null) && (this.state.formMostrar===FORM_PROVEEDORES)){
-				this.formProveedores=<Proveedores ref={FORM_PROVEEDORES}/>;
-			}
-			if((this.formClientes===undefined || this.formClientes===null) && (this.state.formMostrar===FORM_CLIENTES)){
-				this.formClientes=<Clientes  ref={FORM_CLIENTES}/>;
-			}
+		crearFormulario: function(formulario){
+			if ((formulario===undefined || formulario===null))
+			{
+				if(this.state.formMostrar===FORM_PROVEEDORES){
+					this.formProveedores=<Proveedores ref={FORM_PROVEEDORES}/>;
+				}
+				if(this.state.formMostrar===FORM_CLIENTES){
+					this.formClientes=<Clientes  ref={FORM_CLIENTES}/>;
+				}
+			}		
+		},
+	
+		 render: function () {
+				
+			this.crearFormulario(this.formProveedores)
+			this.crearFormulario(this.formClientes)
+
 		return (
 
   <div>
