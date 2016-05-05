@@ -33,7 +33,7 @@ module.exports = React.createClass({
 
 			return (
 
-<article className="bloque">
+<article className="bloque" >
 			<div className="titulo_bloque">
 				Proveedor
 			</div>
@@ -51,7 +51,7 @@ module.exports = React.createClass({
 						<CajaDeTexto titulo={"Teléfono"} textoIndicativo={"Teléfono"} />
 						<CajaDeTexto titulo={"e-mail"} textoIndicativo={"e-mail"} caracteresEsp={"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"}/>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="comentarios">Comentarios</label>
+							<label className="etiquetas_bloque" htmlFor="comentarios">Comentarios</label>
 							<textarea className="textarea_bloque" name="comentarios" placeholder="Comentarios"></textarea>
 						</li>
 					</ul>

@@ -65,7 +65,7 @@ module.exports = React.createClass({
                         <CajaDeTexto textoIndicativo={"e-mail"} caracteresEsp={"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"} titulo={"e-mail"} />
                         <Combo titulo={"Banco"} nomCombo={"banco_c"} children={Bancos} />
                         <li className="li_bloque">
-							<label className="etiquetas_bloque" for="comentarios_c">Comentarios</label>
+							<label className="etiquetas_bloque" htmlFor="comentarios_c">Comentarios</label>
 							<textarea className="textarea_bloque" name="comentarios_c" placeholder="Comentarios"></textarea>
 						</li>
 					</ul>

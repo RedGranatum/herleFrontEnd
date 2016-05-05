@@ -93,28 +93,76 @@ process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
 var React = require('react');
+var ReactDOM = require('react-dom');
 var MenuPrincipal = require('../js/menuPrincipal.jsx');
 var MenuAcciones = require('../js/menuAcciones.jsx');
 var Proveedores = require('../js/proveedores.jsx');
 var Clientes = require('../js/clientes.jsx');
 var Page = require("page");
+
+var FORM_PROVEEDORES = 'formProveedores';
+var FORM_CLIENTES = 'formClientes';
+
+var FORMULARIOS = [FORM_PROVEEDORES, FORM_CLIENTES];
+
 module.exports = React.createClass({
 	displayName: 'exports',
 
-	componentDidMount: function () {
+	getInitialState: function () {
+		return {
+			formMostrar: ""
+		};
+	},
+	componentWillMount: function () {
+		this.formProveedores = null;
+		this.formClientes = null;
+		self = this;
 		Page('/', function () {
 			console.log("Estas en el indice");
 		});
 
 		Page('/proveedores', function () {
 			console.log("Estas en el menu de proveedores");
+			self.llamar(FORM_PROVEEDORES);
+
+			//  var forma2 = ReactDOM.findDOMNode(self.refs.formClientes);  
+			//  forma2.style.display='none';
 		});
 		Page('/clientes', function () {
 			console.log("Estas en el menu de clientes");
+			self.llamar(FORM_CLIENTES);
+
+			//   var forma2 = ReactDOM.findDOMNode(self.refs.formClientes);  
+			//  forma2.style.display='block';
 		});
 		Page();
 	},
+	componentDidUpdate: function (prev_props, prev_state) {
+		console.log("se actualizo el componente", this.state.formMostrar);
+
+		this.mostrarForm();
+	},
+	llamar: function (nomform) {
+		this.setState({
+			formMostrar: nomform
+		});
+	},
+	mostrarForm: function () {
+
+		for (var i = 0; i < FORMULARIOS.length; i++) {
+			var estilo = FORMULARIOS[i] === this.state.formMostrar ? 'inline-block' : 'none';
+			var forma1 = ReactDOM.findDOMNode(this.refs[FORMULARIOS[i]]);
+			forma1.style.display = estilo;
+		}
+	},
 	render: function () {
+
+		if ((this.formProveedores === undefined || this.formProveedores === null) && this.state.formMostrar === FORM_PROVEEDORES) {
+			this.formProveedores = React.createElement(Proveedores, { ref: FORM_PROVEEDORES });
+		}
+		if ((this.formClientes === undefined || this.formClientes === null) && this.state.formMostrar === FORM_CLIENTES) {
+			this.formClientes = React.createElement(Clientes, { ref: FORM_CLIENTES });
+		}
 		return React.createElement(
 			'div',
 			null,
@@ -124,15 +172,21 @@ module.exports = React.createClass({
 			React.createElement(
 				'section',
 				{ className: 'contenido' },
-				React.createElement(Proveedores, null),
-				React.createElement(Clientes, null)
+				this.formProveedores,
+				this.formClientes
 			)
 		);
 	}
 
 });
 
-},{"../js/clientes.jsx":6,"../js/menuAcciones.jsx":9,"../js/menuPrincipal.jsx":10,"../js/proveedores.jsx":12,"page":14,"react":173}],3:[function(require,module,exports){
+function mostrar(estado, reff) {
+	var estilo = estado === "formProveedores" ? 'inline-block' : 'none';
+	var forma = ReactDOM.findDOMNode(reff);
+	forma.style.display = estilo;
+}
+
+},{"../js/clientes.jsx":6,"../js/menuAcciones.jsx":9,"../js/menuPrincipal.jsx":10,"../js/proveedores.jsx":12,"page":14,"react":173,"react-dom":17}],3:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -258,7 +312,7 @@ module.exports = React.createClass({
               { className: 'li_bloque' },
               React.createElement(
                 'label',
-                { className: 'etiquetas_bloque', 'for': 'comentarios_c' },
+                { className: 'etiquetas_bloque', htmlFor: 'comentarios_c' },
                 'Comentarios'
               ),
               React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios_c', placeholder: 'Comentarios' })
@@ -439,7 +493,7 @@ module.exports = React.createClass({
 							{ className: 'li_bloque' },
 							React.createElement(
 								'label',
-								{ className: 'etiquetas_bloque', 'for': 'comentarios' },
+								{ className: 'etiquetas_bloque', htmlFor: 'comentarios' },
 								'Comentarios'
 							),
 							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios' })
