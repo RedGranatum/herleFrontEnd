@@ -61,6 +61,20 @@
 			<li><a class="ico_acciones" href="#" title="Guardar"><i class="fa fa-save fa-2x"></i></a></li>
 			<li><input type="text" placeholder="Compra..." class="buscar"/></li>
 		</ul>
+		<div class="bloque_resultados">
+			<div class="resultado">
+				<span class="dsc_resultado">Resultado A</span>
+			</div>
+			<div class="resultado">
+				<span class="dsc_resultado">Resultado B</span>
+			</div>
+			<div class="resultado">
+				<span class="dsc_resultado">Resultado C</span>
+			</div>
+			<div class="resultado">
+				<span class="dsc_resultado">Resultado D</span>
+			</div>
+		</div>
 	</div>
 	<section class="contenido">
 		<article class="bloque">
@@ -103,7 +117,6 @@
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="producto">Producto</label>
 							<input class="inputs_bloque" type="text" placeholder="Producto" />
-							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="peso_kgs">Peso (Kgs)</label>
@@ -114,6 +127,60 @@
 							<label class="etiquetas_bloque" for="peso_lbs">Peso (Lbs)</label>
 							<input class="inputs_bloque" type="text" placeholder="Peso (Lbs)" />
 							<div class="viñeta"></div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="precio_producto">Precio producto</label>
+							<input class="inputs_bloque" type="text" placeholder="Precio producto" />
+							<div class="viñeta"></div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="precio_dollar">Precio dollar</label>
+							<input class="inputs_bloque" type="text" placeholder="Precio dollar" />
+							<div class="viñeta"></div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="casa_cambio">Casa de cambio</label>
+							<input class="inputs_bloque" type="text" placeholder="Casa de cambio" />
+							<div class="viñeta"></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+		<article class="bloque">
+			<div class="titulo_bloque">
+				Detalle
+			</div>
+			<div class="caja_bloque">
+				<div class="campos_bloque">
+					<ul class="ul_bloque">
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="no_rollo">No. de rollo</label>
+							<input class="inputs_bloque" type="text" placeholder="No. de rollo" />
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="transporte">Transporte</label>
+							<input class="inputs_bloque" type="text" placeholder="Transporte" />
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="material">Material</label>
+							<input class="inputs_bloque" type="text" placeholder="Material" />
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="estatus_venta">Estatus venta</label>
+							<select name="estatus_venta" class="select_bloque">
+								<option value="activa">Activa</option>
+								<option value="cancelada">Cancelada</option>
+							</select>
+							<div class="viñeta"></div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="descripcion">Descripción</label>
+							<textarea class="textarea_bloque" name="descripcion" placeholder="Descripción"></textarea>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="comentarios">Comentarios</label>
+							<textarea class="textarea_bloque" name="comentarios" placeholder="Comentarios"></textarea>
 						</li>
 					</ul>
 				</div>
