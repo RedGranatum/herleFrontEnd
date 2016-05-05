@@ -1,1 +1,1 @@
-console.error("Error: Cannot find module 'C:\\Users\\Ivan\\documents\\proyectoS\\HERLE\\herleFrontEnd\\public\\main.jsx' from 'C:\\Users\\Ivan\\documents\\proyectoS\\HERLE\\herleFrontEnd\\public'");
+console.error("Error: Cannot find module 'C:\\Users\\Ivan\\Documents\\proyectos\\herle\\herleFrontEnd\\public\\main.jsx' from 'C:\\Users\\Ivan\\Documents\\proyectos\\herle\\herleFrontEnd\\public'");
