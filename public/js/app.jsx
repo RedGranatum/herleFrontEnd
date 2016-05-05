@@ -2,6 +2,7 @@ var React         = require('react');
 var MenuPrincipal = require('../js/menuPrincipal.jsx');
 var MenuAcciones  = require('../js/menuAcciones.jsx');
 var Proveedores   = require('../js/proveedores.jsx');
+var Clientes = require('../js/clientes.jsx');
 
 module.exports = React.createClass({
 		
@@ -15,6 +16,7 @@ module.exports = React.createClass({
 	<MenuAcciones/>
 	<section className="contenido">
 		<Proveedores/>
+		
 	</section>
   </div>
 
