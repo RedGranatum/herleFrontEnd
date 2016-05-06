@@ -1,6 +1,8 @@
-var React=require('react');
-var BotonMenu=require('../js/botonMenu.jsx');
-var CajaDeBusqueda=require('../js/cajaDeBusqueda.jsx');
+var React           =require('react');
+var BotonMenu       =require('../js/botonMenu.jsx');
+var CajaDeBusqueda  =require('../js/cajaDeBusqueda.jsx');
+var ListaResultados =require('../js/listaResultados.jsx');
+
 module.exports = React.createClass({
 		
 		render: function () {
@@ -13,6 +15,7 @@ module.exports = React.createClass({
 		    <BotonMenu colorLink={"ico_acciones"} icono={"save"} tam={"2x"}/>
 		    <CajaDeBusqueda textoIndicativo={"Proveedor..."}/>
 		</ul>
+		<ListaResultados />
 	</div>
 
 			);  

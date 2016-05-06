@@ -6,6 +6,9 @@ var Proveedores   = require('../js/proveedores.jsx');
 var Clientes      = require('../js/clientes.jsx');
 var Page          = require("page");
 
+var ProveedoresColeccion = require('../js/modelos/proveedorColeccion');
+
+
 var FORM_PROVEEDORES='formProveedores';
 var FORM_CLIENTES='formClientes';
 
@@ -20,6 +23,9 @@ module.exports = React.createClass({
 		componentWillMount:function(){
 			 this.formProveedores=null;
 			 this.formClientes=null;
+
+			 this.ProveedorC = new ProveedoresColeccion();
+
 			 self=this;
              Page('/',function(){
                  console.log("Estas en el indice");
@@ -29,10 +35,21 @@ module.exports = React.createClass({
              Page('/proveedores',function(){
              	console.log("Estas en el menu de proveedores");
                 self.llamar(FORM_PROVEEDORES);
-             });
+
+                self.ProveedorC.fetch({
+			         success: function(data){
+	                      console.log(data);
+	                },
+    	         	 error: function(model,response, options) {
+                      console.log(response.responseText);
+        	        }
+        	    });
+            });
+
              Page('/clientes',function(){
              	console.log("Estas en el menu de clientes");
              	self.llamar(FORM_CLIENTES);
+
              });
              Page('*',function(){
              	self.llamar('');
@@ -61,6 +78,8 @@ module.exports = React.createClass({
 			           		forma1.style.display=estilo;
                        }  
                   }
+
+
 	                                                                                                          
 		},
 		crearFormulario: function(formulario){
