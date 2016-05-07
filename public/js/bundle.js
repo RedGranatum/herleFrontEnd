@@ -36,7 +36,7 @@ module.exports = React.createClass({
 		});
 
 		Page('/clientes', function () {
-			console.log("Estas en el menu de clientes");
+			console.log("menu de clientes");
 			self.llamar(FORM_CLIENTES);
 		});
 		Page('*', function () {
