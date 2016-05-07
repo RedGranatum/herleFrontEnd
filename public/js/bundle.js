@@ -7,11 +7,6 @@ var Proveedores = require('../js/proveedores.jsx');
 var Clientes = require('../js/clientes.jsx');
 var Page = require("page");
 
-var FORM_PROVEEDORES = 'formProveedores';
-var FORM_CLIENTES = 'formClientes';
-
-var FORMULARIOS = [FORM_PROVEEDORES, FORM_CLIENTES];
-
 module.exports = React.createClass({
 	displayName: 'exports',
 
@@ -21,65 +16,67 @@ module.exports = React.createClass({
 		};
 	},
 	componentWillMount: function () {
-		this.formProveedores = null;
-		this.formClientes = null;
-
+		//Para que self sea this dentro de las funciones de Page
 		self = this;
+
+		//Rutas del navegador
 		Page('/', function () {
+			self.mostrarMenu('');
 			console.log("Estas en el indice");
-			self.llamar('');
 		});
 
 		Page('/proveedores', function () {
+			self.mostrarMenu(appmvc.Menu.PROVEEDORES);
 			console.log("Estas en el menu de proveedores");
-			self.llamar(FORM_PROVEEDORES);
 		});
 
 		Page('/clientes', function () {
+			self.mostrarMenu(appmvc.Menu.CLIENTES);
 			console.log("menu de clientes");
-			self.llamar(FORM_CLIENTES);
 		});
 		Page('*', function () {
 			console.log("no conosco la ruta");
-			self.llamar('');
+			self.mostrarMenu('');
 		});
 		Page();
 	},
-	componentDidUpdate: function (prev_props, prev_state) {
-		console.log("se actualizo el componente", this.state.formMostrar);
-
-		this.mostrarForm();
-	},
-	llamar: function (nomform) {
+	mostrarMenu: function (nomform) {
 		this.setState({
 			formMostrar: nomform
 		});
 	},
-	mostrarForm: function () {
 
-		for (var i = 0; i < FORMULARIOS.length; i++) {
-			var estilo = FORMULARIOS[i] === this.state.formMostrar ? 'inline-block' : 'none';
-			var forma1 = ReactDOM.findDOMNode(this.refs[FORMULARIOS[i]]);
-			if (forma1 !== null) {
-				forma1.style.display = estilo;
-			}
+	componentDidUpdate: function (prev_props, prev_state) {
+		this.mostrarForm();
+	},
+
+	mostrarForm: function () {
+		for (var menu in appmvc.MenuForms) {
+			estilo = this.mostrar_ocultar_Formulario(menu);
+			this.aplicar_estilo_Formulario(menu, estilo);
 		}
 	},
-	crearFormulario: function (formulario) {
-		if (formulario === undefined || formulario === null) {
-			if (this.state.formMostrar === FORM_PROVEEDORES) {
-				this.formProveedores = React.createElement(Proveedores, { ref: FORM_PROVEEDORES });
-			}
-			if (this.state.formMostrar === FORM_CLIENTES) {
-				this.formClientes = React.createElement(Clientes, { ref: FORM_CLIENTES });
+	mostrar_ocultar_Formulario: function (menu) {
+		return menu === this.state.formMostrar ? 'inline-block' : 'none';
+	},
+	aplicar_estilo_Formulario: function (menu, estilo) {
+		var forma = ReactDOM.findDOMNode(this.refs[menu]);
+		if (forma !== null) {
+			forma.style.display = estilo;
+		}
+	},
+	crearFormulario: function (menu, componente) {
+		if (this.state.formMostrar === menu) {
+			if (appmvc.MenuForms[menu] === undefined || appmvc.MenuForms[menu] === null) {
+				appmvc.MenuForms[menu] = componente;
 			}
 		}
 	},
 
 	render: function () {
 
-		this.crearFormulario(this.formProveedores);
-		this.crearFormulario(this.formClientes);
+		this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES }));
+		this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES }));
 
 		return React.createElement(
 			'div',
@@ -90,8 +87,8 @@ module.exports = React.createClass({
 			React.createElement(
 				'section',
 				{ className: 'contenido' },
-				this.formProveedores,
-				this.formClientes
+				appmvc.MenuForms[appmvc.Menu.PROVEEDORES],
+				appmvc.MenuForms[appmvc.Menu.CLIENTES]
 			)
 		);
 	}
@@ -132,27 +129,31 @@ module.exports = React.createClass({
 var React = require('react');
 
 module.exports = React.createClass({
-  displayName: "exports",
+      displayName: "exports",
 
-  handleChange: function (event) {
-    if (event.charCode == 13) {
-      console.log("Estoy buscando: " + this.refs.cajaBusqueda.value);
-      this.props.onValorBuscado(this.refs.cajaBusqueda.value);
-    }
-  },
-  render: function () {
-    return React.createElement(
-      "li",
-      null,
-      React.createElement("input", {
-        ref: "cajaBusqueda",
-        type: "text",
-        placeholder: this.props.textoIndicativo,
-        className: "buscar",
-        onKeyPress: this.handleChange
-      })
-    );
-  }
+      handleChange: function (event) {
+            if (event.charCode == 13) {
+                  console.log("Estoy buscando: " + this.refs.cajaBusqueda.value);
+                  this.props.onValorBuscado(this.refs.cajaBusqueda.value);
+            }
+      },
+      handleBlur: function () {
+            console.log("Perdi el foco");
+      },
+      render: function () {
+            return React.createElement(
+                  "li",
+                  null,
+                  React.createElement("input", {
+                        ref: "cajaBusqueda",
+                        type: "text",
+                        placeholder: this.props.textoIndicativo,
+                        className: "buscar",
+                        onKeyPress: this.handleChange,
+                        onBlur: this.handleBlur
+                  })
+            );
+      }
 });
 
 },{"react":176}],4:[function(require,module,exports){
@@ -290,9 +291,19 @@ $(function () {
 	appmvc = {};
 
 	appmvc = {
-		Componentes: {},
-		Modelos: {},
-		Colecciones: {}
+		Forms: {},
+		Menu: {},
+		MenuForms: {}
+	};
+
+	appmvc.Menu.PROVEEDORES = 'Proveedores';
+	appmvc.Menu.CLIENTES = 'Clientes';
+
+	appmvc.Forms.PROVEEDORES = null;
+	appmvc.Forms.CLIENTES = null;
+	appmvc.MenuForms = {
+		'Proveedores': appmvc.Forms.PROVEEDORES,
+		'Clientes': appmvc.Forms.CLIENTES
 	};
 
 	ReactDOM.render(React.createElement(App, null), document.getElementById("app"));
@@ -340,21 +351,21 @@ module.exports = React.createClass({
     });
   },
   seleccionarRuta: function (formulario, valor_buscado) {
-    if (formulario === "formProveedores") {
+    if (formulario === appmvc.Menu.PROVEEDORES) {
       this.rutaBusqueda.buscarProveedorPorValor(valor_buscado);
     }
-    if (formulario === "formClientes") {
+    if (formulario === appmvc.Menu.CLIENTES) {
       this.rutaBusqueda.buscarClientesPorValor(valor_buscado);
     }
   },
   render: function () {
-    var indicativo = this.props.formActivo.trim().substring(4) + "...";
+    var indicativo = this.props.formActivo.trim() + "...";
     var cajaBusqueda = this.props.formActivo.trim() !== "" ? React.createElement(CajaDeBusqueda, {
       textoIndicativo: indicativo,
       onValorBuscado: this.manejadorValorBuscado
     }) : '';
 
-    var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { resultados: this.state.listado }) : '';
+    var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { resultados: this.state.listado }) : {};
 
     return React.createElement(
       'div',

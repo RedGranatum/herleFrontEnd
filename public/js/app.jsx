@@ -6,10 +6,8 @@ var Proveedores   = require('../js/proveedores.jsx');
 var Clientes      = require('../js/clientes.jsx');
 var Page          = require("page");
 
-var FORM_PROVEEDORES='formProveedores';
-var FORM_CLIENTES='formClientes';
 
-var FORMULARIOS=[FORM_PROVEEDORES,FORM_CLIENTES];
+
 
 module.exports = React.createClass({
 		getInitialState: function(){
@@ -18,74 +16,70 @@ module.exports = React.createClass({
 	 		};
 	 	},
 		componentWillMount:function(){
-			 this.formProveedores=null;
-			 this.formClientes=null;
-
-			
+			 //Para que self sea this dentro de las funciones de Page
 			 self=this;
+
+			 //Rutas del navegador
              Page('/',function(){
+                   self.mostrarMenu('');
                  console.log("Estas en el indice");
-                   self.llamar('');
              });
 
              Page('/proveedores',function(){
+                self.mostrarMenu(appmvc.Menu.PROVEEDORES);
              	console.log("Estas en el menu de proveedores");
-                self.llamar(FORM_PROVEEDORES);
             });
 
              Page('/clientes',function(){
+             	self.mostrarMenu(appmvc.Menu.CLIENTES);
              	console.log("menu de clientes");
-             	self.llamar(FORM_CLIENTES);
 
              });
              Page('*',function(){
              	console.log("no conosco la ruta");
-             	self.llamar('');
+             	self.mostrarMenu('');
              });
              Page();
 		},
-		componentDidUpdate:function(prev_props,prev_state){
-              console.log("se actualizo el componente",this.state.formMostrar);
+		mostrarMenu:function(nomform){
+              this.setState({
+              	formMostrar:nomform
+             });
+          },
 
+		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 
 		},
-		llamar:function(nomform){
-              this.setState({
-              	formMostrar:nomform
-              });
 
- 
-		},
 		mostrarForm:function(){
-                 
-                  for (var i=0;i<FORMULARIOS.length;i++){
-                       var estilo=(FORMULARIOS[i]===this.state.formMostrar) ? 'inline-block' : 'none';
-                       var forma1 = ReactDOM.findDOMNode(this.refs[FORMULARIOS[i]]); 
-                       if(forma1!== null){
-			           		forma1.style.display=estilo;
-                       }  
-                  }
-
-
-	                                                                                                          
+                 for(var menu in  appmvc.MenuForms){		
+                 	estilo = this.mostrar_ocultar_Formulario(menu)
+                 	this.aplicar_estilo_Formulario(menu,estilo)
+                 }                                                                                           
 		},
-		crearFormulario: function(formulario){
-			if ((formulario===undefined || formulario===null))
+		mostrar_ocultar_Formulario: function(menu){
+			 return (menu === this.state.formMostrar) ? 'inline-block' : 'none';
+		},
+		aplicar_estilo_Formulario: function(menu, estilo){
+			 var forma =  ReactDOM.findDOMNode(this.refs[menu]);
+             if(forma!== null){
+			        forma.style.display=estilo;
+			    }
+		},
+		crearFormulario: function(menu,componente){
+			if (this.state.formMostrar===menu)
 			{
-				if(this.state.formMostrar===FORM_PROVEEDORES){
-					this.formProveedores=<Proveedores ref={FORM_PROVEEDORES}/>;
-				}
-				if(this.state.formMostrar===FORM_CLIENTES){
-					this.formClientes=<Clientes  ref={FORM_CLIENTES}/>;
-				}
-			}		
-		},
+			   if( appmvc.MenuForms[menu] === undefined ||  appmvc.MenuForms[menu] === null){
+               	    appmvc.MenuForms[menu] = componente;
+               }
+           }
+ 		},
 	
 		 render: function () {
 				
-			this.crearFormulario(this.formProveedores)
-			this.crearFormulario(this.formClientes)
+			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}/>);
+			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}/>)
 
 		return (
 
@@ -95,8 +89,8 @@ module.exports = React.createClass({
 	<MenuPrincipal/>
 	<MenuAcciones formActivo = {this.state.formMostrar}/>
 	<section className="contenido">
-		{this.formProveedores}
-		{this.formClientes}
+		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
+		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
 	</section>
   </div>
 

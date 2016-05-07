@@ -7,6 +7,9 @@ module.exports = React.createClass({
                 this.props.onValorBuscado(this.refs.cajaBusqueda.value);
         	}
   		},
+        handleBlur: function(){
+            console.log("Perdi el foco");
+        },
 		render: function () {
 			return (
              	<li>
@@ -16,6 +19,7 @@ module.exports = React.createClass({
              		placeholder={this.props.textoIndicativo} 
              		className="buscar" 
              		onKeyPress ={this.handleChange} 
+                    onBlur = {this.handleBlur}
              	/>
              	</li>
 			);  

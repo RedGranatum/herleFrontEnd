@@ -8,13 +8,23 @@ $(function() {
 	appmvc = {};
 
 	appmvc ={
-		Componentes: {},
-		Modelos:{},
-		Colecciones:{}
+		Forms :{},
+		Menu: {},
+		MenuForms: {},
 	}
+
+	appmvc.Menu.PROVEEDORES = 'Proveedores';
+	appmvc.Menu.CLIENTES = 'Clientes';
+    
+	appmvc.Forms.PROVEEDORES=null;
+	appmvc.Forms.CLIENTES=null;
+	appmvc.MenuForms = {
+		 'Proveedores' : appmvc.Forms.PROVEEDORES,
+		 'Clientes':  appmvc.Forms.CLIENTES,
+	};
 
 	ReactDOM.render(<App/>,document.getElementById("app"));
 	
-   
+  
 });
 

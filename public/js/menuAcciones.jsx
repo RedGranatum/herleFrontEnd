@@ -38,15 +38,15 @@ module.exports = React.createClass({
         	    });
   		},
   		seleccionarRuta: function(formulario,valor_buscado){
-  			if(formulario === "formProveedores"){
+  			if(formulario === appmvc.Menu.PROVEEDORES){
   				 this.rutaBusqueda.buscarProveedorPorValor(valor_buscado);
   			}
-  			if(formulario === "formClientes"){
+  			if(formulario === appmvc.Menu.CLIENTES){
   				 this.rutaBusqueda.buscarClientesPorValor(valor_buscado);
   			}
   		},
 		render: function () {
-			var indicativo = this.props.formActivo.trim().substring(4) + "..."
+			var indicativo = this.props.formActivo.trim() + "..."
  		    var cajaBusqueda = this.props.formActivo.trim()!=="" ? 
  		    		<CajaDeBusqueda 
  		    			textoIndicativo ={indicativo}
@@ -54,7 +54,7 @@ module.exports = React.createClass({
  		    			/> 
  		    		: '';
 
- 		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados	resultados={this.state.listado} />:'';
+ 		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados	resultados={this.state.listado} />:{};
 
 		return (
 	<div className="caja_acciones">
