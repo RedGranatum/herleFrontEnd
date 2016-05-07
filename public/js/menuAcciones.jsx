@@ -54,7 +54,7 @@ module.exports = React.createClass({
  		    			/> 
  		    		: '';
 
- 		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados	resultados={this.state.listado} />:{};
+ 		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados	resultados={this.state.listado} />:[];
 
 		return (
 	<div className="caja_acciones">

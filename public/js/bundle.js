@@ -365,7 +365,7 @@ module.exports = React.createClass({
       onValorBuscado: this.manejadorValorBuscado
     }) : '';
 
-    var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { resultados: this.state.listado }) : {};
+    var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { resultados: this.state.listado }) : [];
 
     return React.createElement(
       'div',
@@ -555,9 +555,10 @@ module.exports = React.createClass({
 			filas.push(React.createElement(Filas, { resultado: resultado }));
 		});
 
+		var divStyle = filas.length > 0 ? { display: 'block' } : { display: 'none' };
 		return React.createElement(
 			'div',
-			{ className: 'bloque_resultados' },
+			{ className: 'bloque_resultados', style: divStyle },
 			filas
 		);
 	}

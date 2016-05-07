@@ -9,10 +9,10 @@ module.exports = React.createClass({
 			this.props.resultados.forEach(function(resultado){
 				filas.push(<Filas resultado={resultado}/>);
 			});
-	
-		
+	        
+	        var divStyle = (filas.length >0) ? { display: 'block'} : {display: 'none'} ;
 			return (
-				<div className="bloque_resultados">
+				<div className="bloque_resultados"  style ={divStyle}>
 					{filas}
 				</div>
 			);  
