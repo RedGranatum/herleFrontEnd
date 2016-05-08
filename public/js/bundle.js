@@ -222,24 +222,25 @@ module.exports = React.createClass({
   displayName: "exports",
 
   valorCambio: function () {
-    this.props.onChange(this.refs.CajaTexto.value);
+    this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
   },
   render: function () {
+
     return React.createElement(
       "li",
       { className: "li_bloque" },
       React.createElement(
         "label",
         { className: "etiquetas_bloque" },
-        this.props.titulo
+        this.props.propiedades.titulo
       ),
       React.createElement("input", {
         className: "inputs_bloque",
-        pattern: this.props.caracteresEsp,
+        pattern: this.props.propiedades.caracteresEsp,
         type: "text",
-        placeholder: this.props.textoIndicativo,
-        id: this.props.identificador,
-        value: this.props.valor,
+        placeholder: this.props.propiedades.textoIndicativo,
+        id: this.props.propiedades.identificador,
+        value: this.props.propiedades.valor,
         onChange: this.valorCambio,
         ref: "CajaTexto"
       }),
@@ -329,11 +330,8 @@ var React = require('react');
 module.exports = React.createClass({
      displayName: "exports",
 
-     componentWillUodate: function (nuevas_props, nuevo_Stados) {
-          console.log("El comobo hijo " + nuevas_props.seleccionado);
-     },
      onChange: function (valor) {
-          this.props.onChange(this.props.nomCombo, valor.target.value);
+          this.props.propiedades.onChange(this.props.propiedades.id, valor.target.value);
      },
      render: function () {
 
@@ -343,12 +341,12 @@ module.exports = React.createClass({
                React.createElement(
                     "label",
                     { className: "etiquetas_bloque" },
-                    this.props.titulo
+                    this.props.propiedades.titulo
                ),
                React.createElement(
                     "select",
-                    { name: this.props.nomCombo, className: "select_bloque", value: this.props.seleccionado, onChange: this.onChange },
-                    this.props.children
+                    { name: this.props.propiedades.id, className: "select_bloque", value: this.props.propiedades.seleccionado, onChange: this.onChange },
+                    this.props.propiedades.children
                ),
                React.createElement("div", { className: "viñeta" })
           );
@@ -572,18 +570,12 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 	componentWillReceiveProps: function (nuevas_props) {
-		console.log(nuevas_props);
-		this.onNombreChange(nuevas_props.datos.nombre);
-		this.onCalleChange(nuevas_props.datos.calle);
-		this.onNumeroChange(nuevas_props.datos.numero);
-		this.onCpChange(nuevas_props.datos.cp);
-		this.onRfcChange(nuevas_props.datos.rfc);
-		this.onTelefonoChange(nuevas_props.datos.telefono);
-		this.onEmailChange(nuevas_props.datos.email);
-		this.onCodigoChange(nuevas_props.datos.codigo);
-		this.onComentariosChange(nuevas_props.datos.comentarios);
-		this.onComboChange("pais", nuevas_props.datos.pais);
-		this.onComboEstado(nuevas_props.datos.estado);
+		var campos = {};
+		for (var key in nuevas_props.datos) {
+			campos[key] = nuevas_props.datos[key];
+		}
+		this.setState(campos);
+		this.onValorCambio("pais", nuevas_props.datos.pais);
 	},
 	componentWillMount: function () {
 		this.Paises = this.props.paises.map(function (tupla) {
@@ -600,79 +592,71 @@ module.exports = React.createClass({
 			llenarEstados: []
 		};
 	},
-	onCodigoChange: function (valor) {
-		this.setState({ codigo: valor });
-	},
-	onNombreChange: function (valor) {
-		this.setState({ nombre: valor });
-	},
-	onCalleChange: function (valor) {
-		this.setState({ calle: valor });
-	},
-	onNumeroChange: function (valor) {
-		this.setState({ numero: valor });
-	},
-	onCpChange: function (valor) {
-		this.setState({ cp: valor });
-	},
-	onRfcChange: function (valor) {
-		this.setState({ rfc: valor });
-	},
-	onTelefonoChange: function (valor) {
-		this.setState({ telefono: valor });
-	},
-	onEmailChange: function (valor) {
-		this.setState({ email: valor });
-	},
-	onComentariosChange: function (valor) {
-		this.setState({ comentarios: valor });
-	},
-	onComboChange: function (combo, valor) {
-		console.log("cambio " + combo + " a " + valor);
-		if (combo === "pais") {
-			this.setState({ pais: valor });
+	onValorCambio: function (campo, valor) {
+		var campos = {};
+		if (campo === "comentarios") {
+			valor = valor.target.value;
+		}
+		campos[campo] = valor;
+		this.setState(campos);
+
+		if (campo === "pais") {
 			this.buscarEstados(valor);
 		}
 	},
-	onComboEstado: function (combo, valor) {
-		this.setState({ estado: valor });
-		console.log("cambio el estado " + valor);
-	},
+	// onComboChange: function(combo,valor){
+	// 	console.log("cambio " + combo + " a " + valor);
+	// 	if(combo === "pais"){
+	// 		this.setState({pais: valor})
+	// 		this.buscarEstados(valor);
+	// 	}
+	// },
+	// onComboEstado: function(combo,valor){
+	// 	this.setState({estado: valor});
+	// 	console.log("cambio el estado "+valor)
+	// },
 	buscarEstados: function (pais) {
 		var self = this;
 		this.rutaBusqueda = new RutasApiRest(pais);
 		console.log("ESTA BUSCANDO ..." + pais);
 
-		//       var combo = document.getElementById("comboEstadosProveedores")
-		//       if(combo !==null){
-		// ReactDOM.unmountComponentAtNode(combo);
-		//       }
-
 		this.rutaBusqueda.buscarDetallesPorCduDefault(pais);
 		this.rutaBusqueda.fetch({
 			success: function (data) {
-				//self.state.llenarEstados =  data.toJSON();
-
 				var Estados = data.toJSON().map(function (tupla) {
 					return React.createElement(OpcionCombo, { key: tupla.cdu_catalogo, valorOpcion: tupla.cdu_catalogo, tituloOpcion: tupla.descripcion1 });
 				});
 
 				self.setState({ llenarEstados: Estados });
 				self.setState({ estado: self.props.datos.estado });
-				//   ReactDOM.render( <Combo titulo={"Estado"} nomCombo={"estado"} seleccionado={self.state.estado} children={this.Estados} onChange={self.onComboEstado}/>,document.getElementById("comboEstadosProveedores"));
-
-				//	   ReactDOM.render( <Combo key="estado" titulo={"Estado"} nomCombo={"estado"} seleccionado={self.state.estado} children={this.Estados} onChange={self.onComboEstado}/>,document.getElementById("comboEstadosProveedores"));
-
-				console.log(data.length);
 			},
 			error: function (model, response, options) {
-				//self.state.llenarEstados = [];
-				console.log(response.responseText);
-				//                          	<div id="comboEstadosProveedores">	</div>
+				self.setState({ llenarEstados: [] });
 			}
 		});
 	},
+	zipCol: function (columnas, valores) {
+		diccionario = {};
+		for (var col in columnas) {
+			diccionario[columnas[col]] = valores[col];
+		}
+		return diccionario;
+	},
 	render: function () {
+
+		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange"];
+		var CODIGO = this.zipCol(dic1, ["codigo", "Codigo", "Codigo", this.state.codigo, this.onValorCambio]);
+		var NOMBRE = this.zipCol(dic1, ["nombre", "Nombre", "Nombre", this.state.nombre, this.onValorCambio]);
+		var CALLE = this.zipCol(dic1, ["calle", "Calle", "Calle", this.state.calle, this.onValorCambio]);
+		var NUMERO = this.zipCol(dic1, ["numero", "Número", "Número", this.state.numero, this.onValorCambio]);
+		var CP = this.zipCol(dic1, ["cp", "Código Postal", "codigo_postal", this.state.cp, this.onValorCambio]);
+		var RFC = this.zipCol(dic1, ["rfc", "RFC", "RFC", this.state.rfc, this.onValorCambio]);
+		var TELEFONO = this.zipCol(dic1, ["telefono", "Teléfono", "Teléfono", this.state.telefono, this.onValorCambio]);
+		var EMAIL = this.zipCol(dic1, ["email", "e-mail", "e-mail", this.state.email, this.onValorCambio]);
+
+		var dic2 = ["id", "titulo", "children", "seleccionado", "onChange"];
+		var PAIS = this.zipCol(dic2, ["pais", "País", this.Paises, this.state.pais, this.onValorCambio]);
+		var ESTADO = this.zipCol(dic2, ["estado", "Estado", this.state.llenarEstados, this.state.estado, this.onValorCambio]);
 
 		return React.createElement(
 			'article',
@@ -691,16 +675,16 @@ module.exports = React.createClass({
 					React.createElement(
 						'ul',
 						{ className: 'ul_bloque' },
-						React.createElement(CajaDeTexto, { titulo: "Codigo", textoIndicativo: "Codigo", valor: this.state.codigo, onChange: this.onCodigoChange }),
-						React.createElement(CajaDeTexto, { titulo: "Nombre", textoIndicativo: "Nombre", ref: 'cajaNombre', valor: this.state.nombre, onChange: this.onNombreChange }),
-						React.createElement(CajaDeTexto, { titulo: "Calle", textoIndicativo: "Calle", ref: 'cajaCalle', valor: this.state.calle, onChange: this.onCalleChange }),
-						React.createElement(CajaDeTexto, { titulo: "Número", textoIndicativo: "Número", valor: this.state.numero, onChange: this.onNumeroChange }),
-						React.createElement(CajaDeTexto, { titulo: "Código Postal", identificador: 'codigo_postal', textoIndicativo: "Código Postal", valor: this.state.cp, onChange: this.onCpChange }),
-						React.createElement(Combo, { key: 'Pais', titulo: "País", nomCombo: "pais", children: this.Paises, seleccionado: this.state.pais, onChange: this.onComboChange }),
-						React.createElement(Combo, { titulo: "Estado", nomCombo: "estado", seleccionado: this.state.estado, children: this.state.llenarEstados, onChange: this.onComboEstado }),
-						React.createElement(CajaDeTexto, { titulo: "RFC", textoIndicativo: "RFC", valor: this.state.rfc, onChange: this.onRfcChange }),
-						React.createElement(CajaDeTexto, { titulo: "Teléfono", textoIndicativo: "Teléfono", valor: this.state.telefono, onChange: this.onTelefonoChange }),
-						React.createElement(CajaDeTexto, { titulo: "e-mail", textoIndicativo: "e-mail", valor: this.state.email, onChange: this.onEmailChange, caracteresEsp: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" }),
+						React.createElement(CajaDeTexto, { propiedades: CODIGO }),
+						React.createElement(CajaDeTexto, { propiedades: NOMBRE, ref: 'cajaNombre' }),
+						React.createElement(CajaDeTexto, { propiedades: CALLE, ref: 'cajaCalle' }),
+						React.createElement(CajaDeTexto, { propiedades: NUMERO }),
+						React.createElement(CajaDeTexto, { propiedades: CP }),
+						React.createElement(Combo, { propiedades: PAIS, ref: 'ComboPais', key: 'Pais' }),
+						React.createElement(Combo, { propiedades: ESTADO }),
+						React.createElement(CajaDeTexto, { propiedades: RFC }),
+						React.createElement(CajaDeTexto, { propiedades: TELEFONO }),
+						React.createElement(CajaDeTexto, { propiedades: EMAIL }),
 						React.createElement(
 							'li',
 							{ className: 'li_bloque' },
@@ -709,7 +693,7 @@ module.exports = React.createClass({
 								{ className: 'etiquetas_bloque', htmlFor: 'comentarios' },
 								'Comentarios'
 							),
-							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onComentariosChange })
+							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onValorCambio.bind(this, 'comentarios') })
 						)
 					)
 				)
