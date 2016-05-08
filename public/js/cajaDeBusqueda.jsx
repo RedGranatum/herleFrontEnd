@@ -8,7 +8,7 @@ module.exports = React.createClass({
         	}
   		},
         handleBlur: function(){
-            console.log("Perdi el foco");
+            this.props.onBlur();
         },
 		render: function () {
 			return (

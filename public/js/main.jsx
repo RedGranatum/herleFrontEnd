@@ -11,7 +11,13 @@ $(function() {
 		Forms :{},
 		Menu: {},
 		MenuForms: {},
+		Url : {}
 	}
+
+	var url_local = 'http://localhost:8000/'
+
+	appmvc.Url.API_REST =  url_local;
+
 
 	appmvc.Menu.PROVEEDORES = 'Proveedores';
 	appmvc.Menu.CLIENTES = 'Clientes';

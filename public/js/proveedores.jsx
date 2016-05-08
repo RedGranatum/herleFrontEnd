@@ -28,11 +28,19 @@ var paises=[
 
 
 module.exports = React.createClass({
-		
+	   componentWillReceiveProps: function(nuevas_props){
+	   		this.setState({nombre: nuevas_props.datos.nombre});
+	   },
+		getInitialState: function(){
+			return{
+				nombre : this.props.datos.nombre,
+			};
+		},
+		manejadorTextoTecleado: function(texto_tecleado){
+			this.setState({nombre: texto_tecleado});
+		},
 		render: function () {
-
 			return (
-
 <article className="bloque" >
 			<div className="titulo_bloque">
 				Proveedor
@@ -41,7 +49,7 @@ module.exports = React.createClass({
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
 						<CajaDeTexto titulo={"Id"}  textoIndicativo={"Id"} />
-						<CajaDeTexto titulo={"Nombre"}  textoIndicativo={"Nombre"} />
+						<CajaDeTexto titulo={"Nombre"}  textoIndicativo={"Nombre"} valor={ this.state.nombre} onChange ={this.manejadorTextoTecleado} />
 						<CajaDeTexto titulo={"Calle"}  textoIndicativo={"Calle"} />
 						<CajaDeTexto titulo={"Número"}  textoIndicativo={"Número"} />
 						<CajaDeTexto titulo={"Código Postal"} identificador="codigo_postal" textoIndicativo={"Código Postal"} />

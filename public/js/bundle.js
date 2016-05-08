@@ -6,22 +6,28 @@ var MenuAcciones = require('../js/menuAcciones.jsx');
 var Proveedores = require('../js/proveedores.jsx');
 var Clientes = require('../js/clientes.jsx');
 var Page = require("page");
+var RutasApiRest = require('../js/modelos/rutaApiRest');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
 	getInitialState: function () {
 		return {
-			formMostrar: ""
+			formMostrar: "",
+			datosProveedor: { nombre: "Juan" },
+			datosCliente: { nombre: "Andres" },
+			actualizarForm: false
 		};
 	},
 	componentWillMount: function () {
 		//Para que self sea this dentro de las funciones de Page
-		self = this;
+		var self = this;
+		this.rutaBusqueda = new RutasApiRest();
 
 		//Rutas del navegador
 		Page('/', function () {
 			self.mostrarMenu('');
+
 			console.log("Estas en el indice");
 		});
 
@@ -30,19 +36,50 @@ module.exports = React.createClass({
 			console.log("Estas en el menu de proveedores");
 		});
 
+		Page('/proveedores/:pk', function (ctx) {
+			console.log("Buscas un proveedor por la pk :" + ctx.params.pk || "no encontrado");
+		});
+
 		Page('/clientes', function () {
 			self.mostrarMenu(appmvc.Menu.CLIENTES);
 			console.log("menu de clientes");
 		});
 		Page('*', function () {
 			console.log("no conosco la ruta");
+			Page.redirect('/');
 			self.mostrarMenu('');
 		});
+
+		Page({ hashbang: true });
+
 		Page();
+
+		this.mostrarForm();
+	},
+	componentDidMount: function () {
+		console.log("Estoy montandome en el proyecto");
 	},
 	mostrarMenu: function (nomform) {
+		//  this.setState({actualizarForm: false});
 		this.setState({
 			formMostrar: nomform
+		});
+	},
+	llenarDatosProveedor: function (pk) {
+		var self = this;
+		self.setState({ actualizarForm: true });
+		this.rutaBusqueda.buscarProveedorPorPk(pk);
+		this.rutaBusqueda.fetch({
+			success: function (data) {
+				//  self.setState({datosProveedor:{nombre:"Ana"}});
+				self.setState({ datosProveedor: data.toJSON()[0] });
+				// console.log(data.toJSON()[0])
+			},
+			error: function (model, response, options) {
+				self.setState({ datosProveedor: { nombre: "Anita" } });
+				self.setState({ datosProveedor: [] });
+				console.log(response.responseText);
+			}
 		});
 	},
 
@@ -66,24 +103,45 @@ module.exports = React.createClass({
 		}
 	},
 	crearFormulario: function (menu, componente) {
+
 		if (this.state.formMostrar === menu) {
-			if (appmvc.MenuForms[menu] === undefined || appmvc.MenuForms[menu] === null) {
+			if (this.state.actualizarForm || appmvc.MenuForms[menu] === undefined || appmvc.MenuForms[menu] === null) {
 				appmvc.MenuForms[menu] = componente;
 			}
 		}
 	},
+	onClaveSeleccionada: function (pk) {
+
+		//this.setState({actualizarForm:true});
+		console.log("cambiando datos del proveedor");
+		this.llenarDatosProveedor(pk);
+	},
 
 	render: function () {
+		// 	if (this.state.formMostrar===appmvc.Menu.PROVEEDORES)
+		// {
+		//    if(this.state.actualizarForm || appmvc.MenuForms[appmvc.Menu.PROVEEDORES] === undefined ||  appmvc.MenuForms[appmvc.Menu.PROVEEDORES] === null){
+		//    	 console.log("me rendesriso");
+		appmvc.MenuForms[appmvc.Menu.PROVEEDORES] = React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor });
+		//             }
+		//         }
 
-		this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES }));
-		this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES }));
+		//         if (this.state.formMostrar===appmvc.Menu.CLIENTES)
+		// {
+		//    if(this.state.actualizarForm || appmvc.MenuForms[appmvc.Menu.CLIENTES] === undefined ||  appmvc.MenuForms[appmvc.Menu.CLIENTES] === null){
+		appmvc.MenuForms[appmvc.Menu.CLIENTES] = React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES });
+		//     }
+		// }
+
+		//this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES} datos={this.state.datosProveedor}/>);
+		//this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}/>)
 
 		return React.createElement(
 			'div',
 			null,
 			React.createElement('header', null),
 			React.createElement(MenuPrincipal, null),
-			React.createElement(MenuAcciones, { formActivo: this.state.formMostrar }),
+			React.createElement(MenuAcciones, { formActivo: this.state.formMostrar, onClaveSeleccionada: this.onClaveSeleccionada }),
 			React.createElement(
 				'section',
 				{ className: 'contenido' },
@@ -101,7 +159,7 @@ function mostrar(estado, reff) {
 	forma.style.display = estilo;
 }
 
-},{"../js/clientes.jsx":5,"../js/menuAcciones.jsx":8,"../js/menuPrincipal.jsx":9,"../js/proveedores.jsx":12,"page":17,"react":176,"react-dom":20}],2:[function(require,module,exports){
+},{"../js/clientes.jsx":5,"../js/menuAcciones.jsx":8,"../js/menuPrincipal.jsx":9,"../js/modelos/rutaApiRest":10,"../js/proveedores.jsx":12,"page":17,"react":176,"react-dom":20}],2:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -138,7 +196,7 @@ module.exports = React.createClass({
             }
       },
       handleBlur: function () {
-            console.log("Perdi el foco");
+            this.props.onBlur();
       },
       render: function () {
             return React.createElement(
@@ -162,7 +220,9 @@ var React = require('react');
 module.exports = React.createClass({
   displayName: "exports",
 
-
+  valorCambio: function () {
+    this.props.onChange(this.refs.CajaTexto.value);
+  },
   render: function () {
     return React.createElement(
       "li",
@@ -172,8 +232,16 @@ module.exports = React.createClass({
         { className: "etiquetas_bloque" },
         this.props.titulo
       ),
-      React.createElement("input", { className: "inputs_bloque", pattern: this.props.caracteresEsp,
-        type: "text", placeholder: this.props.textoIndicativo, id: this.props.identificador }),
+      React.createElement("input", {
+        className: "inputs_bloque",
+        pattern: this.props.caracteresEsp,
+        type: "text",
+        placeholder: this.props.textoIndicativo,
+        id: this.props.identificador,
+        value: this.props.valor,
+        onChange: this.valorCambio,
+        ref: "CajaTexto"
+      }),
       React.createElement("div", { className: "viñeta" })
     );
   }
@@ -293,8 +361,13 @@ $(function () {
 	appmvc = {
 		Forms: {},
 		Menu: {},
-		MenuForms: {}
+		MenuForms: {},
+		Url: {}
 	};
+
+	var url_local = 'http://localhost:8000/';
+
+	appmvc.Url.API_REST = url_local;
 
 	appmvc.Menu.PROVEEDORES = 'Proveedores';
 	appmvc.Menu.CLIENTES = 'Clientes';
@@ -315,6 +388,7 @@ var BotonMenu = require('../js/botonMenu.jsx');
 var CajaDeBusqueda = require('../js/cajaDeBusqueda.jsx');
 var ListaResultados = require('../js/resultadosLista.jsx');
 var RutasApiRest = require('../js/modelos/rutaApiRest');
+var ReactDOM = require('react-dom');
 
 module.exports = React.createClass({
   displayName: 'exports',
@@ -358,14 +432,23 @@ module.exports = React.createClass({
       this.rutaBusqueda.buscarClientesPorValor(valor_buscado);
     }
   },
+  onClaveSeleccionada: function (pk) {
+    this.props.onClaveSeleccionada(pk);
+    this.setState({ listado: [] });
+  },
+  onBlurCajaDeBusqueda: function () {
+    var forma = ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+    //forma.style.display='none';
+  },
   render: function () {
     var indicativo = this.props.formActivo.trim() + "...";
     var cajaBusqueda = this.props.formActivo.trim() !== "" ? React.createElement(CajaDeBusqueda, {
       textoIndicativo: indicativo,
-      onValorBuscado: this.manejadorValorBuscado
+      onValorBuscado: this.manejadorValorBuscado,
+      onBlur: this.onBlurCajaDeBusqueda
     }) : '';
 
-    var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { resultados: this.state.listado }) : [];
+    var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { ref: 'ListaResultadosBusqueda', resultados: this.state.listado, onClaveSeleccionada: this.onClaveSeleccionada }) : [];
 
     return React.createElement(
       'div',
@@ -383,7 +466,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../js/botonMenu.jsx":2,"../js/cajaDeBusqueda.jsx":3,"../js/modelos/rutaApiRest":10,"../js/resultadosLista.jsx":14,"react":176}],9:[function(require,module,exports){
+},{"../js/botonMenu.jsx":2,"../js/cajaDeBusqueda.jsx":3,"../js/modelos/rutaApiRest":10,"../js/resultadosLista.jsx":14,"react":176,"react-dom":20}],9:[function(require,module,exports){
 var React = require('react');
 var BotonMenu = require('../js/botonMenu.jsx');
 
@@ -415,22 +498,30 @@ module.exports = React.createClass({
 var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
-   buscarProveedores: function () {
-      this.ruta = 'http://localhost:8000/proveedores/';
-   },
-   buscarProveedorPorValor: function (valor_buscar) {
-      this.ruta = 'http://localhost:8000/proveedores/buscar/' + valor_buscar + '';
-   },
-   buscarClientes: function () {
-      this.ruta = 'http://localhost:8000/clientes/';
-   },
-   buscarClientesPorValor: function (valor_buscar) {
-      this.ruta = 'http://localhost:8000/clientes/buscar/' + valor_buscar + '';
-   },
 
-   url: function () {
-      return this.ruta;
-   }
+  buscarProveedores: function () {
+    this.ruta = 'proveedores/';
+  },
+  buscarProveedorPorPk: function (pk) {
+    this.ruta = 'proveedores/' + pk;
+  },
+  buscarProveedorPorValor: function (valor_buscar) {
+    this.ruta = 'proveedores/buscar/' + valor_buscar + '';
+  },
+  buscarClientes: function () {
+    this.ruta = 'clientes/';
+  },
+  buscarClientesPorValor: function (valor_buscar) {
+    this.ruta = 'clientes/buscar/' + valor_buscar + '';
+  },
+
+  url: function () {
+    if (this.ruta.toLowerCase().indexOf("http:") === -1) {
+      this.ruta = appmvc.Url.API_REST + this.ruta;
+      console.log(this.ruta);
+    }
+    return this.ruta;
+  }
 
 });
 
@@ -471,9 +562,18 @@ var Paises = paises.map(function (tupla) {
 module.exports = React.createClass({
 	displayName: 'exports',
 
-
+	componentWillReceiveProps: function (nuevas_props) {
+		this.setState({ nombre: nuevas_props.datos.nombre });
+	},
+	getInitialState: function () {
+		return {
+			nombre: this.props.datos.nombre
+		};
+	},
+	manejadorTextoTecleado: function (texto_tecleado) {
+		this.setState({ nombre: texto_tecleado });
+	},
 	render: function () {
-
 		return React.createElement(
 			'article',
 			{ className: 'bloque' },
@@ -492,7 +592,7 @@ module.exports = React.createClass({
 						'ul',
 						{ className: 'ul_bloque' },
 						React.createElement(CajaDeTexto, { titulo: "Id", textoIndicativo: "Id" }),
-						React.createElement(CajaDeTexto, { titulo: "Nombre", textoIndicativo: "Nombre" }),
+						React.createElement(CajaDeTexto, { titulo: "Nombre", textoIndicativo: "Nombre", valor: this.state.nombre, onChange: this.manejadorTextoTecleado }),
 						React.createElement(CajaDeTexto, { titulo: "Calle", textoIndicativo: "Calle" }),
 						React.createElement(CajaDeTexto, { titulo: "Número", textoIndicativo: "Número" }),
 						React.createElement(CajaDeTexto, { titulo: "Código Postal", identificador: 'codigo_postal', textoIndicativo: "Código Postal" }),
@@ -524,14 +624,16 @@ var React = require('react');
 module.exports = React.createClass({
 	displayName: "exports",
 
-
+	onClick: function () {
+		this.props.onClaveSeleccionada(this.props.resultado.id);
+	},
 	render: function () {
 		return React.createElement(
 			"div",
 			{ className: "resultado", key: this.props.resultado.id },
 			React.createElement(
 				"span",
-				{ className: "dsc_resultado" },
+				{ className: "dsc_resultado", onClick: this.onClick },
 				"[",
 				this.props.resultado.codigo,
 				"] ",
@@ -548,11 +650,14 @@ var Filas = require('../js/resultadoIndividual.jsx');
 module.exports = React.createClass({
 	displayName: 'exports',
 
+	onClaveSeleccionada: function (pk) {
+		this.props.onClaveSeleccionada(pk);
+	},
 	render: function () {
-
+		var self = this;
 		var filas = [];
 		this.props.resultados.forEach(function (resultado) {
-			filas.push(React.createElement(Filas, { resultado: resultado }));
+			filas.push(React.createElement(Filas, { resultado: resultado, onClaveSeleccionada: self.onClaveSeleccionada }));
 		});
 
 		var divStyle = filas.length > 0 ? { display: 'block' } : { display: 'none' };

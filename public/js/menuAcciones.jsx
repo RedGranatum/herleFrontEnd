@@ -3,6 +3,7 @@ var BotonMenu       =require('../js/botonMenu.jsx');
 var CajaDeBusqueda  =require('../js/cajaDeBusqueda.jsx');
 var ListaResultados =require('../js/resultadosLista.jsx');
 var RutasApiRest   = require('../js/modelos/rutaApiRest');
+var ReactDOM      = require('react-dom');
 
 module.exports = React.createClass({
 	 getInitialState: function(){
@@ -45,16 +46,25 @@ module.exports = React.createClass({
   				 this.rutaBusqueda.buscarClientesPorValor(valor_buscado);
   			}
   		},
+  		onClaveSeleccionada: function(pk){
+  			this.props.onClaveSeleccionada(pk);
+  			this.setState({listado: []});
+  		},
+  		onBlurCajaDeBusqueda: function(){
+  			var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+  			//forma.style.display='none';
+  		},
 		render: function () {
 			var indicativo = this.props.formActivo.trim() + "..."
  		    var cajaBusqueda = this.props.formActivo.trim()!=="" ? 
  		    		<CajaDeBusqueda 
  		    			textoIndicativo ={indicativo}
  		    			onValorBuscado  = {this.manejadorValorBuscado}
+ 		    			onBlur  = {this.onBlurCajaDeBusqueda}
  		    			/> 
  		    		: '';
 
- 		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados	resultados={this.state.listado} />:[];
+ 		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados ref="ListaResultadosBusqueda"	resultados={this.state.listado} onClaveSeleccionada={this.onClaveSeleccionada}/>:[];
 
 		return (
 	<div className="caja_acciones">
