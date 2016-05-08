@@ -15,7 +15,7 @@ module.exports = React.createClass({
 	 	 	formMostrar:"",
 	 	 	datosProveedor: {nombre: "Juan"},
 	 	 	datosCliente : {nombre: "Andres"},
-	 	 	actualizarForm: false,
+            actualizarForm: false,
 	 		};
 	 	},
 		componentWillMount:function(){
@@ -57,25 +57,24 @@ module.exports = React.createClass({
 
 
                this.mostrarForm();
+               this.CalalogoPaises = []
 		},
 		componentDidMount: function(){
 				console.log("Estoy montandome en el proyecto");
 		},
 		mostrarMenu:function(nomform){
-			//  this.setState({actualizarForm: false});
-              this.setState({
+	        this.setState({actualizarForm:false});
+	        this.setState({
               	formMostrar:nomform
              });
+
           },
          llenarDatosProveedor: function(pk){
          	var self = this;
-         	self.setState({actualizarForm: true});
          	 this.rutaBusqueda.buscarProveedorPorPk(pk);
 	  			   this.rutaBusqueda.fetch({
 				         success: function(data){
-				            //  self.setState({datosProveedor:{nombre:"Ana"}});
 				              self.setState({datosProveedor: data.toJSON()[0] });
-				             // console.log(data.toJSON()[0])
 		                },
 	    	         	 error: function(model,response, options) {
 							 self.setState({datosProveedor:{nombre:"Anita"}});
@@ -84,6 +83,21 @@ module.exports = React.createClass({
 	        	        }
 	        	    });
          },
+          buscarPaises: function(formulario,valor_buscado){
+          var self=  this;
+
+            this.rutaBusqueda.buscarDetallesPorNumCatalalogo("1")
+            this.rutaBusqueda.fetch({
+               success: function(data){
+                        console.log("Datos encontrados ", data);
+                        self.CalalogoPaises =  data.toJSON();
+                  },
+                 error: function(model,response, options) {
+		                   self.CalalogoPaises = [];
+                          console.log(response.responseText);
+                  }
+              });
+      },
 
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
@@ -106,42 +120,25 @@ module.exports = React.createClass({
 			    }
 		},
 		crearFormulario: function(menu,componente){
-
 			if (this.state.formMostrar===menu)
 			{
-			   if(this.state.actualizarForm || appmvc.MenuForms[menu] === undefined ||  appmvc.MenuForms[menu] === null){
+			   if(this.state.actualizarForm ===true || appmvc.MenuForms[menu] === undefined ||  appmvc.MenuForms[menu] === null){
 	           	    appmvc.MenuForms[menu] = componente;
                }
            }
  		},
  		onClaveSeleccionada: function(pk){
  	
- 			//this.setState({actualizarForm:true});
+ 			this.setState({actualizarForm:true});
  			console.log("cambiando datos del proveedor");
  			this.llenarDatosProveedor(pk)
  		},
 
 		 render: function () {
-		 // 	if (this.state.formMostrar===appmvc.Menu.PROVEEDORES)
-			// {
-			//    if(this.state.actualizarForm || appmvc.MenuForms[appmvc.Menu.PROVEEDORES] === undefined ||  appmvc.MenuForms[appmvc.Menu.PROVEEDORES] === null){
-			//    	 console.log("me rendesriso");
-			   	    appmvc.MenuForms[appmvc.Menu.PROVEEDORES] = <Proveedores ref={appmvc.Menu.PROVEEDORES} datos={this.state.datosProveedor}/>;
-   //             }
-   //         }
-           
-   //         if (this.state.formMostrar===appmvc.Menu.CLIENTES)
-			// {
-			//    if(this.state.actualizarForm || appmvc.MenuForms[appmvc.Menu.CLIENTES] === undefined ||  appmvc.MenuForms[appmvc.Menu.CLIENTES] === null){
-			   	    appmvc.MenuForms[appmvc.Menu.CLIENTES] = <Clientes ref={appmvc.Menu.CLIENTES}/>;
-           //     }
-           // }
+            if(this.CalalogoPaises.length===0){this.buscarPaises();}
 
-			//this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES} datos={this.state.datosProveedor}/>);
-			//this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}/>)
-
-
-			
+			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES} paises={this.CalalogoPaises} datos={this.state.datosProveedor}/>);
+			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}/>)			
 
 		return (
 

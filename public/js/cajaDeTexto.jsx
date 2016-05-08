@@ -3,7 +3,7 @@ var React=require('react');
 module.exports = React.createClass({
 		valorCambio: function(){
       this.props.onChange(
-            this.refs.CajaTexto.value
+           this.refs.CajaTexto.value
         );
     },
 		render: function () {

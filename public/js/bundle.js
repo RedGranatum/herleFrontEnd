@@ -9,154 +9,155 @@ var Page = require("page");
 var RutasApiRest = require('../js/modelos/rutaApiRest');
 
 module.exports = React.createClass({
-	displayName: 'exports',
+  displayName: 'exports',
 
-	getInitialState: function () {
-		return {
-			formMostrar: "",
-			datosProveedor: { nombre: "Juan" },
-			datosCliente: { nombre: "Andres" },
-			actualizarForm: false
-		};
-	},
-	componentWillMount: function () {
-		//Para que self sea this dentro de las funciones de Page
-		var self = this;
-		this.rutaBusqueda = new RutasApiRest();
+  getInitialState: function () {
+    return {
+      formMostrar: "",
+      datosProveedor: { nombre: "Juan" },
+      datosCliente: { nombre: "Andres" },
+      actualizarForm: false
+    };
+  },
+  componentWillMount: function () {
+    //Para que self sea this dentro de las funciones de Page
+    var self = this;
+    this.rutaBusqueda = new RutasApiRest();
 
-		//Rutas del navegador
-		Page('/', function () {
-			self.mostrarMenu('');
+    //Rutas del navegador
+    Page('/', function () {
+      self.mostrarMenu('');
 
-			console.log("Estas en el indice");
-		});
+      console.log("Estas en el indice");
+    });
 
-		Page('/proveedores', function () {
-			self.mostrarMenu(appmvc.Menu.PROVEEDORES);
-			console.log("Estas en el menu de proveedores");
-		});
+    Page('/proveedores', function () {
+      self.mostrarMenu(appmvc.Menu.PROVEEDORES);
+      console.log("Estas en el menu de proveedores");
+    });
 
-		Page('/proveedores/:pk', function (ctx) {
-			console.log("Buscas un proveedor por la pk :" + ctx.params.pk || "no encontrado");
-		});
+    Page('/proveedores/:pk', function (ctx) {
+      console.log("Buscas un proveedor por la pk :" + ctx.params.pk || "no encontrado");
+    });
 
-		Page('/clientes', function () {
-			self.mostrarMenu(appmvc.Menu.CLIENTES);
-			console.log("menu de clientes");
-		});
-		Page('*', function () {
-			console.log("no conosco la ruta");
-			Page.redirect('/');
-			self.mostrarMenu('');
-		});
+    Page('/clientes', function () {
+      self.mostrarMenu(appmvc.Menu.CLIENTES);
+      console.log("menu de clientes");
+    });
+    Page('*', function () {
+      console.log("no conosco la ruta");
+      Page.redirect('/');
+      self.mostrarMenu('');
+    });
 
-		Page({ hashbang: true });
+    Page({ hashbang: true });
 
-		Page();
+    Page();
 
-		this.mostrarForm();
-	},
-	componentDidMount: function () {
-		console.log("Estoy montandome en el proyecto");
-	},
-	mostrarMenu: function (nomform) {
-		//  this.setState({actualizarForm: false});
-		this.setState({
-			formMostrar: nomform
-		});
-	},
-	llenarDatosProveedor: function (pk) {
-		var self = this;
-		self.setState({ actualizarForm: true });
-		this.rutaBusqueda.buscarProveedorPorPk(pk);
-		this.rutaBusqueda.fetch({
-			success: function (data) {
-				//  self.setState({datosProveedor:{nombre:"Ana"}});
-				self.setState({ datosProveedor: data.toJSON()[0] });
-				// console.log(data.toJSON()[0])
-			},
-			error: function (model, response, options) {
-				self.setState({ datosProveedor: { nombre: "Anita" } });
-				self.setState({ datosProveedor: [] });
-				console.log(response.responseText);
-			}
-		});
-	},
+    this.mostrarForm();
+    this.CalalogoPaises = [];
+  },
+  componentDidMount: function () {
+    console.log("Estoy montandome en el proyecto");
+  },
+  mostrarMenu: function (nomform) {
+    this.setState({ actualizarForm: false });
+    this.setState({
+      formMostrar: nomform
+    });
+  },
+  llenarDatosProveedor: function (pk) {
+    var self = this;
+    this.rutaBusqueda.buscarProveedorPorPk(pk);
+    this.rutaBusqueda.fetch({
+      success: function (data) {
+        self.setState({ datosProveedor: data.toJSON()[0] });
+      },
+      error: function (model, response, options) {
+        self.setState({ datosProveedor: { nombre: "Anita" } });
+        self.setState({ datosProveedor: [] });
+        console.log(response.responseText);
+      }
+    });
+  },
+  buscarPaises: function (formulario, valor_buscado) {
+    var self = this;
 
-	componentDidUpdate: function (prev_props, prev_state) {
-		this.mostrarForm();
-	},
+    this.rutaBusqueda.buscarDetallesPorNumCatalalogo("1");
+    this.rutaBusqueda.fetch({
+      success: function (data) {
+        console.log("Datos encontrados ", data);
+        self.CalalogoPaises = data.toJSON();
+      },
+      error: function (model, response, options) {
+        self.CalalogoPaises = [];
+        console.log(response.responseText);
+      }
+    });
+  },
 
-	mostrarForm: function () {
-		for (var menu in appmvc.MenuForms) {
-			estilo = this.mostrar_ocultar_Formulario(menu);
-			this.aplicar_estilo_Formulario(menu, estilo);
-		}
-	},
-	mostrar_ocultar_Formulario: function (menu) {
-		return menu === this.state.formMostrar ? 'inline-block' : 'none';
-	},
-	aplicar_estilo_Formulario: function (menu, estilo) {
-		var forma = ReactDOM.findDOMNode(this.refs[menu]);
-		if (forma !== null) {
-			forma.style.display = estilo;
-		}
-	},
-	crearFormulario: function (menu, componente) {
+  componentDidUpdate: function (prev_props, prev_state) {
+    this.mostrarForm();
+  },
 
-		if (this.state.formMostrar === menu) {
-			if (this.state.actualizarForm || appmvc.MenuForms[menu] === undefined || appmvc.MenuForms[menu] === null) {
-				appmvc.MenuForms[menu] = componente;
-			}
-		}
-	},
-	onClaveSeleccionada: function (pk) {
+  mostrarForm: function () {
+    for (var menu in appmvc.MenuForms) {
+      estilo = this.mostrar_ocultar_Formulario(menu);
+      this.aplicar_estilo_Formulario(menu, estilo);
+    }
+  },
+  mostrar_ocultar_Formulario: function (menu) {
+    return menu === this.state.formMostrar ? 'inline-block' : 'none';
+  },
+  aplicar_estilo_Formulario: function (menu, estilo) {
+    var forma = ReactDOM.findDOMNode(this.refs[menu]);
+    if (forma !== null) {
+      forma.style.display = estilo;
+    }
+  },
+  crearFormulario: function (menu, componente) {
+    if (this.state.formMostrar === menu) {
+      if (this.state.actualizarForm === true || appmvc.MenuForms[menu] === undefined || appmvc.MenuForms[menu] === null) {
+        appmvc.MenuForms[menu] = componente;
+      }
+    }
+  },
+  onClaveSeleccionada: function (pk) {
 
-		//this.setState({actualizarForm:true});
-		console.log("cambiando datos del proveedor");
-		this.llenarDatosProveedor(pk);
-	},
+    this.setState({ actualizarForm: true });
+    console.log("cambiando datos del proveedor");
+    this.llenarDatosProveedor(pk);
+  },
 
-	render: function () {
-		// 	if (this.state.formMostrar===appmvc.Menu.PROVEEDORES)
-		// {
-		//    if(this.state.actualizarForm || appmvc.MenuForms[appmvc.Menu.PROVEEDORES] === undefined ||  appmvc.MenuForms[appmvc.Menu.PROVEEDORES] === null){
-		//    	 console.log("me rendesriso");
-		appmvc.MenuForms[appmvc.Menu.PROVEEDORES] = React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor });
-		//             }
-		//         }
+  render: function () {
+    if (this.CalalogoPaises.length === 0) {
+      this.buscarPaises();
+    }
 
-		//         if (this.state.formMostrar===appmvc.Menu.CLIENTES)
-		// {
-		//    if(this.state.actualizarForm || appmvc.MenuForms[appmvc.Menu.CLIENTES] === undefined ||  appmvc.MenuForms[appmvc.Menu.CLIENTES] === null){
-		appmvc.MenuForms[appmvc.Menu.CLIENTES] = React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES });
-		//     }
-		// }
+    this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, paises: this.CalalogoPaises, datos: this.state.datosProveedor }));
+    this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES }));
 
-		//this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES} datos={this.state.datosProveedor}/>);
-		//this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}/>)
-
-		return React.createElement(
-			'div',
-			null,
-			React.createElement('header', null),
-			React.createElement(MenuPrincipal, null),
-			React.createElement(MenuAcciones, { formActivo: this.state.formMostrar, onClaveSeleccionada: this.onClaveSeleccionada }),
-			React.createElement(
-				'section',
-				{ className: 'contenido' },
-				appmvc.MenuForms[appmvc.Menu.PROVEEDORES],
-				appmvc.MenuForms[appmvc.Menu.CLIENTES]
-			)
-		);
-	}
+    return React.createElement(
+      'div',
+      null,
+      React.createElement('header', null),
+      React.createElement(MenuPrincipal, null),
+      React.createElement(MenuAcciones, { formActivo: this.state.formMostrar, onClaveSeleccionada: this.onClaveSeleccionada }),
+      React.createElement(
+        'section',
+        { className: 'contenido' },
+        appmvc.MenuForms[appmvc.Menu.PROVEEDORES],
+        appmvc.MenuForms[appmvc.Menu.CLIENTES]
+      )
+    );
+  }
 
 });
 
 function mostrar(estado, reff) {
-	var estilo = estado === "formProveedores" ? 'inline-block' : 'none';
-	var forma = ReactDOM.findDOMNode(reff);
-	forma.style.display = estilo;
+  var estilo = estado === "formProveedores" ? 'inline-block' : 'none';
+  var forma = ReactDOM.findDOMNode(reff);
+  forma.style.display = estilo;
 }
 
 },{"../js/clientes.jsx":5,"../js/menuAcciones.jsx":8,"../js/menuPrincipal.jsx":9,"../js/modelos/rutaApiRest":10,"../js/proveedores.jsx":12,"page":17,"react":176,"react-dom":20}],2:[function(require,module,exports){
@@ -326,26 +327,32 @@ module.exports = React.createClass({
 var React = require('react');
 
 module.exports = React.createClass({
-  displayName: "exports",
+     displayName: "exports",
 
+     componentWillUodate: function (nuevas_props, nuevo_Stados) {
+          console.log("El comobo hijo " + nuevas_props.seleccionado);
+     },
+     onChange: function (valor) {
+          this.props.onChange(this.props.nomCombo, valor.target.value);
+     },
+     render: function () {
 
-  render: function () {
-    return React.createElement(
-      "li",
-      { className: "li_bloque" },
-      React.createElement(
-        "label",
-        { className: "etiquetas_bloque" },
-        this.props.titulo
-      ),
-      React.createElement(
-        "select",
-        { name: this.props.nomCombo, className: "select_bloque" },
-        this.props.children
-      ),
-      React.createElement("div", { className: "viñeta" })
-    );
-  }
+          return React.createElement(
+               "li",
+               { className: "li_bloque" },
+               React.createElement(
+                    "label",
+                    { className: "etiquetas_bloque" },
+                    this.props.titulo
+               ),
+               React.createElement(
+                    "select",
+                    { name: this.props.nomCombo, className: "select_bloque", value: this.props.seleccionado, onChange: this.onChange },
+                    this.props.children
+               ),
+               React.createElement("div", { className: "viñeta" })
+          );
+     }
 });
 
 },{"react":176}],7:[function(require,module,exports){
@@ -408,6 +415,8 @@ module.exports = React.createClass({
   },
   manejadorValorBuscado: function (valor_buscado) {
     console.log("la caja de busqueda esta buscando el valor: " + valor_buscado + "el formulario activo es: " + this.props.formActivo);
+    var forma = ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+    forma.style.display = 'block';
     this.buscarDatos(this.props.formActivo, valor_buscado);
   },
   buscarDatos: function (formulario, valor_buscado) {
@@ -424,6 +433,7 @@ module.exports = React.createClass({
       }
     });
   },
+
   seleccionarRuta: function (formulario, valor_buscado) {
     if (formulario === appmvc.Menu.PROVEEDORES) {
       this.rutaBusqueda.buscarProveedorPorValor(valor_buscado);
@@ -433,8 +443,10 @@ module.exports = React.createClass({
     }
   },
   onClaveSeleccionada: function (pk) {
+    //this.setState({listado: []});
     this.props.onClaveSeleccionada(pk);
-    this.setState({ listado: [] });
+    var forma = ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+    forma.style.display = 'none';
   },
   onBlurCajaDeBusqueda: function () {
     var forma = ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
@@ -499,6 +511,13 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
 
+  buscarDetallesPorNumCatalalogo: function (num_catalogo) {
+    this.ruta = 'catalogos/' + num_catalogo + '/catalogo_detalles/';
+  },
+  buscarDetallesPorCduDefault: function (cdu_default) {
+    this.ruta = 'catalogo_detalles/' + cdu_default + '/catalogo_detalles/';
+  },
+
   buscarProveedores: function () {
     this.ruta = 'proveedores/';
   },
@@ -546,34 +565,115 @@ var React = require('react');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var OpcionCombo = require('../js/opcionCombo.jsx');
 var Combo = require('../js/combo.jsx');
-
-var estados = [{ valor: "estado_de_mexico", titulo: "Estado de México" }, { valor: "distrito_federal", titulo: "Distrito Federal" }];
-
-var paises = [{ valor: "mexico", titulo: "México" }, { valor: "eeuu", titulo: "EEUU" }, { valor: "china", titulo: "China" }];
-
-var Estados = estados.map(function (tupla) {
-	return React.createElement(OpcionCombo, { valorOpcion: tupla.valor, tituloOpcion: tupla.titulo });
-});
-
-var Paises = paises.map(function (tupla) {
-	return React.createElement(OpcionCombo, { valorOpcion: tupla.valor, tituloOpcion: tupla.titulo });
-});
+var RutasApiRest = require('../js/modelos/rutaApiRest');
+var ReactDOM = require('react-dom');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
 	componentWillReceiveProps: function (nuevas_props) {
-		this.setState({ nombre: nuevas_props.datos.nombre });
+		console.log(nuevas_props);
+		this.onNombreChange(nuevas_props.datos.nombre);
+		this.onCalleChange(nuevas_props.datos.calle);
+		this.onNumeroChange(nuevas_props.datos.numero);
+		this.onCpChange(nuevas_props.datos.cp);
+		this.onRfcChange(nuevas_props.datos.rfc);
+		this.onTelefonoChange(nuevas_props.datos.telefono);
+		this.onEmailChange(nuevas_props.datos.email);
+		this.onCodigoChange(nuevas_props.datos.codigo);
+		this.onComentariosChange(nuevas_props.datos.comentarios);
+		this.onComboChange("pais", nuevas_props.datos.pais);
+		this.onComboEstado(nuevas_props.datos.estado);
+	},
+	componentWillMount: function () {
+		this.Paises = this.props.paises.map(function (tupla) {
+			return React.createElement(OpcionCombo, { key: tupla.cdu_catalogo, valorOpcion: tupla.cdu_catalogo, tituloOpcion: tupla.descripcion1 });
+		});
+		this.Estados = [];
+		this.buscarEstados(this.state.pais);
 	},
 	getInitialState: function () {
 		return {
-			nombre: this.props.datos.nombre
+			nombre: '',
+			calle: '',
+			pais: '0010003',
+			llenarEstados: []
 		};
 	},
-	manejadorTextoTecleado: function (texto_tecleado) {
-		this.setState({ nombre: texto_tecleado });
+	onCodigoChange: function (valor) {
+		this.setState({ codigo: valor });
+	},
+	onNombreChange: function (valor) {
+		this.setState({ nombre: valor });
+	},
+	onCalleChange: function (valor) {
+		this.setState({ calle: valor });
+	},
+	onNumeroChange: function (valor) {
+		this.setState({ numero: valor });
+	},
+	onCpChange: function (valor) {
+		this.setState({ cp: valor });
+	},
+	onRfcChange: function (valor) {
+		this.setState({ rfc: valor });
+	},
+	onTelefonoChange: function (valor) {
+		this.setState({ telefono: valor });
+	},
+	onEmailChange: function (valor) {
+		this.setState({ email: valor });
+	},
+	onComentariosChange: function (valor) {
+		this.setState({ comentarios: valor });
+	},
+	onComboChange: function (combo, valor) {
+		console.log("cambio " + combo + " a " + valor);
+		if (combo === "pais") {
+			this.setState({ pais: valor });
+			this.buscarEstados(valor);
+		}
+	},
+	onComboEstado: function (combo, valor) {
+		this.setState({ estado: valor });
+		console.log("cambio el estado " + valor);
+	},
+	buscarEstados: function (pais) {
+		var self = this;
+		this.rutaBusqueda = new RutasApiRest(pais);
+		console.log("ESTA BUSCANDO ..." + pais);
+
+		//       var combo = document.getElementById("comboEstadosProveedores")
+		//       if(combo !==null){
+		// ReactDOM.unmountComponentAtNode(combo);
+		//       }
+
+		this.rutaBusqueda.buscarDetallesPorCduDefault(pais);
+		this.rutaBusqueda.fetch({
+			success: function (data) {
+				//self.state.llenarEstados =  data.toJSON();
+
+				var Estados = data.toJSON().map(function (tupla) {
+					return React.createElement(OpcionCombo, { key: tupla.cdu_catalogo, valorOpcion: tupla.cdu_catalogo, tituloOpcion: tupla.descripcion1 });
+				});
+
+				self.setState({ llenarEstados: Estados });
+				self.setState({ estado: self.props.datos.estado });
+				//   ReactDOM.render( <Combo titulo={"Estado"} nomCombo={"estado"} seleccionado={self.state.estado} children={this.Estados} onChange={self.onComboEstado}/>,document.getElementById("comboEstadosProveedores"));
+
+				//	   ReactDOM.render( <Combo key="estado" titulo={"Estado"} nomCombo={"estado"} seleccionado={self.state.estado} children={this.Estados} onChange={self.onComboEstado}/>,document.getElementById("comboEstadosProveedores"));
+
+				console.log(data.length);
+			},
+			error: function (model, response, options) {
+				//self.state.llenarEstados = [];
+				console.log(response.responseText);
+				//                          	<div id="comboEstadosProveedores">	</div>
+			}
+		});
 	},
 	render: function () {
+
 		return React.createElement(
 			'article',
 			{ className: 'bloque' },
@@ -591,16 +691,16 @@ module.exports = React.createClass({
 					React.createElement(
 						'ul',
 						{ className: 'ul_bloque' },
-						React.createElement(CajaDeTexto, { titulo: "Id", textoIndicativo: "Id" }),
-						React.createElement(CajaDeTexto, { titulo: "Nombre", textoIndicativo: "Nombre", valor: this.state.nombre, onChange: this.manejadorTextoTecleado }),
-						React.createElement(CajaDeTexto, { titulo: "Calle", textoIndicativo: "Calle" }),
-						React.createElement(CajaDeTexto, { titulo: "Número", textoIndicativo: "Número" }),
-						React.createElement(CajaDeTexto, { titulo: "Código Postal", identificador: 'codigo_postal', textoIndicativo: "Código Postal" }),
-						React.createElement(Combo, { titulo: "Estado", nomCombo: "estado", children: Estados }),
-						React.createElement(Combo, { titulo: "País", nomCombo: "pais", children: Paises }),
-						React.createElement(CajaDeTexto, { titulo: "RFC", textoIndicativo: "RFC" }),
-						React.createElement(CajaDeTexto, { titulo: "Teléfono", textoIndicativo: "Teléfono" }),
-						React.createElement(CajaDeTexto, { titulo: "e-mail", textoIndicativo: "e-mail", caracteresEsp: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" }),
+						React.createElement(CajaDeTexto, { titulo: "Codigo", textoIndicativo: "Codigo", valor: this.state.codigo, onChange: this.onCodigoChange }),
+						React.createElement(CajaDeTexto, { titulo: "Nombre", textoIndicativo: "Nombre", ref: 'cajaNombre', valor: this.state.nombre, onChange: this.onNombreChange }),
+						React.createElement(CajaDeTexto, { titulo: "Calle", textoIndicativo: "Calle", ref: 'cajaCalle', valor: this.state.calle, onChange: this.onCalleChange }),
+						React.createElement(CajaDeTexto, { titulo: "Número", textoIndicativo: "Número", valor: this.state.numero, onChange: this.onNumeroChange }),
+						React.createElement(CajaDeTexto, { titulo: "Código Postal", identificador: 'codigo_postal', textoIndicativo: "Código Postal", valor: this.state.cp, onChange: this.onCpChange }),
+						React.createElement(Combo, { key: 'Pais', titulo: "País", nomCombo: "pais", children: this.Paises, seleccionado: this.state.pais, onChange: this.onComboChange }),
+						React.createElement(Combo, { titulo: "Estado", nomCombo: "estado", seleccionado: this.state.estado, children: this.state.llenarEstados, onChange: this.onComboEstado }),
+						React.createElement(CajaDeTexto, { titulo: "RFC", textoIndicativo: "RFC", valor: this.state.rfc, onChange: this.onRfcChange }),
+						React.createElement(CajaDeTexto, { titulo: "Teléfono", textoIndicativo: "Teléfono", valor: this.state.telefono, onChange: this.onTelefonoChange }),
+						React.createElement(CajaDeTexto, { titulo: "e-mail", textoIndicativo: "e-mail", valor: this.state.email, onChange: this.onEmailChange, caracteresEsp: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" }),
 						React.createElement(
 							'li',
 							{ className: 'li_bloque' },
@@ -609,7 +709,7 @@ module.exports = React.createClass({
 								{ className: 'etiquetas_bloque', htmlFor: 'comentarios' },
 								'Comentarios'
 							),
-							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios' })
+							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onComentariosChange })
 						)
 					)
 				)
@@ -618,7 +718,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":4,"../js/combo.jsx":6,"../js/opcionCombo.jsx":11,"react":176}],13:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":4,"../js/combo.jsx":6,"../js/modelos/rutaApiRest":10,"../js/opcionCombo.jsx":11,"react":176,"react-dom":20}],13:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({

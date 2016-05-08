@@ -8,7 +8,7 @@ var ReactDOM      = require('react-dom');
 module.exports = React.createClass({
 	 getInitialState: function(){
  	 	return{
- 	 		listado:[],		
+ 	 		listado:[]
  			};
  		},
  		componentDidMount:function(){
@@ -22,6 +22,8 @@ module.exports = React.createClass({
  		},
  		manejadorValorBuscado: function(valor_buscado) {
  				console.log("la caja de busqueda esta buscando el valor: " + valor_buscado + "el formulario activo es: " + this.props.formActivo);
+  		 	    var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+    			forma.style.display='block';
   			    this.buscarDatos(this.props.formActivo,valor_buscado);
   		},
   		buscarDatos: function(formulario,valor_buscado){
@@ -38,6 +40,7 @@ module.exports = React.createClass({
         	        }
         	    });
   		},
+      
   		seleccionarRuta: function(formulario,valor_buscado){
   			if(formulario === appmvc.Menu.PROVEEDORES){
   				 this.rutaBusqueda.buscarProveedorPorValor(valor_buscado);
@@ -47,8 +50,10 @@ module.exports = React.createClass({
   			}
   		},
   		onClaveSeleccionada: function(pk){
+  			//this.setState({listado: []});
   			this.props.onClaveSeleccionada(pk);
-  			this.setState({listado: []});
+  			var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+  			forma.style.display='none';
   		},
   		onBlurCajaDeBusqueda: function(){
   			var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);

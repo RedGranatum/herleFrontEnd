@@ -2,6 +2,13 @@ var Backbone        = require('backbone');
 
 module.exports = Backbone.Collection.extend({
 
+  buscarDetallesPorNumCatalalogo: function(num_catalogo){
+    this.ruta = 'catalogos/' + num_catalogo + '/catalogo_detalles/';
+  },
+  buscarDetallesPorCduDefault: function(cdu_default){
+    this.ruta = 'catalogo_detalles/'+cdu_default+'/catalogo_detalles/';
+  },
+
   buscarProveedores: function(){
   	this.ruta = 'proveedores/'
   },
