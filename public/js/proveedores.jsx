@@ -2,7 +2,7 @@ var React=require('react');
 var CajaDeTexto=require('../js/cajaDeTexto.jsx');
 var OpcionCombo=require('../js/opcionCombo.jsx');
 var Combo=require('../js/combo.jsx');
-var RutasApiRest   = require('../js/modelos/rutaApiRest');
+var ConsultasApiRest   = require('../js/modelos/consultasApiRest');
 var ReactDOM = require('react-dom') ;
 
 
@@ -45,39 +45,24 @@ module.exports = React.createClass({
 		  	}
 
 		},
-		  // onComboChange: function(combo,valor){
-		  // 	console.log("cambio " + combo + " a " + valor);
-		  // 	if(combo === "pais"){
-		  // 		this.setState({pais: valor})
-		  // 		this.buscarEstados(valor);
-		  // 	}
-		  // },
-		  // onComboEstado: function(combo,valor){
-		  // 	this.setState({estado: valor});
-		  // 	console.log("cambio el estado "+valor)
-		  // },
-		buscarEstados: function(pais){
-          var self=  this;
-            this.rutaBusqueda  = new RutasApiRest(pais);
-            console.log("ESTA BUSCANDO ..." + pais)
-            
-   
-            this.rutaBusqueda.buscarDetallesPorCduDefault(pais);
-            this.rutaBusqueda.fetch({
-               success: function(data){
-                      var Estados = data.toJSON().map(function(tupla) {
-					  return (
-	        				<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
-	      		  			);
-	    				});
+		relacionEstados: function(data)
+		{
+		   var Estados = data.map(function(tupla) {
+				   	        console.log(tupla);
+				   return (
+				   			<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
+		      		  	  );
+		    		 });
 	        		
-	        		  self.setState({llenarEstados: Estados});
-	        		  self.setState({estado: self.props.datos.estado});
-                  },
-                 error: function(model,response, options) {
-	        		  self.setState({llenarEstados: []});					
-                  }
-              });
+	        this.setState({llenarEstados: Estados});
+	        this.setState({estado: this.props.datos.estado});
+		},
+		buscarEstados: function(pais){
+			cons = new ConsultasApiRest();
+			cons.buscarCatalogoDetallesPorCduDefault(pais,this.relacionEstados,
+						function(){
+							console.log("hay errores " + response.statusText)
+						});
       },
       zipCol: function(columnas,valores){
       		diccionario = {};

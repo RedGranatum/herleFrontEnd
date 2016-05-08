@@ -44,6 +44,7 @@ var bancos=[
 module.exports = React.createClass({
 		
 		render: function () {
+			var PROPIEDADES ={};
 			return (
 <article className="bloque">
 			<div className="titulo_bloque">
@@ -52,22 +53,22 @@ module.exports = React.createClass({
 			<div className="caja_bloque">
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
-					    <CajaDeTexto textoIndicativo={"Id"} titulo={"Id"} />
-						<CajaDeTexto textoIndicativo={"RFC"} titulo={"RFC"} />
-						<CajaDeTexto textoIndicativo={"Nombre"} titulo={"Nombre"} />
-						<CajaDeTexto textoIndicativo={"Calle"} titulo={"Calle"} />
-						<CajaDeTexto textoIndicativo={"Número"} titulo={"Número"} />
-                        <CajaDeTexto textoIndicativo={"Colonia"} titulo={"Colonia"} />
-                        <CajaDeTexto textoIndicativo={"Código Postal"} titulo={"Código Postal"} />
-                        <Combo titulo={"País"} nomCombo={"pais_c"} children={Paises} />
-                        <Combo titulo={"Estado"} nomCombo={"estado_c"} children={Estados} />
-                        <CajaDeTexto textoIndicativo={"Teléfono"} titulo={"Teléfono"} />
-                        <CajaDeTexto textoIndicativo={"e-mail"} caracteresEsp={"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"} titulo={"e-mail"} />
-                        <Combo titulo={"Banco"} nomCombo={"banco_c"} children={Bancos} />
+					    <CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Id"} titulo={"Id"} />
+						<CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"RFC"} titulo={"RFC"} />
+						<CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Nombre"} titulo={"Nombre"} />
+						<CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Calle"} titulo={"Calle"} />
+						<CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Número"} titulo={"Número"} />
+                        <CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Colonia"} titulo={"Colonia"} />
+                        <CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Código Postal"} titulo={"Código Postal"} />
+                        <Combo propiedades={PROPIEDADES}  titulo={"País"} nomCombo={"pais_c"} children={Paises} />
+                        <Combo propiedades={PROPIEDADES} titulo={"Estado"} nomCombo={"estado_c"} children={Estados} />
+                        <CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"Teléfono"} titulo={"Teléfono"} />
+                        <CajaDeTexto propiedades={PROPIEDADES} textoIndicativo={"e-mail"} caracteresEsp={"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"} titulo={"e-mail"} />
+                        <Combo  propiedades={PROPIEDADES} titulo={"Banco"} nomCombo={"banco_c"} children={Bancos} />
                         <li className="li_bloque">
 							<label className="etiquetas_bloque" htmlFor="comentarios_c">Comentarios</label>
 							<textarea className="textarea_bloque" name="comentarios_c" placeholder="Comentarios"></textarea>
-						</li>
+						</li>  
 					</ul>
 				</div>
 			</div>

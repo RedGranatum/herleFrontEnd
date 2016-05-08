@@ -6,6 +6,7 @@ var Proveedores   = require('../js/proveedores.jsx');
 var Clientes      = require('../js/clientes.jsx');
 var Page          = require("page");
 var RutasApiRest   = require('../js/modelos/rutaApiRest');
+var ConsultasApiRest   = require('../js/modelos/consultasApiRest');
 
 
 
@@ -13,8 +14,8 @@ module.exports = React.createClass({
 		getInitialState: function(){
 	 	 return {
 	 	 	formMostrar:"",
-	 	 	datosProveedor: {nombre: "Juan"},
-	 	 	datosCliente : {nombre: "Andres"},
+	 	 	datosProveedor: {},
+	 	 	datosCliente : {},
             actualizarForm: false,
 	 		};
 	 	},
@@ -84,19 +85,16 @@ module.exports = React.createClass({
 	        	    });
          },
           buscarPaises: function(formulario,valor_buscado){
-          var self=  this;
-
-            this.rutaBusqueda.buscarDetallesPorNumCatalalogo("1")
-            this.rutaBusqueda.fetch({
-               success: function(data){
-                        console.log("Datos encontrados ", data);
-                        self.CalalogoPaises =  data.toJSON();
-                  },
-                 error: function(model,response, options) {
-		                   self.CalalogoPaises = [];
-                          console.log(response.responseText);
-                  }
-              });
+          	var self = this;
+          	cons = new ConsultasApiRest();
+			cons.buscarCatalogoDetallesPorCatalogo("1",	
+					function(data){
+							self.CalalogoPaises =  data;
+							},
+					function(model,response,options){
+							console.log("hay errores " + response.statusText)
+							}
+				);
       },
 
 		componentDidUpdate:function(prev_props,prev_state){
