@@ -5,8 +5,8 @@ var MenuAcciones  = require('../js/menuAcciones.jsx');
 var Proveedores   = require('../js/proveedores.jsx');
 var Clientes      = require('../js/clientes.jsx');
 var Page          = require("page");
-var RutasApiRest   = require('../js/modelos/rutaApiRest');
-var ConsultasApiRest   = require('../js/modelos/consultasApiRest');
+var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
+var ProveedorApiRest   = require('../js/modelos/proveedoresApiRest');
 
 
 
@@ -22,8 +22,7 @@ module.exports = React.createClass({
 		componentWillMount:function(){
 			 //Para que self sea this dentro de las funciones de Page
 			 var self=this;
-			 this.rutaBusqueda  = new RutasApiRest();
-
+	
 			 //Rutas del navegador
              Page('/',function(){
                    self.mostrarMenu('');
@@ -36,12 +35,6 @@ module.exports = React.createClass({
              	console.log("Estas en el menu de proveedores");
               
             });
-
-             Page('/proveedores/:pk',function(ctx){
-             	console.log("Buscas un proveedor por la pk :" + (ctx.params.pk) || "no encontrado" )
-             	
-            });
-
              Page('/clientes',function(){
              	self.mostrarMenu(appmvc.Menu.CLIENTES);
              	console.log("menu de clientes");                    
@@ -59,9 +52,9 @@ module.exports = React.createClass({
 
                this.mostrarForm();
                this.CalalogoPaises = []
-		},
-		componentDidMount: function(){
-				console.log("Estoy montandome en el proyecto");
+
+               this.CatalogoApiRest = new CatalogoApiRest();
+               this.ProveedorApiRest = new ProveedorApiRest();
 		},
 		mostrarMenu:function(nomform){
 	        this.setState({actualizarForm:false});
@@ -72,22 +65,20 @@ module.exports = React.createClass({
           },
          llenarDatosProveedor: function(pk){
          	var self = this;
-         	 this.rutaBusqueda.buscarProveedorPorPk(pk);
-	  			   this.rutaBusqueda.fetch({
-				         success: function(data){
-				              self.setState({datosProveedor: data.toJSON()[0] });
-		                },
-	    	         	 error: function(model,response, options) {
-							 self.setState({datosProveedor:{nombre:"Anita"}});
-	    	         	 	  self.setState({datosProveedor : [] });
-	                          console.log(response.responseText);
-	        	        }
-	        	    });
+         	this.ProveedorApiRest.ProveedorPorPk(pk,	
+					function(data){
+							self.setState({datosProveedor: data[0] });
+							},
+					function(model,response,options){
+	 					    self.setState({datosProveedor : [] });
+							console.log("hay errores " + response.statusText)
+							}
+				);
          },
           buscarPaises: function(formulario,valor_buscado){
           	var self = this;
-          	cons = new ConsultasApiRest();
-			cons.buscarCatalogoDetallesPorCatalogo("1",	
+          	console.log("Numero de pais" + appmvc.Catalogos.PAISES);
+			this.CatalogoApiRest.DetallesPorCatalogo(appmvc.Catalogos.PAISES,	
 					function(data){
 							self.CalalogoPaises =  data;
 							},
@@ -125,10 +116,8 @@ module.exports = React.createClass({
                }
            }
  		},
- 		onClaveSeleccionada: function(pk){
- 	
+ 		onClaveSeleccionada: function(pk){ 	
  			this.setState({actualizarForm:true});
- 			console.log("cambiando datos del proveedor");
  			this.llenarDatosProveedor(pk)
  		},
 

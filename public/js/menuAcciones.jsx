@@ -13,16 +13,14 @@ module.exports = React.createClass({
  		},
  		componentDidMount:function(){
 		 	this.rutaBusqueda  = new RutasApiRest();
-		 	console.log("estoy iniciando");
- 		},
+		},
  		componentWillReceiveProps: function(next_props){
 
  				this.setState({listado: 
  					(this.props.formActivo !== next_props.formActivo) ? [] : this.state.listado});
  		},
  		manejadorValorBuscado: function(valor_buscado) {
- 				console.log("la caja de busqueda esta buscando el valor: " + valor_buscado + "el formulario activo es: " + this.props.formActivo);
-  		 	    var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+ 			 	    var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
     			forma.style.display='block';
   			    this.buscarDatos(this.props.formActivo,valor_buscado);
   		},
@@ -31,7 +29,6 @@ module.exports = React.createClass({
   			    this.seleccionarRuta(formulario,valor_buscado);
   			    this.rutaBusqueda.fetch({
 			         success: function(data){
-	                      console.log("Datos encontrados ", data);
 	                      selfAcc.setState({	listado: data.toJSON() });
 	                },
     	         	 error: function(model,response, options) {
@@ -50,7 +47,6 @@ module.exports = React.createClass({
   			}
   		},
   		onClaveSeleccionada: function(pk){
-  			//this.setState({listado: []});
   			this.props.onClaveSeleccionada(pk);
   			var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
   			forma.style.display='none';

@@ -1,10 +1,10 @@
 var RutasApiRest   = require('../modelos/rutaApiRest');
 
-var catalogo = [];
-
-var consultasApiRest = function(){
+var catalogoApiRest = function(){
 return {
-    buscarCatalogoDetallesPorCatalogo: function(catalogo,funcion,funcion_error){
+ 
+
+    DetallesPorCatalogo: function(catalogo,funcion,funcion_error){
          this.rutaBusqueda  = new RutasApiRest();
                this.rutaBusqueda.buscarDetallesPorNumCatalalogo(catalogo);
                this.rutaBusqueda.fetch({
@@ -16,7 +16,7 @@ return {
                   },
                 });
     },
-   buscarCatalogoDetallesPorCduDefault: function(cdu_default,funcion,funcion_error){
+   DetallesPorCduDefault: function(cdu_default,funcion,funcion_error){
   			 this.rutaBusqueda  = new RutasApiRest();
                this.rutaBusqueda.buscarDetallesPorCduDefault(cdu_default);
                this.rutaBusqueda.fetch({
@@ -27,7 +27,8 @@ return {
   	        		     funcion_error(model,response,options);				
                   },
                 });
-         }
+    },
+
 };
 }
-module.exports = consultasApiRest;
+module.exports = catalogoApiRest;

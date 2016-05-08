@@ -8,11 +8,13 @@ $(function() {
 	appmvc = {};
 
 	appmvc ={
+		Catalogos : {},
 		Forms :{},
 		Menu: {},
 		MenuForms: {},
 		Url : {}
 	}
+
 
 	var url_local = 'http://localhost:8000/'
 
@@ -29,8 +31,14 @@ $(function() {
 		 'Clientes':  appmvc.Forms.CLIENTES,
 	};
 
+	appmvc.Catalogos.PAISES = 1;
+	appmvc.Catalogos.ESTADOS = 2;
+	appmvc.Catalogos.BANCOS = 3;
+	
 	ReactDOM.render(<App/>,document.getElementById("app"));
 	
-  
+  	
+
+
 });
 

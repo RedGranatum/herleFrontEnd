@@ -2,9 +2,8 @@ var React=require('react');
 var CajaDeTexto=require('../js/cajaDeTexto.jsx');
 var OpcionCombo=require('../js/opcionCombo.jsx');
 var Combo=require('../js/combo.jsx');
-var ConsultasApiRest   = require('../js/modelos/consultasApiRest');
 var ReactDOM = require('react-dom') ;
-
+var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
 module.exports = React.createClass({
 	   componentWillReceiveProps: function(nuevas_props){
@@ -14,8 +13,11 @@ module.exports = React.createClass({
 	   	  }
 	   	  this.setState(campos);
 	   	  this.onValorCambio("pais",nuevas_props.datos.pais)
+	   	 
 	   },
 	   componentWillMount:function(){
+	   	  this.catalogoApiRest = new CatalogoApiRest();
+	   	  
 	   		this.Paises = this.props.paises.map(function(tupla) {
 		  return (
         		<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
@@ -23,6 +25,8 @@ module.exports = React.createClass({
     		});
     		this.Estados = [];
 			this.buscarEstados(this.state.pais);
+            
+           
 	   },
 		getInitialState: function(){
 			return{
@@ -48,7 +52,6 @@ module.exports = React.createClass({
 		relacionEstados: function(data)
 		{
 		   var Estados = data.map(function(tupla) {
-				   	        console.log(tupla);
 				   return (
 				   			<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
 		      		  	  );
@@ -57,10 +60,9 @@ module.exports = React.createClass({
 	        this.setState({llenarEstados: Estados});
 	        this.setState({estado: this.props.datos.estado});
 		},
-		buscarEstados: function(pais){
-			cons = new ConsultasApiRest();
-			cons.buscarCatalogoDetallesPorCduDefault(pais,this.relacionEstados,
-						function(){
+	  buscarEstados: function(pais){
+			this.catalogoApiRest.DetallesPorCduDefault(pais,this.relacionEstados,
+						function(model,response,options){
 							console.log("hay errores " + response.statusText)
 						});
       },

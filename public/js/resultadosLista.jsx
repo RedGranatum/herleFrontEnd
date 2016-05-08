@@ -10,7 +10,7 @@ module.exports = React.createClass({
 			var self =this;
 			var filas = [];
 			this.props.resultados.forEach(function(resultado){
-				filas.push(<Filas resultado={resultado} onClaveSeleccionada={self.onClaveSeleccionada}/>);
+				filas.push(<Filas key={resultado.id}  resultado={resultado} onClaveSeleccionada={self.onClaveSeleccionada}/>);
 			});
 	        
 	        var divStyle = (filas.length >0) ? { display: 'block'} : {display: 'none'} ;
