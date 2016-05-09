@@ -55,6 +55,10 @@ module.exports = React.createClass({
   			var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
   			//forma.style.display='none';
   		},
+      onClickNuevo: function(event){
+        event.preventDefault();
+        this.props.onClickNuevo();
+      },
 		render: function () {
 			var indicativo = this.props.formActivo.trim() + "..."
  		    var cajaBusqueda = this.props.formActivo.trim()!=="" ? 
@@ -66,14 +70,15 @@ module.exports = React.createClass({
  		    		: '';
 
  		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados ref="ListaResultadosBusqueda"	resultados={this.state.listado} onClaveSeleccionada={this.onClaveSeleccionada}/>:[];
-
-		return (
+        var rutaNuevo = this.props.formActivo.toLowerCase() + "/nuevo";  
+  
+    return (
 	<div className="caja_acciones">
 		<ul className="menu_acciones">
-		    <BotonMenu colorLink={"ico_acciones"} icono={"file"} tam={"2x"}/>
+		    <BotonMenu colorLink={"ico_acciones"} icono={"file"} tam={"2x"} ruta= {rutaNuevo}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"remove"} tam={"2x"}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"save"} tam={"2x"}/>
-		     {cajaBusqueda}
+		     {cajaBusqueda} 
  		     {resultadosBusqueda}
 		</ul>
 	

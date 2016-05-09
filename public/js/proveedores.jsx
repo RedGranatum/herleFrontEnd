@@ -7,37 +7,57 @@ var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
 module.exports = React.createClass({
 	   componentWillReceiveProps: function(nuevas_props){
+
 	   	  var campos = {}
-	   	  for(var key in nuevas_props.datos){
-	   	  	campos[key] =  nuevas_props.datos[key];
-	   	  }
+	   	  var nuevaPropiedades = nuevas_props.datos
+	   
+	     if(nuevas_props.datos.id === undefined){
+	       	nuevaPropiedades = this.valoresDefecto()
+	      }
+		  for(var key in nuevaPropiedades){
+		   	  	campos[key] =  nuevaPropiedades[key];
+	   		 }
+	   		
 	   	  this.setState(campos);
-	   	  this.onValorCambio("pais",nuevas_props.datos.pais)
+	   	  this.onValorCambio("pais",nuevaPropiedades.pais)
 	   	 
 	   },
 	   componentWillMount:function(){
 	   	  this.catalogoApiRest = new CatalogoApiRest();
-	   	  
 	   		this.Paises = this.props.paises.map(function(tupla) {
 		  return (
         		<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
       		  );
     		});
     		this.Estados = [];
+
 			this.buscarEstados(this.state.pais);
             
            
 	   },
 		getInitialState: function(){
+			return this.valoresDefecto();
+			
+		},
+		valoresDefecto: function(){
 			return{
-				nombre : '',
-				calle : '',
-				pais: '0010003',
-				llenarEstados: [],
+		        "id": -1,
+		        "codigo": "",
+		        "nombre": "",
+		        "calle": "",
+		        "numero": "",
+		        "cp": "",
+		        "pais": "0010001",
+		        "estado": "0020000",
+		        "rfc": "",
+		        "telefono": "",
+		        "email": "",
+		        "comentarios": "",
+        		llenarEstados: [],
 			};
 		},
 		onValorCambio: function(campo,valor){
-			var campos ={}
+			var campos ={};
 			if(campo ==="comentarios"){
 				valor= valor.target.value;
 			}

@@ -35,9 +35,17 @@ module.exports = React.createClass({
 			self.mostrarMenu(appmvc.Menu.PROVEEDORES);
 			console.log("Estas en el menu de proveedores");
 		});
+		Page('/proveedores/nuevo', function () {
+			self.setState({ actualizarForm: true });
+			self.setState({ datosProveedor: [] });
+			console.log("Vas a dar de alta un nuevo proveedor");
+		});
 		Page('/clientes', function () {
 			self.mostrarMenu(appmvc.Menu.CLIENTES);
 			console.log("menu de clientes");
+		});
+		Page('/clientes/nuevo', function () {
+			console.log("Vas a dar de alta un nuevo cliente");
 		});
 		Page('*', function () {
 			console.log("no conosco la ruta");
@@ -110,7 +118,6 @@ module.exports = React.createClass({
 		this.setState({ actualizarForm: true });
 		this.llenarDatosProveedor(pk);
 	},
-
 	render: function () {
 		if (this.CalalogoPaises.length === 0) {
 			this.buscarPaises();
@@ -434,6 +441,10 @@ module.exports = React.createClass({
     var forma = ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
     //forma.style.display='none';
   },
+  onClickNuevo: function (event) {
+    event.preventDefault();
+    this.props.onClickNuevo();
+  },
   render: function () {
     var indicativo = this.props.formActivo.trim() + "...";
     var cajaBusqueda = this.props.formActivo.trim() !== "" ? React.createElement(CajaDeBusqueda, {
@@ -443,6 +454,7 @@ module.exports = React.createClass({
     }) : '';
 
     var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { ref: 'ListaResultadosBusqueda', resultados: this.state.listado, onClaveSeleccionada: this.onClaveSeleccionada }) : [];
+    var rutaNuevo = this.props.formActivo.toLowerCase() + "/nuevo";
 
     return React.createElement(
       'div',
@@ -450,7 +462,7 @@ module.exports = React.createClass({
       React.createElement(
         'ul',
         { className: 'menu_acciones' },
-        React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "file", tam: "2x" }),
+        React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "file", tam: "2x", ruta: rutaNuevo }),
         React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "remove", tam: "2x" }),
         React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "save", tam: "2x" }),
         cajaBusqueda,
@@ -611,27 +623,46 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 	componentWillReceiveProps: function (nuevas_props) {
+
 		var campos = {};
-		for (var key in nuevas_props.datos) {
-			campos[key] = nuevas_props.datos[key];
+		var nuevaPropiedades = nuevas_props.datos;
+
+		if (nuevas_props.datos.id === undefined) {
+			nuevaPropiedades = this.valoresDefecto();
 		}
+		for (var key in nuevaPropiedades) {
+			campos[key] = nuevaPropiedades[key];
+		}
+
 		this.setState(campos);
-		this.onValorCambio("pais", nuevas_props.datos.pais);
+		this.onValorCambio("pais", nuevaPropiedades.pais);
 	},
 	componentWillMount: function () {
 		this.catalogoApiRest = new CatalogoApiRest();
-
 		this.Paises = this.props.paises.map(function (tupla) {
 			return React.createElement(OpcionCombo, { key: tupla.cdu_catalogo, valorOpcion: tupla.cdu_catalogo, tituloOpcion: tupla.descripcion1 });
 		});
 		this.Estados = [];
+
 		this.buscarEstados(this.state.pais);
 	},
 	getInitialState: function () {
+		return this.valoresDefecto();
+	},
+	valoresDefecto: function () {
 		return {
-			nombre: '',
-			calle: '',
-			pais: '0010003',
+			"id": -1,
+			"codigo": "",
+			"nombre": "",
+			"calle": "",
+			"numero": "",
+			"cp": "",
+			"pais": "0010001",
+			"estado": "0020000",
+			"rfc": "",
+			"telefono": "",
+			"email": "",
+			"comentarios": "",
 			llenarEstados: []
 		};
 	},

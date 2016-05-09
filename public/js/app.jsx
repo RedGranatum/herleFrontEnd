@@ -35,10 +35,18 @@ module.exports = React.createClass({
              	console.log("Estas en el menu de proveedores");
               
             });
+             Page('/proveedores/nuevo',function(){
+             	self.setState({actualizarForm:true});
+             	self.setState({datosProveedor:[]});
+             	console.log("Vas a dar de alta un nuevo proveedor");              
+            });
              Page('/clientes',function(){
              	self.mostrarMenu(appmvc.Menu.CLIENTES);
              	console.log("menu de clientes");                    
              });
+             Page('/clientes/nuevo',function(){
+             	console.log("Vas a dar de alta un nuevo cliente");              
+            });
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
@@ -120,7 +128,6 @@ module.exports = React.createClass({
  			this.setState({actualizarForm:true});
  			this.llenarDatosProveedor(pk)
  		},
-
 		 render: function () {
             if(this.CalalogoPaises.length===0){this.buscarPaises();}
 
@@ -133,7 +140,7 @@ module.exports = React.createClass({
 	<header>
 	</header>
 	<MenuPrincipal/>
-	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada}/>
+	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
 	<section className="contenido">
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
