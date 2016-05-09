@@ -20,7 +20,7 @@ module.exports = React.createClass({
 	   		
 	   	  this.setState(campos);
 	   	  this.onValorCambio("pais",nuevaPropiedades.pais)
-	   	 
+	   	   
 	   },
 	   componentWillMount:function(){
 	   	  this.catalogoApiRest = new CatalogoApiRest();
@@ -32,12 +32,25 @@ module.exports = React.createClass({
     		this.Estados = [];
 
 			this.buscarEstados(this.state.pais);
-            
+		 //   this.setState({estado: this.state.estado});
            
 	   },
 		getInitialState: function(){
 			return this.valoresDefecto();
 			
+		},
+		nuevosDatos: function(){
+			datosNuevos ={}
+			for(var key in this.valoresDefecto()){
+				datosNuevos[key] = this.state[key];
+			}
+
+			// Esta lineas es temporal, mientras encuentro porque el estado no se actualiza como los demas campos
+			var combo = ReactDOM.findDOMNode(this.refs.ComboEstados);
+			var b=combo.getElementsByClassName("select_bloque");
+			console.log("estado: "+ this.state.estado + "  combo: " + b.estado.value);
+			datosNuevos["estado"] = b.estado.value;
+			return datosNuevos;
 		},
 		valoresDefecto: function(){
 			return{
@@ -47,13 +60,12 @@ module.exports = React.createClass({
 		        "calle": "",
 		        "numero": "",
 		        "cp": "",
-		        "pais": "0010001",
-		        "estado": "0020000",
+		        "pais":   "0010001",
+		        "estado": "0020001",
 		        "rfc": "",
 		        "telefono": "",
 		        "email": "",
 		        "comentarios": "",
-        		llenarEstados: [],
 			};
 		},
 		onValorCambio: function(campo,valor){
@@ -61,13 +73,11 @@ module.exports = React.createClass({
 			if(campo ==="comentarios"){
 				valor= valor.target.value;
 			}
-			campos[campo] = valor;
-			this.setState(campos);
-
 		  	if(campo === "pais"){
 		  		this.buscarEstados(valor);
 		  	}
-
+			campos[campo] = valor;
+			this.setState(campos);
 		},
 		relacionEstados: function(data)
 		{
@@ -78,8 +88,7 @@ module.exports = React.createClass({
 		    		 });
 	        		
 	        this.setState({llenarEstados: Estados});
-	        this.setState({estado: this.props.datos.estado});
-		},
+	    		},
 	  buscarEstados: function(pais){
 			this.catalogoApiRest.DetallesPorCduDefault(pais,this.relacionEstados,
 						function(model,response,options){
@@ -123,7 +132,7 @@ module.exports = React.createClass({
 						<CajaDeTexto propiedades = {NUMERO}/>
 						<CajaDeTexto propiedades = {CP}/>
 						<Combo 		 propiedades = {PAIS}   ref="ComboPais" key="Pais"  />
-	  				    <Combo 		 propiedades = {ESTADO} />
+	  				    <Combo 		 propiedades = {ESTADO} ref="ComboEstados" />
  						<CajaDeTexto propiedades = {RFC} />
 						<CajaDeTexto propiedades = {TELEFONO}/>
 						<CajaDeTexto propiedades = {EMAIL}/>

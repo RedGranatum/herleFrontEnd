@@ -2,6 +2,9 @@ var RutasApiRest   = require('../modelos/rutaApiRest');
 
 var proveedoresApiRest = function(){
 return {
+     NuevoProveedor: function(datos_guardar){
+//nuevoProveedor
+     },
      ProveedorPorPk: function(pk,funcion,funcion_error){
          this.rutaBusqueda  = new RutasApiRest();
                this.rutaBusqueda.buscarProveedorPorPk(pk);

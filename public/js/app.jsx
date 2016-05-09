@@ -7,6 +7,7 @@ var Clientes      = require('../js/clientes.jsx');
 var Page          = require("page");
 var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 var ProveedorApiRest   = require('../js/modelos/proveedoresApiRest');
+var OperacionesApiRest   = require('../js/modelos/operacionesApiRest');
 
 
 
@@ -39,6 +40,48 @@ module.exports = React.createClass({
              	self.setState({actualizarForm:true});
              	self.setState({datosProveedor:[]});
              	console.log("Vas a dar de alta un nuevo proveedor");              
+            });
+             Page('/proveedores/guardar',function(){             
+             	console.log("Vas a guardar un proveedor");
+             	var datosNuevos=  self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos(); 
+             	nuevoProveedor =  new OperacionesApiRest();
+                nuevoProveedor.set(datosNuevos);
+ 			 	if(datosNuevos.id >0){
+             		
+             		nuevoProveedor.modificarProveedor(datosNuevos.id);
+
+             		nuevoProveedor.save(null,{
+             			type: 'PUT',
+             			success: function(datos,response){
+             				console.log("exito");
+             			},
+             			 error: function(model,response, options) {
+          					  // $("#notify_error").text(response.responseText);
+           					 // $("#notify_error").notify();
+    				          console.log(response.responseText);
+        				}
+             		});
+             		console.log("Vamos a modificar un proveedor");
+             	}
+             	if(datosNuevos.id ===-1){
+             		nuevoProveedor.nuevoProveedor();
+
+             		nuevoProveedor.save(null,{
+             			type: 'POST',
+             			success: function(datos,response){
+             				console("exito");
+             			},
+             			 error: function(model,response, options) {
+          					  // $("#notify_error").text(response.responseText);
+           					 // $("#notify_error").notify();
+    				          console.log(response.responseText);
+        				}
+             		});
+             		console.log("Vamos a guardar un nuevo proveedor");
+             	}
+
+             	
+             	//console.log("hay datos nuevos " + datosNuevos);
             });
              Page('/clientes',function(){
              	self.mostrarMenu(appmvc.Menu.CLIENTES);

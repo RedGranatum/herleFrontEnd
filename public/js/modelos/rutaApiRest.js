@@ -10,8 +10,9 @@ module.exports = Backbone.Collection.extend({
   },
 
   buscarProveedores: function(){
-  	this.ruta = 'proveedores/'
+  	this.ruta = 'proveedores/';
   },
+
   buscarProveedorPorPk: function(pk){
     this.ruta = 'proveedores/' + pk;
   },

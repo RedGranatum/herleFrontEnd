@@ -6,7 +6,7 @@ module.exports = React.createClass({
     },
 		render: function () {
 
-        
+        console.log(this.props.propiedades.id);
       return (
             <li className="li_bloque">
               <label className="etiquetas_bloque" >{this.props.propiedades.titulo}</label>

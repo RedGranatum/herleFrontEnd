@@ -3,7 +3,6 @@ var RutasApiRest   = require('../modelos/rutaApiRest');
 var catalogoApiRest = function(){
 return {
  
-
     DetallesPorCatalogo: function(catalogo,funcion,funcion_error){
          this.rutaBusqueda  = new RutasApiRest();
                this.rutaBusqueda.buscarDetallesPorNumCatalalogo(catalogo);
