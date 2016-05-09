@@ -8,8 +8,8 @@ var Page          = require("page");
 var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 var ProveedorApiRest   = require('../js/modelos/proveedoresApiRest');
 var OperacionesApiRest   = require('../js/modelos/operacionesApiRest');
-
-
+var Notificaciones =require('../js/notificaciones')
+var    $               = require('jquery');
 
 module.exports = React.createClass({
 		getInitialState: function(){
@@ -21,6 +21,8 @@ module.exports = React.createClass({
 	 		};
 	 	},
 		componentWillMount:function(){
+		
+
 			 //Para que self sea this dentro de las funciones de Page
 			 var self=this;
 	
@@ -54,10 +56,12 @@ module.exports = React.createClass({
              			type: 'PUT',
              			success: function(datos,response){
              				console.log("exito");
+             				 $("#notify_success").text("Los datos fueron modificados con exito");
+             				 $("#notify_success").notify();
              			},
              			 error: function(model,response, options) {
-          					  // $("#notify_error").text(response.responseText);
-           					 // $("#notify_error").notify();
+          				     	 $("#notify_error").text(response.responseText);
+					             $("#notify_error").notify();
     				          console.log(response.responseText);
         				}
              		});
@@ -69,12 +73,15 @@ module.exports = React.createClass({
              		nuevoProveedor.save(null,{
              			type: 'POST',
              			success: function(datos,response){
-             				console("exito");
+             			     $("#notify_success").text("Nuevo proveedor guardado con exito");
+             				 $("#notify_success").notify();
              			},
              			 error: function(model,response, options) {
           					  // $("#notify_error").text(response.responseText);
            					 // $("#notify_error").notify();
     				          console.log(response.responseText);
+    				          	 $("#notify_error").text(response.responseText);
+					             $("#notify_error").notify();
         				}
              		});
              		console.log("Vamos a guardar un nuevo proveedor");
