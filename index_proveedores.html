@@ -83,37 +83,37 @@
 					<ul class="ul_bloque">
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="id_p">Id</label>
-							<input class="inputs_bloque" type="text" placeholder="Id"/>
+							<input class="inputs_bloque" type="text" pattern="[a-zA-Z0-9]+" placeholder="Id"/>
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="rfc_p">RFC</label>
-							<input class="inputs_bloque" type="text" placeholder="RFC" />
+							<input class="inputs_bloque" type="text" pattern="[a-zA-Z0-9]{12,13}" placeholder="RFC" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="nombre_p">Nombre</label>
-							<input class="inputs_bloque" type="text" placeholder="Nombre" />
+							<input class="inputs_bloque" type="text" pattern="[a-zA-Z0-9_ .]+" placeholder="Nombre" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="calle_p">Calle</label>
-							<input class="inputs_bloque" type="text" placeholder="Calle" />
+							<input class="inputs_bloque" type="text" pattern="[a-zA-Z0-9_ .]+" placeholder="Calle" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="numero_p">Número</label>
-							<input class="inputs_bloque" type="text" placeholder="Número" />
+							<input class="inputs_bloque" type="text" pattern="[a-zA-Z0-9_ ./]+" placeholder="Número" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="colonia_p">Colonia</label>
-							<input class="inputs_bloque" type="text" placeholder="Colonia" />
+							<input class="inputs_bloque" type="text" pattern="[a-zA-Z0-9_ .]+" placeholder="Colonia" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="cp_p">Código Postal</label>
-							<input class="inputs_bloque" type="text" placeholder="Código Postal" />
+							<input class="inputs_bloque" type="text" pattern="[0-9]{5}" placeholder="Código Postal" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
@@ -135,7 +135,7 @@
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="telefono_p">Teléfono</label>
-							<input class="inputs_bloque" type="text" placeholder="Teléfono" />
+							<input class="inputs_bloque" type="text" pattern="[0-9]{10}" placeholder="Teléfono" />
 							<div class="viñeta"></div>
 						</li>
 						<li class="li_bloque">
@@ -145,7 +145,7 @@
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="comentarios_p">Comentarios</label>
-							<textarea class="textarea_bloque" name="comentarios_p" placeholder="Comentarios"></textarea>
+							<textarea class="textarea_bloque" name="comentarios_p" placeholder="Comentarios" />
 						</li>
 					</ul>
 				</div>
