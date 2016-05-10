@@ -7,6 +7,7 @@ var Clientes      = require('../js/clientes.jsx');
 var Page          = require("page");
 var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 var ProveedorApiRest   = require('../js/modelos/proveedoresApiRest');
+var ClienteApiRest   = require('../js/modelos/clientesApiRest');
 var OperacionesApiRest   = require('../js/modelos/operacionesApiRest');
 var Notificaciones =require('../js/notificaciones')
 var    $               = require('jquery');
@@ -18,7 +19,7 @@ module.exports = React.createClass({
 	 	 	datosProveedor: {},
 	 	 	datosCliente : {},
             actualizarForm: false,
-	 		};
+     		};
 	 	},
 		componentWillMount:function(){
 		
@@ -95,7 +96,56 @@ module.exports = React.createClass({
              	console.log("menu de clientes");                    
              });
              Page('/clientes/nuevo',function(){
-             	console.log("Vas a dar de alta un nuevo cliente");              
+                self.setState({actualizarForm:true});
+                self.setState({datosCliente:[]});
+                console.log("Vas a dar de alta un nuevo cliente");              
+            });
+           Page('/clientes/guardar',function(){             
+                console.log("Vas a guardar un cliente");
+                var datosNuevos=  self.refs[appmvc.Menu.CLIENTES].nuevosDatos(); 
+                nuevoCliente =  new OperacionesApiRest();
+                nuevoCliente.set(datosNuevos);
+                if(datosNuevos.id >0){
+                    
+                    nuevoCliente.modificarCliente(datosNuevos.id);
+
+                    nuevoCliente.save(null,{
+                        type: 'PUT',
+                        success: function(datos,response){
+                            console.log("exito");
+                             $("#notify_success").text("Los datos fueron modificados con exito");
+                             $("#notify_success").notify();
+                        },
+                         error: function(model,response, options) {
+                                 $("#notify_error").text(response.responseText);
+                                 $("#notify_error").notify();
+                              console.log(response.responseText);
+                        }
+                    });
+                    console.log("Vamos a modificar un proveedor");
+                }
+                if(datosNuevos.id ===-1){
+                    nuevoCliente.nuevoCliente();
+
+                    nuevoCliente.save(null,{
+                        type: 'POST',
+                        success: function(datos,response){
+                             $("#notify_success").text("Nuevo cliente guardado con exito");
+                             $("#notify_success").notify();
+                        },
+                         error: function(model,response, options) {
+                              // $("#notify_error").text(response.responseText);
+                             // $("#notify_error").notify();
+                              console.log(response.responseText);
+                                 $("#notify_error").text(response.responseText);
+                                 $("#notify_error").notify();
+                        }
+                    });
+                    console.log("Vamos a guardar un nuevo cliente");
+                }
+
+                
+                //console.log("hay datos nuevos " + datosNuevos);
             });
              Page('*',function(){
              	console.log("no conosco la ruta");
@@ -109,13 +159,16 @@ module.exports = React.createClass({
 
 
                this.mostrarForm();
-               this.CalalogoPaises = []
+               
+               this.CalalogoPaises = [];
+               this.CalalogoBancos = [];
 
                this.CatalogoApiRest = new CatalogoApiRest();
                this.ProveedorApiRest = new ProveedorApiRest();
+               this.ClienteApiRest = new ClienteApiRest();
 		},
 		mostrarMenu:function(nomform){
-	        this.setState({actualizarForm:false});
+		    this.setState({actualizarForm:false});
 	        this.setState({
               	formMostrar:nomform
              });
@@ -133,19 +186,41 @@ module.exports = React.createClass({
 							}
 				);
          },
-          buscarPaises: function(formulario,valor_buscado){
-          	var self = this;
-          	console.log("Numero de pais" + appmvc.Catalogos.PAISES);
-			this.CatalogoApiRest.DetallesPorCatalogo(appmvc.Catalogos.PAISES,	
+          llenarDatosCliente: function(pk){
+         	var self = this;
+         	this.ClienteApiRest.ClientePorPk(pk,	
 					function(data){
-							self.CalalogoPaises =  data;
+							self.setState({datosCliente: data[0] });
 							},
 					function(model,response,options){
+	 					    self.setState({datosCliente : [] });
 							console.log("hay errores " + response.statusText)
 							}
 				);
+         },
+          buscarPaises: function(formulario,valor_buscado){
+          	var self = this;
+          	this.CatalogoApiRest.DetallesPorCatalogo(appmvc.Catalogos.PAISES,	
+					function(data){
+							self.CalalogoPaises =  data;
+                          
+                    		},
+					function(model,response,options){
+							console.log("hay errores " + response.statusText)
+                    		}
+				);
       },
-
+        buscarBancos:function(){
+        	var self = this;
+        	this.CatalogoApiRest.DetallesPorCatalogo(appmvc.Catalogos.BANCOS ,
+        		function(data){
+                    self.CalalogoBancos=data;      
+        		 },
+        		 function(model,response,options){
+        		 	console.log("hay errores " + response.statusText);
+        		 }
+        		);
+        },
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 
@@ -176,13 +251,20 @@ module.exports = React.createClass({
  		},
  		onClaveSeleccionada: function(pk){ 	
  			this.setState({actualizarForm:true});
- 			this.llenarDatosProveedor(pk)
+ 			if( this.state.formMostrar === appmvc.Menu.PROVEEDORES){
+ 				this.llenarDatosProveedor(pk)
+ 			}
+ 			if( this.state.formMostrar === appmvc.Menu.CLIENTES){
+ 				this.llenarDatosCliente(pk)
+ 			}
  		},
 		 render: function () {
-            if(this.CalalogoPaises.length===0){this.buscarPaises();}
+           
+           if(this.CalalogoPaises.length===0){this.buscarPaises();}
+           if(this.CalalogoBancos.length===0){this.buscarBancos();}
 
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES} paises={this.CalalogoPaises} datos={this.state.datosProveedor}/>);
-			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}/>)			
+			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES} bancos={this.CalalogoBancos} paises={this.CalalogoPaises} datos={this.state.datosCliente}/>)			
 
 		return (
 

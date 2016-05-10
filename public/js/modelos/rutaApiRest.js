@@ -22,6 +22,9 @@ module.exports = Backbone.Collection.extend({
   buscarClientes: function(){
   	this.ruta ='clientes/'
   },
+  buscarClientesPorPk: function(pk){
+    this.ruta = 'clientes/' + pk;
+  },
   buscarClientesPorValor: function(valor_buscar){
      this.ruta ='clientes/buscar/' + valor_buscar + '';
   },

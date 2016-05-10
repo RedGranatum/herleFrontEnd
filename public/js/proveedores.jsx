@@ -7,7 +7,6 @@ var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
 module.exports = React.createClass({
 	   componentWillReceiveProps: function(nuevas_props){
-
 	   	  var campos = {}
 	   	  var nuevaPropiedades = nuevas_props.datos
 	   
@@ -23,13 +22,13 @@ module.exports = React.createClass({
 	   	   
 	   },
 	   componentWillMount:function(){
-	   	  this.catalogoApiRest = new CatalogoApiRest();
-	   		this.Paises = this.props.paises.map(function(tupla) {
+	      this.catalogoApiRest = new CatalogoApiRest();
+	   	  	this.Paises = this.props.paises.map(function(tupla) {
 		  return (
         		<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
       		  );
     		});
-    		this.Estados = [];
+	   	  	this.Estados = [];
 
 			this.buscarEstados(this.state.pais);
 		 //   this.setState({estado: this.state.estado});
@@ -104,7 +103,7 @@ module.exports = React.createClass({
       },
 		render: function () {
 
-	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"     ];
+	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"    ];
 			var CODIGO   = this.zipCol(dic1,["codigo",  "Codigo",        "Codigo",        this.state.codigo,   this.onValorCambio]);
 			var NOMBRE   = this.zipCol(dic1,["nombre",  "Nombre", 	     "Nombre", 		  this.state.nombre,   this.onValorCambio]);
 			var CALLE    = this.zipCol(dic1,["calle",   "Calle",  	     "Calle",	      this.state.calle ,   this.onValorCambio]);
@@ -128,12 +127,11 @@ module.exports = React.createClass({
 					<ul className="ul_bloque">
   			            <CajaDeTexto propiedades = {CODIGO}  />
   			           	<CajaDeTexto propiedades = {NOMBRE} ref="cajaNombre"/>
-						<CajaDeTexto propiedades = {CALLE}  ref="cajaCalle" />
+  			           	<CajaDeTexto propiedades = {CALLE}  ref="cajaCalle" />
 						<CajaDeTexto propiedades = {NUMERO}/>
 						<CajaDeTexto propiedades = {CP}/>
 						<Combo 		 propiedades = {PAIS}   ref="ComboPais" key="Pais"  />
 	  				    <Combo 		 propiedades = {ESTADO} ref="ComboEstados" />
- 						<CajaDeTexto propiedades = {RFC} />
 						<CajaDeTexto propiedades = {TELEFONO}/>
 						<CajaDeTexto propiedades = {EMAIL}/>
 						<li className="li_bloque">

@@ -20,7 +20,7 @@ module.exports = React.createClass({
  					(this.props.formActivo !== next_props.formActivo) ? [] : this.state.listado});
  		},
  		manejadorValorBuscado: function(valor_buscado) {
- 			 	    var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
+ 			   var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
     			forma.style.display='block';
   			    this.buscarDatos(this.props.formActivo,valor_buscado);
   		},
