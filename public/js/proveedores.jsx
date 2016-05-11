@@ -126,6 +126,7 @@ module.exports = React.createClass({
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
   			            <CajaDeTexto propiedades = {CODIGO}  />
+  			            <CajaDeTexto propiedades = {RFC} ref="cajaRfc"/>
   			           	<CajaDeTexto propiedades = {NOMBRE} ref="cajaNombre"/>
   			           	<CajaDeTexto propiedades = {CALLE}  ref="cajaCalle" />
 						<CajaDeTexto propiedades = {NUMERO}/>

@@ -1,16 +1,5 @@
 var Backbone = require('backbone');
-var modelo = Backbone.Model.extend({
-		asignarRuta: function(ruta){
-			this.ruta = ruta;
-		},
-		url : function(){
-	    		if(this.ruta.toLowerCase().indexOf("http:")===-1){  
-	        		this.ruta = appmvc.Url.API_REST + this.ruta
-	       			 console.log(this.ruta)
-	    		}
-	  			 return this.ruta;
-	  	}
-	});
+var ModeloBase =  require('../modelos/modeloBase');
 
 
 var apirestProveedores = function(){
@@ -22,7 +11,7 @@ return {
      	return 'proveedores/' + pk + '/'; 
      },
      Guardar: function(datos,funcion_exito,funcion_error){
-     	var proveedor = new modelo();
+     	var proveedor = new ModeloBase();
      	
      	proveedor.set(datos);
      	var operacion =''

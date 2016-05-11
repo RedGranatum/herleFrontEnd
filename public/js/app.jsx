@@ -48,60 +48,19 @@ module.exports = React.createClass({
              Page('/proveedores/guardar',function(){             
              	console.log("Vas a guardar un proveedor");
                 var datosNuevos=  self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos(); 
+                debugger;
                 prov = new ApiRestProveedor();    
                 prov.Guardar(datosNuevos,
                     function(datos,response){
-                        debugger;
-                        console.log(datos);
+                        self.setState({actualizarForm:true});
+                        self.setState({datosProveedor:datos});
+                        $("#notify_success").text("Los datos fueron modificados con exito");
+                        $("#notify_success").notify();
                     },
                     function(model,response,options){
-                        console.log(model,response,options);
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
                     });
-      //        	var datosNuevos=  self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos(); 
-      //        	nuevoProveedor =  new OperacionesApiRest();
-      //           nuevoProveedor.set(datosNuevos);
- 			 	// if(datosNuevos.id >0){
-             		
-      //        		nuevoProveedor.modificarProveedor(datosNuevos.id);
-
-      //        		nuevoProveedor.save(null,{
-      //        			type: 'PUT',
-      //        			success: function(datos,response){
-      //        				console.log("exito");
-      //        				 $("#notify_success").text("Los datos fueron modificados con exito");
-      //        				 $("#notify_success").notify();
-      //        			},
-      //        			 error: function(model,response, options) {
-      //     				     	 $("#notify_error").text(response.responseText);
-					 //             $("#notify_error").notify();
-    		// 		          console.log(response.responseText);
-      //   				}
-      //        		});
-      //               //ApiRestProveedor.Guardar(datos,ok,error)
-      //        		console.log("Vamos a modificar un proveedor");
-      //        	}
-      //        	if(datosNuevos.id ===-1){
-      //        		nuevoProveedor.nuevoProveedor();
-
-      //        		nuevoProveedor.save(null,{
-      //        			type: 'POST',
-      //        			success: function(datos,response){
-      //        			     $("#notify_success").text("Nuevo proveedor guardado con exito");
-      //        				 $("#notify_success").notify();
-      //        			},
-      //        			 error: function(model,response, options) {
-      //     					  // $("#notify_error").text(response.responseText);
-      //      					 // $("#notify_error").notify();
-    		// 		          console.log(response.responseText);
-    		// 		          	 $("#notify_error").text(response.responseText);
-					 //             $("#notify_error").notify();
-      //   				}
-      //        		});
-      //        		console.log("Vamos a guardar un nuevo proveedor");
-      //        	}
-
-             	
-             	//console.log("hay datos nuevos " + datosNuevos);
             });
              Page('/clientes',function(){
              	self.mostrarMenu(appmvc.Menu.CLIENTES);
