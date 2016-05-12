@@ -1,46 +1,29 @@
-var React 			= require('react');
-var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
-var OpcionCombo 	= require('../js/opcionCombo.jsx');
-var Combo 			= require('../js/combo.jsx');
-var ReactDOM 		= require('react-dom') ;
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
-
+var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
+var Combo 			= require('../js/combo.jsx');
+var FuncGenericas   = require('../js/funcionesGenericas')
+var OpcionCombo 	= require('../js/opcionCombo.jsx');
+var React 			= require('react');
+var ReactDOM 		= require('react-dom') ;
 
 
 module.exports = React.createClass({
 	componentWillReceiveProps: function(nuevas_props){
-	   	  var campos = {}
-	   	  var nuevaPropiedades = nuevas_props.datos
-	   
-	     if(nuevas_props.datos.id === undefined){
-	       	nuevaPropiedades = this.valoresDefecto()
-	      }
-		  for(var key in nuevaPropiedades){
-		   	  	campos[key] =  nuevaPropiedades[key];
-	   		 }
-	   		
-	   	  this.setState(campos);
-	   	  this.onValorCambio("pais",nuevaPropiedades.pais)
-	   },
-	   llenarCombos: function(){
-	   			this.Paises = appmvc.Datos.PAISES.map(function(tupla) {
-		  return (
-        		<OpcionCombo key={tupla.cdu_catalogo}  valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
-      		  );
-    		});
+		 func = new FuncGenericas();
+		  func.llenarNuevasPropiedades(nuevas_props,this);
+		  if(nuevas_props.datos.pais!==undefined){
+	   	  		this.onValorCambio("pais",nuevas_props.datos.pais);
+		  }
+	   }, 
+	   llenarCombos: function(){    
+	        var func = new FuncGenericas();      
+	   		 this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
+	   		 this.Bancos = func.llenarComboGenerico(appmvc.Datos.BANCOS)
 
 	  	    this.Estados = [];
 
-			this.buscarEstados(this.state.pais);
-
-	   		this.Bancos = appmvc.Datos.BANCOS.map(function(tupla) {
-		  return (
-        		<OpcionCombo key={tupla.cdu_catalogo}  valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
-      		  );
-    		});    		
-           
+			this.buscarEstados(this.state.pais);           
 	   },
-
 	  componentWillMount:function(){
 	  	    //Cuando refrescan la pagina tarda en cargar los paises
 	   		 if(appmvc.Datos.PAISES===null){
@@ -54,6 +37,7 @@ module.exports = React.createClass({
 			return this.valoresDefecto();
 		},
 		nuevosDatos: function(){
+			//Esta funcion la llama el formulario app.jsx para obtener los datos a guardar
 			datosNuevos ={}
 			for(var key in this.valoresDefecto()){
 				datosNuevos[key] = this.state[key];
@@ -97,14 +81,11 @@ module.exports = React.createClass({
 		},
 		relacionEstados: function(data)
 		{
-		   var Estados = data.map(function(tupla) {
-				   return (
-				   			<OpcionCombo key={tupla.cdu_catalogo} valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
-		      		  	  );
-		    		 });
+			 var func = new FuncGenericas();      
+	   		 var Estados = func.llenarComboGenerico(data);
 	        		
-	        this.setState({llenarEstados: Estados});
-	    		},
+	         this.setState({llenarEstados: Estados});
+	    },
       buscarEstados: function(cdu_pais){
             var self = this;
             datosCatalogo = new  ApiRestCatalogo();
@@ -115,31 +96,24 @@ module.exports = React.createClass({
                            }
                     );
        },
-	zipCol: function(columnas,valores){
-      		diccionario = {};
-      		for(var col in columnas){
-      			diccionario[columnas[col]] = valores[col];
-      		}
-      		return diccionario;
-      },
 		render: function () {
-			var PROPIEDADES ={};
-       
+			func = new FuncGenericas();
+			
 	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",          "onChange"     ];
-			var CODIGO   = this.zipCol(dic1,["codigo",  "Codigo",        "Codigo",        this.state.codigo ,   this.onValorCambio]);
-            var NOMBRE   = this.zipCol(dic1,["nombre",  "Nombre",        "Nombre",        this.state.nombre,    this.onValorCambio]);
-            var RFC      = this.zipCol(dic1,["rfc",     "RFC",           "RFC",           this.state.rfc,       this.onValorCambio]);
-            var CALLE    = this.zipCol(dic1,["calle",   "Calle",         "Calle",         this.state.calle,     this.onValorCambio]);
-			var NUMERO   = this.zipCol(dic1,["numero",  "Número",        "Número",        this.state.numero,    this.onValorCambio]);
-			var COLONIA  = this.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio]);
-			var CP       = this.zipCol(dic1,["cp",      "Código Postal", "Código Postal", this.state.cp,        this.onValorCambio]);
-			var TELEFONO = this.zipCol(dic1,["telefono","Teléfono",      "Teléfono",      this.state.telefono,  this.onValorCambio]);
-   			var EMAIL     = this.zipCol(dic1,["email",  "e-mail",        "e-mail",        this.state.email,     this.onValorCambio]);
+			var CODIGO   = func.zipCol(dic1,["codigo",  "Codigo",        "Codigo",        this.state.codigo ,   this.onValorCambio]);
+            var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre",        "Nombre",        this.state.nombre,    this.onValorCambio]);
+            var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",           this.state.rfc,       this.onValorCambio]);
+            var CALLE    = func.zipCol(dic1,["calle",   "Calle",         "Calle",         this.state.calle,     this.onValorCambio]);
+			var NUMERO   = func.zipCol(dic1,["numero",  "Número",        "Número",        this.state.numero,    this.onValorCambio]);
+			var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio]);
+			var CP       = func.zipCol(dic1,["cp",      "Código Postal", "Código Postal", this.state.cp,        this.onValorCambio]);
+			var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",      this.state.telefono,  this.onValorCambio]);
+   			var EMAIL     = func.zipCol(dic1,["email",  "e-mail",        "e-mail",        this.state.email,     this.onValorCambio]);
 
    			var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
-		   	var PAIS     = this.zipCol(dic2,["pais",     "País",      this.Paises,               this.state.pais,    this.onValorCambio]);
-         	var ESTADO   = this.zipCol(dic2,["estado",   "Estado",      this.state.llenarEstados,  this.state.estado,  this.onValorCambio]);
-            var BANCOS	 =	this.zipCol(dic2,["banco",     "Banco",      this.Bancos,            this.state.banco,    this.onValorCambio]);  
+		   	var PAIS     = func.zipCol(dic2,["pais",     "País",      this.Paises,               this.state.pais,    this.onValorCambio]);
+         	var ESTADO   = func.zipCol(dic2,["estado",   "Estado",      this.state.llenarEstados,  this.state.estado,  this.onValorCambio]);
+            var BANCOS	 =	func.zipCol(dic2,["banco",     "Banco",      this.Bancos,            this.state.banco,    this.onValorCambio]);  
 			return (
 <article className="bloque">
 			<div className="titulo_bloque">
