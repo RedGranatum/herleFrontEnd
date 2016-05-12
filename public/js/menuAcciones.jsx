@@ -1,9 +1,11 @@
-var React           =require('react');
-var BotonMenu       =require('../js/botonMenu.jsx');
-var CajaDeBusqueda  =require('../js/cajaDeBusqueda.jsx');
-var ListaResultados =require('../js/resultadosLista.jsx');
-var RutasApiRest   = require('../js/modelos/rutaApiRest');
-var ReactDOM      = require('react-dom');
+var React            = require('react');
+var BotonMenu        = require('../js/botonMenu.jsx');
+var CajaDeBusqueda   = require('../js/cajaDeBusqueda.jsx');
+var ListaResultados  = require('../js/resultadosLista.jsx');
+var ReactDOM         = require('react-dom');
+var ApiRestCliente   = require('../js/modelos/apirestClientes');
+var ApiRestProveedor = require('../js/modelos/apirestProveedores');
+
 
 module.exports = React.createClass({
 	 getInitialState: function(){
@@ -11,9 +13,6 @@ module.exports = React.createClass({
  	 		listado:[]
  			};
  		},
- 		componentDidMount:function(){
-		 	this.rutaBusqueda  = new RutasApiRest();
-		},
  		componentWillReceiveProps: function(next_props){
 
  				this.setState({listado: 
@@ -25,27 +24,29 @@ module.exports = React.createClass({
   			    this.buscarDatos(this.props.formActivo,valor_buscado);
   		},
   		buscarDatos: function(formulario,valor_buscado){
-  				selfAcc= this;
-  			    this.seleccionarRuta(formulario,valor_buscado);
-  			    this.rutaBusqueda.fetch({
-			         success: function(data){
-	                      selfAcc.setState({	listado: data.toJSON() });
-	                },
-    	         	 error: function(model,response, options) {
-    	         	 	  selfAcc.setState({	listado:[] });
-                          console.log(response.responseText);
-        	        }
-        	    });
-  		},
-      
-  		seleccionarRuta: function(formulario,valor_buscado){
-  			if(formulario === appmvc.Menu.PROVEEDORES){
-  				 this.rutaBusqueda.buscarProveedorPorValor(valor_buscado);
-  			}
-  			if(formulario === appmvc.Menu.CLIENTES){
-  				 this.rutaBusqueda.buscarClientesPorValor(valor_buscado);
-  			}
-  		},
+  		      var self = this;
+            var funcionBusqueda ='';
+           
+            if(formulario === appmvc.Menu.PROVEEDORES){
+                  var proveedor = new ApiRestProveedor();
+                  //bind(proveedor) le indica que this dentro de la funcion sera el proveedor y no el contexto actual
+                  funcionBusqueda = proveedor.buscarProveedorPorValor.bind(proveedor);
+            }
+            if(formulario === appmvc.Menu.CLIENTES){
+                  var cliente = new ApiRestCliente();
+                  funcionBusqueda = cliente.buscarClientePorValor.bind(cliente);;
+            }
+
+            funcionBusqueda(valor_buscado,
+                      function(data){
+                          self.setState({  listado: data });
+                      },
+                      function(model,response, options) {
+                            self.setState({  listado:[] });
+                            console.log(response.responseText);
+                      }
+                  );
+    	},  
   		onClaveSeleccionada: function(pk){
   			this.props.onClaveSeleccionada(pk);
   			var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);

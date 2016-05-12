@@ -3,19 +3,19 @@ var ColeccionCat  =  require('../modelos/coleccionBase');
 var ModeloBase =  require('../modelos/modeloBase');
 
 
-var apirestProveedores = function(){
+var apirestClientes = function(){
 return {
 
-      buscarProveedores: function(funcion_exito,funcion_error){
-          var ruta = 'proveedores/';
+      buscarClientes: function(funcion_exito,funcion_error){
+          var ruta = 'clientes/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
-       buscarProveedorPorPk: function(pk,funcion_exito,funcion_error){
-          var ruta = 'proveedores/' + pk;
+       buscarClientePorPk: function(pk,funcion_exito,funcion_error){
+          var ruta = 'clientes/' + pk;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
-       buscarProveedorPorValor: function(valor_buscar,funcion_exito,funcion_error){
-          var ruta ='proveedores/buscar/' + valor_buscar + '';
+       buscarClientePorValor: function(valor_buscar,funcion_exito,funcion_error){
+          var ruta ='clientes/buscar/' + valor_buscar + '';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
@@ -33,25 +33,25 @@ return {
           },
 
      ruta_insertar: function(){
-		return 'proveedores/';
+		return 'clientes/';
      },
      ruta_modificar: function(pk){
-     	return 'proveedores/' + pk + '/'; 
+     	return 'clientes/' + pk + '/'; 
      },
      Guardar: function(datos,funcion_exito,funcion_error){
-     	var proveedor = new ModeloBase();
+     	var cliente = new ModeloBase();
      	
-     	proveedor.set(datos);
+     	cliente.set(datos);
      	var operacion =''
      	if (datos.id===-1){
-     		proveedor.asignarRuta(this.ruta_insertar());
+     		cliente.asignarRuta(this.ruta_insertar());
      		operacion = 'POST';
      	} 
      	if(datos.id > 0){
-     		proveedor.asignarRuta(this.ruta_modificar(datos.id));
+     		cliente.asignarRuta(this.ruta_modificar(datos.id));
      		operacion = 'PUT'
      	} 
-     	proveedor.save(null,{
+     	cliente.save(null,{
      		type: operacion,
      		success: function(datos,response){
      			 funcion_exito(datos.toJSON(),response);
@@ -59,9 +59,10 @@ return {
      		error: function(model,response,options){
      			 funcion_error(model,response,options);
      		}
-     	});
+     	})
     },
+
 };
 }
 
-module.exports = apirestProveedores;
+module.exports = apirestClientes;

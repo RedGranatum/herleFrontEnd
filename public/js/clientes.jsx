@@ -1,9 +1,10 @@
-var React=require('react');
-var CajaDeTexto=require('../js/cajaDeTexto.jsx');
-var OpcionCombo=require('../js/opcionCombo.jsx');
-var Combo=require('../js/combo.jsx');
-var ReactDOM = require('react-dom') ;
-var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
+var React 			= require('react');
+var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
+var OpcionCombo 	= require('../js/opcionCombo.jsx');
+var Combo 			= require('../js/combo.jsx');
+var ReactDOM 		= require('react-dom') ;
+var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
+
 
 
 module.exports = React.createClass({
@@ -21,10 +22,8 @@ module.exports = React.createClass({
 	   	  this.setState(campos);
 	   	  this.onValorCambio("pais",nuevaPropiedades.pais)
 	   },
-
-	  componentWillMount:function(){
-	  	    this.catalogoApiRest = new CatalogoApiRest();
-	   		this.Paises = this.props.paises.map(function(tupla) {
+	   llenarCombos: function(){
+	   			this.Paises = appmvc.Datos.PAISES.map(function(tupla) {
 		  return (
         		<OpcionCombo key={tupla.cdu_catalogo}  valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
       		  );
@@ -34,12 +33,22 @@ module.exports = React.createClass({
 
 			this.buscarEstados(this.state.pais);
 
-	   		this.Bancos = this.props.bancos.map(function(tupla) {
+	   		this.Bancos = appmvc.Datos.BANCOS.map(function(tupla) {
 		  return (
         		<OpcionCombo key={tupla.cdu_catalogo}  valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
       		  );
     		});    		
            
+	   },
+
+	  componentWillMount:function(){
+	  	    //Cuando refrescan la pagina tarda en cargar los paises
+	   		 if(appmvc.Datos.PAISES===null){
+	   	   		setTimeout(this.llenarCombos,2000);
+	   		 }
+	   		 else{
+	   			this.llenarCombos();
+	   		}
 	   },
 	   	getInitialState: function(){
 			return this.valoresDefecto();
@@ -96,12 +105,16 @@ module.exports = React.createClass({
 	        		
 	        this.setState({llenarEstados: Estados});
 	    		},
-	  buscarEstados: function(pais){
-			this.catalogoApiRest.DetallesPorCduDefault(pais,this.relacionEstados,
-						function(model,response,options){
-							console.log("hay errores " + response.statusText)
-						});
-      },
+      buscarEstados: function(cdu_pais){
+            var self = this;
+            datosCatalogo = new  ApiRestCatalogo();
+            datosCatalogo.buscarDetallesPorCduDefault(cdu_pais
+            			,this.relacionEstados
+                        ,function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                           }
+                    );
+       },
 	zipCol: function(columnas,valores){
       		diccionario = {};
       		for(var col in columnas){

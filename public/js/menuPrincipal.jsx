@@ -1,5 +1,5 @@
-var React=require('react');
-var BotonMenu=require('../js/botonMenu.jsx');
+var React     =require('react');
+var BotonMenu =require('../js/botonMenu.jsx');
 
 
 module.exports  = React.createClass({
