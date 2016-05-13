@@ -4,12 +4,15 @@ var MenuPrincipal    = require('../js/menuPrincipal.jsx');
 var MenuAcciones     = require('../js/menuAcciones.jsx');
 var Proveedores      = require('../js/proveedores.jsx');
 var Clientes         = require('../js/clientes.jsx');
+var Compras          = require('../js/compras.jsx');                           
 var Page             = require("page");
-var Notificaciones   =require('../js/notificaciones')
+var Notificaciones   = require('../js/notificaciones')
 var $                = require('jquery');
 var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
+
+
 
 module.exports = React.createClass({
 		getInitialState: function(){
@@ -180,6 +183,7 @@ module.exports = React.createClass({
 	<section className="contenido">
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
+		<Compras/>
 	</section>
   </div>
 
