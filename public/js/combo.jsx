@@ -1,13 +1,17 @@
 var React=require('react');
 
 module.exports = React.createClass({
-		
+    onChange: function(valor){
+         this.props.propiedades.onChange(this.props.propiedades.id,valor.target.value);
+    },
 		render: function () {
-			return (
+
+        console.log(this.props.propiedades.id);
+      return (
             <li className="li_bloque">
-              <label className="etiquetas_bloque" >{this.props.titulo}</label>
-              <select name={this.props.nomCombo} className="select_bloque">
-                   {this.props.children}
+              <label className="etiquetas_bloque" >{this.props.propiedades.titulo}</label>
+              <select name={this.props.propiedades.id} className="select_bloque" value={this.props.propiedades.seleccionado} onChange={this.onChange} >
+                   {this.props.propiedades.children}
               </select>
               <div className="viñeta"></div>
             </li>

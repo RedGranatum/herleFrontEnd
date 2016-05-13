@@ -1,84 +1,174 @@
-var React         = require('react');
-var ReactDOM      = require('react-dom') ;
-var MenuPrincipal = require('../js/menuPrincipal.jsx');
-var MenuAcciones  = require('../js/menuAcciones.jsx');
-var Proveedores   = require('../js/proveedores.jsx');
-var Clientes      = require('../js/clientes.jsx');
-var Page          = require("page");
-
-var FORM_PROVEEDORES='formProveedores';
-var FORM_CLIENTES='formClientes';
-
-var FORMULARIOS=[FORM_PROVEEDORES,FORM_CLIENTES];
+var React            = require('react');
+var ReactDOM         = require('react-dom');
+var MenuPrincipal    = require('../js/menuPrincipal.jsx');
+var MenuAcciones     = require('../js/menuAcciones.jsx');
+var Proveedores      = require('../js/proveedores.jsx');
+var Clientes         = require('../js/clientes.jsx');
+var Page             = require("page");
+var Notificaciones   =require('../js/notificaciones')
+var $                = require('jquery');
+var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
+var ApiRestCliente   = require('../js/modelos/apirestClientes');
+var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 
 module.exports = React.createClass({
 		getInitialState: function(){
 	 	 return {
-	 	 	formMostrar:""
-	 		};
+	 	 	formMostrar:"",
+	 	 	datosProveedor: {},
+	 	 	datosCliente : {},
+            actualizarForm: false,
+     		};
 	 	},
 		componentWillMount:function(){
-			 this.formProveedores=null;
-			 this.formClientes=null;
-			 self=this;
+		 
+			 //Para que self sea this dentro de las funciones de Page
+			 var self=this;
+	
+			 //Rutas del navegador
              Page('/',function(){
+                   self.mostrarMenu('');
+                 
                  console.log("Estas en el indice");
-                   self.llamar('');
              });
 
              Page('/proveedores',function(){
+               self.mostrarMenu(appmvc.Menu.PROVEEDORES);
              	console.log("Estas en el menu de proveedores");
-                self.llamar(FORM_PROVEEDORES);
-             });
+              
+            });
+             Page('/proveedores/nuevo',function(){
+             	self.setState({actualizarForm:true});
+             	self.setState({datosProveedor:[]});
+             	console.log("Vas a dar de alta un nuevo proveedor");              
+            });
+             Page('/proveedores/guardar',function(){             
+             	console.log("Vas a guardar un proveedor");
+                var datosNuevos=  self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos(); 
+                var prov = new ApiRestProveedor();    
+                prov.Guardar(datosNuevos,
+                    function(datos,response){
+                        self.setState({actualizarForm:true});
+                        self.setState({datosProveedor:datos});
+                        $("#notify_success").text("Los datos fueron modificados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });
+            });
              Page('/clientes',function(){
-             	console.log("Estas en el menu de clientes");
-             	self.llamar(FORM_CLIENTES);
+             	self.mostrarMenu(appmvc.Menu.CLIENTES);
+             	console.log("menu de clientes");                    
              });
+             Page('/clientes/nuevo',function(){
+                self.setState({actualizarForm:true});
+                self.setState({datosCliente:[]});
+                console.log("Vas a dar de alta un nuevo cliente");              
+            });
+           Page('/clientes/guardar',function(){         
+                var datosNuevos=  self.refs[appmvc.Menu.CLIENTES].nuevosDatos(); 
+                var cliente = new ApiRestCliente();    
+                cliente.Guardar(datosNuevos,
+                    function(datos,response){
+                        self.setState({actualizarForm:true});
+                        self.setState({datosCliente:datos});
+                        $("#notify_success").text("Los datos fueron modificados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });                
+            });
              Page('*',function(){
-             	self.llamar('');
+             	console.log("no conosco la ruta");
+             	Page.redirect('/');
+             	self.mostrarMenu('');
              });
+
+             Page({hashbang:true});
+
              Page();
-		},
-		componentDidUpdate:function(prev_props,prev_state){
-              console.log("se actualizo el componente",this.state.formMostrar);
 
                this.mostrarForm();
+               
+              // this.CalalogoPaises = [];
+               this.CalalogoBancos = [];
 
 		},
-		llamar:function(nomform){
-              this.setState({
-              	formMostrar:nomform
-              });
+  
+		mostrarMenu:function(nomform){
+         this.setState({actualizarForm:false});
+          this.setState({formMostrar:nomform});
+    },
+    llenarDatosProveedor: function(pk){
+         	 var self = this;
+           var prov = new ApiRestProveedor();
+           prov.buscarProveedorPorPk(pk,	
+      					function(data){
+      			   				self.setState({datosProveedor: data[0] });
+      							},
+      					function(model,response,options){
+      	 					    self.setState({datosProveedor : [] });
+      							}
+				    );
+         },
+    llenarDatosCliente: function(pk){
+            var self = this;
+            var cliente = new ApiRestCliente();
+            cliente.buscarClientePorPk(pk,  
+                function(data){
+                      self.setState({datosCliente: data[0] });
+                    },
+                function(model,response,options){
+                      self.setState({datosCliente : [] });
+                    }
+            );
+         },
 
-             
+		componentDidUpdate:function(prev_props,prev_state){
+               this.mostrarForm();
 		},
 		mostrarForm:function(){
-                 
-                  for (var i=0;i<FORMULARIOS.length;i++){
-                       var estilo=(FORMULARIOS[i]===this.state.formMostrar) ? 'inline-block' : 'none';
-                       var forma1 = ReactDOM.findDOMNode(this.refs[FORMULARIOS[i]]); 
-                       if(forma1!== null){
-			           		forma1.style.display=estilo;
-                       }  
-                  }
-	                                                                                                          
+                 for(var menu in  appmvc.MenuForms){		
+                 	estilo = this.mostrar_ocultar_Formulario(menu)
+                 	this.aplicar_estilo_Formulario(menu,estilo)
+                 }                                                                                           
 		},
-		crearFormulario: function(formulario){
-			if ((formulario===undefined || formulario===null))
+		mostrar_ocultar_Formulario: function(menu){
+			 return (menu === this.state.formMostrar) ? 'inline-block' : 'none';
+		},
+		aplicar_estilo_Formulario: function(menu, estilo){
+			 var forma =  ReactDOM.findDOMNode(this.refs[menu]);
+             if(forma!== null){
+			        forma.style.display=estilo;
+			    }
+		},
+		crearFormulario: function(menu,componente){
+			if (this.state.formMostrar===menu)
 			{
-				if(this.state.formMostrar===FORM_PROVEEDORES){
-					this.formProveedores=<Proveedores ref={FORM_PROVEEDORES}/>;
-				}
-				if(this.state.formMostrar===FORM_CLIENTES){
-					this.formClientes=<Clientes  ref={FORM_CLIENTES}/>;
-				}
-			}		
-		},
-	
+			   if(this.state.actualizarForm ===true || appmvc.MenuForms[menu] === undefined ||  appmvc.MenuForms[menu] === null){
+	           	    appmvc.MenuForms[menu] = componente;
+               }
+           }
+ 		},
+ 		onClaveSeleccionada: function(pk){ 	
+ 			this.setState({actualizarForm:true});
+ 			if( this.state.formMostrar === appmvc.Menu.PROVEEDORES){
+ 				this.llenarDatosProveedor(pk)
+ 			}
+ 			if( this.state.formMostrar === appmvc.Menu.CLIENTES){
+ 				this.llenarDatosCliente(pk)
+ 			}
+ 		},
+    llenarCombos: function(){
+        console.log("buscando datos");
+    },
 		 render: function () {
-				
-			this.crearFormulario(this.formProveedores)
-			this.crearFormulario(this.formClientes)
+			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
+			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>)			
 
 		return (
 
@@ -86,10 +176,10 @@ module.exports = React.createClass({
 	<header>
 	</header>
 	<MenuPrincipal/>
-	<MenuAcciones/>
+	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
 	<section className="contenido">
-		{this.formProveedores}
-		{this.formClientes}
+		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
+		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
 	</section>
   </div>
 
