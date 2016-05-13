@@ -47,6 +47,11 @@ module.exports = React.createClass({
             });
              Page('/proveedores/guardar',function(){             
              	console.log("Vas a guardar un proveedor");
+              if(self.refs[appmvc.Menu.PROVEEDORES].hayErrores()){
+                    $("#notify_error").text("Hay errores en algunos campos");
+                    $("#notify_error").notify();
+              }
+              else{
                 var datosNuevos=  self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos(); 
                 var prov = new ApiRestProveedor();    
                 prov.Guardar(datosNuevos,
@@ -60,6 +65,7 @@ module.exports = React.createClass({
                            $("#notify_error").text(response.responseText);
                            $("#notify_error").notify();
                     });
+              }
             });
              Page('/clientes',function(){
              	self.mostrarMenu(appmvc.Menu.CLIENTES);
@@ -70,7 +76,12 @@ module.exports = React.createClass({
                 self.setState({datosCliente:[]});
                 console.log("Vas a dar de alta un nuevo cliente");              
             });
-           Page('/clientes/guardar',function(){         
+           Page('/clientes/guardar',function(){     
+             if(self.refs[appmvc.Menu.CLIENTES].hayErrores()){
+                    $("#notify_error").text("Hay errores en algunos campos");
+                    $("#notify_error").notify();
+              }
+              else{    
                 var datosNuevos=  self.refs[appmvc.Menu.CLIENTES].nuevosDatos(); 
                 var cliente = new ApiRestCliente();    
                 cliente.Guardar(datosNuevos,
@@ -83,7 +94,8 @@ module.exports = React.createClass({
                     function(model,response,options){
                            $("#notify_error").text(response.responseText);
                            $("#notify_error").notify();
-                    });                
+                    });
+                }                
             });
              Page('*',function(){
              	console.log("no conosco la ruta");
