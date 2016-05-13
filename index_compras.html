@@ -88,42 +88,49 @@
 							<label class="etiquetas_bloque" for="invoice">Invoice</label>
 							<input class="inputs_bloque" type="text" placeholder="Invoice" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="proveedor">Proveedor</label>
 							<input class="inputs_bloque" type="text" placeholder="Código, Nombre" />
 							<div class="viñeta">*</div>
-							<div class="error">mensaje de error del campo</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="fecha_sol">Fecha solicitud</label>
 							<input id="fecha_sol" class="inputs_bloque" type="text" placeholder="Fecha de solicitud" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="fecha_adu">Fecha Aduana</label>
 							<input id="fecha_adu" class="inputs_bloque" type="text" placeholder="Fecha prevista llegada aduana" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="fecha_inv">Fecha Inventario</label>
 							<input id="fecha_inv" class="inputs_bloque" type="text" placeholder="Fecha prevista llegada inventario" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="fecha_rea">Fecha Real</label>
 							<input id="fecha_rea" class="inputs_bloque" type="text" placeholder="Fecha ingreso real" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="casa_cambio">Casa de cambio</label>
 							<input class="inputs_bloque" type="text" placeholder="Casa de cambio" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="precio_dollar">Precio dollar</label>
 							<input class="inputs_bloque" type="text" placeholder="Precio dollar" />
 							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 					</ul>
 				</div>
@@ -131,7 +138,7 @@
 			<br>
 			<div class="titulo_bloque">
 				Otros Datos
-				<a class="oculta_muestra" href="#"><i class="fa fa-chevron-circle-down fa-1x"></i></a>
+				<!-- <a class="oculta_muestra" href="#"><i class="fa fa-chevron-circle-down fa-1x"></i></a> -->
 			</div>
 			<div class="caja_bloque">
 				<div class="campos_bloque">
@@ -139,6 +146,7 @@
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="transporte">Transporte</label>
 							<input class="inputs_bloque" type="text" placeholder="Transporte" />
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="estatus_venta">Estatus de compra</label>
@@ -147,14 +155,17 @@
 								<option value="cancelada">Cancelada</option>
 							</select>
 							<div class="viñeta">*</div>
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="descripcion">Descripción</label>
 							<textarea class="textarea_bloque" name="descripcion" placeholder="Descripción"></textarea>
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
 							<label class="etiquetas_bloque" for="comentarios">Comentarios</label>
 							<textarea class="textarea_bloque" name="comentarios" placeholder="Comentarios"></textarea>
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 					</ul>
 				</div>
