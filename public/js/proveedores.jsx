@@ -77,6 +77,9 @@ module.exports = React.createClass({
 		  		this.buscarEstados(valor);
 		  	}
 			campos[campo] = valor;
+			if(campo === "telefono"){
+				
+			}
 			this.setState(campos);
 		},
 		relacionEstados: function(data)
@@ -98,6 +101,7 @@ module.exports = React.createClass({
        },
 		render: function () {
             func = new FuncGenericas();
+            this.errors = this.errors || {};
 
 	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"    ];
 			var CODIGO   = func.zipCol(dic1,["codigo",  "Codigo",        "Codigo",        this.state.codigo,   this.onValorCambio]);

@@ -267,7 +267,12 @@ module.exports = React.createClass({
         onChange: this.valorCambio,
         ref: "CajaTexto"
       }),
-      React.createElement("div", { className: "viñeta" })
+      React.createElement("div", { className: "viñeta" }),
+      React.createElement(
+        "div",
+        { className: "error_mostrar" },
+        "mensaje de error del campo"
+      )
     );
   }
 });
@@ -456,7 +461,12 @@ module.exports = React.createClass({
                     { name: this.props.propiedades.id, className: "select_bloque", value: this.props.propiedades.seleccionado, onChange: this.onChange },
                     this.props.propiedades.children
                ),
-               React.createElement("div", { className: "viñeta" })
+               React.createElement("div", { className: "viñeta" }),
+               React.createElement(
+                    "div",
+                    { className: "error_ocultar" },
+                    "mensaje de error del campo"
+               )
           );
      }
 });
@@ -1073,6 +1083,7 @@ module.exports = React.createClass({
 			this.buscarEstados(valor);
 		}
 		campos[campo] = valor;
+		if (campo === "telefono") {}
 		this.setState(campos);
 	},
 	relacionEstados: function (data) {
@@ -1090,6 +1101,7 @@ module.exports = React.createClass({
 	},
 	render: function () {
 		func = new FuncGenericas();
+		this.errors = this.errors || {};
 
 		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange"];
 		var CODIGO = func.zipCol(dic1, ["codigo", "Codigo", "Codigo", this.state.codigo, this.onValorCambio]);
