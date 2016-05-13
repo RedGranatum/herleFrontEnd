@@ -58,6 +58,7 @@ module.exports = React.createClass({
 		        "nombre": "",
 		        "calle": "",
 		        "numero": "",
+		        "colonia": "",
 		        "cp": "",
 		        "pais":   "0010001",
 		        "estado": "0020001",
@@ -103,6 +104,7 @@ module.exports = React.createClass({
 			var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre", 	     "Nombre", 		  this.state.nombre,   this.onValorCambio]);
 			var CALLE    = func.zipCol(dic1,["calle",   "Calle",  	     "Calle",	      this.state.calle ,   this.onValorCambio]);
 			var NUMERO   = func.zipCol(dic1,["numero",  "Número", 	     "Número",  	  this.state.numero,   this.onValorCambio]);
+			var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio]);
 			var CP       = func.zipCol(dic1,["cp",      "Código Postal", "codigo_postal", this.state.cp ,      this.onValorCambio]);
 			var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",			  this.state.rfc ,     this.onValorCambio]);
 			var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",	  this.state.telefono, this.onValorCambio]);
@@ -125,6 +127,7 @@ module.exports = React.createClass({
   			           	<CajaDeTexto propiedades = {NOMBRE} ref="cajaNombre"/>
   			           	<CajaDeTexto propiedades = {CALLE}  ref="cajaCalle" />
 						<CajaDeTexto propiedades = {NUMERO}/>
+						<CajaDeTexto propiedades=  {COLONIA} />
 						<CajaDeTexto propiedades = {CP}/>
 						<Combo 		 propiedades = {PAIS}   ref="ComboPais" key="Pais"  />
 	  				    <Combo 		 propiedades = {ESTADO} ref="ComboEstados" />
