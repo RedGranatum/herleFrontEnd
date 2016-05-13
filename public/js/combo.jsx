@@ -14,7 +14,7 @@ module.exports = React.createClass({
                    {this.props.propiedades.children}
               </select>
               <div className="viñeta"></div>
-              <div className="error_ocultar">mensaje de error del campo</div>
+              <div className="error_ocultar">{this.props.propiedades.error}</div>
             </li>
 
 			);  
