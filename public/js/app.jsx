@@ -97,6 +97,10 @@ module.exports = React.createClass({
                     });
                 }                
             });
+           Page('/compras',function(){
+              self.mostrarMenu(appmvc.Menu.COMPRAS);
+              console.log("menu de compras");                    
+             });
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
@@ -153,7 +157,11 @@ module.exports = React.createClass({
                  }                                                                                           
 		},
 		mostrar_ocultar_Formulario: function(menu){
-			 return (menu === this.state.formMostrar) ? 'inline-block' : 'none';
+      var estilo = 'inline-block';
+      if(menu === appmvc.Menu.COMPRAS){
+       estilo = 'inline';
+      }
+			 return (menu === this.state.formMostrar) ? estilo : 'none';
 		},
 		aplicar_estilo_Formulario: function(menu, estilo){
 			 var forma =  ReactDOM.findDOMNode(this.refs[menu]);
@@ -183,7 +191,8 @@ module.exports = React.createClass({
     },
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
-			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>)			
+			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
+      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS}  />);     
 
 		return (
 
@@ -195,7 +204,7 @@ module.exports = React.createClass({
 	<section className="contenido">
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
-		<Compras/>
+	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
 	</section>
   </div>
 

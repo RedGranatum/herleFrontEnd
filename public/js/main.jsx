@@ -18,8 +18,8 @@ $(function() {
 	}
 
 
-	//var url_local = 'http://localhost:8000/'
-	 var url_local ='http://192.168.0.10:8000/';
+	 var url_local = 'http://localhost:8000/'
+	 //var url_local ='http://192.168.0.10:8000/';
 	//var url_local = 'http://107.170.1.182:8000/'
 
 	datosCatalogo = new  ApiRestCatalogo();
@@ -29,12 +29,15 @@ $(function() {
 
 	appmvc.Menu.PROVEEDORES = 'Proveedores';
 	appmvc.Menu.CLIENTES = 'Clientes';
+	appmvc.Menu.COMPRAS = 'Compras';
+	
     
 	appmvc.Forms.PROVEEDORES=null;
 	appmvc.Forms.CLIENTES=null;
 	appmvc.MenuForms = {
 		 'Proveedores' : appmvc.Forms.PROVEEDORES,
-		 'Clientes':  appmvc.Forms.CLIENTES,
+		 'Clientes'	   : appmvc.Forms.CLIENTES,
+		 'Compras'	   : appmvc.Forms.COMPRAS,
 	};
 
 	appmvc.Catalogos.PAISES = 1;

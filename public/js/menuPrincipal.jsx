@@ -10,7 +10,7 @@ module.exports  = React.createClass({
 		<ul className="menu">
 		    <BotonMenu colorLink={"ico_nav"} icono={"truck"} tam={"3x"} ruta={"/proveedores"}/>
 		    <BotonMenu colorLink={"ico_nav"} icono={"group"}  tam={"3x"} ruta={"/clientes"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"shopping-cart"}  tam={"3x"} ruta={"/"}/>
+			<BotonMenu colorLink={"ico_nav"} icono={"shopping-cart"}  tam={"3x"} ruta={"/compras"}/>
 			<BotonMenu colorLink={"ico_nav"} icono={"dollar"}  tam={"3x"}/>
 			<BotonMenu colorLink={"ico_nav"} icono={"money"}  tam={"3x"}/>
 			<BotonMenu colorLink={"ico_nav"} icono={"info"}  tam={"3x"}/>

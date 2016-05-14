@@ -12,6 +12,7 @@ module.exports = React.createClass({
 
            return (
 		      <table className="tabla_catalogo">
+		       <tbody>
 					<tr>
 						<td>Material</td>
 						<td>Calibre</td>
@@ -78,6 +79,7 @@ module.exports = React.createClass({
 						<td contenteditable='true'></td>
 						<td><a className="eliminar_renglon" href="#"><i className="fa fa-remove fa-2x"></i></a></td>
 					</tr>
+				  </tbody>
 				</table>
 			);  
 		}

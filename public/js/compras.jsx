@@ -18,27 +18,29 @@ var statuss=statusCom.map(function(stat){
 });
 
 module.exports = React.createClass({
+		onValorCambio: function(){
 
+		},
 		render: function () {
 			func = new FuncGenericas();
 			
 	        var dic1 =                               ["id",          "titulo",      "textoIndicativo" ,    "valor",          "onChange"     ];
-			var INVOICE         = func.zipCol(dic1,["invoice",       "Invoice",       "Invoice",            "iii" ,           this.onValorCambio]);
-            var PROVEEDOR       = func.zipCol(dic1,["proveedor",    "Proveedor",       "Proveedor",        "vaqueton" ,       this.onValorCambio]);
-            var FECHASOLICITUD  = func.zipCol(dic1,["fechSol",     "Fecha Solicitud",  "Fecha Solicitud",  "vamos a veeer" ,  this.onValorCambio]);
-            var FECHAADUANA     = func.zipCol(dic1,["fecha_adu",     "Fecha Aduana",  "Fecha Aduana",  "aii pendejoo!!" ,  this.onValorCambio]);
-            var FECHAINVENTARIO = func.zipCol(dic1,["fecha_inv",     "Fecha Inventario",  "Fecha Inventario",  "quique capillas" ,  this.onValorCambio]);
-            var FECHAREAL       = func.zipCol(dic1,["fecha_rea",     "Fecha Real",  "Fecha Real",  "baba de perico" ,  this.onValorCambio]);
-            var CASADECAMBIO    = func.zipCol(dic1,["casa_cambio",   "Casa de Cambio",  "Casa de Cambio",  "asi es grande" ,  this.onValorCambio]);
-            var PRECIODOLLAR    = func.zipCol(dic1,["precio_dollar", "Precio Dollar",  "Precio Dollar",  "de las de aca" ,  this.onValorCambio]);
-            var TRANSPORTE      = func.zipCol(dic1,["transporte",     "Transporte",  "Transporte",  "coontabilidad" ,  this.onValorCambio]);
+			var INVOICE         = func.zipCol(dic1,["invoice",       "Invoice",       "Invoice",            "" ,           this.onValorCambio]);
+            var PROVEEDOR       = func.zipCol(dic1,["proveedor",    "Proveedor",       "Proveedor",        "" ,       this.onValorCambio]);
+            var FECHASOLICITUD  = func.zipCol(dic1,["fechSol",     "Fecha Solicitud",  "Fecha Solicitud",  "" ,  this.onValorCambio]);
+            var FECHAADUANA     = func.zipCol(dic1,["fecha_adu",     "Fecha Aduana",  "Fecha Aduana",  "" ,  this.onValorCambio]);
+            var FECHAINVENTARIO = func.zipCol(dic1,["fecha_inv",     "Fecha Inventario",  "Fecha Inventario",  "" ,  this.onValorCambio]);
+            var FECHAREAL       = func.zipCol(dic1,["fecha_rea",     "Fecha Real",  "Fecha Real",  "" ,  this.onValorCambio]);
+            var CASADECAMBIO    = func.zipCol(dic1,["casa_cambio",   "Casa de Cambio",  "Casa de Cambio",  "" ,  this.onValorCambio]);
+            var PRECIODOLLAR    = func.zipCol(dic1,["precio_dollar", "Precio Dollar",  "Precio Dollar",  "" ,  this.onValorCambio]);
+            var TRANSPORTE      = func.zipCol(dic1,["transporte",     "Transporte",  "Transporte",  "" ,  this.onValorCambio]);
             
             var dic2 =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var STATUS = func.zipCol(dic2,["estatus_venta",   "Estatus de Compra",    statuss,      "",    this.onValorCambio]);
          	
            return (
-		       <div>
-		             <article className="bloque">
+	 <section className="contenido">
+		   <article className="bloque">
 			<div className="titulo_bloque">
 				Compra 
 			</div>
@@ -67,12 +69,12 @@ module.exports = React.createClass({
 						<CajaDeTexto propiedades={TRANSPORTE} />
 						<Combo propiedades={STATUS} />
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="descripcion">Descripción</label>
+							<label className="etiquetas_bloque" htmlFor="descripcion">Descripción</label>
 							<textarea className="textarea_bloque" name="descripcion" placeholder="Descripción"></textarea>
 							<div className="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="comentarios">Comentarios</label>
+							<label className="etiquetas_bloque" htmlFor="comentarios">Comentarios</label>
 							<textarea className="textarea_bloque" name="comentarios" placeholder="Comentarios"></textarea>
 							<div className="error_ocultar">mensaje de error del campo</div>
 						</li>
@@ -85,7 +87,7 @@ module.exports = React.createClass({
 				<Tabla/>
 			</div>
 		</article>		
-</div>
+	</section>
 			);  
 		}
 });
