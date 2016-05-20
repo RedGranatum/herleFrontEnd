@@ -11,7 +11,7 @@ module.exports = React.createClass({
 
 			return (
                         <li className="li_bloque">
-                              <label className="etiquetas_bloque">{this.props.propiedades.titulo}</label>
+                              <label className="etiquetas_bloque">{this.props.propiedades.titulo} {this.props.mensajeIndicativo}</label>
                               
                               <input 
                                 className="inputs_bloque" 
@@ -24,7 +24,7 @@ module.exports = React.createClass({
                                 ref = {"CajaTexto"}
                                 />
                               
-                              <div className="viñeta"></div>
+                              <div className="viñeta">*</div>
                               <div className="error_mostrar">{this.props.propiedades.error}</div>
                         </li>
 

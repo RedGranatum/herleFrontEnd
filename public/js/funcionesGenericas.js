@@ -1,5 +1,6 @@
 var OpcionCombo 	= require('../js/opcionCombo.jsx');
 var React 			= require('react');
+var CeldaTabla      = require('../js/celdaTabla.jsx');
 
 
 var funcionesGenericas = function(){
@@ -32,6 +33,12 @@ return {
     		});
     		return ListaComponentes;
 	   },
+	   llenarCeldasDeFila: function(propsCelda){
+         var celdasTabla=propsCelda.map(function(propie){
+              return(  <CeldaTabla esEditable={propie.editable} contenido={propie.contenido} /> );
+         });
+          return celdasTabla;
+	   }
 	};
 }
 

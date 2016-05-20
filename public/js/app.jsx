@@ -10,8 +10,9 @@ var Notificaciones   = require('../js/notificaciones')
 var $                = require('jquery');
 var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
-var ApiRestProveedor = require('../js/modelos/apirestProveedores');
-
+var ApiRestProveedor = require('../js/modelos/apiRestProveedores');
+var ApiRestCompras   = require('../js/modelos/apiRestCompras');
+ 
 
 
 module.exports = React.createClass({
@@ -20,6 +21,7 @@ module.exports = React.createClass({
 	 	 	formMostrar:"",
 	 	 	datosProveedor: {},
 	 	 	datosCliente : {},
+	 	 	datosCompra: {},
             actualizarForm: false,
      		};
 	 	},
@@ -134,6 +136,7 @@ module.exports = React.createClass({
       							}
 				    );
          },
+
     llenarDatosCliente: function(pk){
             var self = this;
             var cliente = new ApiRestCliente();
@@ -146,7 +149,19 @@ module.exports = React.createClass({
                     }
             );
          },
-
+    llenarDatosCompra: function(pk){
+           var self = this;
+           var comp = new ApiRestCompras();
+           comp.buscarCompraPorPk(pk,	
+      					function(data){
+      							self.setState({datosCompra: data[0] });
+      							},
+      					function(model,response,options){
+      	 					    self.setState({datosCompra : [] });
+      							}
+				    );
+         },
+    
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 		},
@@ -185,6 +200,9 @@ module.exports = React.createClass({
  			if( this.state.formMostrar === appmvc.Menu.CLIENTES){
  				this.llenarDatosCliente(pk)
  			}
+ 			if(this.state.formMostrar===appmvc.Menu.COMPRAS){
+ 				this.llenarDatosCompra(pk);
+ 			}
  		},
     llenarCombos: function(){
         console.log("buscando datos");
@@ -192,11 +210,14 @@ module.exports = React.createClass({
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
-      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS}  />);     
-
+            this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);     
+          var style = {
+      margin: "0px",
+     padding: "0px"
+    };
 		return (
-
-  <div>
+    
+  <div style={style}>
 	<header>
 	</header>
 	<MenuPrincipal/>
@@ -204,7 +225,7 @@ module.exports = React.createClass({
 	<section className="contenido">
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
-	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
+	    {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
 	</section>
   </div>
 
