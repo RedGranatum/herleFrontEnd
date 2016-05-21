@@ -10,8 +10,8 @@ var Notificaciones   = require('../js/notificaciones')
 var $                = require('jquery');
 var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
-var ApiRestProveedor = require('../js/modelos/apiRestProveedores');
-var ApiRestCompras   = require('../js/modelos/apiRestCompras');
+var ApiRestProveedor = require('../js/modelos/apirestProveedores');
+var ApiRestCompras   = require('../js/modelos/apirestCompras');
  
 
 

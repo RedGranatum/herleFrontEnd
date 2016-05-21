@@ -20,26 +20,26 @@ module.exports = React.createClass({
 					<div className="campos_bloque">
 						<ul className="ul_bloque">
 							<li className="li_bloque">
-								<label className="etiquetas_bloque" for="codigo_p">Código</label>
+								<label className="etiquetas_bloque" htmlFor="codigo_p">Código</label>
 								<input className="inputs_bloque" type="text" placeholder="Código"/>
 								<div className="viñeta">*</div>
 								<div className="error_mostrar">mensaje de error del campo</div>
 							</li>
 							<li className="li_bloque">
-								<label className="etiquetas_bloque" for="rfc_p">RFC</label>
+								<label className="etiquetas_bloque" htmlFor="rfc_p">RFC</label>
 								<input className="inputs_bloque" type="text" placeholder="RFC" />
 								<div className="viñeta">*</div>
 								<div className="error_mostrar">mensaje de error del campo</div>
 							</li>
 							<li className="li_bloque">
-								<label className="etiquetas_bloque" for="nombre_p">Nombre</label>
+								<label className="etiquetas_bloque" htmlFor="nombre_p">Nombre</label>
 								<input className="inputs_bloque" type="text" placeholder="Nombre" />
 								<div className="viñeta">*</div>
 								<div className="error_mostrar">mensaje de error del campo</div>
 							</li>
 						</ul>
 					</div>
-					<form enctype="multipart/form-data">
+					<form encType="multipart/form-data">
 						<ul className="botones_proveedor">
 							<li><input type="submit" value="Cancelar" /></li>
 							<li><input type="submit" value="Guardar" /></li>

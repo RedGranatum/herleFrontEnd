@@ -35,17 +35,21 @@ module.exports = React.createClass({
 		        "precio_dollar": nuevas_props.datos.precio_dolar,
 		        "transporte": nuevas_props.datos.transporte,
 		        "descripcion": nuevas_props.datos.descripcion,
+		        "comentarios":  nuevas_props.datos.comentarios,
             })	   
             //this.setState({"fecha_adu":  nuevas_props.datos.fec_aduanas}) 
         }
 	    },
-		onValorCambio: function(){
-
+		onValorCambio: function(campo,valor){
+			var update = {};
+			update[campo] = valor;
+			this.setState(update);
 		},
 		getInitialState: function(){
-			return {
-		        
-																	
+			return this.valoresDefecto();
+		},
+		valoresDefecto: function(){
+			return {														
 			        "invoice": "78945",
 			        "proveedor": "chabelo",
 			        "fechSol": "24/10/1992",
@@ -55,10 +59,9 @@ module.exports = React.createClass({
 			        "casa_cambio": "no lo se",
 			        "precio_dollar": "25",
 			        "transporte": "automovil",
-			        "descripcion": "holaaaa"
-		      
+			        "descripcion": "holaaaa",
+			        "comentarios": "mi comentario",  
 			};
-			
 		},
 		render: function () {
 			func = new FuncGenericas();
@@ -73,7 +76,8 @@ module.exports = React.createClass({
             var CASADECAMBIO    = func.zipCol(dic1,["casa_cambio",   "Casa de Cambio",  "Casa de Cambio",  this.state.casa_cambio ,  this.onValorCambio]);
             var PRECIODOLLAR    = func.zipCol(dic1,["precio_dollar", "Precio Dollar",  "Precio Dollar",  this.state.precio_dollar ,  this.onValorCambio]);
             var TRANSPORTE      = func.zipCol(dic1,["transporte",     "Transporte",  "Transporte",  this.state.transporte ,  this.onValorCambio]);
-            var OBSERVACIONES    = func.zipCol(dic1,["Descripcion",     "Descripción",  "Descripción",  this.state.descripcion ,  this.onValorCambio]);        
+            var OBSERVACIONES   = func.zipCol(dic1,["descripcion",     "Descripción",  "Descripción",  this.state.descripcion ,  this.onValorCambio]);        
+            var COMENTARIOS     = func.zipCol(dic1,["comentarios",     "Comentarios",  "Comentarios",  this.state.comentarios ,  this.onValorCambio]);        
 
             var dic2 =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var STATUS = func.zipCol(dic2,["estatus_venta",   "Estatus de Compra",    statuss,      "",    this.onValorCambio]);
@@ -111,11 +115,7 @@ module.exports = React.createClass({
 						<CajaDeTexto propiedades={TRANSPORTE} />
 						<Combo propiedades={STATUS} />
 						<AreaTexto propiedades={OBSERVACIONES} />
-						<li className="li_bloque">
-							<label className="etiquetas_bloque" htmlFor="comentarios">Comentarios</label>
-							<textarea className="textarea_bloque" name="comentarios" placeholder="Comentarios"></textarea>
-							<div className="error_ocultar">mensaje de error del campo</div>
-						</li>
+						<AreaTexto propiedades={COMENTARIOS} />
 					</ul>
 				</div>
 			</div>
