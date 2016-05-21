@@ -18,11 +18,11 @@ var ApiRestCompras   = require('../js/modelos/apirestCompras');
 module.exports = React.createClass({
 		getInitialState: function(){
 	 	 return {
-	 	 	formMostrar:"",
-	 	 	datosProveedor: {},
-	 	 	datosCliente : {},
-	 	 	datosCompra: {},
-            actualizarForm: false,
+    	 	 	formMostrar:"",
+    	 	 	datosProveedor: {},
+    	 	 	datosCliente : {},
+    	 	 	datosCompra: {},
+          actualizarForm: false,
      		};
 	 	},
 		componentWillMount:function(){
@@ -103,6 +103,10 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.COMPRAS);
               console.log("menu de compras");                    
              });
+            Page('/compras/nuevo',function(){
+                self.setState({datosCompra:[],actualizarForm:true});
+                console.log("Vas a dar de alta una nueva compra");              
+            });
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
@@ -210,7 +214,7 @@ module.exports = React.createClass({
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
-            this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);     
+      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);     
           var style = {
       margin: "0px",
      padding: "0px"
@@ -225,7 +229,7 @@ module.exports = React.createClass({
 	<section className="contenido">
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
-	    {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
+	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
 	</section>
   </div>
 
@@ -238,8 +242,8 @@ module.exports = React.createClass({
 
 
 
-function mostrar(estado,reff){
-	var estilo= estado==="formProveedores" ? 'inline-block' : 'none';
-	var forma = ReactDOM.findDOMNode(reff);   
-	forma.style.display=estilo;
-}
+// function mostrar(estado,reff){
+// 	var estilo= estado==="formProveedores" ? 'inline-block' : 'none';
+// 	var forma = ReactDOM.findDOMNode(reff);   
+// 	forma.style.display=estilo;
+// }

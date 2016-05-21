@@ -12,12 +12,11 @@
     "babelify": "~7.3.0",
     "babel-preset-react": "~6.5.0",
     "react-datepicker": "~0.27.0",
-    "moment": "~2.13.0",
-    "jquery-ui": "~1.10.5"
+    "moment": "~2.13.0"
   },
   "scripts": {
-    "observar": "watchify -t [babelify --presets [react] ] -g browserify-css  js/main.jsx -v -o js/bundle.js",
-    "compilar": "browserify -t [babelify --presets [react] ] -g browserify-css  js/main.jsx -o js/bundle.js"
+    "observar": "watchify -t [babelify --presets [react] ] browserify-css  js/main.jsx -v -o js/bundle.js",
+    "compilar": "browserify -t [babelify --presets [react] ] browserify-css  js/main.jsx -o js/bundle.js"
   },
   "devDependencies": {
     "browserify-css": "~0.9.1"
