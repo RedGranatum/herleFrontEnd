@@ -317,45 +317,55 @@ module.exports = React.createClass({
 var React = require('react');
 
 module.exports = React.createClass({
-  displayName: "exports",
+      displayName: "exports",
 
-  valorCambio: function () {
-    this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
-  },
-  render: function () {
+      TeclaPresionada: function (event) {
+            if (event.charCode == 13) {
+                  this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
+            }
+      },
+      valorCambio: function () {
+            this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
+      },
+      handleBlur: function () {
+            this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
+      },
+      render: function () {
 
-    return React.createElement(
-      "li",
-      { className: "li_bloque" },
-      React.createElement(
-        "label",
-        { className: "etiquetas_bloque" },
-        this.props.propiedades.titulo,
-        " ",
-        this.props.mensajeIndicativo
-      ),
-      React.createElement("input", {
-        className: "inputs_bloque",
-        pattern: this.props.propiedades.caracteresEsp,
-        type: "text",
-        placeholder: this.props.propiedades.textoIndicativo,
-        id: this.props.propiedades.id,
-        value: this.props.propiedades.valor,
-        onChange: this.valorCambio,
-        ref: "CajaTexto"
-      }),
-      React.createElement(
-        "div",
-        { className: "viñeta" },
-        "*"
-      ),
-      React.createElement(
-        "div",
-        { className: "error_mostrar" },
-        this.props.propiedades.error
-      )
-    );
-  }
+            return React.createElement(
+                  "li",
+                  { className: "li_bloque" },
+                  React.createElement(
+                        "label",
+                        { className: "etiquetas_bloque" },
+                        this.props.propiedades.titulo,
+                        " ",
+                        this.props.mensajeIndicativo
+                  ),
+                  React.createElement("input", {
+                        className: "inputs_bloque",
+                        pattern: this.props.propiedades.caracteresEsp,
+                        type: "text",
+                        placeholder: this.props.propiedades.textoIndicativo,
+                        id: this.props.propiedades.id,
+                        value: this.props.propiedades.valor,
+                        onChange: this.valorCambio,
+                        ref: "CajaTexto",
+                        onKeyPress: this.TeclaPresionada,
+                        onBlur: this.handleBlur
+                  }),
+                  React.createElement(
+                        "div",
+                        { className: "viñeta" },
+                        "*"
+                  ),
+                  React.createElement(
+                        "div",
+                        { className: "error_mostrar" },
+                        this.props.propiedades.error
+                  )
+            );
+      }
 });
 
 },{"react":194}],6:[function(require,module,exports){
@@ -611,6 +621,9 @@ module.exports = React.createClass({
 
 },{"react":194}],9:[function(require,module,exports){
 var $ = require('jquery');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var moment = require('moment');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var Combo = require('../js/combo.jsx');
@@ -619,10 +632,9 @@ var OpcionCombo = require('../js/opcionCombo.jsx');
 var NuevoProveedor = require('../js/nuevoProveedor.jsx');
 var IconoTabla = require('../js/iconoTabla.jsx');
 var AreaTexto = require('../js/areaTexto.jsx');
-var React = require('react');
-var moment = require('moment');
 var Tabla = require('../js/tabla.jsx');
-var ReactDOM = require('react-dom');
+var ListaResultados = require('../js/resultadosLista.jsx');
+var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 
 require('jquery-ui');
 
@@ -644,19 +656,23 @@ module.exports = React.createClass({
 
 		if (nuevas_props.datos.id !== undefined) {
 			var proveedor_id = nuevaPropiedades.proveedor.id;
-			var proveedor_nombre = nuevaPropiedades.proveedor.nombre;
+			var proveedor_codigo = nuevaPropiedades.proveedor.codigo;
+
+			var proveedor_nombre = "[" + proveedor_codigo + "] " + nuevaPropiedades.proveedor.nombre;
 		}
 
 		if (nuevas_props.datos.id === undefined) {
 			nuevaPropiedades = this.valoresDefecto();
 			proveedor_nombre = nuevaPropiedades.proveedor_nombre;
 			proveedor_id = nuevaPropiedades.proveedor_id;
+			proveedor_codigo = nuevaPropiedades.proveedor_codigo;
 		}
 
 		if (nuevaPropiedades.invoice !== undefined) {
 			this.setState({
 				"invoice": nuevaPropiedades.invoice,
 				"proveedor": proveedor_id,
+				"proveedor_codigo": proveedor_codigo,
 				"proveedor_nombre": proveedor_nombre,
 				"fec_solicitud": nuevaPropiedades.fec_solicitud,
 				"fec_aduana": nuevaPropiedades.fec_aduana,
@@ -667,8 +683,8 @@ module.exports = React.createClass({
 				"bln_activa": nuevaPropiedades.bln_activa ? '1' : '0',
 				"transporte": nuevaPropiedades.transporte,
 				"descripcion": nuevaPropiedades.descripcion,
-				"comentarios": nuevaPropiedades.comentarios
-
+				"comentarios": nuevaPropiedades.comentarios,
+				"busqueda_proveedores": []
 			});
 		}
 	},
@@ -686,6 +702,7 @@ module.exports = React.createClass({
 			invoice: "",
 			proveedor: "0",
 			proveedor_nombre: "",
+			proveedor_codigo: "",
 			fec_solicitud: moment().format('DD/MM/YYYY'),
 			fec_aduana: moment().format('DD/MM/YYYY'),
 			fec_inventario: moment().format('DD/MM/YYYY'),
@@ -695,28 +712,78 @@ module.exports = React.createClass({
 			bln_activa: "0",
 			transporte: "",
 			descripcion: "",
-			comentarios: ""
+			comentarios: "",
+			busqueda_proveedores: []
 		};
+	},
+	onBuscarProovedor: function (control, valor) {
+		var self = this;
+		var proveedor = new ApiRestProveedor();
+		//bind(proveedor) le indica que this dentro de la funcion sera el proveedor y no el contexto actual
+		funcionBusqueda = proveedor.buscarProveedorPorValor.bind(proveedor);
+		funcionBusqueda(valor, function (data) {
+			self.setState({ busqueda_proveedores: data });
+		}, function (model, response, options) {
+			self.setState({ busqueda_proveedores: [] });
+		});
+	},
+	BuscarProveedorPorPk: function (pk) {
+		var self = this;
+		var prov = new ApiRestProveedor();
+		prov.buscarProveedorPorPk(pk, function (data) {
+			var id = data[0].id;
+			var codigo = data[0].codigo;
+			var nombre = "[" + codigo + "] " + data[0].nombre;
+			self.setState({ proveedor: id, proveedor_nombre: nombre, proveedor_codigo: codigo, busqueda_proveedores: [] });
+		}, function (model, response, options) {
+			self.setState({ proveedor: "0", proveedor_nombre: "", proveedor_codigo: "", busqueda_proveedores: [] });
+		});
+	},
+	onClaveSeleccionada: function (pk) {
+		this.BuscarProveedorPorPk(pk);
+		console.log("la pk :" + pk);
+	},
+	onBlurCaja: function (caja, valor) {
+		if (caja === "proveedor_nombre") {
+			var codigo_caja = valor.substring(1, valor.indexOf("]"));
+			var codigo_state = this.state.proveedor_codigo;
+
+			if (codigo_caja !== codigo_state) {
+				var valdef = this.valoresDefecto();
+				this.setState({ proveedor: valdef.proveedor, proveedor_nombre: valdef.proveedor_nombre, proveedor_codigo: valdef.proveedor_codigo });
+			}
+		}
+	},
+	llenarListaProveedores: function (lista) {
+		return lista.length > 0 ? React.createElement(
+			'div',
+			{ className: 'caja_acciones', ref: 'busqueda_proveedores_compras' },
+			' ',
+			React.createElement(ListaResultados, { ref: 'ListaResultadosBusqueda', resultados: lista, onClaveSeleccionada: this.onClaveSeleccionada })
+		) : [];
 	},
 	render: function () {
 		func = new FuncGenericas();
 
-		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange"];
-		var INVOICE = func.zipCol(dic1, ["invoice", "Invoice", "Invoice", this.state.invoice, this.onValorCambio]);
-		var PROVEEDOR = func.zipCol(dic1, ["proveedor_nombre", "Proveedor", "Proveedor", this.state.proveedor_nombre, this.onValorCambio]);
-		var FECHASOLICITUD = func.zipCol(dic1, ["fec_solicitud", "Fecha Solicitud", "Fecha Solicitud", this.state.fec_solicitud, this.onValorCambio]);
-		var FECHAADUANA = func.zipCol(dic1, ["fec_aduana", "Fecha Aduana", "Fecha Aduana", this.state.fec_aduana, this.onValorCambio]);
-		var FECHAINVENTARIO = func.zipCol(dic1, ["fec_inventario", "Fecha Inventario", "Fecha Inventario", this.state.fec_inventario, this.onValorCambio]);
-		var FECHAREAL = func.zipCol(dic1, ["fec_real", "Fecha Real", "Fecha Real", this.state.fec_real, this.onValorCambio]);
-		var CASADECAMBIO = func.zipCol(dic1, ["casa_cambio", "Casa de Cambio", "Casa de Cambio", this.state.casa_cambio, this.onValorCambio]);
-		var PRECIODOLLAR = func.zipCol(dic1, ["precio_dolar", "Precio Dollar", "Precio Dollar", this.state.precio_dolar, this.onValorCambio]);
-		var TRANSPORTE = func.zipCol(dic1, ["transporte", "Transporte", "Transporte", this.state.transporte, this.onValorCambio]);
-		var OBSERVACIONES = func.zipCol(dic1, ["descripcion", "Descripción", "Descripción", this.state.descripcion, this.onValorCambio]);
-		var COMENTARIOS = func.zipCol(dic1, ["comentarios", "Comentarios", "Comentarios", this.state.comentarios, this.onValorCambio]);
+		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onEnter", "onBlur"];
+		var INVOICE = func.zipCol(dic1, ["invoice", "Invoice", "Invoice", this.state.invoice, this.onValorCambio, "", this.onBlurCaja]);
+		var PROVEEDOR = func.zipCol(dic1, ["proveedor_nombre", "Proveedor", "Proveedor", this.state.proveedor_nombre, this.onValorCambio, this.onBuscarProovedor, this.onBlurCaja]);
+		var FECHASOLICITUD = func.zipCol(dic1, ["fec_solicitud", "Fecha Solicitud", "Fecha Solicitud", this.state.fec_solicitud, this.onValorCambio, "", this.onBlurCaja]);
+		var FECHAADUANA = func.zipCol(dic1, ["fec_aduana", "Fecha Aduana", "Fecha Aduana", this.state.fec_aduana, this.onValorCambio, "", this.onBlurCaja]);
+		var FECHAINVENTARIO = func.zipCol(dic1, ["fec_inventario", "Fecha Inventario", "Fecha Inventario", this.state.fec_inventario, this.onValorCambio, "", this.onBlurCaja]);
+		var FECHAREAL = func.zipCol(dic1, ["fec_real", "Fecha Real", "Fecha Real", this.state.fec_real, this.onValorCambio, "", this.onBlurCaja]);
+		var CASADECAMBIO = func.zipCol(dic1, ["casa_cambio", "Casa de Cambio", "Casa de Cambio", this.state.casa_cambio, this.onValorCambio, "", this.onBlurCaja]);
+		var PRECIODOLLAR = func.zipCol(dic1, ["precio_dolar", "Precio Dollar", "Precio Dollar", this.state.precio_dolar, this.onValorCambio, "", this.onBlurCaja]);
+		var TRANSPORTE = func.zipCol(dic1, ["transporte", "Transporte", "Transporte", this.state.transporte, this.onValorCambio, "", this.onBlurCaja]);
+		var OBSERVACIONES = func.zipCol(dic1, ["descripcion", "Descripción", "Descripción", this.state.descripcion, this.onValorCambio, "", this.onBlurCaja]);
+		var COMENTARIOS = func.zipCol(dic1, ["comentarios", "Comentarios", "Comentarios", this.state.comentarios, this.onValorCambio, "", this.onBlurCaja]);
 
 		var dic2 = ["id", "titulo", "children", "seleccionado", "onChange"];
 		var STATUS = func.zipCol(dic2, ["bln_activa", "Estatus de Compra", status_combo, this.state.bln_activa, this.onValorCambio]);
-		moment.locale('de');
+
+		icono_proveedor = React.createElement(IconoTabla, { mensajeIndicador: "Agregar Proveedor", opcionGuardar: "agregar_proveedor", tipoIcono: "truck" });
+
+		var busqueda_proveedores = this.llenarListaProveedores(this.state.busqueda_proveedores);
 		return React.createElement(
 			'section',
 			{ className: 'contenido' },
@@ -738,7 +805,8 @@ module.exports = React.createClass({
 							'ul',
 							{ className: 'ul_bloque' },
 							React.createElement(CajaDeTexto, { propiedades: INVOICE }),
-							React.createElement(CajaDeTexto, { mensajeIndicativo: React.createElement(IconoTabla, { mensajeIndicador: "Agregar Proveedor", opcionGuardar: "agregar_proveedor", tipoIcono: "truck" }), propiedades: PROVEEDOR }),
+							busqueda_proveedores,
+							React.createElement(CajaDeTexto, { propiedades: PROVEEDOR, mensajeIndicativo: icono_proveedor }),
 							React.createElement(CajaDeTexto, { propiedades: FECHASOLICITUD }),
 							React.createElement(CajaDeTexto, { propiedades: FECHAADUANA }),
 							React.createElement(CajaDeTexto, { propiedades: FECHAINVENTARIO }),
@@ -785,7 +853,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/areaTexto.jsx":2,"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":8,"../js/funcionesGenericas":11,"../js/iconoTabla.jsx":12,"../js/modelos/apirestCatalogos":16,"../js/nuevoProveedor.jsx":23,"../js/opcionCombo.jsx":24,"../js/tabla.jsx":28,"jquery":32,"jquery-ui":31,"moment":33,"react":194,"react-datepicker/dist/react-datepicker.css":37,"react-dom":38}],10:[function(require,module,exports){
+},{"../js/areaTexto.jsx":2,"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":8,"../js/funcionesGenericas":11,"../js/iconoTabla.jsx":12,"../js/modelos/apirestCatalogos":16,"../js/modelos/apirestProveedores":19,"../js/nuevoProveedor.jsx":23,"../js/opcionCombo.jsx":24,"../js/resultadosLista.jsx":27,"../js/tabla.jsx":28,"jquery":32,"jquery-ui":31,"moment":33,"react":194,"react-datepicker/dist/react-datepicker.css":37,"react-dom":38}],10:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var Combo = require('../js/combo.jsx');
