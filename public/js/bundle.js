@@ -642,7 +642,7 @@ require('react-datepicker/dist/react-datepicker.css');
 var statusCom = [{ val: "1", tit: "Activa" }, { val: "0", tit: "Cancelada" }];
 
 var status_combo = statusCom.map(function (stat) {
-	return React.createElement(OpcionCombo, { valorOpcion: stat.val, tituloOpcion: stat.tit });
+	return React.createElement(OpcionCombo, { key: stat.val, valorOpcion: stat.val, tituloOpcion: stat.tit });
 });
 
 module.exports = React.createClass({
@@ -684,6 +684,7 @@ module.exports = React.createClass({
 				"transporte": nuevaPropiedades.transporte,
 				"descripcion": nuevaPropiedades.descripcion,
 				"comentarios": nuevaPropiedades.comentarios,
+				"compra_detalles": nuevaPropiedades.compra_detalles,
 				"busqueda_proveedores": []
 			});
 		}
@@ -713,6 +714,7 @@ module.exports = React.createClass({
 			transporte: "",
 			descripcion: "",
 			comentarios: "",
+			compra_detalles: [],
 			busqueda_proveedores: []
 		};
 	},
@@ -846,7 +848,7 @@ module.exports = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'bloque_catalogo', id: 'ampliar_tabla' },
-					React.createElement(Tabla, null)
+					React.createElement(Tabla, { listado: this.state.compra_detalles })
 				)
 			)
 		);
@@ -870,7 +872,7 @@ module.exports = React.createClass({
 
 				return React.createElement(
 						'tr',
-						null,
+						{ key: this.props.key },
 						this.props.childrens
 				);
 		}
@@ -1858,44 +1860,71 @@ var CeldaTabla = require('../js/celdaTabla.jsx');
 var IconoTabla = require('../js/iconoTabla.jsx');
 var func = new FuncGenericas();
 
-var titulosEncabezado = ["Material", "Kalibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio", "  ", ""];
+var titulosEncabezado = ["Material", "Kalibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio", "_", "."];
+
+var ico_nuevo = React.createElement(IconoTabla, { opcionGuardar: "guardar_renglon", tipoIcono: "plus" });
+
+var reglonNuevo = ["ss", "", "", "", "", "", "", "", ico_nuevo, ""];
 
 var encabezado = titulosEncabezado.map(function (titulo) {
-  return React.createElement(CeldaTabla, { contenido: titulo });
+      return React.createElement(CeldaTabla, { key: titulo, contenido: titulo });
 });
 
-var fila1 = [{ editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "guardar_renglon", tipoIcono: "plus" }) }, { editable: "true", contenido: "" }];
-var fila2 = [{ editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "eliminar_renglon", tipoIcono: "remove" }) }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" }) }];
-var fila3 = [{ editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "eliminar_renglon", tipoIcono: "remove" }) }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" }) }];
-var fila4 = [{ editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "eliminar_renglon", tipoIcono: "remove" }) }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" }) }];
-var fila5 = [{ editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "true", contenido: "" }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "eliminar_renglon", tipoIcono: "remove" }) }, { editable: "false", contenido: React.createElement(IconoTabla, { opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" }) }];
+var i = 0;
+var nuevo_renglon = reglonNuevo.map(function (titulo) {
+      i = i + 1;
+      return React.createElement(CeldaTabla, { key: i, contenido: titulo });
+});
 
-var celdas1 = func.llenarCeldasDeFila(fila1);
-var celdas2 = func.llenarCeldasDeFila(fila2);
-var celdas3 = func.llenarCeldasDeFila(fila3);
-var celdas4 = func.llenarCeldasDeFila(fila4);
-var celdas5 = func.llenarCeldasDeFila(fila5);
 module.exports = React.createClass({
-  displayName: 'exports',
+      displayName: 'exports',
 
 
-  render: function () {
+      render: function () {
+            var listado_detalles = [];
+            this.props.listado.forEach(function (resultado) {
+                  var detalle = [];
+                  var material = React.createElement(CeldaTabla, { key: 'a1', esEditable: true, contenido: resultado.dsc_material });
+                  var calibre = React.createElement(CeldaTabla, { key: 'b1', esEditable: true, contenido: resultado.calibre });
+                  var ancho = React.createElement(CeldaTabla, { key: 'c1', esEditable: true, contenido: resultado.ancho });
+                  var largo = React.createElement(CeldaTabla, { key: 'd1', key: 'a', esEditable: true, contenido: resultado.largo });
+                  var peso_kg = React.createElement(CeldaTabla, { key: 'e1', esEditable: true, contenido: resultado.peso_kg });
+                  var peso_lb = React.createElement(CeldaTabla, { key: 'f1', esEditable: true, contenido: resultado.peso_lb });
+                  var num_rollo = React.createElement(CeldaTabla, { key: 'g1', esEditable: true, contenido: resultado.num_rollo });
+                  var precio = React.createElement(CeldaTabla, { key: 'h1', esEditable: true, contenido: resultado.precio });
 
-    return React.createElement(
-      'table',
-      { className: 'tabla_catalogo' },
-      React.createElement(
-        'tbody',
-        null,
-        React.createElement(FilaTabla, { childrens: encabezado }),
-        React.createElement(FilaTabla, { childrens: celdas1 }),
-        React.createElement(FilaTabla, { childrens: celdas2 }),
-        React.createElement(FilaTabla, { childrens: celdas3 }),
-        React.createElement(FilaTabla, { childrens: celdas4 }),
-        React.createElement(FilaTabla, { childrens: celdas5 })
-      )
-    );
-  }
+                  var ico_elim = React.createElement(IconoTabla, { key: 'i1', opcionGuardar: "eliminar_renglon", tipoIcono: "remove" });
+                  var btn_eliminar = React.createElement(CeldaTabla, { key: 'j1', esEditable: true, contenido: ico_elim });
+
+                  var ico_mod = React.createElement(IconoTabla, { key: 'k1', opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" });
+                  var btn_modificar = React.createElement(CeldaTabla, { key: 'l1', esEditable: true, contenido: ico_mod });
+
+                  detalle.push(material);
+                  detalle.push(calibre);
+                  detalle.push(ancho);
+                  detalle.push(largo);
+                  detalle.push(peso_kg);
+                  detalle.push(peso_lb);
+                  detalle.push(num_rollo);
+                  detalle.push(precio);
+                  detalle.push(btn_eliminar);
+                  detalle.push(btn_modificar);
+
+                  listado_detalles.push(React.createElement(FilaTabla, { key: resultado.id, childrens: detalle }));
+                  //  filas.push(<Filas key={resultado.id}  resultado={resultado} onClaveSeleccionada={self.onClaveSeleccionada}/>);
+            });
+            return React.createElement(
+                  'table',
+                  { className: 'tabla_catalogo' },
+                  React.createElement(
+                        'tbody',
+                        null,
+                        React.createElement(FilaTabla, { childrens: encabezado }),
+                        React.createElement(FilaTabla, { childrens: nuevo_renglon }),
+                        listado_detalles
+                  )
+            );
+      }
 });
 
 },{"../js/cajaDeTexto.jsx":5,"../js/celdaTabla.jsx":6,"../js/combo.jsx":8,"../js/filaTabla.jsx":10,"../js/funcionesGenericas":11,"../js/iconoTabla.jsx":12,"../js/modelos/apirestCatalogos":16,"../js/opcionCombo.jsx":24,"react":194,"react-dom":38}],29:[function(require,module,exports){

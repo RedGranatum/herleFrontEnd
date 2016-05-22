@@ -23,7 +23,7 @@ var statusCom=[
 ];
 
 var status_combo=statusCom.map(function(stat){
-   return (<OpcionCombo valorOpcion={stat.val} tituloOpcion={stat.tit}/>)
+   return (<OpcionCombo key={stat.val} valorOpcion={stat.val} tituloOpcion={stat.tit}/>)
 
 });
 
@@ -41,6 +41,7 @@ module.exports = React.createClass({
 	    	var proveedor_codigo     =  nuevaPropiedades.proveedor.codigo;
 	    	
         	var proveedor_nombre = "[" + proveedor_codigo + "] " + nuevaPropiedades.proveedor.nombre;
+
 		}
 
 	    if(nuevas_props.datos.id === undefined){
@@ -68,6 +69,7 @@ module.exports = React.createClass({
 		        "transporte"      : nuevaPropiedades.transporte,
 		        "descripcion"     : nuevaPropiedades.descripcion,
 		        "comentarios"     : nuevaPropiedades.comentarios,
+		        "compra_detalles" : nuevaPropiedades.compra_detalles,
 				"busqueda_proveedores" : [],
             })	   
         }
@@ -97,6 +99,7 @@ module.exports = React.createClass({
 			        transporte: "",
 			        descripcion: "",
 			        comentarios: "",  
+			        compra_detalles: [],
 			        busqueda_proveedores: [],
 			};
 		},
@@ -216,7 +219,7 @@ module.exports = React.createClass({
 		<article className="bloque">
 		<NuevoProveedor/>
 		   <div className="bloque_catalogo" id="ampliar_tabla">
-               <Tabla/>
+               <Tabla listado={this.state.compra_detalles}/>
 			</div>
 			
 		</article>		

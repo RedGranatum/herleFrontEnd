@@ -12,7 +12,7 @@ module.exports = React.createClass({
 
            return (
 	
-					<tr>
+					<tr key={this.props.key}>
                          {this.props.childrens}
                     </tr>
 
