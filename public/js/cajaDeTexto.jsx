@@ -34,7 +34,7 @@ module.exports = React.createClass({
                                 onBlur = {this.handleBlur}
                                 />
                               
-                              <div className="viñeta">*</div>
+                              <div className="viñeta">{(this.props.requerido === false) ? '' : '*'}</div>
                               <div className="error_mostrar">{this.props.propiedades.error}</div>
                         </li>
 

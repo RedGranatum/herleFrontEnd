@@ -13,6 +13,7 @@ var AreaTexto       = require('../js/areaTexto.jsx');
 var Tabla 	        = require('../js/tabla.jsx');
 var ListaResultados  = require('../js/resultadosLista.jsx');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
+var CompraDetalle    = require('../js/compraDetalles.jsx');
 
 require('jquery-ui');
 
