@@ -383,7 +383,7 @@ module.exports = React.createClass({
 
 		return React.createElement(
 			'td',
-			{ contentEditable: false, onChange: this.onChange },
+			{ contentEditable: false },
 			this.props.contenido
 		);
 	}
@@ -689,12 +689,6 @@ module.exports = React.createClass({
 		//        proveedor_codigo     = nuevaPropiedades.proveedor_codigo;
 
 		//     }
-
-		if (nuevaPropiedades.dsc_material !== undefined) {
-			this.setState({
-				"material_descripcion": nuevaPropiedades.dsc_material
-			});
-		}
 	},
 	llenarCombos: function () {
 		var func = new FuncGenericas();
@@ -726,47 +720,53 @@ module.exports = React.createClass({
 		};
 	},
 	onValorCambio: function (campo, valor) {
-		//	debugger;
+		var update = {};
+		update[campo] = valor;
+		this.setState(update);
+	},
+	onBlurCaja: function (campo) {},
+	clickOperacion: function (operacion) {
+		this.props.clickOperacion(operacion);
 	},
 	render: function () {
 		this.llenarCombos();
 
 		func = new FuncGenericas();
 
-		var dicCajas = ["id", "titulo", "textoIndicativo", "valor", "onChange"];
-		var DSC_MATERIAL = func.zipCol(dicCajas, ["dsc_material", "", "", this.state.material_descripcion, this.onValorCambio]);
-		var CALIBRE = func.zipCol(dicCajas, ["calibre", "", "", this.state.calibre, this.onValorCambio]);
-		var ANCHO = func.zipCol(dicCajas, ["ancho", "", "", this.state.ancho, this.onValorCambio]);
-		var LARGO = func.zipCol(dicCajas, ["largo", "", "", this.state.largo, this.onValorCambio]);
-		var PESOKG = func.zipCol(dicCajas, ["pesokg", "", "", this.state.peso_kg, this.onValorCambio]);
-		var PESOLB = func.zipCol(dicCajas, ["pesolb", "", "", this.state.peso_lb, this.onValorCambio]);
-		var NOROLLO = func.zipCol(dicCajas, ["norollo", "", "", this.state.num_rollo, this.onValorCambio]);
-		var PRECIO = func.zipCol(dicCajas, ["precio", "", "", this.state.precio, this.onValorCambio]);
+		var dicCajas = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur"];
+		var DSC_MATERIAL = func.zipCol(dicCajas, ["material_descripcion", "", "", this.state.material_descripcion, this.onValorCambio, this.onBlurCaja]);
+		var CALIBRE = func.zipCol(dicCajas, ["calibre", "", "", this.state.calibre, this.onValorCambio, this.onBlurCaja]);
+		var ANCHO = func.zipCol(dicCajas, ["ancho", "", "", this.state.ancho, this.onValorCambio, this.onBlurCaja]);
+		var LARGO = func.zipCol(dicCajas, ["largo", "", "", this.state.largo, this.onValorCambio, this.onBlurCaja]);
+		var PESOKG = func.zipCol(dicCajas, ["peso_kg", "", "", this.state.peso_kg, this.onValorCambio, this.onBlurCaja]);
+		var PESOLB = func.zipCol(dicCajas, ["peso_lb", "", "", this.state.peso_lb, this.onValorCambio, this.onBlurCaja]);
+		var NOROLLO = func.zipCol(dicCajas, ["num_rollo", "", "", this.state.num_rollo, this.onValorCambio, this.onBlurCaja]);
+		var PRECIO = func.zipCol(dicCajas, ["precio", "", "", this.state.precio, this.onValorCambio, this.onBlurCaja]);
 
 		var dicCombo = ["id", "titulo", "children", "seleccionado", "onChange"];
 		var MATERIALES = func.zipCol(dicCombo, ["material", "", this.Materiales, this.state.material, this.onValorCambio]);
 
-		var ico_nuevo = React.createElement(IconoTabla, { opcionGuardar: "guardar_renglon", tipoIcono: "plus" });
-		var ico_elim = React.createElement(IconoTabla, { key: 'i1', opcionGuardar: "eliminar_renglon", tipoIcono: "remove" });
-		var ico_mod = React.createElement(IconoTabla, { key: 'k1', opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" });
+		var ico_nuevo = React.createElement(IconoTabla, { clickOperacion: this.clickOperacion, key: 'ico_nuevo', id: 'nuevo', opcionGuardar: "guardar_renglon", tipoIcono: "plus" });
+		var ico_elim = React.createElement(IconoTabla, { clickOperacion: this.clickOperacion, key: 'ico_elim', id: 'eliminar', opcionGuardar: "eliminar_renglon", tipoIcono: "remove" });
+		var ico_mod = React.createElement(IconoTabla, { clickOperacion: this.clickOperacion, key: 'ico_mod', id: 'modificar', opcionGuardar: "actualizar_renglon", tipoIcono: "refresh" });
 
 		var icono1 = this.props.primera ? ico_nuevo : ico_elim;
 		var icono2 = this.props.primera ? "" : ico_mod;
-		//var material_catalogo = <CeldaTabla key="a11" esEditable={false} contenido={<ComboSimple propiedades={MATERIALES} />} />
+
 		return React.createElement(
 			'tr',
 			{ key: this.props.key },
-			React.createElement(CeldaTabla, { esEditable: false, contenido: this.props.titulo ? this.props.datos.material : React.createElement(Combo, { propiedades: MATERIALES }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.dsc_material : React.createElement(CajaDeTexto, { propiedades: DSC_MATERIAL, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.calibre : React.createElement(CajaDeTexto, { propiedades: CALIBRE, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.ancho : React.createElement(CajaDeTexto, { propiedades: ANCHO, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.largo : React.createElement(CajaDeTexto, { propiedades: LARGO, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.pesokg : React.createElement(CajaDeTexto, { propiedades: PESOKG, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.pesolbs : React.createElement(CajaDeTexto, { propiedades: PESOLB, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.norollo : React.createElement(CajaDeTexto, { propiedades: NOROLLO, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.datos.precio : React.createElement(CajaDeTexto, { propiedades: PRECIO, requerido: false }) }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.icono1 : icono1 }),
-			React.createElement(CeldaTabla, { esEditable: true, contenido: this.props.titulo ? this.props.icono2 : icono2 })
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.material : React.createElement(Combo, { propiedades: MATERIALES }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.dsc_material : React.createElement(CajaDeTexto, { propiedades: DSC_MATERIAL, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.calibre : React.createElement(CajaDeTexto, { propiedades: CALIBRE, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.ancho : React.createElement(CajaDeTexto, { propiedades: ANCHO, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.largo : React.createElement(CajaDeTexto, { propiedades: LARGO, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.pesokg : React.createElement(CajaDeTexto, { propiedades: PESOKG, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.pesolbs : React.createElement(CajaDeTexto, { propiedades: PESOLB, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.norollo : React.createElement(CajaDeTexto, { propiedades: NOROLLO, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.precio : React.createElement(CajaDeTexto, { propiedades: PRECIO, requerido: false }) }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.icono1 : icono1 }),
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.icono2 : icono2 })
 		);
 	}
 });
@@ -1083,11 +1083,14 @@ module.exports = React.createClass({
 		displayName: "exports",
 
 
+		onClick: function () {
+				this.props.clickOperacion(this.props.id);
+		},
 		render: function () {
 
 				return React.createElement(
 						"a",
-						{ className: this.props.opcionGuardar, title: this.props.mensajeIndicador, href: "#" },
+						{ className: this.props.opcionGuardar, title: this.props.mensajeIndicador, onClick: this.onClick },
 						React.createElement("i", { className: "fa fa-" + this.props.tipoIcono + " fa-2x" })
 				);
 		}
@@ -2027,46 +2030,45 @@ var ReactDOM = require('react-dom');
 var FilaTabla = require('../js/filaTabla.jsx');
 var CeldaTabla = require('../js/celdaTabla.jsx');
 var CompraDetalle = require('../js/compraDetalles.jsx');
-var IconoTabla = require('../js/iconoTabla.jsx');
 var func = new FuncGenericas();
 
 module.exports = React.createClass({
-  displayName: 'exports',
+	displayName: 'exports',
 
-  render: function () {
+	clickOperacion: function (operacion) {
+		console.log("nueva operacion: " + operacion);
+	},
+	render: function () {
 
-    var self = this;
-    var listado_detalles = [];
-    var listado = this.props.listado;
-    //    var titulosEncabezado=["Cat.Material","Desc.Material","Calibre","Ancho","Largo","Peso (Kgs)","Peso (Lbs)","No. Rollo","Precio","_","."];
-    //      material_descripcion
-    var Titulos = { material: "Cat.Material", dsc_material: "Desc.Materia", calibre: "Calibre", ancho: "Ancho", largo: "Largo", pesokg: "Peso (Kgs)", pesolbs: "Peso (Lbs)", norollo: "No. Rollo", precio: "Precio", icono1: "", icono2: "" };
-    var fila_titulo = React.createElement(CompraDetalle, { key: "titulo", datos: Titulos, titulo: true });
+		var self = this;
+		var listado_detalles = [];
+		var listado = this.props.listado;
 
-    var ico_nuevo = React.createElement(IconoTabla, { opcionGuardar: "guardar_renglon", tipoIcono: "plus" });
+		var Titulos = { material: "Cat.Material", dsc_material: "Desc.Materia", calibre: "Calibre", ancho: "Ancho", largo: "Largo", pesokg: "Peso (Kgs)", pesolbs: "Peso (Lbs)", norollo: "No. Rollo", precio: "Precio", icono1: "", icono2: "" };
+		var fila_titulo = React.createElement(CompraDetalle, { key: "titulo", datos: Titulos, titulo: true });
 
-    var Primer = { material: "0050000", dsc_material: "", calibre: "", ancho: "", largo: "", pesokg: "", pesolbs: "", norollo: "", precio: "", icono1: ico_nuevo, icono2: "" };
-    var fila_insercion = React.createElement(CompraDetalle, { key: "primera", datos: Primer, primera: true });
+		var Primer = { material: "0050000", dsc_material: "", calibre: "", ancho: "", largo: "", peso_kg: "", peso_lb: "", num_rollo: "", precio: "" };
+		var fila_insercion = React.createElement(CompraDetalle, { key: "primera", datos: Primer, primera: true, clickOperacion: this.clickOperacion });
 
-    listado.forEach(function (detalle_compra) {
-      var detalle = React.createElement(CompraDetalle, { key: detalle_compra.id, datos: detalle_compra });
-      listado_detalles.push(detalle);
-    });
-    return React.createElement(
-      'table',
-      { className: 'tabla_catalogo' },
-      React.createElement(
-        'tbody',
-        null,
-        fila_titulo,
-        fila_insercion,
-        listado_detalles
-      )
-    );
-  }
+		listado.forEach(function (detalle_compra) {
+			var detalle = React.createElement(CompraDetalle, { key: detalle_compra.id, datos: detalle_compra, clickOperacion: self.clickOperacion });
+			listado_detalles.push(detalle);
+		});
+		return React.createElement(
+			'table',
+			{ className: 'tabla_catalogo' },
+			React.createElement(
+				'tbody',
+				null,
+				fila_titulo,
+				fila_insercion,
+				listado_detalles
+			)
+		);
+	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/celdaTabla.jsx":6,"../js/combo_simple.jsx":9,"../js/compraDetalles.jsx":10,"../js/filaTabla.jsx":12,"../js/funcionesGenericas":13,"../js/iconoTabla.jsx":14,"../js/modelos/apirestCatalogos":18,"../js/opcionCombo.jsx":26,"react":196,"react-dom":40}],31:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":5,"../js/celdaTabla.jsx":6,"../js/combo_simple.jsx":9,"../js/compraDetalles.jsx":10,"../js/filaTabla.jsx":12,"../js/funcionesGenericas":13,"../js/modelos/apirestCatalogos":18,"../js/opcionCombo.jsx":26,"react":196,"react-dom":40}],31:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 

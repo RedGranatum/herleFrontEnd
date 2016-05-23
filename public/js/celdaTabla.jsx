@@ -11,7 +11,7 @@ module.exports = React.createClass({
           
            return (
 	
-			 <td contentEditable={false} onChange={this.onChange}>
+			 <td contentEditable={false} >
 			    {this.props.contenido} 
 			 </td>
 
