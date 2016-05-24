@@ -104,7 +104,7 @@ module.exports = React.createClass({
 		    	var mens   = dic_err[key].mensaje;
 		    	if(exp.test(valor) || (valor==="" && requer===false))
 				{
-					this.errors[key] = ".";
+					this.errors[key] = "";
 				}
 				else
 				{
@@ -114,7 +114,7 @@ module.exports = React.createClass({
 		},
 		hayErrores: function(){
 			for(var key in this.errors){
-				if(this.errors[key].trim() !=="."){
+				if(this.errors[key].trim() !==""){
 					return true;
 				}
 			}

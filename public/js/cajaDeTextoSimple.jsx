@@ -16,14 +16,10 @@ module.exports = React.createClass({
             this.props.propiedades.onBlur( this.props.propiedades.id,this.refs.CajaTexto.value);
         },
 		render: function () {
-      var divStyle = (this.props.propiedades.error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
-   
+
 			return (
-                        <li className="li_bloque">
-                              <label className="etiquetas_bloque">{this.props.propiedades.titulo} {this.props.mensajeIndicativo}</label>
-                              
                               <input 
-                                className="inputs_bloque" 
+                                className={this.props.estilo} 
                                 pattern={this.props.propiedades.caracteresEsp}
                                 type="text" 
                                 placeholder={this.props.propiedades.textoIndicativo} 
@@ -34,11 +30,7 @@ module.exports = React.createClass({
                                 onKeyPress ={this.TeclaPresionada} 
                                 onBlur = {this.handleBlur}
                                 />
-                              
-                              <div className="viñeta">{(this.props.requerido === false) ? '' : '*'}</div>
-                              <div style={divStyle} className="error_mostrar">{this.props.propiedades.error}</div>
-                        </li>
-
+                             
 			);  
 		}
 });

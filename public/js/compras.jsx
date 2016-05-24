@@ -56,6 +56,7 @@ module.exports = React.createClass({
 	   
 	    if(nuevaPropiedades.invoice!==undefined){
             this.setState({
+            	"id"              : nuevaPropiedades.id,
             	"invoice"	      : nuevaPropiedades.invoice,
             	"proveedor"       : proveedor_id,
             	"proveedor_codigo": proveedor_codigo,
@@ -220,7 +221,7 @@ module.exports = React.createClass({
 		<article className="bloque">
 		<NuevoProveedor/>
 		   <div className="bloque_catalogo" id="ampliar_tabla">
-               <Tabla listado={this.state.compra_detalles}/>
+               <Tabla listado={this.state.compra_detalles} id_compra= {this.state.id}/>
 			</div>
 			
 		</article>		

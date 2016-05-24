@@ -34,20 +34,23 @@ module.exports = React.createClass({
 			var nueva_fila = fila;
 			nueva_fila["num_consecutivo"] = this.num_con;  
 			nueva_fila["dsc_material"] = nueva_fila["material_descripcion"];
+			nueva_fila.compra = this.props.id_compra;
 			nuevo.push(nueva_fila);
 			this.setState({detalles_lista: nuevo })
-			//this.refs.NuevoDetalle.limpiarFila(); 
-			console.log("nueva operacion: " + operacion);
+			this.refs.NuevoDetalle.limpiarFila(); 
+			console.log("*** " + nueva_fila.id + " &&&& " + nueva_fila.compra);
 		}
 		if(operacion == "eliminar"){
 			var filas = this.state.detalles_lista.slice()
 			
+			console.log("*** " + fila.id + " &&&& " + fila.compra);
+			
 			var nuevas = filas.filter(function(datos){
-				return datos.num_consecutivo !== fila.num_consecutivo;
-			});
+			 	return datos.num_consecutivo !== fila.num_consecutivo;
+			 });
 
-			this.setState({detalles_lista: nuevas})
-			console.log("Quiere eliminar una fila " + fila.num_consecutivo);
+			 this.setState({detalles_lista: nuevas})
+			 console.log("Quiere eliminar una fila " + fila.num_consecutivo);
 		}
 	},
 	render: function () {

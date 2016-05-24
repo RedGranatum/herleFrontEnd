@@ -1,12 +1,13 @@
-var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
-var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
-var CeldaTabla      = require('../js/celdaTabla.jsx');
-var Combo 	    	= require('../js/combo.jsx');
-var FuncGenericas   = require('../js/funcionesGenericas')
-var IconoTabla      = require('../js/iconoTabla.jsx');
-var OpcionCombo 	= require('../js/opcionCombo.jsx');
-var React 			= require('react');
-var ReactDOM    	= require('react-dom') ;
+var ApiRestCatalogo   = require('../js/modelos/apirestCatalogos');
+var CajaDeTexto 	  = require('../js/cajaDeTexto.jsx');
+var CajaDeTextoSimple = require('../js/cajaDeTextoSimple.jsx');
+var CeldaTabla        = require('../js/celdaTabla.jsx');
+var Combo 	    	  = require('../js/combo.jsx');
+var FuncGenericas     = require('../js/funcionesGenericas')
+var IconoTabla        = require('../js/iconoTabla.jsx');
+var OpcionCombo 	  = require('../js/opcionCombo.jsx');
+var React 			  = require('react');
+var ReactDOM    	  = require('react-dom') ;
 
 //var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
@@ -17,8 +18,10 @@ module.exports = React.createClass({
 		}
 		else{
 				var material     = (this.props.datos.material.cdu_catalogo===undefined)? this.props.datos.material : this.props.datos.material.cdu_catalogo;   
-				var dsc_material =  this.props.datos.dsc_material
-		        var calibre      = this.props.datos.calibre
+				var id           = this.props.datos.id;
+				var compra       = this.props.datos.compra;
+				var dsc_material = this.props.datos.dsc_material;
+		        var calibre      = this.props.datos.calibre;
 				var ancho        = this.props.datos.ancho;
 				var largo        = this.props.datos.largo;
 				var peso_kg      = this.props.datos.peso_kg;
@@ -26,7 +29,7 @@ module.exports = React.createClass({
 				var num_rollo    = this.props.datos.num_rollo;
 				var precio       = this.props.datos.precio;
 
-				this.setState({material: material,material_descripcion:dsc_material, calibre:calibre, ancho: ancho, 
+				this.setState({id:id, compra:compra, material: material,material_descripcion:dsc_material, calibre:calibre, ancho: ancho, 
 					          largo:largo,peso_kg: peso_kg,peso_lb:peso_lb,num_rollo:num_rollo,precio:precio })
 			}
 	},
@@ -78,7 +81,7 @@ module.exports = React.createClass({
 			this.props.clickOperacion(operacion,fila);
 		},
 		valoresFila: function()
-		{
+		{              
 			return{
 		        "id": this.state.id,
 		        "compra": this.state.compra,
@@ -128,14 +131,14 @@ module.exports = React.createClass({
         	return (
 				<tr key={this.props.key}>
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.material       : <Combo       propiedades = {MATERIALES}   />} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.dsc_material   : <CajaDeTexto  propiedades = {DSC_MATERIAL}  requerido={false} />}  />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.calibre        : <CajaDeTexto propiedades = {CALIBRE}        requerido={false}  />} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.ancho          : <CajaDeTexto propiedades = {ANCHO}          requerido={false}  />} /> 
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.largo 		    : <CajaDeTexto propiedades = {LARGO}          requerido={false}  />} /> 
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.pesokg 		: <CajaDeTexto propiedades = {PESOKG}         requerido={false}  />} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.pesolbs		: <CajaDeTexto propiedades = {PESOLB}         requerido={false}  />} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.norollo 		: <CajaDeTexto propiedades = {NOROLLO}        requerido={false}  />} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio 		: <CajaDeTexto propiedades = {PRECIO}         requerido={false}   />} />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.dsc_material   : <CajaDeTextoSimple estilo="caja_grid" propiedades = {DSC_MATERIAL}  requerido={false} />}  />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.calibre        : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {CALIBRE}        requerido={false}  />} />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.ancho          : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {ANCHO}          requerido={false}  />} /> 
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.largo 		    : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {LARGO}          requerido={false}  />} /> 
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.pesokg 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PESOKG}         requerido={false}  />} />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.pesolbs		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PESOLB}         requerido={false}  />} />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.norollo 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {NOROLLO}        requerido={false}  />} />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PRECIO}         requerido={false}   />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.icono1 : icono1} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.icono2 : icono2} />
                 </tr>

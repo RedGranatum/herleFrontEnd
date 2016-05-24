@@ -12,7 +12,7 @@ module.exports = React.createClass({
            return (
 	
 			 <td contentEditable={false} >
-			    {this.props.contenido} 
+			    {this.props.contenido} 			   
 			 </td>
 
 			);  
