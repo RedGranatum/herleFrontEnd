@@ -658,37 +658,25 @@ module.exports = React.createClass({
 	displayName: 'exports',
 
 	componentWillMount: function () {
-		var material = this.props.datos.material.cdu_catalogo === undefined ? this.props.datos.material : this.props.datos.material.cdu_catalogo;
-		var dsc_material = this.props.datos.dsc_material;
-		var calibre = this.props.datos.calibre;
-		var ancho = this.props.datos.ancho;
-		var largo = this.props.datos.largo;
-		var peso_kg = this.props.datos.peso_kg;
-		var peso_lb = this.props.datos.peso_lb;
-		var num_rollo = this.props.datos.num_rollo;
-		var precio = this.props.datos.precio;
+		if (this.props.datos === undefined) {
+			this.limpiarFila();
+		} else {
+			var material = this.props.datos.material.cdu_catalogo === undefined ? this.props.datos.material : this.props.datos.material.cdu_catalogo;
+			var dsc_material = this.props.datos.dsc_material;
+			var calibre = this.props.datos.calibre;
+			var ancho = this.props.datos.ancho;
+			var largo = this.props.datos.largo;
+			var peso_kg = this.props.datos.peso_kg;
+			var peso_lb = this.props.datos.peso_lb;
+			var num_rollo = this.props.datos.num_rollo;
+			var precio = this.props.datos.precio;
 
-		this.setState({ material: material, material_descripcion: dsc_material, calibre: calibre, ancho: ancho,
-			largo: largo, peso_kg: peso_kg, peso_lb: peso_lb, num_rollo: num_rollo, precio: precio });
+			this.setState({ material: material, material_descripcion: dsc_material, calibre: calibre, ancho: ancho,
+				largo: largo, peso_kg: peso_kg, peso_lb: peso_lb, num_rollo: num_rollo, precio: precio });
+		}
 	},
 	componentWillReceiveProps: function (nuevas_props) {
 		var nuevaPropiedades = nuevas_props.datos;
-
-		//    if(nuevas_props.datos.id !== undefined){
-		//    	var proveedor_id     =  nuevaPropiedades.proveedor.id;
-		//    	var proveedor_codigo     =  nuevaPropiedades.proveedor.codigo;
-
-		//       	var proveedor_nombre = "[" + proveedor_codigo + "] " + nuevaPropiedades.proveedor.nombre;
-
-		// }
-
-		//    if(nuevas_props.datos.id === undefined){
-		//       	nuevaPropiedades     = this.valoresDefecto();
-		//       	proveedor_nombre     = nuevaPropiedades.proveedor_nombre;
-		//       	proveedor_id   		 = nuevaPropiedades.proveedor_id;
-		//        proveedor_codigo     = nuevaPropiedades.proveedor_codigo;
-
-		//     }
 	},
 	llenarCombos: function () {
 		var func = new FuncGenericas();
@@ -726,7 +714,29 @@ module.exports = React.createClass({
 	},
 	onBlurCaja: function (campo) {},
 	clickOperacion: function (operacion) {
-		this.props.clickOperacion(operacion);
+		var fila = this.valoresFila();
+		this.props.clickOperacion(operacion, fila);
+	},
+	valoresFila: function () {
+		return {
+			"id": this.state.id,
+			"compra": this.state.compra,
+			"material": this.state.material,
+			"material_descripcion": this.state.material_descripcion,
+			"dsc_material": this.state.dsc_material,
+			"calibre": this.state.calibre,
+			"ancho": this.state.ancho,
+			"largo": this.state.largo,
+			"peso_kg": this.state.peso_kg,
+			"peso_lb": this.state.peso_lb,
+			"num_rollo": this.state.num_rollo,
+			"precio": this.state.precio,
+			"num_consecutivo": this.props.primera ? "" : this.props.datos.num_consecutivo
+		};
+	},
+	limpiarFila: function () {
+		var val_def = this.valoresDefecto();
+		this.setState(val_def);
 	},
 	render: function () {
 		this.llenarCombos();
@@ -1117,7 +1127,7 @@ $(function () {
     };
 
     //var url_local = 'http://localhost:8000/'
-    var url_local = 'http://192.168.0.10:8000/';
+    var url_local = 'http://192.168.0.13:8000/';
     //var url_local = 'http://107.170.1.182:8000/'
 
     datosCatalogo = new ApiRestCatalogo();
@@ -2043,22 +2053,35 @@ module.exports = React.createClass({
 		}
 
 		this.setState({ detalles_lista: nuevas_props.listado });
+		this.refs.NuevoDetalle.limpiarFila();
 	},
 	getInitialState: function () {
 		return {
 			detalles_lista: []
 		};
 	},
-	clickOperacion: function (operacion) {
-		debugger;
-		var nuevo = this.state.detalles_lista.slice();
-		this.num_con = this.num_con === undefined ? 1 : this.num_con + 1;
-		console.log("nuevo con " + this.num_con);
-		nuevos_valores = { num_consecutivo: this.num_con, ancho: "1", calibre: "2", compra: "3", dsc_material: "4", largo: "5", material: "0050001", peso_kg: "6", peso_lb: "7",
-			num_rollo: "8", precio: "9" };
-		nuevo.push(nuevos_valores);
-		this.setState({ detalles_lista: nuevo });
-		console.log("nueva operacion: " + operacion);
+	clickOperacion: function (operacion, fila) {
+		if (operacion === "nuevo") {
+			var nuevo = this.state.detalles_lista.slice();
+			this.num_con = this.num_con === undefined ? 1 : this.num_con + 1;
+			var nueva_fila = fila;
+			nueva_fila["num_consecutivo"] = this.num_con;
+			nueva_fila["dsc_material"] = nueva_fila["material_descripcion"];
+			nuevo.push(nueva_fila);
+			this.setState({ detalles_lista: nuevo });
+			//this.refs.NuevoDetalle.limpiarFila();
+			console.log("nueva operacion: " + operacion);
+		}
+		if (operacion == "eliminar") {
+			var filas = this.state.detalles_lista.slice();
+
+			var nuevas = filas.filter(function (datos) {
+				return datos.num_consecutivo !== fila.num_consecutivo;
+			});
+
+			this.setState({ detalles_lista: nuevas });
+			console.log("Quiere eliminar una fila " + fila.num_consecutivo);
+		}
 	},
 	render: function () {
 
@@ -2069,8 +2092,7 @@ module.exports = React.createClass({
 		var Titulos = { material: "Cat.Material", dsc_material: "Desc.Materia", calibre: "Calibre", ancho: "Ancho", largo: "Largo", pesokg: "Peso (Kgs)", pesolbs: "Peso (Lbs)", norollo: "No. Rollo", precio: "Precio", icono1: "", icono2: "" };
 		var fila_titulo = React.createElement(CompraDetalle, { key: "titulo", datos: Titulos, titulo: true });
 
-		var Primer = { material: "0050000", dsc_material: "", calibre: "", ancho: "", largo: "", peso_kg: "", peso_lb: "", num_rollo: "", precio: "" };
-		var fila_insercion = React.createElement(CompraDetalle, { key: "primera", datos: Primer, primera: true, clickOperacion: this.clickOperacion });
+		var fila_insercion = React.createElement(CompraDetalle, { ref: 'NuevoDetalle', key: "primera", primera: true, clickOperacion: this.clickOperacion });
 
 		this.state.detalles_lista.forEach(function (detalle_compra) {
 			var detalle = React.createElement(CompraDetalle, { ref: "detalle_" + detalle_compra.num_consecutivo, key: detalle_compra.num_consecutivo, datos: detalle_compra, clickOperacion: self.clickOperacion });

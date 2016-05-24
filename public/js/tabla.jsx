@@ -19,6 +19,7 @@ module.exports = React.createClass({
 		}
          
 		 this.setState({detalles_lista:nuevas_props.listado })  
+		 this.refs.NuevoDetalle.limpiarFila(); 
 	  },
 	getInitialState: function(){
 			return {
@@ -26,16 +27,28 @@ module.exports = React.createClass({
 			}
 			
 	},
-	clickOperacion: function(operacion){
-		debugger;
-		var nuevo = this.state.detalles_lista.slice()
-		this.num_con = this.num_con === undefined ? 1 : this.num_con + 1
-		console.log("nuevo con " + this.num_con)
-		nuevos_valores = {num_consecutivo:this.num_con, ancho: "1", calibre:"2", compra:"3",dsc_material:"4", largo:"5",material:"0050001",peso_kg:"6",peso_lb:"7"
-		,num_rollo:"8",precio:"9"}
-		nuevo.push(nuevos_valores);
-		this.setState({detalles_lista: nuevo })
-		console.log("nueva operacion: " + operacion);
+	clickOperacion: function(operacion,fila){
+		if(operacion === "nuevo"){
+			var nuevo = this.state.detalles_lista.slice()
+			this.num_con = this.num_con === undefined ? 1 : this.num_con + 1
+			var nueva_fila = fila;
+			nueva_fila["num_consecutivo"] = this.num_con;  
+			nueva_fila["dsc_material"] = nueva_fila["material_descripcion"];
+			nuevo.push(nueva_fila);
+			this.setState({detalles_lista: nuevo })
+			//this.refs.NuevoDetalle.limpiarFila(); 
+			console.log("nueva operacion: " + operacion);
+		}
+		if(operacion == "eliminar"){
+			var filas = this.state.detalles_lista.slice()
+			
+			var nuevas = filas.filter(function(datos){
+				return datos.num_consecutivo !== fila.num_consecutivo;
+			});
+
+			this.setState({detalles_lista: nuevas})
+			console.log("Quiere eliminar una fila " + fila.num_consecutivo);
+		}
 	},
 	render: function () {
 
@@ -46,10 +59,7 @@ module.exports = React.createClass({
        var Titulos ={material:"Cat.Material", dsc_material:"Desc.Materia",calibre:"Calibre",ancho:"Ancho",largo:"Largo",pesokg:"Peso (Kgs)",pesolbs: "Peso (Lbs)", norollo:"No. Rollo",precio:"Precio", icono1:"",icono2:"" }
        var fila_titulo =  <CompraDetalle key={"titulo"} datos ={Titulos} titulo={true} />
 
-	   
-
-	   var Primer ={material:"0050000", dsc_material:"",calibre:"",ancho:"",largo:"",peso_kg:"",peso_lb: "", num_rollo:"",precio:""}
-       var fila_insercion =  <CompraDetalle key={"primera"} datos ={Primer}  primera={true} clickOperacion={this.clickOperacion}/>
+	   var fila_insercion =  <CompraDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/>
 
 
        this.state.detalles_lista.forEach(function(detalle_compra){

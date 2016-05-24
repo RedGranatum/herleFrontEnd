@@ -12,49 +12,31 @@ var ReactDOM    	= require('react-dom') ;
 
 module.exports = React.createClass({
 	componentWillMount: function(){
-		var material     = (this.props.datos.material.cdu_catalogo===undefined)? this.props.datos.material : this.props.datos.material.cdu_catalogo;   
-		var dsc_material =  this.props.datos.dsc_material
-        var calibre      = this.props.datos.calibre
-		var ancho        = this.props.datos.ancho;
-		var largo        = this.props.datos.largo;
-		var peso_kg      = this.props.datos.peso_kg;
-		var peso_lb      = this.props.datos.peso_lb;
-		var num_rollo    = this.props.datos.num_rollo;
-		var precio       = this.props.datos.precio;
+       	if(this.props.datos === undefined){
+				this.limpiarFila();
+		}
+		else{
+				var material     = (this.props.datos.material.cdu_catalogo===undefined)? this.props.datos.material : this.props.datos.material.cdu_catalogo;   
+				var dsc_material =  this.props.datos.dsc_material
+		        var calibre      = this.props.datos.calibre
+				var ancho        = this.props.datos.ancho;
+				var largo        = this.props.datos.largo;
+				var peso_kg      = this.props.datos.peso_kg;
+				var peso_lb      = this.props.datos.peso_lb;
+				var num_rollo    = this.props.datos.num_rollo;
+				var precio       = this.props.datos.precio;
 
-
-
-		this.setState({material: material,material_descripcion:dsc_material, calibre:calibre, ancho: ancho, 
-			          largo:largo,peso_kg: peso_kg,peso_lb:peso_lb,num_rollo:num_rollo,precio:precio })
-
+				this.setState({material: material,material_descripcion:dsc_material, calibre:calibre, ancho: ancho, 
+					          largo:largo,peso_kg: peso_kg,peso_lb:peso_lb,num_rollo:num_rollo,precio:precio })
+			}
 	},
 	   componentWillReceiveProps: function(nuevas_props){
-	   	   var nuevaPropiedades = nuevas_props.datos
-                          
-
-
-
-	 //    if(nuevas_props.datos.id !== undefined){
-	 //    	var proveedor_id     =  nuevaPropiedades.proveedor.id;
-	 //    	var proveedor_codigo     =  nuevaPropiedades.proveedor.codigo;
-	    	
-  //       	var proveedor_nombre = "[" + proveedor_codigo + "] " + nuevaPropiedades.proveedor.nombre;
-
-		// }
-
-	 //    if(nuevas_props.datos.id === undefined){
-	 //       	nuevaPropiedades     = this.valoresDefecto();
-	 //       	proveedor_nombre     = nuevaPropiedades.proveedor_nombre;
-	 //       	proveedor_id   		 = nuevaPropiedades.proveedor_id;
-	 //        proveedor_codigo     = nuevaPropiedades.proveedor_codigo;
-	       	 	
-	 //     }
-
-	   	  
+	   	   var nuevaPropiedades = nuevas_props.datos 
 	   },
 	   llenarCombos: function(){    
          var func = new FuncGenericas();      
          this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
+
         },
 	 	getInitialState: function(){
 			return this.valoresDefecto();
@@ -92,7 +74,31 @@ module.exports = React.createClass({
 		},
 		clickOperacion: function(operacion)
 		{
-			this.props.clickOperacion(operacion);
+			var fila = this.valoresFila();
+			this.props.clickOperacion(operacion,fila);
+		},
+		valoresFila: function()
+		{
+			return{
+		        "id": this.state.id,
+		        "compra": this.state.compra,
+		        "material": this.state.material,
+		        "material_descripcion": this.state.material_descripcion,
+		        "dsc_material": this.state.dsc_material,
+		        "calibre": this.state.calibre,
+		        "ancho": this.state.ancho,
+		        "largo":   this.state.largo,
+		        "peso_kg": this.state.peso_kg,
+		        "peso_lb": this.state.peso_lb,
+		        "num_rollo": this.state.num_rollo,
+		        "precio": this.state.precio,
+		        "num_consecutivo" : this.props.primera ? "" : this.props.datos.num_consecutivo,
+			};
+		},
+		limpiarFila: function()
+		{
+			var val_def = this.valoresDefecto();
+			this.setState(val_def);
 		},
 		render: function () {
 			this.llenarCombos();
