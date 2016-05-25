@@ -30,7 +30,18 @@ var status_combo=statusCom.map(function(stat){
 
 module.exports = React.createClass({
 	componentDidMount: function(){
-				$("#fec_solicitud,#fec_aduana,#fec_inventario,#fec_real").datepicker({dateFormat:"dd/mm/yy"});
+		        var self= this;
+				$("#fec_solicitud,#fec_aduana,#fec_inventario,#fec_real").datepicker({dateFormat:"dd/mm/yy"})
+						.on("input change", function(e){
+							self.cambiarValorFecha(e.target.id,e.target.value);
+							console.log("Date changed: ", e.target.value);
+						});
+
+	},
+	cambiarValorFecha: function(control,valor){
+			var update = {};
+			update[control] = valor;
+			this.setState(update);
 	},
 	    componentWillReceiveProps: function(nuevas_props){
 	    var nuevaPropiedades = nuevas_props.datos
@@ -78,6 +89,7 @@ module.exports = React.createClass({
 	    },
 		onValorCambio: function(campo,valor){
 			var update = {};
+
 			update[campo] = valor;
 			this.setState(update);
 		},
@@ -97,7 +109,7 @@ module.exports = React.createClass({
 			        fec_real:   "01/01/1900",
 			        casa_cambio: "",
 			        precio_dolar: "",
-			        bln_activa: "0",
+			        bln_activa: "1",
 			        transporte: "",
 			        descripcion: "",
 			        comentarios: "",  
@@ -156,6 +168,27 @@ module.exports = React.createClass({
 		 	 return  (lista.length >0) ?  <div className="caja_acciones" ref="busqueda_proveedores_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
               
 		},
+		nuevosDatos: function(){
+			var datos_detalles = this.refs.tablaDetalles.valoresDetallesCompra()
+	    return{
+	    	id:             this.state.id,
+		    invoice: 	    this.state.invoice,
+	        proveedor: 	    this.state.proveedor,
+	        fec_solicitud:  this.state.fec_solicitud,
+	        fec_aduana:     this.state.fec_aduana,
+	        fec_inventario: this.state.fec_inventario,
+	        fec_real: 		this.state.fec_real,
+	        casa_cambio: 	this.state.casa_cambio,
+	        precio_dolar: 	this.state.precio_dolar,
+	        tipo_moneda: "0040000",
+	        transporte: 	this.state.transporte,
+	        bln_activa: 	this.state.bln_activa === '1' ? true : false,
+	        descripcion: 	this.state.descripcion,
+	        comentarios: 	this.state.comentarios,
+	        compra_detalles: datos_detalles,
+        };
+
+		},
 		render: function () {
 			func = new FuncGenericas();
 			
@@ -191,10 +224,10 @@ module.exports = React.createClass({
 					     <CajaDeTexto propiedades={INVOICE} />
 						 {busqueda_proveedores}
 						 <CajaDeTexto propiedades={PROVEEDOR} mensajeIndicativo={icono_proveedor} />
-						 <CajaDeTexto propiedades={FECHASOLICITUD} />
-						 <CajaDeTexto propiedades={FECHAADUANA} />
-						 <CajaDeTexto propiedades={FECHAINVENTARIO} />
-						 <CajaDeTexto propiedades={FECHAREAL} />
+						 <CajaDeTexto propiedades={FECHASOLICITUD} ref="cajaFechaSolicitud" />
+						 <CajaDeTexto propiedades={FECHAADUANA} ref="cajaFechaAduana"/>
+						 <CajaDeTexto propiedades={FECHAINVENTARIO}  ref="cajaFechaInventario"/>
+						 <CajaDeTexto propiedades={FECHAREAL} ref="cajaFechaReal" />
 						 <CajaDeTexto propiedades={CASADECAMBIO} />
 						 <CajaDeTexto propiedades={PRECIODOLLAR} />
 
@@ -219,9 +252,8 @@ module.exports = React.createClass({
 			</div>
 		</article>
 		<article className="bloque">
-		<NuevoProveedor/>
 		   <div className="bloque_catalogo" id="ampliar_tabla">
-               <Tabla listado={this.state.compra_detalles} id_compra= {this.state.id}/>
+               <Tabla listado={this.state.compra_detalles} id_compra= {this.state.id} ref="tablaDetalles"/>
 			</div>
 			
 		</article>		

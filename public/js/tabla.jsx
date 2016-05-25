@@ -27,6 +27,16 @@ module.exports = React.createClass({
 			}
 			
 	},
+	valoresDetallesCompra: function(){
+		 var self = this;
+		 var detalles = this.state.detalles_lista.map(function(datos){
+		 	var fila =self.refs["detalle_" + datos.num_consecutivo].valoresFila();
+		 	fila["dsc_material"]=fila["material_descripcion"];
+		 	delete fila.compra; 
+		 	return fila;
+		 })
+		 return detalles;
+	},
 	clickOperacion: function(operacion,fila){
 		if(operacion === "nuevo"){
 			var nuevo = this.state.detalles_lista.slice()

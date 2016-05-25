@@ -107,6 +107,24 @@ module.exports = React.createClass({
                 self.setState({datosCompra:[],actualizarForm:true});
                 console.log("Vas a dar de alta una nueva compra");              
             });
+            Page('/compras/guardar',function(){
+              var datosNuevos=  self.refs[appmvc.Menu.COMPRAS].nuevosDatos(); 
+              var compra = new ApiRestCompras();
+              debugger;
+             compra.Guardar(datosNuevos,
+                    function(datos,response){
+                         self.setState({actualizarForm:true});
+                         self.setState({datosCompra:datos});
+                        $("#notify_success").text("Los datos fueron modificados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });
+                console.log("Vas a guardar la compra");              
+            });
+            
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
