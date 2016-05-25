@@ -108,9 +108,15 @@ module.exports = React.createClass({
                 console.log("Vas a dar de alta una nueva compra");              
             });
             Page('/compras/guardar',function(){
+             if(self.refs[appmvc.Menu.COMPRAS].hayErrores()){
+                    $("#notify_error").text("Hay errores en algunos campos");
+                    $("#notify_error").notify();
+                    return;
+              }
+
               var datosNuevos=  self.refs[appmvc.Menu.COMPRAS].nuevosDatos(); 
               var compra = new ApiRestCompras();
-              debugger;
+             
              compra.Guardar(datosNuevos,
                     function(datos,response){
                          self.setState({actualizarForm:true});

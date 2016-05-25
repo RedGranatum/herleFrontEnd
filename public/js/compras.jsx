@@ -16,8 +16,8 @@ var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 var CompraDetalle    = require('../js/compraDetalles.jsx');
 
 require('jquery-ui');
-
 require('react-datepicker/dist/react-datepicker.css');
+
 var statusCom=[
   {val:"1",tit:"Activa"},
   {val:"0",tit:"Cancelada"}
@@ -37,17 +37,18 @@ module.exports = React.createClass({
 							console.log("Date changed: ", e.target.value);
 						});
 
+	  this.CompTablaDetalles = ReactDOM.render(<Tabla  id="ComprasTablaDetalles" listado={[]} id_compra= {-1} />, document.getElementById("ampliar_tabla"));
+	    
 	},
 	cambiarValorFecha: function(control,valor){
 			var update = {};
 			update[control] = valor;
 			this.setState(update);
 	},
-	    componentWillReceiveProps: function(nuevas_props){
-	    var nuevaPropiedades = nuevas_props.datos
+	componentWillReceiveProps: function(nuevas_props){
+	     var nuevaPropiedades = nuevas_props.datos
 
-
-
+       
 	    if(nuevas_props.datos.id !== undefined){
 	    	var proveedor_id     =  nuevaPropiedades.proveedor.id;
 	    	var proveedor_codigo     =  nuevaPropiedades.proveedor.codigo;
@@ -84,14 +85,30 @@ module.exports = React.createClass({
 		        "comentarios"     : nuevaPropiedades.comentarios,
 		        "compra_detalles" : nuevaPropiedades.compra_detalles,
 				"busqueda_proveedores" : [],
+				 "errores" :{},
             })	   
         }
+        this.CompTablaDetalles = ReactDOM.render(<Tabla id="ComprasTablaDetalles" listado={nuevaPropiedades.compra_detalles} id_compra= {nuevaPropiedades.id} />, document.getElementById("ampliar_tabla"));
 	    },
 		onValorCambio: function(campo,valor){
 			var update = {};
 
 			update[campo] = valor;
 			this.setState(update);
+		},
+		relacionCampoErrores: function(){
+			var dic_errores = {
+				invoice:   {valor:this.state.invoice,  expreg:/^[a-zA-Z0-9\-().\s]{1,10}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [1-10]"},
+				proveedor_nombre: {valor:this.state.proveedor,     expreg:/^[a-zA-Z0-9\-().\s]{1,110}$/,    requerido: true,  mensaje:"Selecciona un proveedor"},
+				casa_cambio:   {valor:this.state.casa_cambio,  expreg:/^[a-zA-Z0-9\-().\s]{2,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [2-30]"},
+				precio_dolar:    {valor:this.state.precio_dolar,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				fec_solicitud:    {valor:this.state.fec_solicitud,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},
+				fec_aduana:    {valor:this.state.fec_aduana,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},
+				fec_inventario:    {valor:this.state.fec_inventario,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},
+				fec_real:    {valor:this.state.fec_real,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},
+			
+				 }
+		    return dic_errores;
 		},
 		getInitialState: function(){
 			return this.valoresDefecto();
@@ -115,6 +132,7 @@ module.exports = React.createClass({
 			        comentarios: "",  
 			        compra_detalles: [],
 			        busqueda_proveedores: [],
+			        "errores" :{},
 			};
 		},
 		onBuscarProovedor: function(control,valor){
@@ -141,9 +159,11 @@ module.exports = React.createClass({
       						    var codigo =  data[0].codigo;
       						    var nombre ="[" + codigo + "] " + data[0].nombre; 
       			   				self.setState({proveedor: id,proveedor_nombre: nombre,proveedor_codigo:codigo,busqueda_proveedores:[] });
+      						     self.validarCampoErrores("proveedor_nombre","223");		
       							},
       					function(model,response,options){
       						     self.setState({proveedor: "0",proveedor_nombre: "",proveedor_codigo:"",busqueda_proveedores: []  });
+      						     self.validarCampoErrores("proveedor_nombre","");		
       							}
 				    );
          },
@@ -151,25 +171,96 @@ module.exports = React.createClass({
 			this.BuscarProveedorPorPk(pk)
   			console.log("la pk :" +pk);
   		},
-  		onBlurCaja: function(caja,valor){
-            if(caja==="proveedor_nombre")
-			 {
+
+  		validadarCampos: function()
+		{
+			var dic_err = this.relacionCampoErrores();
+			var errores_lista = {};
+		    for(var key in dic_err){
+		    	var valor  = dic_err[key].valor;
+		    	var exp    = dic_err[key].expreg;
+		    	var requer = dic_err[key].requerido;
+		    	var mens   = dic_err[key].mensaje;
+		    	if(key === "proveedor_nombre"){
+		    		if(this.state.proveedor === "0"){
+		    			valor ="";
+		    		}
+
+		    	}
+
+		    	if(exp.test(valor) || (valor==="" && requer===false))
+				{
+					errores_lista[key] = "";
+				}
+				else
+				{
+					errores_lista[key] = mens;
+				}
+			}
+			 this.setState({errores: errores_lista});
+		},
+		validarCampoErrores: function(control, valor){
+			var dic_err = this.relacionCampoErrores();
+
+			if(control === undefined ||  dic_err[control]=== undefined){
+  				return;
+  			}
+  		
+		  //  var valorVal  = dic_err[control].valor;
+
+		    var exp    = dic_err[control].expreg;
+		    var requer = dic_err[control].requerido;
+		    var mens   = dic_err[control].mensaje;
+		    var nuevos_errores = this.state.errores;
+
+
+		    if(exp.test(valor) || (valor==="" && requer===false)){
+				nuevos_errores[control] = "";
+			}
+			else{
+				nuevos_errores[control] = mens;
+			}
+		
+	 	   this.setState({errores: nuevos_errores});
+		},
+  		onBlurCaja: function(control,valor){  				
+  			var valVal = valor;
+            if(control==="proveedor_nombre")
+			 {				
 				 var codigo_caja  = valor.substring(1,valor.indexOf("]"))
 	  			 var codigo_state = this.state.proveedor_codigo;
-			
+			    valVal=codigo_caja;
+			    if(valVal==="0"){
+			    	valVal="";
+			    }
+			    
 				if(codigo_caja !== codigo_state)
 				{
+					valVal ="";
 					var valdef = this.valoresDefecto();
 					this.setState({proveedor: valdef.proveedor,proveedor_nombre: valdef.proveedor_nombre,proveedor_codigo: valdef.proveedor_codigo })
 				}
-  			}	
+  			}
+
+  			this.validarCampoErrores(control,valVal);		  			
   		},
+  		hayErrores: function(){
+  			this.validadarCampos();
+
+			for(var key in this.state.errores){
+				if(this.state.errores[key].trim() !==""){
+					return true;
+				}
+			}
+			return false;
+		},
 		llenarListaProveedores: function(lista){
 		 	 return  (lista.length >0) ?  <div className="caja_acciones" ref="busqueda_proveedores_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
               
 		},
 		nuevosDatos: function(){
-			var datos_detalles = this.refs.tablaDetalles.valoresDetallesCompra()
+			var datos_detalles = this.CompTablaDetalles.valoresDetallesCompra()
+						
 	    return{
 	    	id:             this.state.id,
 		    invoice: 	    this.state.invoice,
@@ -192,18 +283,18 @@ module.exports = React.createClass({
 		render: function () {
 			func = new FuncGenericas();
 			
-	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",                  "onChange"          ,"onEnter",              "onBlur" ];
-			var INVOICE         = func.zipCol(dic1,["invoice",        "Invoice",           "Invoice",           this.state.invoice ,       this.onValorCambio,      "",                     this.onBlurCaja]);
-            var PROVEEDOR       = func.zipCol(dic1,["proveedor_nombre","Proveedor",         "Proveedor",         this.state.proveedor_nombre,this.onValorCambio,    this.onBuscarProovedor, this.onBlurCaja]);
-            var FECHASOLICITUD  = func.zipCol(dic1,["fec_solicitud",  "Fecha Solicitud",   "Fecha Solicitud",   this.state.fec_solicitud , this.onValorCambio,      "",					    this.onBlurCaja]);
-            var FECHAADUANA     = func.zipCol(dic1,["fec_aduana",     "Fecha Aduana",      "Fecha Aduana",      this.state.fec_aduana ,    this.onValorCambio,      "",					    this.onBlurCaja]);
-            var FECHAINVENTARIO = func.zipCol(dic1,["fec_inventario", "Fecha Inventario",  "Fecha Inventario",  this.state.fec_inventario, this.onValorCambio,      "",				        this.onBlurCaja]);
-            var FECHAREAL       = func.zipCol(dic1,["fec_real",       "Fecha Real",        "Fecha Real",        this.state.fec_real ,      this.onValorCambio,      "",					    this.onBlurCaja]);
-            var CASADECAMBIO    = func.zipCol(dic1,["casa_cambio",    "Casa de Cambio",    "Casa de Cambio",    this.state.casa_cambio ,   this.onValorCambio,      "",					    this.onBlurCaja]);
-            var PRECIODOLLAR    = func.zipCol(dic1,["precio_dolar",   "Precio Dollar",     "Precio Dollar",     this.state.precio_dolar ,  this.onValorCambio,      "",					    this.onBlurCaja]);
-            var TRANSPORTE      = func.zipCol(dic1,["transporte",     "Transporte",        "Transporte",        this.state.transporte ,    this.onValorCambio,      "",					    this.onBlurCaja]);
-            var OBSERVACIONES   = func.zipCol(dic1,["descripcion",    "Descripción",       "Descripción",       this.state.descripcion ,   this.onValorCambio,      "",						this.onBlurCaja]);        
-            var COMENTARIOS     = func.zipCol(dic1,["comentarios",    "Comentarios",       "Comentarios",       this.state.comentarios ,   this.onValorCambio,      "",						this.onBlurCaja]);        
+	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",                  "onChange"          ,"onEnter",              "onBlur"                 ,"error"];
+			var INVOICE         = func.zipCol(dic1,["invoice",        "Invoice",           "Invoice",           this.state.invoice ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.invoice]);
+            var PROVEEDOR       = func.zipCol(dic1,["proveedor_nombre","Proveedor",         "Proveedor",         this.state.proveedor_nombre,this.onValorCambio,    this.onBuscarProovedor, this.onBlurCaja,	this.state.errores.proveedor_nombre ]);
+            var FECHASOLICITUD  = func.zipCol(dic1,["fec_solicitud",  "Fecha Solicitud",   "Fecha Solicitud",   this.state.fec_solicitud , this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.fec_solicitud]);
+            var FECHAADUANA     = func.zipCol(dic1,["fec_aduana",     "Fecha Aduana",      "Fecha Aduana",      this.state.fec_aduana ,    this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.fec_aduana]);
+            var FECHAINVENTARIO = func.zipCol(dic1,["fec_inventario", "Fecha Inventario",  "Fecha Inventario",  this.state.fec_inventario, this.onValorCambio,      "",				        this.onBlurCaja,	this.state.errores.fec_inventario]);
+            var FECHAREAL       = func.zipCol(dic1,["fec_real",       "Fecha Real",        "Fecha Real",        this.state.fec_real ,      this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.fec_real]);
+            var CASADECAMBIO    = func.zipCol(dic1,["casa_cambio",    "Casa de Cambio",    "Casa de Cambio",    this.state.casa_cambio ,   this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.casa_cambio]);
+            var PRECIODOLLAR    = func.zipCol(dic1,["precio_dolar",   "Precio Dollar",     "Precio Dollar",     this.state.precio_dolar ,  this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.precio_dolar]);
+            var TRANSPORTE      = func.zipCol(dic1,["transporte",     "Transporte",        "Transporte",        this.state.transporte ,    this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.transporte]);
+            var OBSERVACIONES   = func.zipCol(dic1,["descripcion",    "Descripción",       "Descripción",       this.state.descripcion ,   this.onValorCambio,      "",						this.onBlurCaja,	this.state.errores.descripcion]);        
+            var COMENTARIOS     = func.zipCol(dic1,["comentarios",    "Comentarios",       "Comentarios",       this.state.comentarios ,   this.onValorCambio,      "",						this.onBlurCaja,	this.state.errores.comentarios]);        
 
             var dic2 =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var STATUS = func.zipCol(dic2,["bln_activa",   "Estatus de Compra",    status_combo,      this.state.bln_activa,    this.onValorCambio]);
@@ -212,6 +303,8 @@ module.exports = React.createClass({
          	icono_proveedor = <IconoTabla mensajeIndicador={"Agregar Proveedor"}  opcionGuardar={"agregar_proveedor"} tipoIcono={"truck"}/>;
          
          	var busqueda_proveedores = this.llenarListaProveedores(this.state.busqueda_proveedores)
+
+         
            return (
 	 <section className="contenido">
 		   <article className="bloque">
@@ -230,7 +323,7 @@ module.exports = React.createClass({
 						 <CajaDeTexto propiedades={FECHAREAL} ref="cajaFechaReal" />
 						 <CajaDeTexto propiedades={CASADECAMBIO} />
 						 <CajaDeTexto propiedades={PRECIODOLLAR} />
-
+                         
 						 
 					</ul>
 				</div>
@@ -253,7 +346,7 @@ module.exports = React.createClass({
 		</article>
 		<article className="bloque">
 		   <div className="bloque_catalogo" id="ampliar_tabla">
-               <Tabla listado={this.state.compra_detalles} id_compra= {this.state.id} ref="tablaDetalles"/>
+              
 			</div>
 			
 		</article>		
