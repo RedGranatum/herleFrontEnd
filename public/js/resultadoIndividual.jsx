@@ -5,9 +5,12 @@ module.exports = React.createClass({
 			this.props.onClaveSeleccionada(this.props.resultado.id);
 		},
 		render: function () {
-			return (
+			var codigo= this.props.resultado.codigo===undefined ? this.props.resultado.invoice : this.props.resultado.codigo;
+			var nombre= this.props.resultado.nombre===undefined ? this.props.resultado.fec_solicitud : this.props.resultado.nombre;
+			
+						return (
 					<div className="resultado" key={this.props.resultado.id} >
-						<span className="dsc_resultado" onClick ={this.onClick}>[{this.props.resultado.codigo}] {this.props.resultado.nombre}</span>
+						<span className="dsc_resultado" onClick ={this.onClick}> [{codigo}] {nombre}</span>
 					</div>
 				);  
 	  	}

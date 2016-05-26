@@ -5,6 +5,7 @@ var ListaResultados  = require('../js/resultadosLista.jsx');
 var ReactDOM         = require('react-dom');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
+var ApirestCompra    = require('../js/modelos/apirestCompras');
 
 
 module.exports = React.createClass({
@@ -34,11 +35,16 @@ module.exports = React.createClass({
             }
             if(formulario === appmvc.Menu.CLIENTES){
                   var cliente = new ApiRestCliente();
-                  funcionBusqueda = cliente.buscarClientePorValor.bind(cliente);;
+                  funcionBusqueda = cliente.buscarClientePorValor.bind(cliente);
+            }
+            if(formulario === appmvc.Menu.COMPRAS){
+                   var compra= new ApirestCompra();
+                   funcionBusqueda = compra.buscarCompraPorInvoice.bind(compra);
             }
 
             funcionBusqueda(valor_buscado,
                       function(data){
+                        //debugger;
                           self.setState({  listado: data });
                       },
                       function(model,response, options) {

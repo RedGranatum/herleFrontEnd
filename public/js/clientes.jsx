@@ -65,7 +65,8 @@ module.exports = React.createClass({
                 comentarios: "",
                 pais: "0010001",
                 estado: "0020001",
-                banco: "0030000" 
+                banco: "0030000",
+                "errores" :{},
 			};	
 		},
 		onValorCambio: function(campo,valor){
@@ -104,7 +105,7 @@ module.exports = React.createClass({
 		    	var mens   = dic_err[key].mensaje;
 		    	if(exp.test(valor) || (valor==="" && requer===false))
 				{
-					this.errors[key] = ".";
+					this.errors[key] = "";
 				}
 				else
 				{
@@ -112,14 +113,34 @@ module.exports = React.createClass({
 				}
 			}
 		},
+	onBlurCaja: function(control, valor){
+			var dic_err = this.relacionCampoErrores();
+			var valor  = dic_err[control].valor;
+		    var exp    = dic_err[control].expreg;
+		    var requer = dic_err[control].requerido;
+		    var mens   = dic_err[control].mensaje;
+		    var nuevos_errores = this.state.errores;
+
+			if(exp.test(valor) || (valor==="" && requer===false))
+				{
+					nuevos_errores[control] = "";
+				}
+				else
+				{
+					nuevos_errores[control] = mens;
+				}
+
+		    this.setState({errores: nuevos_errores});
+		},
 		hayErrores: function(){
-			for(var key in this.errors){
-				if(this.errors[key].trim() !=="."){
+			for(var key in this.state.errores){
+				if(this.state.errores[key].trim() !==""){
 					return true;
 				}
 			}
 			return false;
 		},
+
 		relacionEstados: function(data)
 		{
 			 var func = new FuncGenericas();      
@@ -139,19 +160,19 @@ module.exports = React.createClass({
        },
 		render: function () {
 			func = new FuncGenericas();
-			this.errors = this.errors || {};
-            this.validadarCampos();
+		//	this.errors = this.errors || {};
+           // this.validadarCampos();
 
-	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",          "onChange"            , "error" ];
-			var CODIGO   = func.zipCol(dic1,["codigo",  "Código",        "Código",        this.state.codigo ,   this.onValorCambio  , this.errors.codigo ]);
-            var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",           this.state.rfc,       this.onValorCambio  , this.errors.rfc]);
-            var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre",        "Nombre",        this.state.nombre,    this.onValorCambio  , this.errors.nombre]);
-            var CALLE    = func.zipCol(dic1,["calle",   "Calle",         "Calle",         this.state.calle,     this.onValorCambio  , this.errors.calle ]);
-			var NUMERO   = func.zipCol(dic1,["numero",  "Número",        "Número",        this.state.numero,    this.onValorCambio  , this.errors.numero]);
-			var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio  , this.errors.colonia]);
-			var CP       = func.zipCol(dic1,["cp",      "Código Postal", "Código Postal", this.state.cp,        this.onValorCambio  , this.errors.cp]);
-			var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",      this.state.telefono,  this.onValorCambio  , this.errors.telefono ]);
-   			var EMAIL     = func.zipCol(dic1,["email",  "e-mail",        "e-mail",        this.state.email,     this.onValorCambio  , this.errors.email]);
+	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",          "onChange"          , "onBlur"           , "error" ];
+			var CODIGO   = func.zipCol(dic1,["codigo",  "Código",        "Código",        this.state.codigo ,   this.onValorCambio  , this.onBlurCaja,		this.state.errores.codigo ]);
+            var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",           this.state.rfc,       this.onValorCambio  , this.onBlurCaja,		this.state.errores.rfc]);
+            var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre",        "Nombre",        this.state.nombre,    this.onValorCambio  , this.onBlurCaja, 		this.state.errores.nombre]);
+            var CALLE    = func.zipCol(dic1,["calle",   "Calle",         "Calle",         this.state.calle,     this.onValorCambio  , this.onBlurCaja, 		this.state.errores.calle ]);
+			var NUMERO   = func.zipCol(dic1,["numero",  "Número",        "Número",        this.state.numero,    this.onValorCambio  , this.onBlurCaja, 		this.state.errores.numero]);
+			var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio  , this.onBlurCaja, 		this.state.errores.colonia]);
+			var CP       = func.zipCol(dic1,["cp",      "Código Postal", "Código Postal", this.state.cp,        this.onValorCambio  , this.onBlurCaja, 		this.state.errores.cp]);
+			var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",      this.state.telefono,  this.onValorCambio  , this.onBlurCaja, 		this.state.errores.telefono ]);
+   			var EMAIL     = func.zipCol(dic1,["email",  "e-mail",        "e-mail",        this.state.email,     this.onValorCambio  , this.onBlurCaja, 		this.state.errores.email]);
 
    			var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
 		   	var PAIS     = func.zipCol(dic2,["pais",     "País",      this.Paises,               this.state.pais,    this.onValorCambio]);

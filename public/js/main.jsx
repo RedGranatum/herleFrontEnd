@@ -18,8 +18,8 @@ $(function() {
 	}
 
 
-	 var url_local = 'http://localhost:8000/'
-	 //var url_local ='http://192.168.0.10:8000/';
+	var url_local = 'http://localhost:8000/'
+	//var url_local ='http://192.168.0.13:8000/';
 	//var url_local = 'http://107.170.1.182:8000/'
 
 	datosCatalogo = new  ApiRestCatalogo();
@@ -43,6 +43,9 @@ $(function() {
 	appmvc.Catalogos.PAISES = 1;
 	appmvc.Catalogos.ESTADOS = 2;
 	appmvc.Catalogos.BANCOS = 3;
+	appmvc.Catalogos.MONEDAS = 4;
+	appmvc.Catalogos.MATERIALES = 5;
+	
 
 	appmvc.Datos.PAISES = null; 
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
@@ -64,6 +67,25 @@ $(function() {
                                       }
                         )
 
+    appmvc.Datos.MONEDAS = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, 
+                        function(data){
+                            appmvc.Datos.MONEDAS =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
+    
+    appmvc.Datos.MATERIALES = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, 
+                        function(data){
+                            appmvc.Datos.MATERIALES =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
 
 	
 	ReactDOM.render(<App/>,document.getElementById("app"));

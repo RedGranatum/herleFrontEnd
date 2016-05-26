@@ -11,16 +11,18 @@ var $                = require('jquery');
 var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
-
+var ApiRestCompras   = require('../js/modelos/apirestCompras');
+ 
 
 
 module.exports = React.createClass({
 		getInitialState: function(){
 	 	 return {
-	 	 	formMostrar:"",
-	 	 	datosProveedor: {},
-	 	 	datosCliente : {},
-            actualizarForm: false,
+    	 	 	formMostrar:"",
+    	 	 	datosProveedor: {},
+    	 	 	datosCliente : {},
+    	 	 	datosCompra: {},
+          actualizarForm: false,
      		};
 	 	},
 		componentWillMount:function(){
@@ -101,6 +103,34 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.COMPRAS);
               console.log("menu de compras");                    
              });
+            Page('/compras/nuevo',function(){
+                self.setState({datosCompra:[],actualizarForm:true});
+                console.log("Vas a dar de alta una nueva compra");              
+            });
+            Page('/compras/guardar',function(){
+             if(self.refs[appmvc.Menu.COMPRAS].hayErrores()){
+                    $("#notify_error").text("Hay errores en algunos campos");
+                    $("#notify_error").notify();
+                    return;
+              }
+
+              var datosNuevos=  self.refs[appmvc.Menu.COMPRAS].nuevosDatos(); 
+              var compra = new ApiRestCompras();
+             
+             compra.Guardar(datosNuevos,
+                    function(datos,response){
+                         self.setState({actualizarForm:true});
+                         self.setState({datosCompra:datos});
+                        $("#notify_success").text("Los datos fueron modificados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });
+                console.log("Vas a guardar la compra");              
+            });
+            
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
@@ -134,6 +164,7 @@ module.exports = React.createClass({
       							}
 				    );
          },
+
     llenarDatosCliente: function(pk){
             var self = this;
             var cliente = new ApiRestCliente();
@@ -146,7 +177,19 @@ module.exports = React.createClass({
                     }
             );
          },
-
+    llenarDatosCompra: function(pk){
+           var self = this;
+           var comp = new ApiRestCompras();
+           comp.buscarCompraPorPk(pk,	
+      					function(data){
+      							self.setState({datosCompra: data[0] });
+      							},
+      					function(model,response,options){
+      	 					    self.setState({datosCompra : [] });
+      							}
+				    );
+         },
+    
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 		},
@@ -185,6 +228,9 @@ module.exports = React.createClass({
  			if( this.state.formMostrar === appmvc.Menu.CLIENTES){
  				this.llenarDatosCliente(pk)
  			}
+ 			if(this.state.formMostrar===appmvc.Menu.COMPRAS){
+ 				this.llenarDatosCompra(pk);
+ 			}
  		},
     llenarCombos: function(){
         console.log("buscando datos");
@@ -192,11 +238,14 @@ module.exports = React.createClass({
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
-      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS}  />);     
-
+      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);     
+          var style = {
+      margin: "0px",
+     padding: "0px"
+    };
 		return (
-
-  <div>
+    
+  <div style={style}>
 	<header>
 	</header>
 	<MenuPrincipal/>
@@ -217,8 +266,8 @@ module.exports = React.createClass({
 
 
 
-function mostrar(estado,reff){
-	var estilo= estado==="formProveedores" ? 'inline-block' : 'none';
-	var forma = ReactDOM.findDOMNode(reff);   
-	forma.style.display=estilo;
-}
+// function mostrar(estado,reff){
+// 	var estilo= estado==="formProveedores" ? 'inline-block' : 'none';
+// 	var forma = ReactDOM.findDOMNode(reff);   
+// 	forma.style.display=estilo;
+// }
