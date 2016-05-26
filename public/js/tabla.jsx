@@ -37,8 +37,19 @@ module.exports = React.createClass({
 		 })
 		 return detalles;
 	},
-	clickOperacion: function(operacion,fila){
-		if(operacion === "nuevo"){
+	HayErrores: function(){
+		 var self = this;
+		 var errores = false;
+		 this.state.detalles_lista.forEach(function(datos){
+          if (self.refs["detalle_" + datos.num_consecutivo].validarCampos()){
+		 		errores = true;
+		 	}
+          });
+		
+		 return errores;
+	},
+	clickOperacion: function(operacion,fila,errores){
+		if(operacion === "nuevo" && errores === false){
 			var nuevo = this.state.detalles_lista.slice()
 			this.num_con = this.num_con === undefined ? 1 : this.num_con + 1
 			var nueva_fila = fila;

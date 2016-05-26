@@ -252,7 +252,10 @@ module.exports = React.createClass({
 					return true;
 				}
 			}
-			return false;
+
+			var errores = this.CompTablaDetalles.HayErrores();
+			debugger;
+			return errores;
 		},
 		llenarListaProveedores: function(lista){
 		 	 return  (lista.length >0) ?  <div className="caja_acciones" ref="busqueda_proveedores_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];

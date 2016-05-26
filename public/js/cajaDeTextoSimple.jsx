@@ -16,8 +16,12 @@ module.exports = React.createClass({
             this.props.propiedades.onBlur( this.props.propiedades.id,this.refs.CajaTexto.value);
         },
 		render: function () {
+      var error = this.props.propiedades.error === undefined ? "" :  this.props.propiedades.error;
+      var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
+      //var divStyle =  { display: 'inline-block'}  
 
 			return (
+                            <div>
                               <input 
                                 className={this.props.estilo} 
                                 pattern={this.props.propiedades.caracteresEsp}
@@ -29,8 +33,9 @@ module.exports = React.createClass({
                                 ref = {"CajaTexto"}
                                 onKeyPress ={this.TeclaPresionada} 
                                 onBlur = {this.handleBlur}
-                                />
-                             
+                                />    
+                                <div style={divStyle} className="error_mostrar">{error}</div>
+                            </div>               
 			);  
 		}
 });

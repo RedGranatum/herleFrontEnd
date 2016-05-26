@@ -33,7 +33,7 @@ module.exports = React.createClass({
 					          largo:largo,peso_kg: peso_kg,peso_lb:peso_lb,num_rollo:num_rollo,precio:precio })
 			}
 	},
-	   componentWillReceiveProps: function(nuevas_props){
+	 componentWillReceiveProps: function(nuevas_props){
 	   	   var nuevaPropiedades = nuevas_props.datos 
 	   },
 	   llenarCombos: function(){    
@@ -41,6 +41,69 @@ module.exports = React.createClass({
          this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
 
         },
+  	   validarCampos: function()
+		{
+			var dic_err = this.relacionCampoErrores();
+			var errores_lista = {};
+			var errores = false;
+		    for(var key in dic_err){
+		    	var valor  = dic_err[key].valor;
+		    	var exp    = dic_err[key].expreg;
+		    	var requer = dic_err[key].requerido;
+		    	var mens   = dic_err[key].mensaje;
+
+		    	if(exp.test(valor) || (valor==="" && requer===false))
+				{
+					errores_lista[key] = "";
+				}
+				else
+				{
+					errores = true;
+					errores_lista[key] = mens;
+				}
+			}
+			 this.setState({errores: errores_lista});
+			 return errores;
+		},
+        relacionCampoErrores: function(){
+			var dic_errores = {
+				material_descripcion:   {valor:this.state.material_descripcion,  expreg:/^[a-zA-Z0-9\-().\s]{1,10}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [1-10]"},	
+				calibre:    {valor:this.state.calibre,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				ancho:      {valor:this.state.calibre,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				largo:      {valor:this.state.largo,     expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				peso_kg:    {valor:this.state.peso_kg,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				peso_lb:    {valor:this.state.peso_lb,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				num_rollo:  {valor:this.state.num_rollo, expreg:/^[a-zA-Z0-9\-().\s]{1,30}$/,    requerido: false,  mensaje:"Alfanumerico ,longitud [1-30]"},
+				precio:     {valor:this.state.precio,    expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				 }
+		    return dic_errores;
+		},
+		validarCampoErrores: function(control, valor){
+			var dic_err = this.relacionCampoErrores();
+
+			if(control === undefined ||  dic_err[control]=== undefined){
+  				return;
+  			}
+  		
+		  
+		    var exp    = dic_err[control].expreg;
+		    var requer = dic_err[control].requerido;
+		    var mens   = dic_err[control].mensaje;
+		    var nuevos_errores = this.state.errores;
+
+
+		    if(exp.test(valor) || (valor==="" && requer===false)){
+				nuevos_errores[control] = "";
+			}
+			else{
+				nuevos_errores[control] = mens;
+			}
+		
+	 	   this.setState({errores: nuevos_errores});
+		},
+		onBlurCaja: function(control,valor){  				
+  			this.validarCampoErrores(control,valor);		  			
+  		},
 	 	getInitialState: function(){
 			return this.valoresDefecto();
 			
@@ -65,6 +128,7 @@ module.exports = React.createClass({
 		        "peso_lb": "",
 		        "num_rollo": "",
 		        "precio": "",
+		        "errores" :{},
 			};
 		},
 		onValorCambio: function(campo,valor){
@@ -72,13 +136,11 @@ module.exports = React.createClass({
 			update[campo] = valor;
 			this.setState(update);
 		},
-		onBlurCaja: function(campo){
-
-		},
 		clickOperacion: function(operacion)
 		{
+			var errores = this.validarCampos()
 			var fila = this.valoresFila();
-			this.props.clickOperacion(operacion,fila);
+			this.props.clickOperacion(operacion,fila,errores);
 		},
 		valoresFila: function()
 		{              
@@ -108,15 +170,15 @@ module.exports = React.createClass({
 		
             func = new FuncGenericas();
           
-            var dicCajas =                        			  ["id",      "titulo",      "textoIndicativo" ,    "valor",                     "onChange",              "onBlur"   ];
-			var DSC_MATERIAL      = func.zipCol(dicCajas,["material_descripcion",  "",              "",            this.state.material_descripcion,   this.onValorCambio ,     this.onBlurCaja ]);
-		   	var CALIBRE  		  = func.zipCol(dicCajas,["calibre",       "",  			"",			   this.state.calibre,                 this.onValorCambio,     this.onBlurCaja]);
-		   	var ANCHO    		  = func.zipCol(dicCajas,["ancho",       "",  			"",			       this.state.ancho,                 this.onValorCambio,       this.onBlurCaja]);
-		   	var LARGO    		  = func.zipCol(dicCajas,["largo",       "",  			"",			       this.state.largo,                 this.onValorCambio,       this.onBlurCaja]);
-		   	var PESOKG    		  = func.zipCol(dicCajas,["peso_kg",       "",  			"",			       this.state.peso_kg,                 this.onValorCambio,     this.onBlurCaja]);
-		   	var PESOLB   		  = func.zipCol(dicCajas,["peso_lb",       "",  			"",			       this.state.peso_lb,                 this.onValorCambio,     this.onBlurCaja]);
-			var NOROLLO   		  = func.zipCol(dicCajas,["num_rollo",       "",  			"",			   this.state.num_rollo,                 this.onValorCambio,   this.onBlurCaja]);
-			var PRECIO   		  = func.zipCol(dicCajas,["precio",       "",  			"",			 	   this.state.precio,                 this.onValorCambio,      this.onBlurCaja]);
+            var dicCajas =                        	     ["id",      "titulo",      "textoIndicativo" ,    "valor",                     "onChange",              "onBlur",                  "error"   ];
+			var DSC_MATERIAL      = func.zipCol(dicCajas,["material_descripcion",  "",              "",            this.state.material_descripcion,   this.onValorCambio ,  this.onBlurCaja,   this.state.errores.material_descripcion     ]);
+		   	var CALIBRE  		  = func.zipCol(dicCajas,["calibre",       "",  			"",			   this.state.calibre,                 this.onValorCambio,     this.onBlurCaja,			 this.state.errores.calibre]);         
+		   	var ANCHO    		  = func.zipCol(dicCajas,["ancho",       "",  			"",			       this.state.ancho,                 this.onValorCambio,       this.onBlurCaja,			this.state.errores.ancho]);
+		   	var LARGO    		  = func.zipCol(dicCajas,["largo",       "",  			"",			       this.state.largo,                 this.onValorCambio,       this.onBlurCaja,			this.state.errores.largo]);
+		   	var PESOKG    		  = func.zipCol(dicCajas,["peso_kg",       "",  			"",			       this.state.peso_kg,                 this.onValorCambio,     this.onBlurCaja,	    this.state.errores.peso_kg]);
+		   	var PESOLB   		  = func.zipCol(dicCajas,["peso_lb",       "",  			"",			       this.state.peso_lb,                 this.onValorCambio,     this.onBlurCaja,		this.state.errores.peso_lb]);
+			var NOROLLO   		  = func.zipCol(dicCajas,["num_rollo",       "",  			"",			   this.state.num_rollo,                 this.onValorCambio,   this.onBlurCaja,			this.state.errores.num_rollo]);
+			var PRECIO   		  = func.zipCol(dicCajas,["precio",       "",  			"",			 	   this.state.precio,                 this.onValorCambio,      this.onBlurCaja,			this.state.errores.precio]);
 		
 		    var dicCombo =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var MATERIALES = func.zipCol(dicCombo,["material",   "",  				  this.Materiales,      this.state.material,    this.onValorCambio]);
