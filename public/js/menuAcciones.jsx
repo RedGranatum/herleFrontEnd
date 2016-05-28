@@ -82,17 +82,26 @@ module.exports = React.createClass({
               
   
     return (
+<div>
+  <div className="caja_busqueda">
+  <ul className="menu_busqueda">
+      {cajaBusqueda} 
+   </ul>
+  
+      {resultadosBusqueda}
+    
+  </div>   
 	<div className="caja_acciones">
 		<ul className="menu_acciones">
 		    <BotonMenu colorLink={"ico_acciones"} icono={"file"} tam={"2x"} ruta= {rutaNuevo}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"remove"} tam={"2x"}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"save"} tam={"2x"} ruta={rutaGuardar}/>
-		     {cajaBusqueda} 
- 		     {resultadosBusqueda}
+		     
+ 		     
 		</ul>
 	
 	</div>
-
+</div>
 			);  
 		}
 	});
