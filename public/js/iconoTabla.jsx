@@ -10,8 +10,7 @@ module.exports = React.createClass({
 		render: function () {
 
            return (
-	
-			<a className={this.props.opcionGuardar} title={this.props.mensajeIndicador} onClick={this.onClick} ><i className={"fa fa-"+this.props.tipoIcono+" fa-2x"}></i></a>
+				<button className={this.props.opcionGuardar} onClick={this.onClick}><i className={"fa fa-"+this.props.tipoIcono+" fa-2x"}></i></button>
 			);  
 		}
 });

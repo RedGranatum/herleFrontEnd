@@ -79,6 +79,8 @@ module.exports = React.createClass({
  		    var resultadosBusqueda  =  (cajaBusqueda !=="") ?  <ListaResultados ref="ListaResultadosBusqueda"	resultados={this.state.listado} onClaveSeleccionada={this.onClaveSeleccionada}/>:[];
         var rutaNuevo = this.props.formActivo.toLowerCase() + "/nuevo";  
         var rutaGuardar = this.props.formActivo.toLowerCase() + "/guardar";  
+        var rutaEliminar = this.props.formActivo.toLowerCase() + "/eliminar";  
+        
               
   
     return (
@@ -94,7 +96,7 @@ module.exports = React.createClass({
 	<div className="caja_acciones">
 		<ul className="menu_acciones">
 		    <BotonMenu colorLink={"ico_acciones"} icono={"file"} tam={"2x"} ruta= {rutaNuevo}/>
-		    <BotonMenu colorLink={"ico_acciones"} icono={"remove"} tam={"2x"}/>
+		    <BotonMenu colorLink={"ico_acciones"} icono={"remove"} tam={"2x"} ruta={rutaEliminar}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"save"} tam={"2x"} ruta={rutaGuardar}/>
 		     
  		     

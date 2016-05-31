@@ -58,7 +58,21 @@ return {
         }
       })
     },
-
+    Eliminar: function(id,funcion_exito,funcion_error){
+      var cliente = new ModeloBase();
+      cliente.asignarRuta(this.ruta_modificar(id));
+       
+      cliente.destroy(null,{
+        success: function(model,response){
+           debugger;
+           funcion_exito(datos.toJSON(),response);
+        },
+        error: function(model,response,options){
+          debugger;
+           funcion_error(model,response,options);
+        }
+      })
+    },
 
 };
 }

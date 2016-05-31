@@ -60,7 +60,7 @@ module.exports = React.createClass({
         var prov = new ApiRestProveedor();
         prov.Guardar(datosNuevos, function (datos, response) {
           self.setState({ actualizarForm: true });
-          self.setState({ datosProveedor: datos });
+          self.setState({ datosProveedor: [] });
           $("#notify_success").text("Los datos fueron modificados con exito");
           $("#notify_success").notify();
         }, function (model, response, options) {
@@ -69,6 +69,20 @@ module.exports = React.createClass({
         });
       }
     });
+    Page('/proveedores/eliminar', function () {
+      var proveedor = new ApiRestProveedor();
+      var datosNuevos = self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos();
+      proveedor.Eliminar(datosNuevos.id, function (model, response) {
+        self.setState({ actualizarForm: true });
+        self.setState({ datosCliente: [] });
+        $("#notify_success").text("Los datos del proveedor fueron eliminados con exito");
+        $("#notify_success").notify();
+      }, function (model, response, options) {
+        $("#notify_error").text(response.responseText);
+        $("#notify_error").notify();
+      });
+    });
+
     Page('/clientes', function () {
       self.mostrarMenu(appmvc.Menu.CLIENTES);
       console.log("menu de clientes");
@@ -96,6 +110,20 @@ module.exports = React.createClass({
         });
       }
     });
+    Page('/clientes/eliminar', function () {
+      var cliente = new ApiRestCliente();
+      var datosNuevos = self.refs[appmvc.Menu.CLIENTES].nuevosDatos();
+      cliente.Eliminar(datosNuevos.id, function (model, response) {
+        self.setState({ actualizarForm: true });
+        self.setState({ datosCliente: [] });
+        $("#notify_success").text("Los datos del cliente fueron eliminados con exito");
+        $("#notify_success").notify();
+      }, function (model, response, options) {
+        $("#notify_error").text(response.responseText);
+        $("#notify_error").notify();
+      });
+    });
+
     Page('/compras', function () {
       self.mostrarMenu(appmvc.Menu.COMPRAS);
       console.log("menu de compras");
@@ -124,6 +152,21 @@ module.exports = React.createClass({
         $("#notify_error").notify();
       });
       console.log("Vas a guardar la compra");
+    });
+    Page('/compras/eliminar', function () {
+
+      var compra = new ApiRestCompras();
+
+      compra.Eliminar(21, function (datos, response) {
+        //self.setState({actualizarForm:true});
+        //self.setState({datosCompra:datos});
+        $("#notify_success").text("Los datos fueron modificados con exito");
+        $("#notify_success").notify();
+      }, function (model, response, options) {
+        $("#notify_error").text(response.responseText);
+        $("#notify_error").notify();
+      });
+      console.log("Vas a eliminar la compra");
     });
 
     Page('*', function () {
@@ -1354,20 +1397,20 @@ module.exports = funcionesGenericas;
 var React = require('react');
 
 module.exports = React.createClass({
-		displayName: "exports",
+	displayName: "exports",
 
 
-		onClick: function () {
-				this.props.clickOperacion(this.props.id);
-		},
-		render: function () {
+	onClick: function () {
+		this.props.clickOperacion(this.props.id);
+	},
+	render: function () {
 
-				return React.createElement(
-						"a",
-						{ className: this.props.opcionGuardar, title: this.props.mensajeIndicador, onClick: this.onClick },
-						React.createElement("i", { className: "fa fa-" + this.props.tipoIcono + " fa-2x" })
-				);
-		}
+		return React.createElement(
+			"button",
+			{ className: this.props.opcionGuardar, onClick: this.onClick },
+			React.createElement("i", { className: "fa fa-" + this.props.tipoIcono + " fa-2x" })
+		);
+	}
 });
 
 },{"react":197}],16:[function(require,module,exports){
@@ -1524,6 +1567,7 @@ module.exports = React.createClass({
     var resultadosBusqueda = cajaBusqueda !== "" ? React.createElement(ListaResultados, { ref: 'ListaResultadosBusqueda', resultados: this.state.listado, onClaveSeleccionada: this.onClaveSeleccionada }) : [];
     var rutaNuevo = this.props.formActivo.toLowerCase() + "/nuevo";
     var rutaGuardar = this.props.formActivo.toLowerCase() + "/guardar";
+    var rutaEliminar = this.props.formActivo.toLowerCase() + "/eliminar";
 
     return React.createElement(
       'div',
@@ -1545,7 +1589,7 @@ module.exports = React.createClass({
           'ul',
           { className: 'menu_acciones' },
           React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "file", tam: "2x", ruta: rutaNuevo }),
-          React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "remove", tam: "2x" }),
+          React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "remove", tam: "2x", ruta: rutaEliminar }),
           React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "save", tam: "2x", ruta: rutaGuardar })
         )
       )
@@ -1677,6 +1721,22 @@ var apirestClientes = function () {
                funcion_error(model, response, options);
             }
          });
+      },
+      Eliminar: function (id, funcion_exito, funcion_error) {
+         var cliente = new ModeloBase({
+            id: id
+         });
+         cliente.asignarRuta(this.ruta_modificar(id));
+
+         cliente.destroy({
+            success: function (model, response) {
+
+               funcion_exito(model, response);
+            },
+            error: function (model, response, options) {
+               funcion_error(model, response, options);
+            }
+         });
       }
 
    };
@@ -1739,6 +1799,21 @@ var apirestClientes = function () {
           funcion_exito(datos.toJSON(), response);
         },
         error: function (model, response, options) {
+          funcion_error(model, response, options);
+        }
+      });
+    },
+    Eliminar: function (id, funcion_exito, funcion_error) {
+      var cliente = new ModeloBase();
+      cliente.asignarRuta(this.ruta_modificar(id));
+
+      cliente.destroy(null, {
+        success: function (model, response) {
+          debugger;
+          funcion_exito(datos.toJSON(), response);
+        },
+        error: function (model, response, options) {
+          debugger;
           funcion_error(model, response, options);
         }
       });
@@ -1810,7 +1885,25 @@ var apirestProveedores = function () {
                funcion_error(model, response, options);
             }
          });
+      },
+      Eliminar: function (id, funcion_exito, funcion_error) {
+         var proveedor = new ModeloBase({
+            id: id
+         });
+         proveedor.asignarRuta(this.ruta_modificar(id));
+
+         proveedor.destroy({
+            success: function (model, response) {
+
+               funcion_exito(model, response);
+            },
+            error: function (model, response, options) {
+               debugger;
+               funcion_error(model, response, options);
+            }
+         });
       }
+
    };
 };
 

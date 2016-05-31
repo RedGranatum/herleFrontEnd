@@ -61,6 +61,24 @@ return {
      		}
      	});
     },
+    Eliminar: function(id,funcion_exito,funcion_error){
+          var proveedor = new ModeloBase({
+              id: id 
+          });
+          proveedor.asignarRuta(this.ruta_modificar(id));
+
+          proveedor.destroy({
+              success: function(model,response){
+                
+           funcion_exito(model,response);
+        },
+        error: function(model,response,options){
+          debugger;
+           funcion_error(model,response,options);
+        }
+      });
+    },
+
 };
 }
 

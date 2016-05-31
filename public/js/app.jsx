@@ -61,8 +61,8 @@ module.exports = React.createClass({
                 var prov = new ApiRestProveedor();    
                 prov.Guardar(datosNuevos,
                     function(datos,response){
-                        self.setState({actualizarForm:true});
-                        self.setState({datosProveedor:datos});
+                      self.setState({actualizarForm:true});
+                      self.setState({datosProveedor:[]});
                         $("#notify_success").text("Los datos fueron modificados con exito");
                         $("#notify_success").notify();
                     },
@@ -72,6 +72,23 @@ module.exports = React.createClass({
                     });
               }
             });
+            Page('/proveedores/eliminar',function(){     
+                var proveedor = new ApiRestProveedor();   
+                 var datosNuevos=  self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos();  
+                  proveedor.Eliminar(datosNuevos.id,
+                    function(model,response){
+                        self.setState({actualizarForm:true});
+                        self.setState({datosCliente:[]});
+                        $("#notify_success").text("Los datos del proveedor fueron eliminados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                        $("#notify_error").text(response.responseText);
+                        $("#notify_error").notify();
+                   });
+                         
+            });
+
              Page('/clientes',function(){
              	self.mostrarMenu(appmvc.Menu.CLIENTES);
              	console.log("menu de clientes");                    
@@ -102,6 +119,23 @@ module.exports = React.createClass({
                     });
                 }                
             });
+              Page('/clientes/eliminar',function(){     
+                var cliente = new ApiRestCliente();   
+                 var datosNuevos=  self.refs[appmvc.Menu.CLIENTES].nuevosDatos();  
+                  cliente.Eliminar(datosNuevos.id,
+                    function(model,response){
+                        self.setState({actualizarForm:true});
+                        self.setState({datosCliente:[]});
+                        $("#notify_success").text("Los datos del cliente fueron eliminados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                        $("#notify_error").text(response.responseText);
+                        $("#notify_error").notify();
+                   });
+                         
+            });
+
            Page('/compras',function(){
               self.mostrarMenu(appmvc.Menu.COMPRAS);
               console.log("menu de compras");                    
@@ -133,7 +167,25 @@ module.exports = React.createClass({
                     });
                 console.log("Vas a guardar la compra");              
             });
-            
+            Page('/compras/eliminar',function(){
+
+              var compra = new ApiRestCompras();
+              
+              compra.Eliminar(21,
+                    function(datos,response){
+                         //self.setState({actualizarForm:true});
+                         //self.setState({datosCompra:datos});
+                        $("#notify_success").text("Los datos fueron modificados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });
+                console.log("Vas a eliminar la compra");              
+            });
+           
+
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
