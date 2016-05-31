@@ -49,6 +49,9 @@ module.exports = React.createClass({
             });
              Page('/proveedores/guardar',function(){             
              	console.log("Vas a guardar un proveedor");
+              
+              $("#notify_success").text("Los datos fueron modificados con exito");
+
               if(self.refs[appmvc.Menu.PROVEEDORES].hayErrores()){
                     $("#notify_error").text("Hay errores en algunos campos");
                     $("#notify_error").notify();
@@ -229,6 +232,7 @@ module.exports = React.createClass({
  				this.llenarDatosCliente(pk)
  			}
  			if(this.state.formMostrar===appmvc.Menu.COMPRAS){
+        this.setState({datosCompra:[],actualizarForm:true});
  				this.llenarDatosCompra(pk);
  			}
  		},

@@ -254,11 +254,10 @@ module.exports = React.createClass({
 			}
 
 			var errores = this.CompTablaDetalles.HayErrores();
-			debugger;
 			return errores;
 		},
 		llenarListaProveedores: function(lista){
-		 	 return  (lista.length >0) ?  <div className="caja_acciones" ref="busqueda_proveedores_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
+		 	 return  (lista.length >0) ?  <div className="caja_busqueda" ref="busqueda_proveedores_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
               
 		},
 		nuevosDatos: function(){
