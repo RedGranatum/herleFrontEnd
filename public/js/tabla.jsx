@@ -98,7 +98,6 @@ module.exports = React.createClass({
 			}
 	},
 	render: function () {
-
       var self = this;
       var listado_detalles = [];
       var listado = this.props.listado;

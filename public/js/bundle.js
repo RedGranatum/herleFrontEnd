@@ -457,30 +457,23 @@ module.exports = React.createClass({
     },
     render: function () {
         var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
-        var divStyle = error !== "" ? { display: 'inline-block' } : { display: 'none' };
+        clasError = error !== "" ? "caja_grid_error" : "caja_grid";
+        //var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
+
         //var divStyle =  { display: 'inline-block'} 
 
-        return React.createElement(
-            "div",
-            null,
-            React.createElement("input", {
-                className: this.props.estilo,
-                pattern: this.props.propiedades.caracteresEsp,
-                type: "text",
-                placeholder: this.props.propiedades.textoIndicativo,
-                id: this.props.propiedades.id,
-                value: this.props.propiedades.valor,
-                onChange: this.valorCambio,
-                ref: "CajaTexto",
-                onKeyPress: this.TeclaPresionada,
-                onBlur: this.handleBlur
-            }),
-            React.createElement(
-                "div",
-                { style: divStyle, className: "error_mostrar" },
-                error
-            )
-        );
+        return React.createElement("input", {
+            className: clasError,
+            pattern: this.props.propiedades.caracteresEsp,
+            type: "text",
+            placeholder: this.props.propiedades.textoIndicativo,
+            id: this.props.propiedades.id,
+            value: this.props.propiedades.valor,
+            onChange: this.valorCambio,
+            ref: "CajaTexto",
+            onKeyPress: this.TeclaPresionada,
+            onBlur: this.handleBlur
+        });
     }
 });
 
@@ -1433,8 +1426,8 @@ $(function () {
     };
 
     //var url_local = 'http://localhost:8000/'
-    var url_local = 'http://192.168.0.15:8000/';
-    //var url_local = 'http://107.170.1.182:8000/'
+    //var url_local ='http://192.168.0.15:8000/';
+    var url_local = 'http://107.170.1.182:8000/';
 
     datosCatalogo = new ApiRestCatalogo();
 
@@ -2578,7 +2571,6 @@ module.exports = React.createClass({
 		}
 	},
 	render: function () {
-
 		var self = this;
 		var listado_detalles = [];
 		var listado = this.props.listado;
