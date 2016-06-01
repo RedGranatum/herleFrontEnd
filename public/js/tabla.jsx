@@ -1,3 +1,4 @@
+var $                = require('jquery');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
 var ComboSimple 			= require('../js/combo_simple.jsx');
@@ -8,6 +9,9 @@ var ReactDOM 		= require('react-dom') ;
 var FilaTabla       = require('../js/filaTabla.jsx');
 var CeldaTabla      = require('../js/celdaTabla.jsx');
 var CompraDetalle    = require('../js/compraDetalles.jsx');
+var ApiRestCompraDetalles = require('../js/modelos/apirestCompraDetalles');
+var Notificaciones   = require('../js/notificaciones')
+
 var func = new FuncGenericas(); 
 
 module.exports = React.createClass({
@@ -62,17 +66,36 @@ module.exports = React.createClass({
 			console.log("*** " + nueva_fila.id + " &&&& " + nueva_fila.compra);
 		}
 		if(operacion == "eliminar"){
-			var filas = this.state.detalles_lista.slice()
-			
-			console.log("*** " + fila.id + " &&&& " + fila.compra);
-			
-			var nuevas = filas.filter(function(datos){
-			 	return datos.num_consecutivo !== fila.num_consecutivo;
-			 });
+				var filas = this.state.detalles_lista.slice()
+				var self = this;
+				console.log("*** " + fila.id + " &&&& " + fila.compra);
+				if(fila.id!==-1){
+				 var comDet = new ApiRestCompraDetalles();   
+	                  comDet.Eliminar(fila.id,
+	                    function(model,response){
+	                     	var nuevas = filas.filter(function(datos){
+			 					return datos.num_consecutivo !== fila.num_consecutivo;
+			 				 });
 
-			 this.setState({detalles_lista: nuevas})
-			 console.log("Quiere eliminar una fila " + fila.num_consecutivo);
-		}
+		  				 	self.setState({detalles_lista: nuevas})
+
+	                        $("#notify_success").text("Los datos del detalle fueron eliminados");
+	                        $("#notify_success").notify();
+	                    },
+	                    function(model,response,options){
+	                        $("#notify_error").text(response.responseText);
+	                        $("#notify_error").notify();
+	                   });
+				}
+            else{
+				var nuevas = filas.filter(function(datos){
+			 		return datos.num_consecutivo !== fila.num_consecutivo;
+			 	});
+
+				 this.setState({detalles_lista: nuevas})
+			 	 console.log("Quiere eliminar una fila " + fila.num_consecutivo);
+			 }
+			}
 	},
 	render: function () {
 

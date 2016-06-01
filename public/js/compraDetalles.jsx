@@ -202,7 +202,6 @@ module.exports = React.createClass({
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.norollo 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {NOROLLO}        requerido={false}  />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PRECIO}         requerido={false}   />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.icono1 : icono1} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.icono2 : icono2} />
                 </tr>
 			);  
 		}

@@ -73,7 +73,6 @@ return {
            funcion_exito(model,response);
         },
         error: function(model,response,options){
-          debugger;
            funcion_error(model,response,options);
         }
       });
