@@ -99,8 +99,8 @@ module.exports = React.createClass({
 		relacionCampoErrores: function(){
 			var dic_errores = {
 				invoice:   {valor:this.state.invoice,  expreg:/^[a-zA-Z0-9\-().\s]{1,10}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [1-10]"},
-				proveedor_nombre: {valor:this.state.proveedor,     expreg:/^[a-zA-Z0-9\-().\s]{1,110}$/,    requerido: true,  mensaje:"Selecciona un proveedor"},
-				casa_cambio:   {valor:this.state.casa_cambio,  expreg:/^[a-zA-Z0-9\-().\s]{2,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [2-30]"},
+				proveedor_nombre: {valor:this.state.proveedor,     expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,110}$/,    requerido: true,  mensaje:"Selecciona un proveedor"},
+				casa_cambio:   {valor:this.state.casa_cambio,  expreg:/^[ñÑa-zA-Z0-9\-().\s]{2,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [2-30]"},
 				precio_dolar:    {valor:this.state.precio_dolar,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
 				fec_solicitud:    {valor:this.state.fec_solicitud,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},
 				fec_aduana:    {valor:this.state.fec_aduana,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},

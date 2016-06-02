@@ -78,12 +78,12 @@ module.exports = React.createClass({
                   proveedor.Eliminar(datosNuevos.id,
                     function(model,response){
                         self.setState({actualizarForm:true});
-                        self.setState({datosCliente:[]});
+                        self.setState({datosProveedor:[]});
                         $("#notify_success").text("Los datos del proveedor fueron eliminados con exito");
                         $("#notify_success").notify();
                     },
                     function(model,response,options){
-                        $("#notify_error").text(response.responseText);
+                        $("#notify_error").text("No se puede eliminar el proveedor");
                         $("#notify_error").notify();
                    });
                          
@@ -130,7 +130,7 @@ module.exports = React.createClass({
                         $("#notify_success").notify();
                     },
                     function(model,response,options){
-                        $("#notify_error").text(response.responseText);
+                        $("#notify_error").text("No se puede eliminar el cliente");
                         $("#notify_error").notify();
                    });
                          

@@ -83,11 +83,11 @@ module.exports = React.createClass({
 		relacionCampoErrores: function(){
 			var dic_errores = {
 				codigo:   {valor:this.state.codigo,  expreg:/^[a-zA-Z0-9\-().\s]{1,10}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [1-10]"},
-				rfc:      {valor:this.state.rfc,     expreg:/^[a-zA-Z0-9\-().\s]{12,13}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [12-13]"},
-				nombre:   {valor:this.state.nombre,  expreg:/^[a-zA-Z0-9\-().\s]{5,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [5-100]"},
-				calle:    {valor:this.state.calle,   expreg:/^[a-zA-Z0-9\-().\s]{5,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [5-100]"},
-				numero:   {valor:this.state.numero,  expreg:/^[a-zA-Z0-9\-().\s]{1,5}$/,      requerido: true,  mensaje:"Alfanumerico ,longitud [1-5]"},
-				colonia:  {valor:this.state.colonia, expreg:/^[a-zA-Z0-9\-().\s]{1,50}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [0-50]"},
+				rfc:      {valor:this.state.rfc,     expreg:/^[ñÑa-zA-Z0-9\-().\s]{12,13}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [12-13]"},
+				nombre:   {valor:this.state.nombre,  expreg:/^[ñÑa-zA-Z0-9\-().\s]{5,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [5-100]"},
+				calle:    {valor:this.state.calle,   expreg:/^[ñÑa-zA-Z0-9/\-().\s]{5,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [5-100]"},
+				numero:   {valor:this.state.numero,  expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,5}$/,      requerido: true,  mensaje:"Alfanumerico ,longitud [1-5]"},
+				colonia:  {valor:this.state.colonia, expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,50}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [0-50]"},
 				cp:       {valor:this.state.cp,      expreg:/^[0-9\-().\s]{1,10}$/,           requerido: true,  mensaje:"Numerico ,longitud [0-10]"},		
 			    telefono: {valor:this.state.telefono,expreg:/^[0-9\-().\s]{10,15}$/,          requerido: true, mensaje:"Numerico  ,longitud [10-15]"},
 			    email:    {valor:this.state.email,   expreg:/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/,    requerido: true, mensaje:"El email no es valido"},		

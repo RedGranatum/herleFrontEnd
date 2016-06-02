@@ -74,11 +74,11 @@ module.exports = React.createClass({
       var datosNuevos = self.refs[appmvc.Menu.PROVEEDORES].nuevosDatos();
       proveedor.Eliminar(datosNuevos.id, function (model, response) {
         self.setState({ actualizarForm: true });
-        self.setState({ datosCliente: [] });
+        self.setState({ datosProveedor: [] });
         $("#notify_success").text("Los datos del proveedor fueron eliminados con exito");
         $("#notify_success").notify();
       }, function (model, response, options) {
-        $("#notify_error").text(response.responseText);
+        $("#notify_error").text("No se puede eliminar el proveedor");
         $("#notify_error").notify();
       });
     });
@@ -119,7 +119,7 @@ module.exports = React.createClass({
         $("#notify_success").text("Los datos del cliente fueron eliminados con exito");
         $("#notify_success").notify();
       }, function (model, response, options) {
-        $("#notify_error").text(response.responseText);
+        $("#notify_error").text("No se puede eliminar el cliente");
         $("#notify_error").notify();
       });
     });
@@ -484,9 +484,7 @@ var React = require('react');
 module.exports = React.createClass({
 		displayName: 'exports',
 
-		onChange: function (valor) {
-				;
-		},
+		onChange: function (valor) {},
 
 		render: function () {
 				return React.createElement(
@@ -583,11 +581,11 @@ module.exports = React.createClass({
 	relacionCampoErrores: function () {
 		var dic_errores = {
 			codigo: { valor: this.state.codigo, expreg: /^[a-zA-Z0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-10]" },
-			rfc: { valor: this.state.rfc, expreg: /^[a-zA-Z0-9\-().\s]{12,13}$/, requerido: true, mensaje: "Alfanumerico ,longitud [12-13]" },
-			nombre: { valor: this.state.nombre, expreg: /^[a-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
-			calle: { valor: this.state.calle, expreg: /^[a-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
-			numero: { valor: this.state.numero, expreg: /^[a-zA-Z0-9\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
-			colonia: { valor: this.state.colonia, expreg: /^[a-zA-Z0-9\-().\s]{1,50}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-50]" },
+			rfc: { valor: this.state.rfc, expreg: /^[ñÑa-zA-Z0-9\-().\s]{12,13}$/, requerido: true, mensaje: "Alfanumerico ,longitud [12-13]" },
+			nombre: { valor: this.state.nombre, expreg: /^[ñÑa-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
+			calle: { valor: this.state.calle, expreg: /^[ñÑa-zA-Z0-9/\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
+			numero: { valor: this.state.numero, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
+			colonia: { valor: this.state.colonia, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,50}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-50]" },
 			cp: { valor: this.state.cp, expreg: /^[0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Numerico ,longitud [0-10]" },
 			telefono: { valor: this.state.telefono, expreg: /^[0-9\-().\s]{10,15}$/, requerido: true, mensaje: "Numerico  ,longitud [10-15]" },
 			email: { valor: this.state.email, expreg: /^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/, requerido: true, mensaje: "El email no es valido" }
@@ -833,7 +831,7 @@ module.exports = React.createClass({
 	},
 	relacionCampoErrores: function () {
 		var dic_errores = {
-			material_descripcion: { valor: this.state.material_descripcion, expreg: /^[a-zA-Z0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-10]" },
+			material_descripcion: { valor: this.state.material_descripcion, expreg: /^[a-zA-Z0-9\-().\s]{0,10}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-10]" },
 			calibre: { valor: this.state.calibre, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
 			ancho: { valor: this.state.calibre, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
 			largo: { valor: this.state.largo, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
@@ -1060,8 +1058,8 @@ module.exports = React.createClass({
 	relacionCampoErrores: function () {
 		var dic_errores = {
 			invoice: { valor: this.state.invoice, expreg: /^[a-zA-Z0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-10]" },
-			proveedor_nombre: { valor: this.state.proveedor, expreg: /^[a-zA-Z0-9\-().\s]{1,110}$/, requerido: true, mensaje: "Selecciona un proveedor" },
-			casa_cambio: { valor: this.state.casa_cambio, expreg: /^[a-zA-Z0-9\-().\s]{2,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [2-30]" },
+			proveedor_nombre: { valor: this.state.proveedor, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,110}$/, requerido: true, mensaje: "Selecciona un proveedor" },
+			casa_cambio: { valor: this.state.casa_cambio, expreg: /^[ñÑa-zA-Z0-9\-().\s]{2,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [2-30]" },
 			precio_dolar: { valor: this.state.precio_dolar, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
 			fec_solicitud: { valor: this.state.fec_solicitud, expreg: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, requerido: true, mensaje: "No es un formato de fecha correcto" },
 			fec_aduana: { valor: this.state.fec_aduana, expreg: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, requerido: true, mensaje: "No es un formato de fecha correcto" },
@@ -1425,9 +1423,9 @@ $(function () {
         Url: {}
     };
 
-    //var url_local = 'http://localhost:8000/'
+    var url_local = 'http://localhost:8000/';
     //var url_local ='http://192.168.0.15:8000/';
-    var url_local = 'http://107.170.1.182:8000/';
+    //var url_local = 'http://107.170.1.182:8000/'
 
     datosCatalogo = new ApiRestCatalogo();
 
@@ -2290,11 +2288,11 @@ module.exports = React.createClass({
 	relacionCampoErrores: function () {
 		var dic_errores = {
 			codigo: { valor: this.state.codigo, expreg: /^[a-zA-Z0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-10]" },
-			rfc: { valor: this.state.rfc, expreg: /^[a-zA-Z0-9\-().\s]{12,13}$/, requerido: true, mensaje: "Alfanumerico ,longitud [12-13]" },
-			nombre: { valor: this.state.nombre, expreg: /^[a-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
-			calle: { valor: this.state.calle, expreg: /^[a-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
-			numero: { valor: this.state.numero, expreg: /^[a-zA-Z0-9\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
-			colonia: { valor: this.state.colonia, expreg: /^[a-zA-Z0-9\-().\s]{1,50}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-50]" },
+			rfc: { valor: this.state.rfc, expreg: /^[ñÑa-zA-Z0-9\-().\s]{12,13}$/, requerido: true, mensaje: "Alfanumerico ,longitud [12-13]" },
+			nombre: { valor: this.state.nombre, expreg: /^[ñÑa-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
+			calle: { valor: this.state.calle, expreg: /^[ñÑa-zA-Z0-9/\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
+			numero: { valor: this.state.numero, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
+			colonia: { valor: this.state.colonia, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,50}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-50]" },
 			cp: { valor: this.state.cp, expreg: /^[0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Numerico ,longitud [0-10]" },
 			telefono: { valor: this.state.telefono, expreg: /^[0-9\-().\s]{10,15}$/, requerido: true, mensaje: "Numerico  ,longitud [10-15]" },
 			email: { valor: this.state.email, expreg: /^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/, requerido: true, mensaje: "El email no es valido" }

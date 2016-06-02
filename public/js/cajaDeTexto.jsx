@@ -20,8 +20,7 @@ module.exports = React.createClass({
       var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
      	return (
                         <li className="li_bloque">
-                              <label className="etiquetas_bloque">{this.props.propiedades.titulo} {this.props.mensajeIndicativo}</label>
-                              
+                              <label className="etiquetas_bloque">{this.props.propiedades.titulo} {this.props.mensajeIndicativo}</label>      
                               <input 
                                 className="inputs_bloque" 
                                 pattern={this.props.propiedades.caracteresEsp}
