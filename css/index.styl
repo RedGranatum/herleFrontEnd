@@ -216,6 +216,20 @@ nav
 				color gris_claro
 				float right
 				margin-right 6px
+		.titulo_resalta
+			background gris_oscuro
+			border-radius 0 0 5px 5px
+			color white
+			font-size 20px
+			text-align center
+			padding 10px
+		.titulo_resalta_sub
+			background gris_medio
+			//border-radius 0 0 5px 5px
+			color white
+			font-size 14px
+			text-align center
+			padding 2px
 		.caja_bloque
 			//border-radius 0 0 5px 5px
 			background c5
@@ -398,7 +412,9 @@ nav
 		-moz-border-radius-bottomleft 0px
 		-webkit-border-bottom-left-radius 0px
 		border-bottom-left-radius 0px
-	.bloque_catalogo tr:hover td {}
+	.bloque_catalogo tr:hover td
+		background-color c4
+		color white
 	.bloque_catalogo tr:nth-child(odd)
 		background-color gris_claro
 		border 1px solid gris_medio
@@ -530,6 +546,8 @@ nav
 		opacity 1
 	#ampliar_tabla
 		width 162%
+	#ampliar_tabla_pantalla
+		width 300%
 // alertas-inicia
 .contenido_avisos
 	font-family arial-regular
@@ -542,6 +560,8 @@ nav
 			box-sizing border-box
 			-webkit-box-sizing border-box
 			-moz-box-sizing border-box
+#el_top
+	margin-top -12em
 /*==================================
 	Alert container
 ====================================*/
