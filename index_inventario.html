@@ -119,8 +119,33 @@
 						<td>r3</td>
 						<td>p3</td>
 					</tr>
+					<tr style="cursor:pointer" onclick="myFunction(this)">
+						<td>m4</td>
+						<td>c4</td>
+						<td>a4</td>
+						<td>l4</td>
+						<td>k4</td>
+						<td>l4</td>
+						<td>r4</td>
+						<td>p4</td>
+					</tr>
 					</tbody>
 				</table>
+			</div>
+		</article>
+		<article class="bloque">
+		</article>
+		<article class="bloque">
+			<div class="formula">
+				<figure class="formula_foto">
+					<p><img src="images/ok.png" alt="" />
+				</figure>
+				<div class="formula_datos">
+					<h3>Valor del kilo en dolar</h3>
+					<h3>Valor de tonelada en pesos</h3>
+					<h3>Valor del kilo en pesos</h3>
+					<h3>Valor final del kilo en pesos</h3>
+				</div>
 			</div>
 		</article>
 	</section>
@@ -169,7 +194,7 @@
 				</div>
 			</div>
 			<div class="titulo_resalta">
-				Código
+				Código Producto
 			</div>
 			<br>
 			<div class="titulo_bloque">
@@ -266,9 +291,6 @@
 					</ul>
 				</div>
 			</div>
-			<div class="titulo_resalta_sub">Valor del kilo en dolar</div>
-			<div class="titulo_resalta_sub">Valor del kilo en pesos</div>
-			<div class="titulo_resalta_sub">Valor final del kilo en pesos</div>
 			<br>
 			<div class="titulo_bloque">
 				Con Comercializadora
@@ -277,9 +299,46 @@
 				<div class="campos_bloque">
 					<ul class="ul_bloque">
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="porcentaje_c">%</label>
-							<input class="inputs_bloque" type="text" placeholder="Porcentaje Comercializadora" />
+							<label class="etiquetas_bloque" for="porcentaje_c">Porcentaje (%)</label>
+							<input class="inputs_bloque" type="text" placeholder="Porcentaje de comercializadora" />
 							<div class="viñeta">*</div>
+							<div class="error_ocultar">mensaje de error del campo</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<br>
+			<div class="titulo_bloque">
+				Valor Tonelada En Dolar / 1000
+			</div>
+			<div class="caja_bloque">
+				<div class="campos_bloque">
+					<ul class="ul_bloque">
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="factor_k">Factor</label>
+							<input class="inputs_bloque" type="text" placeholder="Factor para convertir en kilos" />
+							<div class="viñeta">*</div>
+							<div class="error_ocultar">mensaje de error del campo</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+		<article class="bloque">
+			<div class="titulo_bloque">
+				Otros Datos
+			</div>
+			<div class="caja_bloque">
+				<div class="campos_bloque">
+					<ul class="ul_bloque">
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="descripcion_i">Descripción</label>
+							<textarea class="textarea_bloque" name="descripcion_i" placeholder="Descripción"></textarea>
+							<div class="error_ocultar">mensaje de error del campo</div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="comentarios_i">Comentarios</label>
+							<textarea class="textarea_bloque" name="comentarios_i" placeholder="Comentarios"></textarea>
 							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 					</ul>
