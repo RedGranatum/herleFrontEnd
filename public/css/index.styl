@@ -11,6 +11,8 @@ gris_medio=#696868
 body
 	background fondo
 	font-size 14px
+	input[type=checkbox]
+		visibility hidden
 	//overflow hidden
 //menu de navegación
 nav
@@ -214,6 +216,20 @@ nav
 				color gris_claro
 				float right
 				margin-right 6px
+		.titulo_resalta
+			background gris_oscuro
+			border-radius 0 0 5px 5px
+			color white
+			font-size 20px
+			text-align center
+			padding 10px
+		.titulo_resalta_sub
+			background gris_medio
+			//border-radius 0 0 5px 5px
+			color white
+			font-size 14px
+			text-align center
+			padding 2px
 		.caja_bloque
 			//border-radius 0 0 5px 5px
 			background c5
@@ -396,7 +412,9 @@ nav
 		-moz-border-radius-bottomleft 0px
 		-webkit-border-bottom-left-radius 0px
 		border-bottom-left-radius 0px
-	.bloque_catalogo tr:hover td {}
+	.bloque_catalogo tr:hover td
+		background-color c4
+		color white
 	.bloque_catalogo tr:nth-child(odd)
 		background-color gris_claro
 		border 1px solid gris_medio
@@ -442,6 +460,13 @@ nav
 		color red
 	button.actualizar_renglon
 		color blue
+	.select_grid_chica
+		padding 0
+		margin 1px
+		width 4em
+		border 1px gris_oscuro solid
+		&:focus
+			background gris_claro
 	.select_grid
 		padding 0
 		margin 1px
@@ -464,8 +489,86 @@ nav
 		width 6em
 		border 1px gris_oscuro solid
 		opacity 0.8
+	.etiqueta_grid
+		color white
+		background c4
+		padding 2px
+		border-radius 2px
+	.checkbox_grid
+		width 18px
+		height 18px
+		background #fcfff4
+		background -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%)
+		background -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%)
+		background -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%)
+		background -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%)
+		background linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%)
+		margin 1px auto
+		-webkit-box-shadow inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5)
+		-moz-box-shadow inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5)
+		box-shadow inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5)
+		position relative
+	.checkbox_grid label
+		cursor pointer
+		position absolute
+		width 10px
+		height 10px
+		left 4px
+		top 4px
+		-webkit-box-shadow inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1)
+		-moz-box-shadow inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1)
+		box-shadow inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1)
+		background -webkit-linear-gradient(top, #222 0%, #45484d 100%)
+		background -moz-linear-gradient(top, #222 0%, #45484d 100%)
+		background -o-linear-gradient(top, #222 0%, #45484d 100%)
+		background -ms-linear-gradient(top, #222 0%, #45484d 100%)
+		background linear-gradient(top, #222 0%, #45484d 100%)
+	.checkbox_grid label:after
+		opacity 0
+		content ''
+		position absolute
+		width 10px
+		height 10px
+		background #00bf00
+		background -webkit-linear-gradient(top, #00bf00 0%, #009400 100%)
+		background -moz-linear-gradient(top, #00bf00 0%, #009400 100%)
+		background -o-linear-gradient(top, #00bf00 0%, #009400 100%)
+		background -ms-linear-gradient(top, #00bf00 0%, #009400 100%)
+		background linear-gradient(top, #00bf00 0%, #009400 100%)
+		top 0
+		left 0
+		-webkit-box-shadow inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5)
+		-moz-box-shadow inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5)
+		box-shadow inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5)
+	.checkbox_grid label:hover::after
+		opacity 0.3
+	.checkbox_grid input[type=checkbox]:checked + label:after
+		opacity 1
+	.formula
+		background gris_medio
+		border-radius 10px
+		position relative
+		.formula_foto
+			display inline-block
+			margin 4px
+			img
+				width 100px
+				height 100px
+		.formula_foto p
+			margin 1em
+		.formula_datos
+			margin-top 20px
+			display inline-block
+			position absolute
+			h2, h3, h5
+				position relative
+				color white
+				margin 0
+				padding 0
 	#ampliar_tabla
 		width 162%
+	#ampliar_tabla_pantalla
+		width 300%
 // alertas-inicia
 .contenido_avisos
 	font-family arial-regular
@@ -478,6 +581,8 @@ nav
 			box-sizing border-box
 			-webkit-box-sizing border-box
 			-moz-box-sizing border-box
+#el_top
+	margin-top -12em
 /*==================================
 	Alert container
 ====================================*/

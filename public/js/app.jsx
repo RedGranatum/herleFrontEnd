@@ -4,7 +4,9 @@ var MenuPrincipal    = require('../js/menuPrincipal.jsx');
 var MenuAcciones     = require('../js/menuAcciones.jsx');
 var Proveedores      = require('../js/proveedores.jsx');
 var Clientes         = require('../js/clientes.jsx');
-var Compras          = require('../js/compras.jsx');                           
+var Compras          = require('../js/compras.jsx');
+var SeccionUnoInv    = require('../js/tablaYFormula.jsx');  
+var SeccionDosInv    = require('../js/formsDeInventarios.jsx');                   
 var Page             = require("page");
 var Notificaciones   = require('../js/notificaciones')
 var $                = require('jquery');
@@ -310,7 +312,9 @@ module.exports = React.createClass({
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
 	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
+    <SeccionUnoInv/>
 	</section>
+    <SeccionDosInv/>
   </div>
 
 

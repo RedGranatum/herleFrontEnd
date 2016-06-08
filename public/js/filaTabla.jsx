@@ -8,11 +8,14 @@ var ReactDOM 		= require('react-dom') ;
 
 module.exports = React.createClass({
 
+        funcion:function(){
+              this.props.funcion.bind();
+        }  ,
 		render: function () {
 
            return (
 	
-					<tr key={this.props.key}>
+					<tr key={this.props.key} onClick={this.props.funcion} style={this.props.estilo}>
                          {this.props.childrens}
                     </tr>
 
