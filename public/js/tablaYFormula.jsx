@@ -2,8 +2,8 @@ var React=require('react');
 var TablaInv=require('../js/tabla3.jsx');
 
 module.exports = React.createClass({
-funcion: function(){
-	console.log("hay");
+funcion: function(nom){
+	console.log(nom);
 },
 render: function () {
   

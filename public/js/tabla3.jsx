@@ -2,6 +2,11 @@
 var React= require('react');
 var FilaTabla       = require('../js/filaTabla.jsx');
 var CeldaTabla      = require('../js/celdaTabla.jsx');
+module.exports = React.createClass({
+
+
+        render: function () {
+var funcion=this.props.funcion;
 
 var titulosEncabezado=["Material",	"Calibre",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)",	"No. Rollo",	"Precio"];
 
@@ -24,7 +29,7 @@ var listado=[
 ]
 
 var listado_detalles = [];
-       listado.forEach(function(resultado){
+listado.forEach(function(resultado){
             var detalle =[];
             var material = <CeldaTabla key="a1" contenido={resultado.material}/>
             var calibre = <CeldaTabla  key="b1"  contenido={resultado.calibre}/>
@@ -47,20 +52,17 @@ var listado_detalles = [];
           
 
 
-             listado_detalles.push(<FilaTabla key={resultado.id} childrens={detalle}  estilo={styles}/>)
+             listado_detalles.push(<FilaTabla key={resultado.id} childrens={detalle}  estilo={styles} funcion={funcion}/>)
           });
 
 
-
-module.exports = React.createClass({
-
+            
+		
        
-		render: function () {
-			
             return (
 			   <table className="tabla_catalogo" id="tabla">
 					<tbody>
-					<FilaTabla childrens={encabezado} funcion={this.props.funcion}/>
+					<FilaTabla childrens={encabezado} funcion={funcion}/>
 					{listado_detalles}
 					</tbody>
 				</table>

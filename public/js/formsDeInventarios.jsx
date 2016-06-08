@@ -13,7 +13,7 @@ module.exports = React.createClass({
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="material_i">Material</label>
+							<label className="etiquetas_bloque">Material</label>
 							<select name="material_i" className="select_bloque">
 								<option value="galvanizado">Galvanizado</option>
 								<option value="pintado">Pintado</option>

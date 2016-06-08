@@ -8,6 +8,9 @@ var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -1422,20 +1425,23 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 module.exports = React.createClass({
-      displayName: 'exports',
+  displayName: 'exports',
 
 
-      funcion: function () {
-            this.props.funcion.bind();
-      },
-      render: function () {
+  funcion: function () {
+    var keyy = this.props.childrens[0].props.contenido;
 
-            return React.createElement(
-                  'tr',
-                  { key: this.props.key, onClick: this.props.funcion, style: this.props.estilo },
-                  this.props.childrens
-            );
-      }
+    this.props.funcion(keyy);
+  },
+
+  render: function () {
+
+    return React.createElement(
+      'tr',
+      { key: this.props.key, onClick: this.funcion.bind(), style: this.props.estilo },
+      this.props.childrens
+    );
+  }
 });
 
 },{"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":21,"../js/opcionCombo.jsx":30,"react":202,"react-dom":46}],15:[function(require,module,exports){
@@ -1471,7 +1477,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "material_i" },
+									{ className: "etiquetas_bloque" },
 									"Material"
 								),
 								React.createElement(
@@ -3264,60 +3270,60 @@ module.exports = React.createClass({
 var React = require('react');
 var FilaTabla = require('../js/filaTabla.jsx');
 var CeldaTabla = require('../js/celdaTabla.jsx');
-
-var titulosEncabezado = ["Material", "Calibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
-
-var encabezado = titulosEncabezado.map(function (titulo) {
-     return React.createElement(CeldaTabla, { key: titulo, contenido: titulo });
-});
-
-styles = {
-     cursor: "pointer"
-};
-
-var listado = [{ material: "m1", calibre: "c1", ancho: "a1", largo: "l1", pesok: "k1", pesol: "l1", rollo: "r1", precio: "p1" }, { material: "m2", calibre: "c2", ancho: "a2", largo: "l2", pesok: "k2", pesol: "l2", rollo: "r2", precio: "p2" }, { material: "m3", calibre: "c3", ancho: "a3", largo: "l3", pesok: "k3", pesol: "l3", rollo: "r3", precio: "p3" }, { material: "m4", calibre: "c4", ancho: "a4", largo: "l4", pesok: "k4", pesol: "l4", rollo: "r4", precio: "p4" }];
-
-var listado_detalles = [];
-listado.forEach(function (resultado) {
-     var detalle = [];
-     var material = React.createElement(CeldaTabla, { key: 'a1', contenido: resultado.material });
-     var calibre = React.createElement(CeldaTabla, { key: 'b1', contenido: resultado.calibre });
-     var ancho = React.createElement(CeldaTabla, { key: 'c1', contenido: resultado.ancho });
-     var largo = React.createElement(CeldaTabla, { key: 'd1', contenido: resultado.largo });
-     var peso_kg = React.createElement(CeldaTabla, { key: 'e1', contenido: resultado.pesok });
-     var peso_lb = React.createElement(CeldaTabla, { key: 'f1', contenido: resultado.pesol });
-     var num_rollo = React.createElement(CeldaTabla, { key: 'g1', contenido: resultado.rollo });
-     var precio = React.createElement(CeldaTabla, { key: 'h1', contenido: resultado.precio });
-
-     detalle.push(material);
-     detalle.push(calibre);
-     detalle.push(ancho);
-     detalle.push(largo);
-     detalle.push(peso_kg);
-     detalle.push(peso_lb);
-     detalle.push(num_rollo);
-     detalle.push(precio);
-
-     listado_detalles.push(React.createElement(FilaTabla, { key: resultado.id, childrens: detalle, estilo: styles }));
-});
-
 module.exports = React.createClass({
-     displayName: 'exports',
+            displayName: 'exports',
 
 
-     render: function () {
+            render: function () {
+                        var funcion = this.props.funcion;
 
-          return React.createElement(
-               'table',
-               { className: 'tabla_catalogo', id: 'tabla' },
-               React.createElement(
-                    'tbody',
-                    null,
-                    React.createElement(FilaTabla, { childrens: encabezado, funcion: this.props.funcion }),
-                    listado_detalles
-               )
-          );
-     }
+                        var titulosEncabezado = ["Material", "Calibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
+
+                        var encabezado = titulosEncabezado.map(function (titulo) {
+                                    return React.createElement(CeldaTabla, { key: titulo, contenido: titulo });
+                        });
+
+                        styles = {
+                                    cursor: "pointer"
+                        };
+
+                        var listado = [{ material: "m1", calibre: "c1", ancho: "a1", largo: "l1", pesok: "k1", pesol: "l1", rollo: "r1", precio: "p1" }, { material: "m2", calibre: "c2", ancho: "a2", largo: "l2", pesok: "k2", pesol: "l2", rollo: "r2", precio: "p2" }, { material: "m3", calibre: "c3", ancho: "a3", largo: "l3", pesok: "k3", pesol: "l3", rollo: "r3", precio: "p3" }, { material: "m4", calibre: "c4", ancho: "a4", largo: "l4", pesok: "k4", pesol: "l4", rollo: "r4", precio: "p4" }];
+
+                        var listado_detalles = [];
+                        listado.forEach(function (resultado) {
+                                    var detalle = [];
+                                    var material = React.createElement(CeldaTabla, { key: 'a1', contenido: resultado.material });
+                                    var calibre = React.createElement(CeldaTabla, { key: 'b1', contenido: resultado.calibre });
+                                    var ancho = React.createElement(CeldaTabla, { key: 'c1', contenido: resultado.ancho });
+                                    var largo = React.createElement(CeldaTabla, { key: 'd1', contenido: resultado.largo });
+                                    var peso_kg = React.createElement(CeldaTabla, { key: 'e1', contenido: resultado.pesok });
+                                    var peso_lb = React.createElement(CeldaTabla, { key: 'f1', contenido: resultado.pesol });
+                                    var num_rollo = React.createElement(CeldaTabla, { key: 'g1', contenido: resultado.rollo });
+                                    var precio = React.createElement(CeldaTabla, { key: 'h1', contenido: resultado.precio });
+
+                                    detalle.push(material);
+                                    detalle.push(calibre);
+                                    detalle.push(ancho);
+                                    detalle.push(largo);
+                                    detalle.push(peso_kg);
+                                    detalle.push(peso_lb);
+                                    detalle.push(num_rollo);
+                                    detalle.push(precio);
+
+                                    listado_detalles.push(React.createElement(FilaTabla, { key: resultado.id, childrens: detalle, estilo: styles, funcion: funcion }));
+                        });
+
+                        return React.createElement(
+                                    'table',
+                                    { className: 'tabla_catalogo', id: 'tabla' },
+                                    React.createElement(
+                                                'tbody',
+                                                null,
+                                                React.createElement(FilaTabla, { childrens: encabezado, funcion: funcion }),
+                                                listado_detalles
+                                    )
+                        );
+            }
 });
 
 },{"../js/celdaTabla.jsx":8,"../js/filaTabla.jsx":14,"react":202}],36:[function(require,module,exports){
@@ -3327,8 +3333,8 @@ var TablaInv = require('../js/tabla3.jsx');
 module.exports = React.createClass({
 	displayName: 'exports',
 
-	funcion: function () {
-		console.log("hay");
+	funcion: function (nom) {
+		console.log(nom);
 	},
 	render: function () {
 
@@ -20375,7 +20381,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":40}],40:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20385,7 +20391,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-05-20T17:23Z
  */
 
 (function( global, factory ) {
@@ -20441,7 +20447,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.4",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -25382,13 +25388,14 @@ jQuery.Event.prototype = {
 	isDefaultPrevented: returnFalse,
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse,
+	isSimulated: false,
 
 	preventDefault: function() {
 		var e = this.originalEvent;
 
 		this.isDefaultPrevented = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.preventDefault();
 		}
 	},
@@ -25397,7 +25404,7 @@ jQuery.Event.prototype = {
 
 		this.isPropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopPropagation();
 		}
 	},
@@ -25406,7 +25413,7 @@ jQuery.Event.prototype = {
 
 		this.isImmediatePropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopImmediatePropagation();
 		}
 
@@ -26336,19 +26343,6 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
 		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-	// Support: IE11 only
-	// In IE 11 fullscreen elements inside of an iframe have
-	// 100x too small dimensions (gh-1764).
-	if ( document.msFullscreenElement && window.top !== window ) {
-
-		// Support: IE11 only
-		// Running getBoundingClientRect on a disconnected node
-		// in IE throws an error.
-		if ( elem.getClientRects().length ) {
-			val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-		}
-	}
 
 	// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -28240,6 +28234,7 @@ jQuery.extend( jQuery.event, {
 	},
 
 	// Piggyback on a donor event to simulate a different one
+	// Used only for `focus(in | out)` events
 	simulate: function( type, elem, event ) {
 		var e = jQuery.extend(
 			new jQuery.Event(),
@@ -28247,27 +28242,10 @@ jQuery.extend( jQuery.event, {
 			{
 				type: type,
 				isSimulated: true
-
-				// Previously, `originalEvent: {}` was set here, so stopPropagation call
-				// would not be triggered on donor event, since in our own
-				// jQuery.event.stopPropagation function we had a check for existence of
-				// originalEvent.stopPropagation method, so, consequently it would be a noop.
-				//
-				// But now, this "simulate" function is used only for events
-				// for which stopPropagation() is noop, so there is no need for that anymore.
-				//
-				// For the 1.x branch though, guard for "click" and "submit"
-				// events is still used, but was moved to jQuery.event.stopPropagation function
-				// because `originalEvent` should point to the original event for the constancy
-				// with other events and for more focused logic
 			}
 		);
 
 		jQuery.event.trigger( e, null, elem );
-
-		if ( e.isDefaultPrevented() ) {
-			event.preventDefault();
-		}
 	}
 
 } );
