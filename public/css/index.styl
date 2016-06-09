@@ -8,6 +8,11 @@ fondo=#F7FBFC
 gris_claro=#dddddc
 gris_oscuro=#30302f
 gris_medio=#696868
+verde_rgb=rgb(28,178,140)
+gris_claro_rgb_1=rgb(192,192,192)
+gris_claro_rgb_2=rgb(224,224,224)
+gris_claro_rgb_3=rgb(240,240,240)
+gris_claro_rgba_1=rgba(0, 0, 0, 0.5)
 body
 	background fondo
 	font-size 14px
@@ -335,6 +340,49 @@ nav
 							margin-left 4px
 						.error_ocultar
 							display none
+						.radio_bloque:not(old)
+								width 2em
+								margin 0
+								padding 0
+								font-size 1em
+								opacity 0
+								&:not(old) + label
+									display inline-block
+									margin-left -2em
+									line-height 1.5em
+								&:not(old) + label > span
+									display inline-block
+									width 0.875em
+									height 0.875em
+									margin 0.25em 0.5em 0.25em 0.25em
+									border 0.0625em solid gris_claro_rgb_1
+									border-radius 0.25em
+									background gris_claro_rgb_2
+									background-image -moz-linear-gradient(gris_claro_rgb_3,gris_claro_rgb_2)
+									background-image -ms-linear-gradient(gris_claro_rgb_3,gris_claro_rgb_2)
+									background-image -o-linear-gradient(gris_claro_rgb_3,gris_claro_rgb_2)
+									background-image -webkit-linear-gradient(gris_claro_rgb_3,gris_claro_rgb_2)
+									background-image linear-gradient(gris_claro_rgb_3,gris_claro_rgb_2)
+									vertical-align bottom
+								&:not(old):checked + label > span
+									background-image -moz-linear-gradient(gris_claro_rgb_2,gris_claro_rgb_3)
+									background-image -ms-linear-gradient(gris_claro_rgb_2,gris_claro_rgb_3)
+									background-image -o-linear-gradient(gris_claro_rgb_2,gris_claro_rgb_3)
+									background-image -webkit-linear-gradient(gris_claro_rgb_2,gris_claro_rgb_3)
+									background-image linear-gradient(gris_claro_rgb_2,gris_claro_rgb_3)
+								&:not(old):checked +  label > span > span
+									display block
+									width 0.5em
+									height 0.5em
+									margin 0.125em
+									border 0.0625em solid verde_rgb
+									border-radius 0.125em
+									background verde_rgb
+									background-image -moz-linear-gradient(verde_rgb,verde_rgb)
+									background-image -ms-linear-gradient(verde_rgb,verde_rgb)
+									background-image -o-linear-gradient(verde_rgb,verde_rgb)
+									background-image -webkit-linear-gradient(verde_rgb,verde_rgb)
+									background-image linear-gradient(verde_rgb,verde_rgb)
 	.bloque_proveedor
 		//display none
 		.botones_proveedor
@@ -412,9 +460,7 @@ nav
 		-moz-border-radius-bottomleft 0px
 		-webkit-border-bottom-left-radius 0px
 		border-bottom-left-radius 0px
-	.bloque_catalogo tr:hover td
-		background-color c4
-		color white
+	.bloque_catalogo tr:hover td{}
 	.bloque_catalogo tr:nth-child(odd)
 		background-color gris_claro
 		border 1px solid gris_medio
