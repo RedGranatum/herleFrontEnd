@@ -1,6 +1,42 @@
 var React=require('react');
+var Combo 	    	= require('../js/combo.jsx');
+var FuncGenericas   = require('../js/funcionesGenericas');
+var OpcionCombo 	= require('../js/opcionCombo.jsx');
+
+var materiales=[
+  {valor:"galvanizado",titulo:"Galvanizado"},
+  {valor:"pintado",titulo:"Pintadooooo"},
+  {valor:"rainbow",titulo:"Rainbow"},
+  {valor:"zintroalum",titulo:"Zintroalum"},
+]
+
+var materialesOptions=materiales.map(function(mat){
+    return (  <OpcionCombo valorOpcion={mat.valor} tituloOpcion={mat.titulo}/> );
+});
+//debugger;
+var func = new FuncGenericas();
+            //this.errors = this.errors || {};
+           //  this.validadarCampos();
+           // console.log(this.errors);
+	        //var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
+			//var CODIGO   = func.zipCol(dic1,["codigo",  "Código",        "Código",        this.state.codigo,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.codigo ]);
+			//var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre", 	     "Nombre", 		  this.state.nombre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.nombre ] );
+			//var CALLE    = func.zipCol(dic1,["calle",   "Calle",  	     "Calle",	      this.state.calle ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calle ]);
+			//var NUMERO   = func.zipCol(dic1,["numero",  "Número", 	     "Número",  	  this.state.numero,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.numero ]);
+			//var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio , this.onBlurCaja,  this.state.errores.colonia ]);
+			//var CP       = func.zipCol(dic1,["cp",      "Código Postal", "codigo_postal", this.state.cp ,      this.onValorCambio  , this.onBlurCaja,  this.state.errores.cp ]);
+			//var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",			  this.state.rfc ,     this.onValorCambio  , this.onBlurCaja,  this.state.errores.rfc ]);
+			//var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",	  this.state.telefono, this.onValorCambio  , this.onBlurCaja,  this.state.errores.telefono ]);
+		    //var EMAIL    = func.zipCol(dic1,["email",   "e-mail",        "e-mail",		  this.state.email,    this.onValorCambio  , this.onBlurCaja,  this.state.errores.email ]);
+
+    	    var dic2           =                      ["id",       "titulo",   "children" , "seleccionado"             ];
+		   	var MATERIALES     = func.zipCol(dic2,["material_i",     "Material",    materialesOptions, materialesOptions[1].props.valorOpcion        ]);
+
+
 
 module.exports = React.createClass({
+
+
 
 		render: function () {
             return (
@@ -12,17 +48,7 @@ module.exports = React.createClass({
 			<div className="caja_bloque">
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
-						<li className="li_bloque">
-							<label className="etiquetas_bloque">Material</label>
-							<select name="material_i" className="select_bloque">
-								<option value="galvanizado">Galvanizado</option>
-								<option value="pintado">Pintado</option>
-								<option value="rainbow">Rainbow</option>
-								<option value="zintroalum">Zintroalum</option>
-							</select>
-							<div className="viñeta">*</div>
-							<div className="error_ocultar">mensaje de error del campo</div>
-						</li>
+						<Combo propiedades={MATERIALES} key={"materiales"}/>
 						<li className="li_bloque">
 							<label className="etiquetas_bloque" for="calibre_i">Calibre</label>
 							<input className="inputs_bloque" name="calibre_i" type="number" />

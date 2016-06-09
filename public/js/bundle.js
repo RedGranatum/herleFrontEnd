@@ -8,9 +8,6 @@ var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -121,7 +118,9 @@ module.exports = React.createClass({
       datosProveedor: {},
       datosCliente: {},
       datosCompra: {},
+      datosInventarios: {},
       actualizarForm: false
+
     };
   },
   componentWillMount: function () {
@@ -267,6 +266,11 @@ module.exports = React.createClass({
       console.log("Vas a eliminar la compra");
     });
 
+    Page('/inventarios', function () {
+      self.mostrarMenu(appmvc.Menu.INVENTARIOS);
+      console.log("menu de inventarios");
+    });
+
     Page('*', function () {
       console.log("no conosco la ruta");
       Page.redirect('/');
@@ -357,6 +361,9 @@ module.exports = React.createClass({
       this.setState({ datosCompra: [], actualizarForm: true });
       this.llenarDatosCompra(pk);
     }
+    if (this.state.formMostrar === appmvc.Menu.INVENTARIOS) {
+      this.setState({ datosCompra: [], actualizarForm: true });
+    }
   },
   llenarCombos: function () {
     console.log("buscando datos");
@@ -365,6 +372,10 @@ module.exports = React.createClass({
     this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor }));
     this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES, datos: this.state.datosCliente }));
     this.crearFormulario(appmvc.Menu.COMPRAS, React.createElement(Compras, { ref: appmvc.Menu.COMPRAS, datos: this.state.datosCompra }));
+    this.crearFormulario(appmvc.Menu.INVENTARIOS, React.createElement(SeccionUnoInv, { ref: appmvc.Menu.INVENTARIOS, datos: this.state.datosInventarios }));
+    this.crearFormulario(appmvc.Menu.INVENTARIOS, React.createElement(SeccionUnoInv, { ref: appmvc.Menu.INVENTARIOS, datos: this.state.datosInventarios }));
+    /// debugger;
+
     var style = {
       margin: "0px",
       padding: "0px"
@@ -381,9 +392,8 @@ module.exports = React.createClass({
         appmvc.MenuForms[appmvc.Menu.PROVEEDORES],
         appmvc.MenuForms[appmvc.Menu.CLIENTES],
         appmvc.MenuForms[appmvc.Menu.COMPRAS],
-        React.createElement(SeccionUnoInv, null)
-      ),
-      React.createElement(SeccionDosInv, null)
+        appmvc.MenuForms[appmvc.Menu.INVENTARIOS]
+      )
     );
   }
 
@@ -1446,234 +1456,219 @@ module.exports = React.createClass({
 
 },{"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":21,"../js/opcionCombo.jsx":30,"react":202,"react-dom":46}],15:[function(require,module,exports){
 var React = require('react');
+var Combo = require('../js/combo.jsx');
+var FuncGenericas = require('../js/funcionesGenericas');
+var OpcionCombo = require('../js/opcionCombo.jsx');
+
+var materiales = [{ valor: "galvanizado", titulo: "Galvanizado" }, { valor: "pintado", titulo: "Pintadooooo" }, { valor: "rainbow", titulo: "Rainbow" }, { valor: "zintroalum", titulo: "Zintroalum" }];
+
+var materialesOptions = materiales.map(function (mat) {
+	return React.createElement(OpcionCombo, { valorOpcion: mat.valor, tituloOpcion: mat.titulo });
+});
+//debugger;
+var func = new FuncGenericas();
+//this.errors = this.errors || {};
+//  this.validadarCampos();
+// console.log(this.errors);
+//var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
+//var CODIGO   = func.zipCol(dic1,["codigo",  "Código",        "Código",        this.state.codigo,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.codigo ]);
+//var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre", 	     "Nombre", 		  this.state.nombre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.nombre ] );
+//var CALLE    = func.zipCol(dic1,["calle",   "Calle",  	     "Calle",	      this.state.calle ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calle ]);
+//var NUMERO   = func.zipCol(dic1,["numero",  "Número", 	     "Número",  	  this.state.numero,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.numero ]);
+//var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio , this.onBlurCaja,  this.state.errores.colonia ]);
+//var CP       = func.zipCol(dic1,["cp",      "Código Postal", "codigo_postal", this.state.cp ,      this.onValorCambio  , this.onBlurCaja,  this.state.errores.cp ]);
+//var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",			  this.state.rfc ,     this.onValorCambio  , this.onBlurCaja,  this.state.errores.rfc ]);
+//var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",	  this.state.telefono, this.onValorCambio  , this.onBlurCaja,  this.state.errores.telefono ]);
+//var EMAIL    = func.zipCol(dic1,["email",   "e-mail",        "e-mail",		  this.state.email,    this.onValorCambio  , this.onBlurCaja,  this.state.errores.email ]);
+
+var dic2 = ["id", "titulo", "children", "seleccionado"];
+var MATERIALES = func.zipCol(dic2, ["material_i", "Material", materialesOptions, materialesOptions[1].props.valorOpcion]);
 
 module.exports = React.createClass({
-	displayName: "exports",
+	displayName: 'exports',
 
 
 	render: function () {
 		return React.createElement(
-			"section",
-			{ className: "contenido", id: "el_top" },
+			'section',
+			{ className: 'contenido', id: 'el_top' },
 			React.createElement(
-				"article",
-				{ className: "bloque" },
+				'article',
+				{ className: 'bloque' },
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Producto"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Producto'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
+							React.createElement(Combo, { propiedades: MATERIALES, key: "materiales" }),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque" },
-									"Material"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'calibre_i' },
+									'Calibre'
+								),
+								React.createElement('input', { className: 'inputs_bloque', name: 'calibre_i', type: 'number' }),
+								React.createElement(
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"select",
-									{ name: "material_i", className: "select_bloque" },
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
+								)
+							),
+							React.createElement(
+								'li',
+								{ className: 'li_bloque' },
+								React.createElement(
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'ancho_i' },
+									'Ancho'
+								),
+								React.createElement('input', { className: 'inputs_bloque', name: 'ancho_i', type: 'number' }),
+								React.createElement(
+									'div',
+									{ className: 'viñeta' },
+									'*'
+								),
+								React.createElement(
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
+								)
+							),
+							React.createElement(
+								'li',
+								{ className: 'li_bloque' },
+								React.createElement(
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'largo_i' },
+									'Largo'
+								),
+								React.createElement(
+									'select',
+									{ name: 'largo_i', className: 'select_bloque' },
 									React.createElement(
-										"option",
-										{ value: "galvanizado" },
-										"Galvanizado"
+										'option',
+										{ value: '0' },
+										'0'
 									),
 									React.createElement(
-										"option",
-										{ value: "pintado" },
-										"Pintado"
+										'option',
+										{ value: '10' },
+										'10'
 									),
 									React.createElement(
-										"option",
-										{ value: "rainbow" },
-										"Rainbow"
-									),
-									React.createElement(
-										"option",
-										{ value: "zintroalum" },
-										"Zintroalum"
+										'option',
+										{ value: '12' },
+										'12'
 									)
 								),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
-								)
-							),
-							React.createElement(
-								"li",
-								{ className: "li_bloque" },
-								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "calibre_i" },
-									"Calibre"
-								),
-								React.createElement("input", { className: "inputs_bloque", name: "calibre_i", type: "number" }),
-								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
-								),
-								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
-								)
-							),
-							React.createElement(
-								"li",
-								{ className: "li_bloque" },
-								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "ancho_i" },
-									"Ancho"
-								),
-								React.createElement("input", { className: "inputs_bloque", name: "ancho_i", type: "number" }),
-								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
-								),
-								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
-								)
-							),
-							React.createElement(
-								"li",
-								{ className: "li_bloque" },
-								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "largo_i" },
-									"Largo"
-								),
-								React.createElement(
-									"select",
-									{ name: "largo_i", className: "select_bloque" },
-									React.createElement(
-										"option",
-										{ value: "0" },
-										"0"
-									),
-									React.createElement(
-										"option",
-										{ value: "10" },
-										"10"
-									),
-									React.createElement(
-										"option",
-										{ value: "12" },
-										"12"
-									)
-								),
-								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
-								),
-								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
 					)
 				),
 				React.createElement(
-					"div",
-					{ className: "titulo_resalta" },
-					"Código Producto"
+					'div',
+					{ className: 'titulo_resalta' },
+					'Código Producto'
 				),
-				React.createElement("br", null),
+				React.createElement('br', null),
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Rollo"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Rollo'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "no_rollo" },
-									"No. Rollo"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'no_rollo' },
+									'No. Rollo'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "No. Rollo" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'No. Rollo' }),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "peso_kgs" },
-									"Peso (Kgs)"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'peso_kgs' },
+									'Peso (Kgs)'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Peso (Kgs)" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Peso (Kgs)' }),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "peso_lbs" },
-									"Peso (Lbs)"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'peso_lbs' },
+									'Peso (Lbs)'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Peso (Lbs)" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Peso (Lbs)' }),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "transporte" },
-									"Transporte"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'transporte' },
+									'Transporte'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Transporte" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Transporte' }),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
@@ -1681,270 +1676,270 @@ module.exports = React.createClass({
 				)
 			),
 			React.createElement(
-				"article",
-				{ className: "bloque" },
+				'article',
+				{ className: 'bloque' },
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Origen Producto"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Origen Producto'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "pais_p" },
-									"Origen del producto"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'pais_p' },
+									'Origen del producto'
 								),
 								React.createElement(
-									"select",
-									{ name: "pais_p", className: "select_bloque" },
+									'select',
+									{ name: 'pais_p', className: 'select_bloque' },
 									React.createElement(
-										"option",
-										{ value: "mexico_p" },
-										"México"
+										'option',
+										{ value: 'mexico_p' },
+										'México'
 									),
 									React.createElement(
-										"option",
-										{ value: "eeuu_p" },
-										"EEUU"
+										'option',
+										{ value: 'eeuu_p' },
+										'EEUU'
 									),
 									React.createElement(
-										"option",
-										{ value: "china_p" },
-										"China"
+										'option',
+										{ value: 'china_p' },
+										'China'
 									)
 								),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "tipo_entrada" },
-									"Tipo de entrada"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'tipo_entrada' },
+									'Tipo de entrada'
 								),
 								React.createElement(
-									"select",
-									{ name: "tipo_entrada", className: "select_bloque" },
+									'select',
+									{ name: 'tipo_entrada', className: 'select_bloque' },
 									React.createElement(
-										"option",
-										{ value: "no_especificado" },
-										"NO ESPECIFICADO"
+										'option',
+										{ value: 'no_especificado' },
+										'NO ESPECIFICADO'
 									),
 									React.createElement(
-										"option",
-										{ value: "con_comercializadora" },
-										"Con Comercializadora"
+										'option',
+										{ value: 'con_comercializadora' },
+										'Con Comercializadora'
 									),
 									React.createElement(
-										"option",
-										{ value: "sin_comercializadora" },
-										"Sin Comercializadora"
+										'option',
+										{ value: 'sin_comercializadora' },
+										'Sin Comercializadora'
 									)
 								),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
 					)
 				),
-				React.createElement("br", null),
+				React.createElement('br', null),
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Sin Comercializadora"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Sin Comercializadora'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "precio_lbs" },
-									"Precio en libra"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'precio_lbs' },
+									'Precio en libra'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Precio en libra" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Precio en libra' }),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "factor" },
-									"Factor"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'factor' },
+									'Factor'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Factor" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Factor' }),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "precio_dls" },
-									"Precio en dolar"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'precio_dls' },
+									'Precio en dolar'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Precio en dolar" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Precio en dolar' }),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "factor_impurto" },
-									"Factor de impuestos"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'factor_impurto' },
+									'Factor de impuestos'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Factor de impuestos" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Factor de impuestos' }),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
 					)
 				),
-				React.createElement("br", null),
+				React.createElement('br', null),
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Con Comercializadora"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Con Comercializadora'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "porcentaje_c" },
-									"Porcentaje (%)"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'porcentaje_c' },
+									'Porcentaje (%)'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Porcentaje de comercializadora" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Porcentaje de comercializadora' }),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
 					)
 				),
-				React.createElement("br", null),
+				React.createElement('br', null),
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Valor Tonelada En Dolar / 1000"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Valor Tonelada En Dolar / 1000'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "factor_k" },
-									"Factor"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'factor_k' },
+									'Factor'
 								),
-								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Factor para convertir en kilos" }),
+								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Factor para convertir en kilos' }),
 								React.createElement(
-									"div",
-									{ className: "viñeta" },
-									"*"
+									'div',
+									{ className: 'viñeta' },
+									'*'
 								),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
@@ -1952,50 +1947,50 @@ module.exports = React.createClass({
 				)
 			),
 			React.createElement(
-				"article",
-				{ className: "bloque" },
+				'article',
+				{ className: 'bloque' },
 				React.createElement(
-					"div",
-					{ className: "titulo_bloque" },
-					"Otros Datos"
+					'div',
+					{ className: 'titulo_bloque' },
+					'Otros Datos'
 				),
 				React.createElement(
-					"div",
-					{ className: "caja_bloque" },
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						"div",
-						{ className: "campos_bloque" },
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							"ul",
-							{ className: "ul_bloque" },
+							'ul',
+							{ className: 'ul_bloque' },
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "descripcion_i" },
-									"Descripción"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'descripcion_i' },
+									'Descripción'
 								),
-								React.createElement("textarea", { className: "textarea_bloque", name: "descripcion_i", placeholder: "Descripción" }),
+								React.createElement('textarea', { className: 'textarea_bloque', name: 'descripcion_i', placeholder: 'Descripción' }),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							),
 							React.createElement(
-								"li",
-								{ className: "li_bloque" },
+								'li',
+								{ className: 'li_bloque' },
 								React.createElement(
-									"label",
-									{ className: "etiquetas_bloque", "for": "comentarios_i" },
-									"Comentarios"
+									'label',
+									{ className: 'etiquetas_bloque', 'for': 'comentarios_i' },
+									'Comentarios'
 								),
-								React.createElement("textarea", { className: "textarea_bloque", name: "comentarios_i", placeholder: "Comentarios" }),
+								React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios_i', placeholder: 'Comentarios' }),
 								React.createElement(
-									"div",
-									{ className: "error_ocultar" },
-									"mensaje de error del campo"
+									'div',
+									{ className: 'error_ocultar' },
+									'mensaje de error del campo'
 								)
 							)
 						)
@@ -2006,7 +2001,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":202}],16:[function(require,module,exports){
+},{"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/opcionCombo.jsx":30,"react":202}],16:[function(require,module,exports){
 var OpcionCombo = require('../js/opcionCombo.jsx');
 var React = require('react');
 var CeldaTabla = require('../js/celdaTabla.jsx');
@@ -2102,13 +2097,15 @@ $(function () {
   appmvc.Menu.PROVEEDORES = 'Proveedores';
   appmvc.Menu.CLIENTES = 'Clientes';
   appmvc.Menu.COMPRAS = 'Compras';
+  appmvc.Menu.INVENTARIOS = 'Inventarios';
 
   appmvc.Forms.PROVEEDORES = null;
   appmvc.Forms.CLIENTES = null;
   appmvc.MenuForms = {
     'Proveedores': appmvc.Forms.PROVEEDORES,
     'Clientes': appmvc.Forms.CLIENTES,
-    'Compras': appmvc.Forms.COMPRAS
+    'Compras': appmvc.Forms.COMPRAS,
+    'Inventarios': appmvc.Forms.INVENTARIOS
   };
 
   appmvc.Catalogos.PAISES = 1;
@@ -2273,7 +2270,7 @@ module.exports = React.createClass({
 				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "truck", tam: "3x", ruta: "/proveedores" }),
 				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "group", tam: "3x", ruta: "/clientes" }),
 				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "shopping-cart", tam: "3x", ruta: "/compras" }),
-				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "dollar", tam: "3x" }),
+				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "dollar", tam: "3x", ruta: "/inventarios" }),
 				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "money", tam: "3x" }),
 				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "info", tam: "3x" }),
 				React.createElement(BotonMenu, { colorLink: "ico_nav", icono: "th", tam: "3x" }),
@@ -20381,7 +20378,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":40}],40:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.4
+ * jQuery JavaScript Library v2.2.3
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20391,7 +20388,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-05-20T17:23Z
+ * Date: 2016-04-05T19:26Z
  */
 
 (function( global, factory ) {
@@ -20447,7 +20444,7 @@ var support = {};
 
 
 var
-	version = "2.2.4",
+	version = "2.2.3",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -25388,14 +25385,13 @@ jQuery.Event.prototype = {
 	isDefaultPrevented: returnFalse,
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse,
-	isSimulated: false,
 
 	preventDefault: function() {
 		var e = this.originalEvent;
 
 		this.isDefaultPrevented = returnTrue;
 
-		if ( e && !this.isSimulated ) {
+		if ( e ) {
 			e.preventDefault();
 		}
 	},
@@ -25404,7 +25400,7 @@ jQuery.Event.prototype = {
 
 		this.isPropagationStopped = returnTrue;
 
-		if ( e && !this.isSimulated ) {
+		if ( e ) {
 			e.stopPropagation();
 		}
 	},
@@ -25413,7 +25409,7 @@ jQuery.Event.prototype = {
 
 		this.isImmediatePropagationStopped = returnTrue;
 
-		if ( e && !this.isSimulated ) {
+		if ( e ) {
 			e.stopImmediatePropagation();
 		}
 
@@ -26343,6 +26339,19 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
 		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
+
+	// Support: IE11 only
+	// In IE 11 fullscreen elements inside of an iframe have
+	// 100x too small dimensions (gh-1764).
+	if ( document.msFullscreenElement && window.top !== window ) {
+
+		// Support: IE11 only
+		// Running getBoundingClientRect on a disconnected node
+		// in IE throws an error.
+		if ( elem.getClientRects().length ) {
+			val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
+		}
+	}
 
 	// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -28234,7 +28243,6 @@ jQuery.extend( jQuery.event, {
 	},
 
 	// Piggyback on a donor event to simulate a different one
-	// Used only for `focus(in | out)` events
 	simulate: function( type, elem, event ) {
 		var e = jQuery.extend(
 			new jQuery.Event(),
@@ -28242,10 +28250,27 @@ jQuery.extend( jQuery.event, {
 			{
 				type: type,
 				isSimulated: true
+
+				// Previously, `originalEvent: {}` was set here, so stopPropagation call
+				// would not be triggered on donor event, since in our own
+				// jQuery.event.stopPropagation function we had a check for existence of
+				// originalEvent.stopPropagation method, so, consequently it would be a noop.
+				//
+				// But now, this "simulate" function is used only for events
+				// for which stopPropagation() is noop, so there is no need for that anymore.
+				//
+				// For the 1.x branch though, guard for "click" and "submit"
+				// events is still used, but was moved to jQuery.event.stopPropagation function
+				// because `originalEvent` should point to the original event for the constancy
+				// with other events and for more focused logic
 			}
 		);
 
 		jQuery.event.trigger( e, null, elem );
+
+		if ( e.isDefaultPrevented() ) {
+			event.preventDefault();
+		}
 	}
 
 } );

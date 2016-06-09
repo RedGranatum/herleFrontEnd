@@ -22,9 +22,11 @@ module.exports = React.createClass({
 	 	 return {
     	 	 	formMostrar:"",
     	 	 	datosProveedor: {},
-    	 	 	datosCliente : {},
+    	 	 	datosCliente: {},
     	 	 	datosCompra: {},
+          datosInventarios: {},
           actualizarForm: false,
+
      		};
 	 	},
 		componentWillMount:function(){
@@ -187,6 +189,11 @@ module.exports = React.createClass({
                 console.log("Vas a eliminar la compra");              
             });
            
+            Page('/inventarios',function(){
+              self.mostrarMenu(appmvc.Menu.INVENTARIOS);
+              console.log("menu de inventarios");                    
+             });
+      
 
              Page('*',function(){
              	console.log("no conosco la ruta");
@@ -289,6 +296,9 @@ module.exports = React.createClass({
         this.setState({datosCompra:[],actualizarForm:true});
  				this.llenarDatosCompra(pk);
  			}
+      if(this.state.formMostrar===appmvc.Menu.INVENTARIOS){
+        this.setState({datosCompra:[],actualizarForm:true});
+      }      
  		},
     llenarCombos: function(){
         console.log("buscando datos");
@@ -296,7 +306,11 @@ module.exports = React.createClass({
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
-      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);     
+      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);  
+   /// debugger;
+
           var style = {
       margin: "0px",
      padding: "0px"
@@ -312,9 +326,9 @@ module.exports = React.createClass({
 		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
 	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
-    <SeccionUnoInv/>
+    {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
 	</section>
-    <SeccionDosInv/>
+  
   </div>
 
 

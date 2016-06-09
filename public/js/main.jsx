@@ -30,6 +30,7 @@ $(function() {
 	appmvc.Menu.PROVEEDORES = 'Proveedores';
 	appmvc.Menu.CLIENTES = 'Clientes';
 	appmvc.Menu.COMPRAS = 'Compras';
+	appmvc.Menu.INVENTARIOS = 'Inventarios';
 	
     
 	appmvc.Forms.PROVEEDORES=null;
@@ -38,6 +39,7 @@ $(function() {
 		 'Proveedores' : appmvc.Forms.PROVEEDORES,
 		 'Clientes'	   : appmvc.Forms.CLIENTES,
 		 'Compras'	   : appmvc.Forms.COMPRAS,
+		 'Inventarios' : appmvc.Forms.INVENTARIOS,
 	};
 
 	appmvc.Catalogos.PAISES = 1;
