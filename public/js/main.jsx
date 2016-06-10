@@ -32,6 +32,7 @@ $(function() {
 	appmvc.Menu.COMPRAS = 'Compras';
 	appmvc.Menu.INVENTARIOS = 'Inventarios';
 	appmvc.Menu.VENTAS = 'Ventas';
+	appmvc.Menu.COSTOS = 'Costos';
 	
 	
     
@@ -40,12 +41,14 @@ $(function() {
 	appmvc.Forms.COMPRAS=null;
 	appmvc.Forms.INVENTARIOS=null;
 	appmvc.Forms.VENTAS=null;
+	appmvc.Forms.COSTOS=null;
 	appmvc.MenuForms = {
 		 'Proveedores' : appmvc.Forms.PROVEEDORES,
 		 'Clientes'	   : appmvc.Forms.CLIENTES,
 		 'Compras'	   : appmvc.Forms.COMPRAS,
 		 'Inventarios' : appmvc.Forms.INVENTARIOS,
 		 'Ventas'      : appmvc.Forms.VENTAS,
+		 'Costos'      : appmvc.Forms.COSTOS, 
 	};
 
 	appmvc.Catalogos.PAISES = 1;

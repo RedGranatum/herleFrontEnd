@@ -7,7 +7,8 @@ var Clientes         = require('../js/clientes.jsx');
 var Compras          = require('../js/compras.jsx');
 var SeccionUnoInv    = require('../js/tablaYFormula.jsx');  
 var SeccionDosInv    = require('../js/formsDeInventarios.jsx');    
-var Ventas           = require('../js/ventas.jsx');               
+var Ventas           = require('../js/ventas.jsx');  
+var Costos           = require('../js/costos.jsx');            
 var Page             = require("page");
 var Notificaciones   = require('../js/notificaciones');
 var $                = require('jquery');
@@ -27,6 +28,7 @@ module.exports = React.createClass({
     	 	 	datosCompra: {},
           datosInventarios: {},
           datosVentas: {},
+          datosCostos: {},
           actualizarForm: false,
 
      		};
@@ -200,6 +202,11 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.VENTAS);
               console.log("menu de ventas");                    
              });
+
+            Page('/costos',function(){
+              self.mostrarMenu(appmvc.Menu.COSTOS);
+              console.log("menu de costos");                    
+             });
       
 
              Page('*',function(){
@@ -308,7 +315,10 @@ module.exports = React.createClass({
       }      
       if(this.state.formMostrar===appmvc.Menu.VENTAS){
         this.setState({datosVentas:[],actualizarForm:true});
-      }      
+      }  
+      if(this.state.formMostrar===appmvc.Menu.COSTOS){
+        this.setState({datosCostos:[],actualizarForm:true});
+      }     
       
  		},
     llenarCombos: function(){
@@ -318,8 +328,9 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
-      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
-      this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS} datos={this.state.datosVentas} />);
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS}  />);   
+      this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
+      this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
           var style = {
       margin: "0px",
      padding: "0px"
@@ -337,9 +348,10 @@ module.exports = React.createClass({
 	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
     {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
     {appmvc.MenuForms[appmvc.Menu.VENTAS]}
-
+      
 	</section>
-  
+    {appmvc.MenuForms[appmvc.Menu.COSTOS]}
+
   </div>
 
 
