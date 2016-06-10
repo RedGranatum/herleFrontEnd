@@ -227,7 +227,7 @@ module.exports = React.createClass({
 		},
   
 		mostrarMenu:function(nomform){
-         this.setState({actualizarForm:false});
+          this.setState({actualizarForm:false});
           this.setState({formMostrar:nomform});
     },
     llenarDatosProveedor: function(pk){
@@ -267,7 +267,18 @@ module.exports = React.createClass({
       							}
 				    );
          },
-    
+    llenarDatosInventario: function(pk){
+           var self = this;
+           var comp = new ApiRestCompras();
+           comp.buscarCompraPorPk(pk, 
+                function(data){
+                    self.setState({datosInventarios: data[0] });
+                    },
+                function(model,response,options){
+                      self.setState({datosInventarios : [] });
+                    }
+            );
+         },   
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 		},
@@ -311,7 +322,8 @@ module.exports = React.createClass({
  				this.llenarDatosCompra(pk);
  			}
       if(this.state.formMostrar===appmvc.Menu.INVENTARIOS){
-        this.setState({datosInventarios:[],actualizarForm:true});
+        this.setState({datosInventarios:[],actualizarForm:true});       
+        this.llenarDatosInventario(pk);
       }      
       if(this.state.formMostrar===appmvc.Menu.VENTAS){
         this.setState({datosVentas:[],actualizarForm:true});

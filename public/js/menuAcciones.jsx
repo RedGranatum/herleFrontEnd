@@ -41,10 +41,14 @@ module.exports = React.createClass({
                    var compra= new ApirestCompra();
                    funcionBusqueda = compra.buscarCompraPorInvoice.bind(compra);
             }
+            if(formulario === appmvc.Menu.INVENTARIOS){
+                   var compra= new ApirestCompra();
+                   funcionBusqueda = compra.buscarCompraPorInvoice.bind(compra);
+            }
+
 
             funcionBusqueda(valor_buscado,
                       function(data){
-                        //debugger;
                           self.setState({  listado: data });
                       },
                       function(model,response, options) {
