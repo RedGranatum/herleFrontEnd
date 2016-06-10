@@ -26,6 +26,7 @@ module.exports = React.createClass({
     	 	 	datosCliente: {},
     	 	 	datosCompra: {},
           datosInventarios: {},
+          datosVentas: {},
           actualizarForm: false,
 
      		};
@@ -194,6 +195,11 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.INVENTARIOS);
               console.log("menu de inventarios");                    
              });
+
+            Page('/ventas',function(){
+              self.mostrarMenu(appmvc.Menu.VENTAS);
+              console.log("menu de ventas");                    
+             });
       
 
              Page('*',function(){
@@ -298,8 +304,12 @@ module.exports = React.createClass({
  				this.llenarDatosCompra(pk);
  			}
       if(this.state.formMostrar===appmvc.Menu.INVENTARIOS){
-        this.setState({datosCompra:[],actualizarForm:true});
+        this.setState({datosInventarios:[],actualizarForm:true});
       }      
+      if(this.state.formMostrar===appmvc.Menu.VENTAS){
+        this.setState({datosVentas:[],actualizarForm:true});
+      }      
+      
  		},
     llenarCombos: function(){
         console.log("buscando datos");
@@ -309,7 +319,7 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
       this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
-      
+      this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS} datos={this.state.datosVentas} />);
           var style = {
       margin: "0px",
      padding: "0px"
@@ -326,7 +336,8 @@ module.exports = React.createClass({
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
 	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
     {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
-    <Ventas/>
+    {appmvc.MenuForms[appmvc.Menu.VENTAS]}
+
 	</section>
   
   </div>

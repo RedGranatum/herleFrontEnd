@@ -31,15 +31,21 @@ $(function() {
 	appmvc.Menu.CLIENTES = 'Clientes';
 	appmvc.Menu.COMPRAS = 'Compras';
 	appmvc.Menu.INVENTARIOS = 'Inventarios';
+	appmvc.Menu.VENTAS = 'Ventas';
+	
 	
     
 	appmvc.Forms.PROVEEDORES=null;
 	appmvc.Forms.CLIENTES=null;
+	appmvc.Forms.COMPRAS=null;
+	appmvc.Forms.INVENTARIOS=null;
+	appmvc.Forms.VENTAS=null;
 	appmvc.MenuForms = {
 		 'Proveedores' : appmvc.Forms.PROVEEDORES,
 		 'Clientes'	   : appmvc.Forms.CLIENTES,
 		 'Compras'	   : appmvc.Forms.COMPRAS,
 		 'Inventarios' : appmvc.Forms.INVENTARIOS,
+		 'Ventas'      : appmvc.Forms.VENTAS,
 	};
 
 	appmvc.Catalogos.PAISES = 1;
