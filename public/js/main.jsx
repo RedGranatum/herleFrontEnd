@@ -56,7 +56,7 @@ $(function() {
 	appmvc.Catalogos.BANCOS = 3;
 	appmvc.Catalogos.MONEDAS = 4;
 	appmvc.Catalogos.MATERIALES = 5;
-	
+	appmvc.Catalogos.PARAMETROS_CALCULOS = 9;
 
 	appmvc.Datos.PAISES = null; 
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
