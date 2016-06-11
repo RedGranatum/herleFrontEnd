@@ -109,8 +109,8 @@ module.exports = React.createClass({
 
 
        this.state.detalles_lista.forEach(function(detalle_compra){
-            var detalle= <CompraDetalle ref={"detalle_" + detalle_compra.num_consecutivo } key={detalle_compra.num_consecutivo} datos ={detalle_compra} clickOperacion={self.clickOperacion} />
-             listado_detalles .push(detalle);
+            var detalle= <CompraDetalle ref={"detalle_" + detalle_compra.num_consecutivo } key={"xx" + detalle_compra.num_consecutivo} datos ={detalle_compra} clickOperacion={self.clickOperacion} />
+             listado_detalles.push(detalle);
           });
 
 

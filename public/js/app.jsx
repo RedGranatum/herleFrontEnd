@@ -337,8 +337,8 @@ module.exports = React.createClass({
         console.log("buscando datos");
     },
 		 render: function () {
-			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
-			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
+			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
+			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
       this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);

@@ -64,7 +64,7 @@ listado.forEach(function(resultado){
           });      
 		       
       return (
-			   <table className="tabla_catalogo" id="tabla">
+			   <table className="tabla_catalogo" id="tabla_de_inventario_compra">
 					<tbody>
 					<FilaTabla childrens={encabezado} funcion={funcion}/>
 					{listado_detalles}

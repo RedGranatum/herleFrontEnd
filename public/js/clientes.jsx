@@ -5,6 +5,7 @@ var FuncGenericas   = require('../js/funcionesGenericas')
 var OpcionCombo 	= require('../js/opcionCombo.jsx');
 var React 			= require('react');
 var ReactDOM 		= require('react-dom') ;
+var ApiRestCliente = require('../js/modelos/apirestClientes');
 
 
 module.exports = React.createClass({
@@ -14,7 +15,21 @@ module.exports = React.createClass({
 		  if(nuevas_props.datos.pais!==undefined){
 	   	  		this.onValorCambio("pais",nuevas_props.datos.pais);
 		  }
+
+		  this.llenarListaClientes();
 	   }, 
+	   	   llenarListaClientes: function(pk){
+         	 var self = this;
+           var clie = new ApiRestCliente();
+           clie.buscarClientes(	
+      					function(data){
+      			   				self.setState({lista_clientes: data });
+      							},
+      					function(model,response,options){
+      	 					    self.setState({lista_clientes : [] });
+      							}
+				    );
+         },
 	   llenarCombos: function(){    
 	        var func = new FuncGenericas();      
 	   		 this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
@@ -32,6 +47,7 @@ module.exports = React.createClass({
 	   		 else{
 	   			this.llenarCombos();
 	   		}
+	   		 this.llenarListaClientes();
 	   },
 	   	getInitialState: function(){
 			return this.valoresDefecto();
@@ -67,6 +83,7 @@ module.exports = React.createClass({
                 estado: "0020001",
                 banco: "0030000",
                 "errores" :{},
+                lista_clientes: []
 			};	
 		},
 		onValorCambio: function(campo,valor){
@@ -158,8 +175,12 @@ module.exports = React.createClass({
                            }
                     );
        },
+       onSeleccionFila: function(id_cliente){
+       	 this.props.onClaveSeleccionada(id_cliente);
+       },
 		render: function () {
 			func = new FuncGenericas();
+			var self = this;
 		//	this.errors = this.errors || {};
            // this.validadarCampos();
 
@@ -178,8 +199,21 @@ module.exports = React.createClass({
 		   	var PAIS     = func.zipCol(dic2,["pais",     "País",      this.Paises,               this.state.pais,    this.onValorCambio]);
          	var ESTADO   = func.zipCol(dic2,["estado",   "Estado",      this.state.llenarEstados,  this.state.estado,  this.onValorCambio]);
             var BANCOS	 =	func.zipCol(dic2,["banco",     "Banco",      this.Bancos,            this.state.banco,    this.onValorCambio]);  
+			
+			var listaCliente = []
+			listaCliente = this.state.lista_clientes.map(function(valores){
+				return(
+					<tr key={valores.id}  style={{cursor:"pointer"}}  onClick={self.onSeleccionFila.bind(this,valores.id)}>
+						<td>{valores.codigo}</td>
+						<td>{valores.nombre}</td>
+					</tr>
+				)	
+			}); 
+
+
 			return (
-<article className="bloque">
+	<div>
+		<article className="bloque">
 			<div className="titulo_bloque">
 				Cliente
 			</div>
@@ -206,6 +240,20 @@ module.exports = React.createClass({
 				</div>
 			</div>
 		</article>
+				<article className="bloque">
+			<div className="bloque_catalogo" id="ampliar_tabla2">
+				<table className="tabla_catalogo" id="tabla_clientes_lista">
+					<tbody>
+					<tr>
+						<td>Código</td>
+						<td>Nombre</td>
+					</tr>
+					{listaCliente}
+					</tbody>
+				</table>
+			</div>
+		</article>
+		</div>
              
                 
 			);  

@@ -5,6 +5,7 @@ var FuncGenericas   = require('../js/funcionesGenericas');
 var OpcionCombo 	= require('../js/opcionCombo.jsx');
 var React 			= require('react');
 var ReactDOM    	= require('react-dom') ;
+var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 
 //var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
@@ -16,8 +17,20 @@ module.exports = React.createClass({
 		 	this.onValorCambio("pais",nuevas_props.datos.pais)
 	   	   }
 
-	   	  
+	   	  this.llenarListaProveedores();
 	   },
+	   llenarListaProveedores: function(pk){
+         	 var self = this;
+           var prov = new ApiRestProveedor();
+           prov.buscarProveedores(	
+      					function(data){
+      			   				self.setState({lista_proveedores: data });
+      							},
+      					function(model,response,options){
+      	 					    self.setState({lista_proveedores : [] });
+      							}
+				    );
+         },
 	   llenarCombos: function(){
 	   	    var func = new FuncGenericas();      
 	   		this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
@@ -35,7 +48,7 @@ module.exports = React.createClass({
 	   		 else{
 	   			this.llenarCombos();
 	   		}
-
+	   		this.llenarListaProveedores();
 	   },
 		getInitialState: function(){
 			return this.valoresDefecto();
@@ -70,6 +83,7 @@ module.exports = React.createClass({
 		        "email": "",
 		        "comentarios": "",
 		        "errores" :{},
+		        "lista_proveedores": []
 			};
 		},
 		onValorCambio: function(campo,valor){
@@ -161,8 +175,12 @@ module.exports = React.createClass({
                                }
                         );
        },
+       onSeleccionFila: function(id_proveedor){
+       	 this.props.onClaveSeleccionada(id_proveedor);
+       },
 		render: function () {
             func = new FuncGenericas();
+            var self = this;
             //this.errors = this.errors || {};
            //  this.validadarCampos();
            // console.log(this.errors);
@@ -180,12 +198,21 @@ module.exports = React.createClass({
     	    var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
 		   	var PAIS     = func.zipCol(dic2,["pais",     "País",    this.Paises,               this.state.pais,    this.onValorCambio]);
 		   	var ESTADO   = func.zipCol(dic2,["estado",   "Estado",  this.state.llenarEstados,  this.state.estado,  this.onValorCambio]);
- 		    
- 		
- 			
+			
+			var listaProv = []
+			listaProv = this.state.lista_proveedores.map(function(valores){
+				return(
+					<tr key={valores.id}  style={{cursor:"pointer"}}  onClick={self.onSeleccionFila.bind(this,valores.id)}>
+						<td>{valores.codigo}</td>
+						<td>{valores.rfc}</td>
+						<td>{valores.nombre}</td>
+					</tr>
+				)	
+			}); 		
 
 			return (
-<article className="bloque" >
+		<div>
+		<article className="bloque" >
 			<div className="titulo_bloque">
 				Proveedor
 			</div>
@@ -215,6 +242,21 @@ module.exports = React.createClass({
 
 			</div>
 		</article>
+		<article className="bloque">
+			<div className="bloque_catalogo" id="ampliar_tabla2">
+				<table className="tabla_catalogo" id="tabla">
+					<tbody>
+					<tr>
+						<td>Código</td>
+						<td>RFC</td>
+						<td>Nombre</td>
+					</tr>
+					{listaProv}
+					</tbody>
+				</table>
+			</div>
+		</article>
+		</div>
 					);  
 		}
 	});

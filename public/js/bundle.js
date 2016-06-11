@@ -305,8 +305,8 @@ module.exports = React.createClass({
     console.log("buscando datos");
   },
   render: function () {
-    this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor }));
-    this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES, datos: this.state.datosCliente }));
+    this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor, onClaveSeleccionada: this.onClaveSeleccionada }));
+    this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES, datos: this.state.datosCliente, onClaveSeleccionada: this.onClaveSeleccionada }));
     this.crearFormulario(appmvc.Menu.COMPRAS, React.createElement(Compras, { ref: appmvc.Menu.COMPRAS, datos: this.state.datosCompra }));
     this.crearFormulario(appmvc.Menu.INVENTARIOS, React.createElement(SeccionUnoInv, { ref: appmvc.Menu.INVENTARIOS, datos: this.state.datosInventarios }));
     this.crearFormulario(appmvc.Menu.VENTAS, React.createElement(Ventas, { ref: appmvc.Menu.VENTAS }));
@@ -550,6 +550,7 @@ var FuncGenericas = require('../js/funcionesGenericas');
 var OpcionCombo = require('../js/opcionCombo.jsx');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ApiRestCliente = require('../js/modelos/apirestClientes');
 
 module.exports = React.createClass({
 	displayName: 'exports',
@@ -560,6 +561,17 @@ module.exports = React.createClass({
 		if (nuevas_props.datos.pais !== undefined) {
 			this.onValorCambio("pais", nuevas_props.datos.pais);
 		}
+
+		this.llenarListaClientes();
+	},
+	llenarListaClientes: function (pk) {
+		var self = this;
+		var clie = new ApiRestCliente();
+		clie.buscarClientes(function (data) {
+			self.setState({ lista_clientes: data });
+		}, function (model, response, options) {
+			self.setState({ lista_clientes: [] });
+		});
 	},
 	llenarCombos: function () {
 		var func = new FuncGenericas();
@@ -577,6 +589,7 @@ module.exports = React.createClass({
 		} else {
 			this.llenarCombos();
 		}
+		this.llenarListaClientes();
 	},
 	getInitialState: function () {
 		return this.valoresDefecto();
@@ -611,7 +624,8 @@ module.exports = React.createClass({
 			pais: "0010001",
 			estado: "0020001",
 			banco: "0030000",
-			"errores": {}
+			"errores": {},
+			lista_clientes: []
 		};
 	},
 	onValorCambio: function (campo, valor) {
@@ -692,8 +706,12 @@ module.exports = React.createClass({
 			console.log("hay errores " + response.statusText);
 		});
 	},
+	onSeleccionFila: function (id_cliente) {
+		this.props.onClaveSeleccionada(id_cliente);
+	},
 	render: function () {
 		func = new FuncGenericas();
+		var self = this;
 		//	this.errors = this.errors || {};
 		// this.validadarCampos();
 
@@ -712,44 +730,98 @@ module.exports = React.createClass({
 		var PAIS = func.zipCol(dic2, ["pais", "País", this.Paises, this.state.pais, this.onValorCambio]);
 		var ESTADO = func.zipCol(dic2, ["estado", "Estado", this.state.llenarEstados, this.state.estado, this.onValorCambio]);
 		var BANCOS = func.zipCol(dic2, ["banco", "Banco", this.Bancos, this.state.banco, this.onValorCambio]);
+
+		var listaCliente = [];
+		listaCliente = this.state.lista_clientes.map(function (valores) {
+			return React.createElement(
+				'tr',
+				{ key: valores.id, style: { cursor: "pointer" }, onClick: self.onSeleccionFila.bind(this, valores.id) },
+				React.createElement(
+					'td',
+					null,
+					valores.codigo
+				),
+				React.createElement(
+					'td',
+					null,
+					valores.nombre
+				)
+			);
+		});
+
 		return React.createElement(
-			'article',
-			{ className: 'bloque' },
+			'div',
+			null,
 			React.createElement(
-				'div',
-				{ className: 'titulo_bloque' },
-				'Cliente'
-			),
-			React.createElement(
-				'div',
-				{ className: 'caja_bloque' },
+				'article',
+				{ className: 'bloque' },
 				React.createElement(
 					'div',
-					{ className: 'campos_bloque' },
+					{ className: 'titulo_bloque' },
+					'Cliente'
+				),
+				React.createElement(
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						'ul',
-						{ className: 'ul_bloque' },
-						React.createElement(CajaDeTexto, { propiedades: CODIGO }),
-						React.createElement(CajaDeTexto, { propiedades: RFC }),
-						React.createElement(CajaDeTexto, { propiedades: NOMBRE }),
-						React.createElement(CajaDeTexto, { propiedades: CALLE }),
-						React.createElement(CajaDeTexto, { propiedades: NUMERO }),
-						React.createElement(CajaDeTexto, { propiedades: COLONIA }),
-						React.createElement(CajaDeTexto, { propiedades: CP }),
-						React.createElement(Combo, { propiedades: PAIS }),
-						React.createElement(Combo, { propiedades: ESTADO, ref: 'ComboEstados' }),
-						React.createElement(CajaDeTexto, { propiedades: TELEFONO }),
-						React.createElement(CajaDeTexto, { propiedades: EMAIL }),
-						React.createElement(Combo, { propiedades: BANCOS }),
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							'li',
-							{ className: 'li_bloque' },
+							'ul',
+							{ className: 'ul_bloque' },
+							React.createElement(CajaDeTexto, { propiedades: CODIGO }),
+							React.createElement(CajaDeTexto, { propiedades: RFC }),
+							React.createElement(CajaDeTexto, { propiedades: NOMBRE }),
+							React.createElement(CajaDeTexto, { propiedades: CALLE }),
+							React.createElement(CajaDeTexto, { propiedades: NUMERO }),
+							React.createElement(CajaDeTexto, { propiedades: COLONIA }),
+							React.createElement(CajaDeTexto, { propiedades: CP }),
+							React.createElement(Combo, { propiedades: PAIS }),
+							React.createElement(Combo, { propiedades: ESTADO, ref: 'ComboEstados' }),
+							React.createElement(CajaDeTexto, { propiedades: TELEFONO }),
+							React.createElement(CajaDeTexto, { propiedades: EMAIL }),
+							React.createElement(Combo, { propiedades: BANCOS }),
 							React.createElement(
-								'label',
-								{ className: 'etiquetas_bloque', htmlFor: 'comentarios_c' },
-								'Comentarios'
+								'li',
+								{ className: 'li_bloque' },
+								React.createElement(
+									'label',
+									{ className: 'etiquetas_bloque', htmlFor: 'comentarios_c' },
+									'Comentarios'
+								),
+								React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios_c', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onValorCambio.bind(this, 'comentarios') })
+							)
+						)
+					)
+				)
+			),
+			React.createElement(
+				'article',
+				{ className: 'bloque' },
+				React.createElement(
+					'div',
+					{ className: 'bloque_catalogo', id: 'ampliar_tabla2' },
+					React.createElement(
+						'table',
+						{ className: 'tabla_catalogo', id: 'tabla_clientes_lista' },
+						React.createElement(
+							'tbody',
+							null,
+							React.createElement(
+								'tr',
+								null,
+								React.createElement(
+									'td',
+									null,
+									'Código'
+								),
+								React.createElement(
+									'td',
+									null,
+									'Nombre'
+								)
 							),
-							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios_c', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onValorCambio.bind(this, 'comentarios') })
+							listaCliente
 						)
 					)
 				)
@@ -758,7 +830,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":22,"../js/opcionCombo.jsx":33,"react":206,"react-dom":50}],9:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":22,"../js/modelos/apirestClientes":23,"../js/opcionCombo.jsx":33,"react":206,"react-dom":50}],9:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -1048,7 +1120,7 @@ module.exports = React.createClass({
 			console.log("Date changed: ", e.target.value);
 		});
 
-		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { id: 'ComprasTablaDetalles', listado: [], id_compra: -1 }), document.getElementById("ampliar_tabla"));
+		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', id: 'ComprasTablaDetalles', listado: [], id_compra: -1 }), document.getElementById("ampliar_tabla"));
 	},
 	cambiarValorFecha: function (control, valor) {
 		var update = {};
@@ -1094,7 +1166,7 @@ module.exports = React.createClass({
 				"errores": {}
 			});
 		}
-		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { id: 'ComprasTablaDetalles', listado: nuevaPropiedades.compra_detalles, id_compra: nuevaPropiedades.id }), document.getElementById("ampliar_tabla"));
+		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', id: 'ComprasTablaDetalles', listado: nuevaPropiedades.compra_detalles, id_compra: nuevaPropiedades.id }), document.getElementById("ampliar_tabla"));
 	},
 	onValorCambio: function (campo, valor) {
 		var update = {};
@@ -3477,6 +3549,7 @@ var FuncGenericas = require('../js/funcionesGenericas');
 var OpcionCombo = require('../js/opcionCombo.jsx');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 
 //var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
@@ -3489,6 +3562,17 @@ module.exports = React.createClass({
 		if (nuevas_props.datos.pais !== undefined) {
 			this.onValorCambio("pais", nuevas_props.datos.pais);
 		}
+
+		this.llenarListaProveedores();
+	},
+	llenarListaProveedores: function (pk) {
+		var self = this;
+		var prov = new ApiRestProveedor();
+		prov.buscarProveedores(function (data) {
+			self.setState({ lista_proveedores: data });
+		}, function (model, response, options) {
+			self.setState({ lista_proveedores: [] });
+		});
 	},
 	llenarCombos: function () {
 		var func = new FuncGenericas();
@@ -3506,6 +3590,7 @@ module.exports = React.createClass({
 		} else {
 			this.llenarCombos();
 		}
+		this.llenarListaProveedores();
 	},
 	getInitialState: function () {
 		return this.valoresDefecto();
@@ -3538,7 +3623,8 @@ module.exports = React.createClass({
 			"telefono": "",
 			"email": "",
 			"comentarios": "",
-			"errores": {}
+			"errores": {},
+			"lista_proveedores": []
 		};
 	},
 	onValorCambio: function (campo, valor) {
@@ -3619,8 +3705,12 @@ module.exports = React.createClass({
 			console.log("hay errores " + response.statusText);
 		});
 	},
+	onSeleccionFila: function (id_proveedor) {
+		this.props.onClaveSeleccionada(id_proveedor);
+	},
 	render: function () {
 		func = new FuncGenericas();
+		var self = this;
 		//this.errors = this.errors || {};
 		//  this.validadarCampos();
 		// console.log(this.errors);
@@ -3639,43 +3729,106 @@ module.exports = React.createClass({
 		var PAIS = func.zipCol(dic2, ["pais", "País", this.Paises, this.state.pais, this.onValorCambio]);
 		var ESTADO = func.zipCol(dic2, ["estado", "Estado", this.state.llenarEstados, this.state.estado, this.onValorCambio]);
 
+		var listaProv = [];
+		listaProv = this.state.lista_proveedores.map(function (valores) {
+			return React.createElement(
+				'tr',
+				{ key: valores.id, style: { cursor: "pointer" }, onClick: self.onSeleccionFila.bind(this, valores.id) },
+				React.createElement(
+					'td',
+					null,
+					valores.codigo
+				),
+				React.createElement(
+					'td',
+					null,
+					valores.rfc
+				),
+				React.createElement(
+					'td',
+					null,
+					valores.nombre
+				)
+			);
+		});
+
 		return React.createElement(
-			'article',
-			{ className: 'bloque' },
+			'div',
+			null,
 			React.createElement(
-				'div',
-				{ className: 'titulo_bloque' },
-				'Proveedor'
-			),
-			React.createElement(
-				'div',
-				{ className: 'caja_bloque' },
+				'article',
+				{ className: 'bloque' },
 				React.createElement(
 					'div',
-					{ className: 'campos_bloque' },
+					{ className: 'titulo_bloque' },
+					'Proveedor'
+				),
+				React.createElement(
+					'div',
+					{ className: 'caja_bloque' },
 					React.createElement(
-						'ul',
-						{ className: 'ul_bloque' },
-						React.createElement(CajaDeTexto, { propiedades: CODIGO }),
-						React.createElement(CajaDeTexto, { propiedades: RFC, ref: 'cajaRfc' }),
-						React.createElement(CajaDeTexto, { propiedades: NOMBRE, ref: 'cajaNombre' }),
-						React.createElement(CajaDeTexto, { propiedades: CALLE, ref: 'cajaCalle' }),
-						React.createElement(CajaDeTexto, { propiedades: NUMERO }),
-						React.createElement(CajaDeTexto, { propiedades: COLONIA }),
-						React.createElement(CajaDeTexto, { propiedades: CP }),
-						React.createElement(Combo, { propiedades: PAIS, ref: 'ComboPais', key: 'Pais' }),
-						React.createElement(Combo, { propiedades: ESTADO, ref: 'ComboEstados' }),
-						React.createElement(CajaDeTexto, { propiedades: TELEFONO }),
-						React.createElement(CajaDeTexto, { propiedades: EMAIL }),
+						'div',
+						{ className: 'campos_bloque' },
 						React.createElement(
-							'li',
-							{ className: 'li_bloque' },
+							'ul',
+							{ className: 'ul_bloque' },
+							React.createElement(CajaDeTexto, { propiedades: CODIGO }),
+							React.createElement(CajaDeTexto, { propiedades: RFC, ref: 'cajaRfc' }),
+							React.createElement(CajaDeTexto, { propiedades: NOMBRE, ref: 'cajaNombre' }),
+							React.createElement(CajaDeTexto, { propiedades: CALLE, ref: 'cajaCalle' }),
+							React.createElement(CajaDeTexto, { propiedades: NUMERO }),
+							React.createElement(CajaDeTexto, { propiedades: COLONIA }),
+							React.createElement(CajaDeTexto, { propiedades: CP }),
+							React.createElement(Combo, { propiedades: PAIS, ref: 'ComboPais', key: 'Pais' }),
+							React.createElement(Combo, { propiedades: ESTADO, ref: 'ComboEstados' }),
+							React.createElement(CajaDeTexto, { propiedades: TELEFONO }),
+							React.createElement(CajaDeTexto, { propiedades: EMAIL }),
 							React.createElement(
-								'label',
-								{ className: 'etiquetas_bloque', htmlFor: 'comentarios' },
-								'Comentarios'
+								'li',
+								{ className: 'li_bloque' },
+								React.createElement(
+									'label',
+									{ className: 'etiquetas_bloque', htmlFor: 'comentarios' },
+									'Comentarios'
+								),
+								React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onValorCambio.bind(this, 'comentarios') })
+							)
+						)
+					)
+				)
+			),
+			React.createElement(
+				'article',
+				{ className: 'bloque' },
+				React.createElement(
+					'div',
+					{ className: 'bloque_catalogo', id: 'ampliar_tabla2' },
+					React.createElement(
+						'table',
+						{ className: 'tabla_catalogo', id: 'tabla' },
+						React.createElement(
+							'tbody',
+							null,
+							React.createElement(
+								'tr',
+								null,
+								React.createElement(
+									'td',
+									null,
+									'Código'
+								),
+								React.createElement(
+									'td',
+									null,
+									'RFC'
+								),
+								React.createElement(
+									'td',
+									null,
+									'Nombre'
+								)
 							),
-							React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios', placeholder: 'Comentarios', value: this.state.comentarios, onChange: this.onValorCambio.bind(this, 'comentarios') })
+							listaProv
 						)
 					)
 				)
@@ -3684,7 +3837,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":22,"../js/opcionCombo.jsx":33,"react":206,"react-dom":50}],35:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":22,"../js/modelos/apirestProveedores":28,"../js/opcionCombo.jsx":33,"react":206,"react-dom":50}],35:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -3847,7 +4000,7 @@ module.exports = React.createClass({
 		var fila_insercion = React.createElement(CompraDetalle, { ref: 'NuevoDetalle', key: "primera", primera: true, clickOperacion: this.clickOperacion });
 
 		this.state.detalles_lista.forEach(function (detalle_compra) {
-			var detalle = React.createElement(CompraDetalle, { ref: "detalle_" + detalle_compra.num_consecutivo, key: detalle_compra.num_consecutivo, datos: detalle_compra, clickOperacion: self.clickOperacion });
+			var detalle = React.createElement(CompraDetalle, { ref: "detalle_" + detalle_compra.num_consecutivo, key: "xx" + detalle_compra.num_consecutivo, datos: detalle_compra, clickOperacion: self.clickOperacion });
 			listado_detalles.push(detalle);
 		});
 
@@ -3929,7 +4082,7 @@ module.exports = React.createClass({
 
     return React.createElement(
       'table',
-      { className: 'tabla_catalogo', id: 'tabla' },
+      { className: 'tabla_catalogo', id: 'tabla_de_inventario_compra' },
       React.createElement(
         'tbody',
         null,
