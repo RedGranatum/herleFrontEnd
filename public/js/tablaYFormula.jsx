@@ -1,17 +1,22 @@
-var React=require('react');
-var TablaInv=require('../js/tabla3.jsx');
+var React       = require('react');
+var TablaInv	= require('../js/tabla3.jsx');
+var DetalleInv  = require('../js/inventarioDetalles.jsx')
 
 module.exports = React.createClass({
 funcion: function(nom){
 	console.log(nom);
 },
-render: function () {
-  
-			return (
+getDefaultProps: function(){
+			return{
+				 compra_detalles: [],
+			}
+},
+render: function () {  
+   return (
      <div>            
 		<article className="bloque">
 			<div className="bloque_catalogo" id="ampliar_tabla">
-				<TablaInv funcion={this.funcion}/>
+				<TablaInv datos_compra ={this.props.datos} />
 			</div>
 		</article>
 		<article className="bloque">
@@ -29,6 +34,7 @@ render: function () {
 				</div>
 			</div>
 		</article>
+	    <DetalleInv/>
    </div>
 
 			);  

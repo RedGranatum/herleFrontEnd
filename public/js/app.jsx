@@ -7,7 +7,8 @@ var Clientes         = require('../js/clientes.jsx');
 var Compras          = require('../js/compras.jsx');
 var SeccionUnoInv    = require('../js/tablaYFormula.jsx');  
 var SeccionDosInv    = require('../js/formsDeInventarios.jsx');    
-var Ventas           = require('../js/ventas.jsx');               
+var Ventas           = require('../js/ventas.jsx');  
+var Costos           = require('../js/costos.jsx');            
 var Page             = require("page");
 var Notificaciones   = require('../js/notificaciones');
 var $                = require('jquery');
@@ -26,6 +27,8 @@ module.exports = React.createClass({
     	 	 	datosCliente: {},
     	 	 	datosCompra: {},
           datosInventarios: {},
+          datosVentas: {},
+          datosCostos: {},
           actualizarForm: false,
 
      		};
@@ -194,6 +197,16 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.INVENTARIOS);
               console.log("menu de inventarios");                    
              });
+
+            Page('/ventas',function(){
+              self.mostrarMenu(appmvc.Menu.VENTAS);
+              console.log("menu de ventas");                    
+             });
+
+            Page('/costos',function(){
+              self.mostrarMenu(appmvc.Menu.COSTOS);
+              console.log("menu de costos");                    
+             });
       
 
              Page('*',function(){
@@ -214,7 +227,7 @@ module.exports = React.createClass({
 		},
   
 		mostrarMenu:function(nomform){
-         this.setState({actualizarForm:false});
+          this.setState({actualizarForm:false});
           this.setState({formMostrar:nomform});
     },
     llenarDatosProveedor: function(pk){
@@ -254,7 +267,18 @@ module.exports = React.createClass({
       							}
 				    );
          },
-    
+    llenarDatosInventario: function(pk){
+           var self = this;
+           var comp = new ApiRestCompras();
+           comp.buscarCompraPorPk(pk, 
+                function(data){
+                    self.setState({datosInventarios: data[0] });
+                    },
+                function(model,response,options){
+                      self.setState({datosInventarios : [] });
+                    }
+            );
+         },   
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 		},
@@ -298,8 +322,16 @@ module.exports = React.createClass({
  				this.llenarDatosCompra(pk);
  			}
       if(this.state.formMostrar===appmvc.Menu.INVENTARIOS){
-        this.setState({datosCompra:[],actualizarForm:true});
+        this.setState({datosInventarios:[],actualizarForm:true});       
+        this.llenarDatosInventario(pk);
       }      
+      if(this.state.formMostrar===appmvc.Menu.VENTAS){
+        this.setState({datosVentas:[],actualizarForm:true});
+      }  
+      if(this.state.formMostrar===appmvc.Menu.COSTOS){
+        this.setState({datosCostos:[],actualizarForm:true});
+      }     
+      
  		},
     llenarCombos: function(){
         console.log("buscando datos");
@@ -308,8 +340,9 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
-      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
-      
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS}  />);   
+      this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
+      this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
           var style = {
       margin: "0px",
      padding: "0px"
@@ -326,9 +359,11 @@ module.exports = React.createClass({
 		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
 	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
     {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
-    <Ventas/>
+    {appmvc.MenuForms[appmvc.Menu.VENTAS]}
+      
 	</section>
-  
+    {appmvc.MenuForms[appmvc.Menu.COSTOS]}
+
   </div>
 
 

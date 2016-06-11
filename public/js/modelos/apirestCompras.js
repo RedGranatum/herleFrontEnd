@@ -22,7 +22,6 @@ return {
                           funcion_exito(data.toJSON());
                     },
                  error: function(model,response, options) {
-                      
                          funcion_error(model,response,options);                 
                   },
                 }); 
@@ -64,11 +63,9 @@ return {
        
       cliente.destroy(null,{
         success: function(model,response){
-           debugger;
            funcion_exito(datos.toJSON(),response);
         },
         error: function(model,response,options){
-          debugger;
            funcion_error(model,response,options);
         }
       })
