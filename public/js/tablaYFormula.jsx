@@ -17,6 +17,8 @@ cargarParametrosCalculo: function(){
         							 "0090001": "factor",
         						 	 "0090002": "factor_impuesto_eu",
         						 	 "0090003": "porc_comercializadora",
+        						 	 "0090004": "precio_tonelada",
+        						 	 "0090005": "factor_impuesto_china",
         						 	 "0090006": "precio_dolar",
         						 	};
         		if(catalogo.cdu_catalogo in cduParametros){

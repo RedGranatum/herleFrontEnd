@@ -6,14 +6,13 @@ var OpcionCombo 	= require('../js/opcionCombo.jsx');
 var React 			= require('react');
 var ReactDOM    	= require('react-dom');
 var ApiRestInventario  		   = require('../js/modelos/apirestInventarios');
-var ApirestInventarioCalculo   = require('../js/modelos/apirestInventarioCalculo');
+var InventarioPrecios 		   = require('../js/inventarioCalculoPrecios.jsx');
 
 module.exports = React.createClass({
 	   componentWillReceiveProps: function(nuevas_props){
 	   	detalle = nuevas_props.detalle;
 	   	cabecero = nuevas_props.cabecero;
 		parametros_cal = nuevas_props.parametros_cal;
-
 			con_valores = Object.keys(detalle).length > 0 
 			
 			var valoresDefecto  = this.valoresDefecto();
@@ -34,7 +33,7 @@ module.exports = React.createClass({
 			var factor = valoresDefecto.factor
 			var precio_dolar = valoresDefecto.precio_dolar
 			var factor_impuesto = valoresDefecto.factor_impuesto
-
+ 			var precio_tonelada = valoresDefecto.precio_tonelada
 			var porc_comercializadora = valoresDefecto.porc_comercializadora
 
 			if(con_valores){
@@ -55,11 +54,11 @@ module.exports = React.createClass({
 				factor       = parametros_cal.factor;
 				precio_dolar =  parametros_cal.precio_dolar;
 				factor_impuesto = parametros_cal.factor_impuesto_eu;
+		        precio_tonelada = parametros_cal.precio_tonelada
 
 				porc_comercializadora = parametros_cal.porc_comercializadora;
 			}
 		    var codigo =this.calcularCodigoDelProducto(calibre,cdu_material,ancho,largo);
-			this.calcularFormula(pais,'0','True',precio_libra,factor,precio_dolar,factor_impuesto,porc_comercializadora);
 		
 			this.setState({ material: cdu_material, 
 				            calibre:calibre, 
@@ -77,9 +76,10 @@ module.exports = React.createClass({
 				            factor:factor,
 				            precio_dolar:precio_dolar,
 				            factor_impuesto:factor_impuesto,
-				            porc_comercializadora:porc_comercializadora});
-	
+				            porc_comercializadora:porc_comercializadora,
+				            precio_tonelada:precio_tonelada});
 		},
+
 		llenarCombos: function(){
 	   	    var func = new FuncGenericas();      
 			this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
@@ -111,17 +111,14 @@ module.exports = React.createClass({
 		        "factor" : "0",
 		        "precio_dolar" : "0.0",
 		        "factor_impuesto" : "0.0",
-
+		        "precio_tonelada" : "0,0",
+				"con_comercializadora" : "False",
 		        "porc_comercializadora": "0",
-
-		        "kilo_en_pesos" :"0",
-		        "kilo_en_dolar" : "0",
-		        "tonelada_en_dolar": "0",
-		        "kilo_en_pesos_final": "0",
 
 		        "errores" :{},
 			};
 		},
+		
 		onValorCambio: function(campo,valor){
 			var campos ={};
 			campos[campo] = valor;
@@ -129,6 +126,13 @@ module.exports = React.createClass({
 			if(campo === "material"){
 				this.calcularCodigoDelProductoConStates(valor);
 			}
+			if(campo === "pais"){
+				this.calcularFormulaConStates(valor);
+			}
+		},
+		onValorCambioComer: function(campo,valor){
+			var bln_com = (campo.target.value==="con_comercializadora") ? "True" : "False"
+			this.setState({con_comercializadora: bln_com})	
 		},
 		calcularCodigoDelProducto: function(rango,cdu_material,ancho,largo){
 		   var self = this;
@@ -147,37 +151,6 @@ module.exports = React.createClass({
 		            }
 		    );
 		 }, 
-		 calcularFormula: function(cdu_pais,tonelada_dolar,con_comerc,precio_libra,factor,precio_dolar,factor_impuesto,porc_comercializadora){
-		   var self = this;
-		   var invCal = new ApirestInventarioCalculo();
-		   invCal.cdu_pais = cdu_pais;
-		   invCal.precio_tonelada_dolar = tonelada_dolar;
-  		   invCal.con_comercializadora = con_comerc;
-  		   invCal.precio_libra_centavos = precio_libra;
-  		   invCal.factor = factor;
-  		   invCal.precio_dolar = precio_dolar;
-  		   invCal.factor_impuesto = factor_impuesto;
-  		   invCal.porc_comercializadora = porc_comercializadora;
-  	
-		   invCal.obtenerCalculos( 
-		        function(data){
-		        		self.setState({
-		        			kilo_en_pesos : data["kilo_en_pesos"],
-		        			kilo_en_dolar:data["kilo_en_dolar"],
-		        			tonelada_en_dolar: data["tonelada_en_dolar"],
-		        			kilo_en_pesos_final:data["kilo_en_pesos_final"]
-		        		})
-		            },
-		        function(model,response,options){
-		        		self.setState({
-		        			kilo_en_pesos : "0",
-		        			kilo_en_dolar:"0",
-		        			tonelada_en_dolar:"0",
-		        			kilo_en_pesos_final: "0"
-		        		})
-		            }
-		    );
-		 },
 		onBlurCaja: function(control, valor){
 				var camposCodigo = ["calibre", "ancho", "largo", "material"];
 				var indice = camposCodigo.indexOf(control); 
@@ -191,9 +164,20 @@ module.exports = React.createClass({
 						  material,
 						  this.state.ancho,
 						  this.state.largo);
-		},
+		},		
 		render: function () {
-            func = new FuncGenericas();
+		   valoresCalculo = {
+			    cdu_pais: this.state.pais,
+			    precio_tonelada_dolar: this.state.precio_tonelada,
+  			  	precio_libra_centavos: this.state.precio_libra,
+  		   		factor: this.state.factor,
+	   	 	    precio_dolar: this.state.precio_dolar,
+  		   		factor_impuesto: this.state.factor_impuesto,
+  		   		con_comercializadora : this.state.con_comercializadora,
+  		   		porc_comercializadora: this.state.porc_comercializadora}
+
+
+		    func = new FuncGenericas();
 	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
 			var CALIBRE   = func.zipCol(dic1,["calibre",  "Calibre", 	 "calibre", 		  this.state.calibre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.material ] );
 			var ANCHO    = func.zipCol(dic1,["ancho",     "Ancho",  	 "ancho",	          this.state.ancho ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calibre ]);
@@ -209,7 +193,7 @@ module.exports = React.createClass({
 			var FACTOR        = func.zipCol(dic1,["factor",  "factor", 	"factor", this.state.factor,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.factor ]);
 			var PRECIO_DOLAR  = func.zipCol(dic1,["precio_dolar",  "precio_dolar", 	"precio_dolar", this.state.precio_dolar,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.precio_dolar ]);
 			var FACTOR_IMPUESTO  = func.zipCol(dic1,["factor_impuesto",  "factor_impuesto", "factor_impuesto", this.state.factor_impuesto,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.factor_impuesto ]);
-			var PORC_COMERCIALIZADORA  = func.zipCol(dic1,["%comercializadora",  "porc_comercializadora", "porc_comercializadora", this.state.porc_comercializadora,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.porc_comercializadora ]);
+			var PORC_COMERCIALIZADORA  = func.zipCol(dic1,["porc_comercializadora",  "porc_comercializadora", "porc_comercializadora", this.state.porc_comercializadora,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.porc_comercializadora ]);
 
     	    var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
 		   	var MATERIAL     = func.zipCol(dic2,["material",     "Material",    this.Materiales,  this.state.material,    this.onValorCambio]);
@@ -263,7 +247,7 @@ module.exports = React.createClass({
 						<Combo 		 propiedades = {PAIS}   ref="ComboPais" key="Pais"  />
 				<li className="li_bloque">
 							<label className="etiquetas_bloque" for="tipo_entrada">Tipo de entrada</label>
-							<select name="tipo_entrada" className="select_bloque">
+							<select name="tipo_entrada" className="select_bloque" onChange={this.onValorCambioComer}>
 								<option value="no_especificado">NO ESPECIFICADO</option>
 								<option value="con_comercializadora">Con Comercializadora</option>
 								<option value="sin_comercializadora">Sin Comercializadora</option>
@@ -300,19 +284,7 @@ module.exports = React.createClass({
 			</div>
 
 			</article>
-			<article className="bloque">
-			<div className="formula">
-				<figure className="formula_foto">
-					<p><img src="images/ok.png" alt="" /></p>
-				</figure>
-				<div className="formula_datos">
-					<h3>Kilo en dolar: {this.state.kilo_en_dolar}</h3>
-					<h3>Tonelada en dolar: {this.state.tonelada_en_dolar} </h3>
-					<h3>Kilo en pesos: {this.state.kilo_en_pesos}</h3>
-					<h3>Kilo en pesos final: {this.state.kilo_en_pesos_final}</h3>
-				</div>
-			</div>
-		</article>
+			<InventarioPrecios valores={valoresCalculo}/>
 		</div>
 					);  
 		}
