@@ -4,15 +4,43 @@ var Combo 	    	= require('../js/combo.jsx');
 var FuncGenericas   = require('../js/funcionesGenericas');
 var OpcionCombo 	= require('../js/opcionCombo.jsx');
 var React 			= require('react');
-var ReactDOM    	= require('react-dom') ;
+var ReactDOM    	= require('react-dom');
+var ApiRestInventario  = require('../js/modelos/apirestInventarios');
+
 
 module.exports = React.createClass({
+	   componentWillReceiveProps: function(nuevas_props){
+			detalle = nuevas_props.detalle;
+			con_valores = Object.keys(detalle).length > 0 
+			
+			var valoresDefecto  = this.valoresDefecto();
+			var cdu_material = valoresDefecto.material
+			var calibre = valoresDefecto.calibre;
+			var ancho   = valoresDefecto.ancho;
+			var largo   = valoresDefecto.largo;
+
+			
+			if(con_valores){
+				cdu_material = detalle.material.cdu_catalogo
+				calibre = detalle.calibre;
+				ancho   = detalle.ancho;
+				largo   = detalle.largo;
+			}
+		    var codigo =this.calcularCodigoDelProducto(calibre,cdu_material,ancho,largo);
+		
+
+			this.setState({ material: cdu_material, 
+				            calibre:calibre, 
+				            ancho:ancho, 
+				            largo:largo,
+				            codigo_producto: codigo});
+	
+		},
 		llenarCombos: function(){
 	   	    var func = new FuncGenericas();      
 	   		this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
 	   },
 	   componentDidMount:function(){
-	   		debugger;
 			this.llenarCombos();
 	   },
 		getInitialState: function(){
@@ -29,6 +57,41 @@ module.exports = React.createClass({
 		        "errores" :{},
 			};
 		},
+		onValorCambio: function(campo,valor){
+			var campos ={};
+			campos[campo] = valor;
+			this.setState(campos);
+			if(campo === "material"){
+				debugger;
+			}
+		},
+		calcularCodigoDelProducto: function(rango,cdu_material,ancho,largo){
+		   var self = this;
+		   var inv = new ApiRestInventario();
+		   inv.rango 		= rango;
+		   inv.cdu_material = cdu_material;
+		   inv.ancho  		= ancho;
+		   inv.largo        = largo;
+
+		   inv.obtenerCodigoDelProducto( 
+		        function(data){
+		        		self.setState({codigo_producto:data});
+		            },
+		        function(model,response,options){
+		        		self.setState({codigo_producto:""});
+		            }
+		    );
+		 }, 
+		onBlurCaja: function(control, valor){
+				var camposCodigo = ["calibre", "ancho", "largo", "material"];
+				var indice = camposCodigo.indexOf(control); 
+				if(indice>=0){
+					this.calcularCodigoDelProducto(this.state.calibre,
+											  this.state.material,
+											  this.state.ancho,
+											  this.state.largo);
+				}
+		},
 		render: function () {
             func = new FuncGenericas();
 	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
@@ -38,13 +101,9 @@ module.exports = React.createClass({
 
     	    var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
 		   	var MATERIAL     = func.zipCol(dic2,["material",     "Material",    this.Materiales,  this.state.material,    this.onValorCambio]);
- 		    
  		
- 			debugger;
-
 			return (
-		<section className="contenido" id="el_top">
-			<article className="bloque">
+			<article className="bloque" id="el_top">
 				<div className="titulo_bloque">
 					Producto
 				</div>
@@ -61,10 +120,9 @@ module.exports = React.createClass({
 					</div>
 				</div>
 				<div className="titulo_resalta">
-					Código Producto
+					{this.state.codigo_producto}
 				</div>
-			</article>
-		</section>	
+			</article>	
 					);  
 		}
 	});

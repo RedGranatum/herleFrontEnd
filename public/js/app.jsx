@@ -328,7 +328,7 @@ module.exports = React.createClass({
       if(this.state.formMostrar===appmvc.Menu.VENTAS){
         this.setState({datosVentas:[],actualizarForm:true});
       }  
-      if(this.state.formMostrar===appmvc.Menu.COSTOS){
+      if(this.state.formMostrar===appmvc.Menu.COSTOdebS){
         this.setState({datosCostos:[],actualizarForm:true});
       }     
       
@@ -340,7 +340,7 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor}/>);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente}/>);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
-      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS}  />);   
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
           var style = {

@@ -31,5 +31,5 @@ var catalogosApiRest =function(){
 
 };
 }
-
+		
 module.exports = catalogosApiRest;

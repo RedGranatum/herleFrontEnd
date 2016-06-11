@@ -3,8 +3,19 @@ var TablaInv	= require('../js/tabla3.jsx');
 var DetalleInv  = require('../js/inventarioDetalles.jsx')
 
 module.exports = React.createClass({
+componentWillReceiveProps: function(nuevas_props){
+	this.setState({detalle_ind: {}})
+},
+onSeleccionFila: function(detalle){
+	this.setState({detalle_ind: detalle})
+},
 funcion: function(nom){
 	console.log(nom);
+},
+getInitialState: function(){
+	return{
+		detalle_ind : {},
+	}
 },
 getDefaultProps: function(){
 			return{
@@ -16,7 +27,7 @@ render: function () {
      <div>            
 		<article className="bloque">
 			<div className="bloque_catalogo" id="ampliar_tabla">
-				<TablaInv datos_compra ={this.props.datos} />
+				<TablaInv datos_compra ={this.props.datos} onSeleccionFila={this.onSeleccionFila} />
 			</div>
 		</article>
 		<article className="bloque">
@@ -34,7 +45,7 @@ render: function () {
 				</div>
 			</div>
 		</article>
-	    <DetalleInv/>
+	    <DetalleInv detalle={this.state.detalle_ind}/>
    </div>
 
 			);  
