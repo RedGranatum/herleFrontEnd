@@ -15,26 +15,26 @@ module.exports = React.createClass({
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="id">Id</label>
+							<label className="etiquetas_bloque" forName="id">Id</label>
 							<input className="inputs_bloque" type="text" placeholder="Id" readonly />
 							<div className="viñeta">*</div>
 							<div className="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="fecha_venta">Fecha de venta</label>
+							<label className="etiquetas_bloque" forName="fecha_venta">Fecha de venta</label>
 							<input id="fecha_venta" className="inputs_bloque" type="text" placeholder="Fecha de venta" />
 							<div className="viñeta">*</div>
 							<div className="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="tipo_documento">Tipo de documento</label>
+							<label className="etiquetas_bloque" forName="tipo_documento">Tipo de documento</label>
 							<input className="radio_bloque" type="radio" name="factura_remision" value="si" checked="checked" />
-							<label for="factura"><span><span></span></span>Factura</label>
+							<label forName="factura"><span><span></span></span>Factura</label>
 							<input className="radio_bloque" type="radio" name="factura_remision" value="no"/>
-							<label for="remision"><span><span></span></span>Nota de remisión</label>
+							<label forName="remision"><span><span></span></span>Nota de remisión</label>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="no_documento">No. documento</label>
+							<label className="etiquetas_bloque" forName="no_documento">No. documento</label>
 							<input className="inputs_bloque" type="text" placeholder="No. de documento" />
 							<div className="viñeta">*</div>
 							<div className="error_mostrar">mensaje de error del campo</div>
@@ -50,7 +50,7 @@ module.exports = React.createClass({
 				<div className="campos_bloque">
 					<ul className="ul_bloque">
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="proveedor">Cliente</label>
+							<label className="etiquetas_bloque" forName="proveedor">Cliente</label>
 							<input className="inputs_bloque" type="text" placeholder="Código, Nombre" />
 							<div className="viñeta">*</div>
 							<div className="bloque_resultados_proveedor">
@@ -70,7 +70,7 @@ module.exports = React.createClass({
 							<div className="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="tipo_pago">Tipo de pago</label>
+							<label className="etiquetas_bloque" forName="tipo_pago">Tipo de pago</label>
 							<select name="tipo_pago" className="select_bloque">
 								<option value="mexico_c">Contado</option>
 								<option value="eeuu_c">Credito</option>
@@ -80,19 +80,19 @@ module.exports = React.createClass({
 							<div className="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="max_dias">Max. días pago</label>
+							<label className="etiquetas_bloque" forName="max_dias">Max. días pago</label>
 							<input className="inputs_bloque" type="text" placeholder="Max. para días del pago" />
 							<div className="viñeta">*</div>
 							<div className="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="banco">Banco</label>
+							<label className="etiquetas_bloque" forName="banco">Banco</label>
 							<input className="inputs_bloque" type="text" placeholder="Banco" readonly />
 							<div className="viñeta">*</div>
 							<div className="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li className="li_bloque">
-							<label className="etiquetas_bloque" for="estatus_venta">Estatus de la venta</label>
+							<label className="etiquetas_bloque" forName="estatus_venta">Estatus de la venta</label>
 							<select name="estatus_venta" className="select_bloque">
 								<option value="activa">Activa</option>
 								<option value="cancelada">Cancelada</option>

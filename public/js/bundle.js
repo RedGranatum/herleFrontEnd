@@ -6,10 +6,12 @@ var MenuAcciones = require('../js/menuAcciones.jsx');
 var Proveedores = require('../js/proveedores.jsx');
 var Clientes = require('../js/clientes.jsx');
 var Compras = require('../js/compras.jsx');
-var SeccionUnoInv = require('../js/tablaYFormula.jsx');
-var SeccionDosInv = require('../js/formsDeInventarios.jsx');
+//var SeccionUnoInv    = require('../js/tablaYFormula.jsx'); 
+//var SeccionDosInv    = require('../js/formsDeInventarios.jsx');   
 var Ventas = require('../js/ventas.jsx');
 var Costos = require('../js/costos.jsx');
+var Inventarios = require('../js/inventarioCabecero.jsx');
+
 var Page = require("page");
 var Notificaciones = require('../js/notificaciones');
 var $ = require('jquery');
@@ -308,7 +310,8 @@ module.exports = React.createClass({
     this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor, onClaveSeleccionada: this.onClaveSeleccionada }));
     this.crearFormulario(appmvc.Menu.CLIENTES, React.createElement(Clientes, { ref: appmvc.Menu.CLIENTES, datos: this.state.datosCliente, onClaveSeleccionada: this.onClaveSeleccionada }));
     this.crearFormulario(appmvc.Menu.COMPRAS, React.createElement(Compras, { ref: appmvc.Menu.COMPRAS, datos: this.state.datosCompra }));
-    this.crearFormulario(appmvc.Menu.INVENTARIOS, React.createElement(SeccionUnoInv, { ref: appmvc.Menu.INVENTARIOS, datos: this.state.datosInventarios }));
+    this.crearFormulario(appmvc.Menu.INVENTARIOS, React.createElement(Inventarios, { ref: appmvc.Menu.INVENTARIOS, datos: this.state.datosInventarios }));
+    //this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);  
     this.crearFormulario(appmvc.Menu.VENTAS, React.createElement(Ventas, { ref: appmvc.Menu.VENTAS }));
     this.crearFormulario(appmvc.Menu.COSTOS, React.createElement(Costos, { ref: appmvc.Menu.COSTOS, datos: this.state.datosCostos }));
     var style = {
@@ -342,7 +345,7 @@ module.exports = React.createClass({
 // 	forma.style.display=estilo;
 // }
 
-},{"../js/clientes.jsx":8,"../js/compras.jsx":12,"../js/costos.jsx":13,"../js/formsDeInventarios.jsx":15,"../js/menuAcciones.jsx":21,"../js/menuPrincipal.jsx":22,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestClientes":24,"../js/modelos/apirestCompras":26,"../js/modelos/apirestProveedores":29,"../js/notificaciones":32,"../js/proveedores.jsx":35,"../js/tablaYFormula.jsx":40,"../js/ventas.jsx":41,"jquery":45,"page":47,"react":207,"react-dom":51}],2:[function(require,module,exports){
+},{"../js/clientes.jsx":9,"../js/compras.jsx":13,"../js/costos.jsx":14,"../js/inventarioCabecero.jsx":18,"../js/menuAcciones.jsx":21,"../js/menuPrincipal.jsx":22,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestClientes":24,"../js/modelos/apirestCompras":26,"../js/modelos/apirestProveedores":27,"../js/notificaciones":30,"../js/proveedores.jsx":33,"../js/ventas.jsx":38,"jquery":43,"page":45,"react":205,"react-dom":49}],2:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -374,7 +377,7 @@ module.exports = React.createClass({
 		}
 });
 
-},{"react":207}],3:[function(require,module,exports){
+},{"react":205}],3:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -398,7 +401,32 @@ module.exports = React.createClass({
       }
 });
 
-},{"react":207}],4:[function(require,module,exports){
+},{"react":205}],4:[function(require,module,exports){
+var React = require('react');
+var Titulo = require('../js/titulos.jsx');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: 'caja_bloque' },
+			React.createElement(
+				'div',
+				{ className: 'campos_bloque' },
+				React.createElement(
+					'ul',
+					{ className: 'ul_bloque' },
+					this.props.children
+				)
+			)
+		);
+	}
+});
+
+},{"../js/titulos.jsx":37,"react":205}],5:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -429,7 +457,7 @@ module.exports = React.createClass({
       }
 });
 
-},{"react":207}],5:[function(require,module,exports){
+},{"react":205}],6:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -485,46 +513,46 @@ module.exports = React.createClass({
       }
 });
 
-},{"react":207}],6:[function(require,module,exports){
+},{"react":205}],7:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
-    displayName: "exports",
+      displayName: "exports",
 
-    TeclaPresionada: function (event) {
-        if (event.charCode == 13) {
-            this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
-        }
-    },
-    valorCambio: function () {
-        this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
-    },
-    handleBlur: function () {
-        this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
-    },
-    render: function () {
-        var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
-        clasError = error !== "" ? "caja_grid_error" : "caja_grid";
-        //var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
+      TeclaPresionada: function (event) {
+            if (event.charCode == 13) {
+                  this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
+            }
+      },
+      valorCambio: function () {
+            this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
+      },
+      handleBlur: function () {
+            this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
+      },
+      render: function () {
+            var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
+            clasError = error !== "" ? "caja_grid_error" : "caja_grid";
+            //var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
 
-        //var divStyle =  { display: 'inline-block'} 
+            //var divStyle =  { display: 'inline-block'} 
 
-        return React.createElement("input", {
-            className: clasError,
-            pattern: this.props.propiedades.caracteresEsp,
-            type: "text",
-            placeholder: this.props.propiedades.textoIndicativo,
-            id: this.props.propiedades.id,
-            value: this.props.propiedades.valor,
-            onChange: this.valorCambio,
-            ref: "CajaTexto",
-            onKeyPress: this.TeclaPresionada,
-            onBlur: this.handleBlur
-        });
-    }
+            return React.createElement("input", {
+                  className: clasError,
+                  pattern: this.props.propiedades.caracteresEsp,
+                  type: "text",
+                  placeholder: this.props.propiedades.textoIndicativo,
+                  id: this.props.propiedades.id,
+                  value: this.props.propiedades.valor,
+                  onChange: this.valorCambio,
+                  ref: "CajaTexto",
+                  onKeyPress: this.TeclaPresionada,
+                  onBlur: this.handleBlur
+            });
+      }
 });
 
-},{"react":207}],7:[function(require,module,exports){
+},{"react":205}],8:[function(require,module,exports){
 
 var React = require('react');
 
@@ -542,7 +570,7 @@ module.exports = React.createClass({
 		}
 });
 
-},{"react":207}],8:[function(require,module,exports){
+},{"react":205}],9:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var Combo = require('../js/combo.jsx');
@@ -830,7 +858,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestClientes":24,"../js/opcionCombo.jsx":34,"react":207,"react-dom":51}],9:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestClientes":24,"../js/opcionCombo.jsx":32,"react":205,"react-dom":49}],10:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -865,7 +893,7 @@ module.exports = React.createClass({
      }
 });
 
-},{"react":207}],10:[function(require,module,exports){
+},{"react":205}],11:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -884,7 +912,7 @@ module.exports = React.createClass({
      }
 });
 
-},{"react":207}],11:[function(require,module,exports){
+},{"react":205}],12:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var CajaDeTextoSimple = require('../js/cajaDeTextoSimple.jsx');
@@ -1083,7 +1111,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/cajaDeTextoSimple.jsx":6,"../js/celdaTabla.jsx":7,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/iconoTabla.jsx":17,"../js/modelos/apirestCatalogos":23,"../js/opcionCombo.jsx":34,"react":207,"react-dom":51}],12:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/cajaDeTextoSimple.jsx":7,"../js/celdaTabla.jsx":8,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/iconoTabla.jsx":17,"../js/modelos/apirestCatalogos":23,"../js/opcionCombo.jsx":32,"react":205,"react-dom":49}],13:[function(require,module,exports){
 var $ = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -1434,7 +1462,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/areaTexto.jsx":2,"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/compraDetalles.jsx":11,"../js/funcionesGenericas":16,"../js/iconoTabla.jsx":17,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestProveedores":29,"../js/nuevoProveedor.jsx":33,"../js/opcionCombo.jsx":34,"../js/resultadosLista.jsx":37,"../js/tabla.jsx":38,"jquery":45,"jquery-ui":44,"moment":46,"react":207,"react-datepicker/dist/react-datepicker.css":50,"react-dom":51}],13:[function(require,module,exports){
+},{"../js/areaTexto.jsx":2,"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/compraDetalles.jsx":12,"../js/funcionesGenericas":16,"../js/iconoTabla.jsx":17,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestProveedores":27,"../js/nuevoProveedor.jsx":31,"../js/opcionCombo.jsx":32,"../js/resultadosLista.jsx":35,"../js/tabla.jsx":36,"jquery":43,"jquery-ui":42,"moment":44,"react":205,"react-datepicker/dist/react-datepicker.css":48,"react-dom":49}],14:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -1537,7 +1565,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"react":207}],14:[function(require,module,exports){
+},{"react":205}],15:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var Combo = require('../js/combo.jsx');
@@ -1564,554 +1592,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/opcionCombo.jsx":34,"react":207,"react-dom":51}],15:[function(require,module,exports){
-var React = require('react');
-var Combo = require('../js/combo.jsx');
-var FuncGenericas = require('../js/funcionesGenericas');
-var OpcionCombo = require('../js/opcionCombo.jsx');
-
-var materiales = [{ valor: "galvanizado", titulo: "Galvanizado" }, { valor: "pintado", titulo: "Pintadooooo" }, { valor: "rainbow", titulo: "Rainbow" }, { valor: "zintroalum", titulo: "Zintroalum" }];
-
-var materialesOptions = materiales.map(function (mat) {
-	return React.createElement(OpcionCombo, { valorOpcion: mat.valor, tituloOpcion: mat.titulo });
-});
-//debugger;
-var func = new FuncGenericas();
-//this.errors = this.errors || {};
-//  this.validadarCampos();
-// console.log(this.errors);
-//var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
-//var CODIGO   = func.zipCol(dic1,["codigo",  "Código",        "Código",        this.state.codigo,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.codigo ]);
-//var NOMBRE   = func.zipCol(dic1,["nombre",  "Nombre", 	     "Nombre", 		  this.state.nombre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.nombre ] );
-//var CALLE    = func.zipCol(dic1,["calle",   "Calle",  	     "Calle",	      this.state.calle ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calle ]);
-//var NUMERO   = func.zipCol(dic1,["numero",  "Número", 	     "Número",  	  this.state.numero,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.numero ]);
-//var COLONIA  = func.zipCol(dic1,["colonia", "Colonia",       "Colonia",       this.state.colonia,   this.onValorCambio , this.onBlurCaja,  this.state.errores.colonia ]);
-//var CP       = func.zipCol(dic1,["cp",      "Código Postal", "codigo_postal", this.state.cp ,      this.onValorCambio  , this.onBlurCaja,  this.state.errores.cp ]);
-//var RFC      = func.zipCol(dic1,["rfc",     "RFC",           "RFC",			  this.state.rfc ,     this.onValorCambio  , this.onBlurCaja,  this.state.errores.rfc ]);
-//var TELEFONO = func.zipCol(dic1,["telefono","Teléfono",      "Teléfono",	  this.state.telefono, this.onValorCambio  , this.onBlurCaja,  this.state.errores.telefono ]);
-//var EMAIL    = func.zipCol(dic1,["email",   "e-mail",        "e-mail",		  this.state.email,    this.onValorCambio  , this.onBlurCaja,  this.state.errores.email ]);
-
-var dic2 = ["id", "titulo", "children", "seleccionado"];
-var MATERIALES = func.zipCol(dic2, ["material_i", "Material", materialesOptions, materialesOptions[1].props.valorOpcion]);
-
-module.exports = React.createClass({
-	displayName: 'exports',
-
-
-	render: function () {
-		return React.createElement(
-			'section',
-			{ className: 'contenido', id: 'el_top' },
-			React.createElement(
-				'article',
-				{ className: 'bloque' },
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Producto'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(Combo, { propiedades: MATERIALES, key: "materiales" }),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'calibre_i' },
-									'Calibre'
-								),
-								React.createElement('input', { className: 'inputs_bloque', name: 'calibre_i', type: 'number' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'ancho_i' },
-									'Ancho'
-								),
-								React.createElement('input', { className: 'inputs_bloque', name: 'ancho_i', type: 'number' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'largo_i' },
-									'Largo'
-								),
-								React.createElement(
-									'select',
-									{ name: 'largo_i', className: 'select_bloque' },
-									React.createElement(
-										'option',
-										{ value: '0' },
-										'0'
-									),
-									React.createElement(
-										'option',
-										{ value: '10' },
-										'10'
-									),
-									React.createElement(
-										'option',
-										{ value: '12' },
-										'12'
-									)
-								),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'titulo_resalta' },
-					'Código Producto'
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Rollo'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'no_rollo' },
-									'No. Rollo'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'No. Rollo' }),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'peso_kgs' },
-									'Peso (Kgs)'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Peso (Kgs)' }),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'peso_lbs' },
-									'Peso (Lbs)'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Peso (Lbs)' }),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'transporte' },
-									'Transporte'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Transporte' }),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				)
-			),
-			React.createElement(
-				'article',
-				{ className: 'bloque' },
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Origen Producto'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'pais_p' },
-									'Origen del producto'
-								),
-								React.createElement(
-									'select',
-									{ name: 'pais_p', className: 'select_bloque' },
-									React.createElement(
-										'option',
-										{ value: 'mexico_p' },
-										'México'
-									),
-									React.createElement(
-										'option',
-										{ value: 'eeuu_p' },
-										'EEUU'
-									),
-									React.createElement(
-										'option',
-										{ value: 'china_p' },
-										'China'
-									)
-								),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'tipo_entrada' },
-									'Tipo de entrada'
-								),
-								React.createElement(
-									'select',
-									{ name: 'tipo_entrada', className: 'select_bloque' },
-									React.createElement(
-										'option',
-										{ value: 'no_especificado' },
-										'NO ESPECIFICADO'
-									),
-									React.createElement(
-										'option',
-										{ value: 'con_comercializadora' },
-										'Con Comercializadora'
-									),
-									React.createElement(
-										'option',
-										{ value: 'sin_comercializadora' },
-										'Sin Comercializadora'
-									)
-								),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Sin Comercializadora'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'precio_lbs' },
-									'Precio en libra'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Precio en libra' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'factor' },
-									'Factor'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Factor' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'precio_dls' },
-									'Precio en dolar'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Precio en dolar' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'factor_impurto' },
-									'Factor de impuestos'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Factor de impuestos' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Con Comercializadora'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'porcentaje_c' },
-									'Porcentaje (%)'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Porcentaje de comercializadora' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Valor Tonelada En Dolar / 1000'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'factor_k' },
-									'Factor'
-								),
-								React.createElement('input', { className: 'inputs_bloque', type: 'text', placeholder: 'Factor para convertir en kilos' }),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				)
-			),
-			React.createElement(
-				'article',
-				{ className: 'bloque' },
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Otros Datos'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'descripcion_i' },
-									'Descripción'
-								),
-								React.createElement('textarea', { className: 'textarea_bloque', name: 'descripcion_i', placeholder: 'Descripción' }),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'comentarios_i' },
-									'Comentarios'
-								),
-								React.createElement('textarea', { className: 'textarea_bloque', name: 'comentarios_i', placeholder: 'Comentarios' }),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				)
-			)
-		);
-	}
-});
-
-},{"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/opcionCombo.jsx":34,"react":207}],16:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/opcionCombo.jsx":32,"react":205,"react-dom":49}],16:[function(require,module,exports){
 var OpcionCombo = require('../js/opcionCombo.jsx');
 var React = require('react');
 var CeldaTabla = require('../js/celdaTabla.jsx');
@@ -2155,7 +1636,7 @@ var funcionesGenericas = function () {
 
 module.exports = funcionesGenericas;
 
-},{"../js/celdaTabla.jsx":7,"../js/opcionCombo.jsx":34,"react":207}],17:[function(require,module,exports){
+},{"../js/celdaTabla.jsx":8,"../js/opcionCombo.jsx":32,"react":205}],17:[function(require,module,exports){
 
 var React = require('react');
 
@@ -2176,99 +1657,184 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":207}],18:[function(require,module,exports){
+},{"react":205}],18:[function(require,module,exports){
 var React = require('react');
-var ApirestInventarioCalculo = require('../js/modelos/apirestInventarioCalculo');
+var FuncGenericas = require('../js/funcionesGenericas');
+var InventarioParam = require('../js/inventarioParametros.jsx');
+var CajaDeTexto = require('../js/cajaDeTexto.jsx');
+var Combo = require('../js/combo.jsx');
+var Titulo = require('../js/titulos.jsx');
+var AreaTexto = require('../js/areaTexto.jsx');
+var CajaConCampos = require('../js/cajaConCampos.jsx');
 
 module.exports = React.createClass({
 	displayName: 'exports',
 
-	componentWillReceiveProps: function (nuevas_props) {
-		this.calcularFormula(nuevas_props);
+
+	componentWillReceiveProps: function (nextProps) {
+
+		if (nextProps.datos.id !== undefined) {
+			this.setState({
+				id: nextProps.datos.id,
+				invoice: nextProps.datos.invoice,
+				pais: nextProps.datos.proveedor.pais,
+				comentarios: nextProps.datos.comentarios,
+				descripcion: nextProps.datos.descripcion });
+		} else {
+			this.setState(this.getInitialState());
+		}
+	},
+	componentWillMount: function () {
+		this.llenarCombos();
 	},
 	getInitialState: function () {
-		return this.valoresDefecto();
-	},
-	valoresDefecto: function () {
 		return {
-			"kilo_en_pesos": "0",
-			"kilo_en_dolar": "0",
-			"tonelada_en_dolar": "0",
-			"kilo_en_pesos_final": "0"
+			"id": -1,
+			"invoice": '',
+			"pais": '0010000',
+			"comentarios": '',
+			"descripcion": '',
+			"tentrada": '0',
+			"errores": {}
 		};
 	},
-	calcularFormula: function (propiedades) {
-		var self = this;
-		var invCal = new ApirestInventarioCalculo();
-		var valores = propiedades.valores;
-		invCal.cdu_pais = valores.cdu_pais;
-		invCal.precio_tonelada_dolar = valores.precio_tonelada_dolar;
-		invCal.con_comercializadora = valores.con_comercializadora;
-		invCal.precio_libra_centavos = valores.precio_libra_centavos;
-		invCal.factor = valores.factor;
-		invCal.precio_dolar = valores.precio_dolar;
-		invCal.factor_impuesto = valores.factor_impuesto;
-		invCal.porc_comercializadora = valores.porc_comercializadora;
+	llenarCombos: function () {
+		var func = new FuncGenericas();
+		this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
 
-		invCal.obtenerCalculos(function (data) {
-			self.setState({
-				kilo_en_pesos: data["kilo_en_pesos"],
-				kilo_en_dolar: data["kilo_en_dolar"],
-				tonelada_en_dolar: data["tonelada_en_dolar"],
-				kilo_en_pesos_final: data["kilo_en_pesos_final"]
-			});
-		}, function (model, response, options) {
-			self.setState({
-				kilo_en_pesos: "0",
-				kilo_en_dolar: "0",
-				tonelada_en_dolar: "0",
-				kilo_en_pesos_final: "0"
-			});
-		});
+		var entradas = [{ cdu_catalogo: "0", descripcion1: "NO ESPECIFICADO" }, { cdu_catalogo: "1", descripcion1: "Con Comercializadora" }, { cdu_catalogo: "2", descripcion1: "Sin Comercializadora" }];
+		this.TipoEntrada = func.llenarComboGenerico(entradas);
 	},
 	render: function () {
+		func = new FuncGenericas();
+		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
+		var DESCRIPCION = func.zipCol(dic1, ["descripcion", "Descripción", "Descripción", this.state.descripcion, this.onValorCambio, "", this.onBlurCaja, this.state.errores.descripcion]);
+		var COMENTARIOS = func.zipCol(dic1, ["comentarios", "Comentarios", "Comentarios", this.state.comentarios, this.onValorCambio, "", this.onBlurCaja, this.state.errores.comentarios]);
+
+		var dic2 = ["id", "titulo", "children", "seleccionado", "onChange"];
+		var PAIS = func.zipCol(dic2, ["pais", "Origen producto", this.Paises, this.state.pais, this.onValorCambio]);
+		var TENTRADA = func.zipCol(dic2, ["tentrada", "Tipo de entrada", this.TipoEntrada, this.state.tentrada, this.onValorCambio]);
+
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(
+				'article',
+				{ className: 'bloque' },
+				React.createElement(Titulo, { titulo: 'Invoice: ' + this.state.invoice }),
+				React.createElement(
+					CajaConCampos,
+					null,
+					React.createElement(Combo, { propiedades: PAIS, ref: 'ComboPais', key: 'Pais' }),
+					React.createElement(Combo, { propiedades: TENTRADA, ref: 'ComboTEntrada', key: 'TEntrada' })
+				),
+				React.createElement('br', null),
+				React.createElement(Titulo, { titulo: 'Otros Datos' }),
+				React.createElement(
+					CajaConCampos,
+					null,
+					React.createElement(AreaTexto, { propiedades: DESCRIPCION }),
+					React.createElement(AreaTexto, { propiedades: COMENTARIOS })
+				)
+			),
+			React.createElement(InventarioParam, null)
+		);
+	}
+});
+
+},{"../js/areaTexto.jsx":2,"../js/cajaConCampos.jsx":4,"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/inventarioParametros.jsx":19,"../js/titulos.jsx":37,"react":205}],19:[function(require,module,exports){
+var React = require('react');
+var CajaDeTexto = require('../js/cajaDeTexto.jsx');
+
+module.exports = React.createClass({
+	displayName: 'exports',
+
+	componentDidMount: function () {},
+	getDefaultProps: function () {
+		return {
+			pais: '0010000',
+			conComercializadora: false
+		};
+	},
+	getInitialState: function () {
+		return {
+			precio_libra: "0.0",
+			factor: "0.0",
+			precio_dolar: "0.0",
+			impuesto: "0.0",
+			porc_comercializadora: "0.0",
+			impuesto_china: "0.0",
+			"errores": {}
+		};
+	},
+	render: function () {
+		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
+		var PRECIO_LIBRA = func.zipCol(dic1, ["precio_libra", "Precio en libra", "precio_libra", this.state.precio_libra, this.onValorCambio, this.onBlurCaja, this.state.errores.precio_libra]);
+		var FACTOR = func.zipCol(dic1, ["factor", "Factor", "factor", this.state.factor, this.onValorCambio, this.onBlurCaja, this.state.errores.factor]);
+		var PRECIO_DOLAR = func.zipCol(dic1, ["precio_dolar", "Precio en dolar", "precio_dolar", this.state.precio_dolar, this.onValorCambio, this.onBlurCaja, this.state.errores.precio_dolar]);
+		var IMPUESTO = func.zipCol(dic1, ["factor_impuesto", "Factor impuesto", "factor_impuesto", this.state.impuesto, this.onValorCambio, this.onBlurCaja, this.state.errores.impuesto]);
+		var IMPUESTO_CHINA = func.zipCol(dic1, ["factor_impuesto", "Factor impuesto China", "factor_impuesto", this.state.impuesto_china, this.onValorCambio, this.onBlurCaja, this.state.errores.impuesto_china]);
+
+		var PORC_COMERCIALIZADORA = func.zipCol(dic1, ["porc_comercializadora", "Porcentaje (%)", "porc_comercializadora", this.state.porc_comercializadora, this.onValorCambio, this.onBlurCaja, this.state.errores.porc_comercializadora]);
 		return React.createElement(
 			'article',
 			{ className: 'bloque' },
 			React.createElement(
 				'div',
-				{ className: 'formula' },
-				React.createElement(
-					'figure',
-					{ className: 'formula_foto' },
-					React.createElement(
-						'p',
-						null,
-						React.createElement('img', { src: 'images/ok.png', alt: '' })
-					)
-				),
+				{ className: 'titulo_bloque', id: 'resaltar_titulo_caja_f' },
+				'Sin Comercializadora'
+			),
+			React.createElement(
+				'div',
+				{ className: 'caja_bloque', id: 'resaltar_caja_bloque' },
 				React.createElement(
 					'div',
-					{ className: 'formula_datos' },
+					{ className: 'campos_bloque' },
 					React.createElement(
-						'h3',
-						null,
-						'Kilo en dolar: ',
-						this.state.kilo_en_dolar
-					),
+						'ul',
+						{ className: 'ul_bloque' },
+						React.createElement(CajaDeTexto, { propiedades: PRECIO_LIBRA, ref: 'cajaPrecioLibra' }),
+						React.createElement(CajaDeTexto, { propiedades: FACTOR, ref: 'cajaFactor' }),
+						React.createElement(CajaDeTexto, { propiedades: PRECIO_DOLAR, ref: 'cajaPrecioDolar' }),
+						React.createElement(CajaDeTexto, { propiedades: IMPUESTO, ref: 'cajaFactorImpuesto' })
+					)
+				)
+			),
+			React.createElement('br', null),
+			React.createElement(
+				'div',
+				{ className: 'titulo_bloque', id: 'resaltar_titulo_caja_f' },
+				'Con Comercializadora'
+			),
+			React.createElement(
+				'div',
+				{ className: 'caja_bloque', id: 'resaltar_caja_bloque' },
+				React.createElement(
+					'div',
+					{ className: 'campos_bloque' },
 					React.createElement(
-						'h3',
-						null,
-						'Tonelada en dolar: ',
-						this.state.tonelada_en_dolar,
-						' '
-					),
+						'ul',
+						{ className: 'ul_bloque' },
+						React.createElement(CajaDeTexto, { propiedades: PORC_COMERCIALIZADORA, ref: 'cajaPorcentajeComerzializadora' })
+					)
+				)
+			),
+			React.createElement('br', null),
+			React.createElement(
+				'div',
+				{ className: 'titulo_bloque', id: 'resaltar_titulo_caja_f' },
+				'Factor Impuesto China'
+			),
+			React.createElement(
+				'div',
+				{ className: 'caja_bloque', id: 'resaltar_caja_bloque' },
+				React.createElement(
+					'div',
+					{ className: 'campos_bloque' },
 					React.createElement(
-						'h3',
-						null,
-						'Kilo en pesos: ',
-						this.state.kilo_en_pesos
-					),
-					React.createElement(
-						'h3',
-						null,
-						'Kilo en pesos final: ',
-						this.state.kilo_en_pesos_final
+						'ul',
+						{ className: 'ul_bloque' },
+						React.createElement(CajaDeTexto, { propiedades: IMPUESTO_CHINA, ref: 'cajaPorcentajeComerzializadora' })
 					)
 				)
 			)
@@ -2276,370 +1842,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/modelos/apirestInventarioCalculo":27,"react":207}],19:[function(require,module,exports){
-var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
-var CajaDeTexto = require('../js/cajaDeTexto.jsx');
-var Combo = require('../js/combo.jsx');
-var FuncGenericas = require('../js/funcionesGenericas');
-var OpcionCombo = require('../js/opcionCombo.jsx');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ApiRestInventario = require('../js/modelos/apirestInventarios');
-var InventarioPrecios = require('../js/inventarioCalculoPrecios.jsx');
-
-module.exports = React.createClass({
-	displayName: 'exports',
-
-	componentWillReceiveProps: function (nuevas_props) {
-		detalle = nuevas_props.detalle;
-		cabecero = nuevas_props.cabecero;
-		parametros_cal = nuevas_props.parametros_cal;
-		con_valores = Object.keys(detalle).length > 0;
-
-		var valoresDefecto = this.valoresDefecto();
-		var cdu_material = valoresDefecto.material;
-		var calibre = valoresDefecto.calibre;
-		var ancho = valoresDefecto.ancho;
-		var largo = valoresDefecto.largo;
-
-		var num_rollo = valoresDefecto.num_rollo;
-		var peso_kg = valoresDefecto.peso_kg;
-		var peso_lb = valoresDefecto.peso_lb;
-
-		var transporte = valoresDefecto.transporte;
-
-		var pais = valoresDefecto.pais;
-
-		var precio_libra = valoresDefecto.precio_libra;
-		var factor = valoresDefecto.factor;
-		var precio_dolar = valoresDefecto.precio_dolar;
-		var factor_impuesto = valoresDefecto.factor_impuesto;
-		var precio_tonelada = valoresDefecto.precio_tonelada;
-		var porc_comercializadora = valoresDefecto.porc_comercializadora;
-
-		if (con_valores) {
-			cdu_material = detalle.material.cdu_catalogo;
-			calibre = detalle.calibre;
-			ancho = detalle.ancho;
-			largo = detalle.largo;
-
-			num_rollo = detalle.num_rollo;
-			peso_kg = detalle.peso_kg;
-			peso_lb = detalle.peso_lb;
-
-			transporte = cabecero.transporte;
-
-			pais = cabecero.proveedor.pais;
-
-			precio_libra = parametros_cal.precio_libra;
-			factor = parametros_cal.factor;
-			precio_dolar = parametros_cal.precio_dolar;
-			factor_impuesto = parametros_cal.factor_impuesto_eu;
-			precio_tonelada = parametros_cal.precio_tonelada;
-
-			porc_comercializadora = parametros_cal.porc_comercializadora;
-		}
-		var codigo = this.calcularCodigoDelProducto(calibre, cdu_material, ancho, largo);
-
-		this.setState({ material: cdu_material,
-			calibre: calibre,
-			ancho: ancho,
-			largo: largo,
-			codigo_producto: codigo,
-			num_rollo: num_rollo,
-			peso_kg: peso_kg,
-			peso_lb: peso_lb,
-
-			transporte: transporte,
-			pais: pais,
-
-			precio_libra: precio_libra,
-			factor: factor,
-			precio_dolar: precio_dolar,
-			factor_impuesto: factor_impuesto,
-			porc_comercializadora: porc_comercializadora,
-			precio_tonelada: precio_tonelada });
-	},
-
-	llenarCombos: function () {
-		var func = new FuncGenericas();
-		this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
-		this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
-	},
-	componentDidMount: function () {
-		this.llenarCombos();
-	},
-	getInitialState: function () {
-		return this.valoresDefecto();
-	},
-	valoresDefecto: function () {
-		return {
-			"id": -1,
-			"material": "0050000",
-			"calibre": "0.0",
-			"ancho": "0.0",
-			"largo": "0",
-			"codigo_producto": "",
-			"num_rollo": "",
-			"peso_kg": "0.0",
-			"peso_lb": "0.0",
-
-			"transporte": "",
-
-			"pais": "0010000",
-
-			"precio_libra": "0.0",
-			"factor": "0",
-			"precio_dolar": "0.0",
-			"factor_impuesto": "0.0",
-			"precio_tonelada": "0,0",
-			"con_comercializadora": "False",
-			"porc_comercializadora": "0",
-
-			"errores": {}
-		};
-	},
-
-	onValorCambio: function (campo, valor) {
-		var campos = {};
-		campos[campo] = valor;
-		this.setState(campos);
-		if (campo === "material") {
-			this.calcularCodigoDelProductoConStates(valor);
-		}
-		if (campo === "pais") {
-			this.calcularFormulaConStates(valor);
-		}
-	},
-	onValorCambioComer: function (campo, valor) {
-		var bln_com = campo.target.value === "con_comercializadora" ? "True" : "False";
-		this.setState({ con_comercializadora: bln_com });
-	},
-	calcularCodigoDelProducto: function (rango, cdu_material, ancho, largo) {
-		var self = this;
-		var inv = new ApiRestInventario();
-		inv.rango = rango;
-		inv.cdu_material = cdu_material;
-		inv.ancho = ancho;
-		inv.largo = largo;
-
-		inv.obtenerCodigoDelProducto(function (data) {
-			self.setState({ codigo_producto: data });
-		}, function (model, response, options) {
-			self.setState({ codigo_producto: "" });
-		});
-	},
-	onBlurCaja: function (control, valor) {
-		var camposCodigo = ["calibre", "ancho", "largo", "material"];
-		var indice = camposCodigo.indexOf(control);
-		if (indice >= 0) {
-			this.calcularCodigoDelProductoConStates();
-		}
-	},
-	calcularCodigoDelProductoConStates: function (material_cambio) {
-		material = material_cambio === undefined ? this.state.material : material_cambio;
-		this.calcularCodigoDelProducto(this.state.calibre, material, this.state.ancho, this.state.largo);
-	},
-	render: function () {
-		valoresCalculo = {
-			cdu_pais: this.state.pais,
-			precio_tonelada_dolar: this.state.precio_tonelada,
-			precio_libra_centavos: this.state.precio_libra,
-			factor: this.state.factor,
-			precio_dolar: this.state.precio_dolar,
-			factor_impuesto: this.state.factor_impuesto,
-			con_comercializadora: this.state.con_comercializadora,
-			porc_comercializadora: this.state.porc_comercializadora };
-
-		func = new FuncGenericas();
-		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
-		var CALIBRE = func.zipCol(dic1, ["calibre", "Calibre", "calibre", this.state.calibre, this.onValorCambio, this.onBlurCaja, this.state.errores.material]);
-		var ANCHO = func.zipCol(dic1, ["ancho", "Ancho", "ancho", this.state.ancho, this.onValorCambio, this.onBlurCaja, this.state.errores.calibre]);
-		var LARGO = func.zipCol(dic1, ["largo", "Largo", "largo", this.state.largo, this.onValorCambio, this.onBlurCaja, this.state.errores.ancho]);
-
-		var NUM_ROLLO = func.zipCol(dic1, ["num_rollo", "num_rollo", "num_rollo", this.state.num_rollo, this.onValorCambio, this.onBlurCaja, this.state.errores.num_rollo]);
-		var PESO_KG = func.zipCol(dic1, ["peso_kg", "peso_kg", "peso_kg", this.state.peso_kg, this.onValorCambio, this.onBlurCaja, this.state.errores.peso_kg]);
-		var PESO_LB = func.zipCol(dic1, ["peso_lb", "peso_lb", "peso_lb", this.state.peso_lb, this.onValorCambio, this.onBlurCaja, this.state.errores.peso_lb]);
-
-		var TRANSPORTE = func.zipCol(dic1, ["transporte", "transporte", "transporte", this.state.transporte, this.onValorCambio, this.onBlurCaja, this.state.errores.transporte]);
-
-		var PRECIO_LIBRA = func.zipCol(dic1, ["precio_libra", "precio_libra", "precio_libra", this.state.precio_libra, this.onValorCambio, this.onBlurCaja, this.state.errores.precio_libra]);
-		var FACTOR = func.zipCol(dic1, ["factor", "factor", "factor", this.state.factor, this.onValorCambio, this.onBlurCaja, this.state.errores.factor]);
-		var PRECIO_DOLAR = func.zipCol(dic1, ["precio_dolar", "precio_dolar", "precio_dolar", this.state.precio_dolar, this.onValorCambio, this.onBlurCaja, this.state.errores.precio_dolar]);
-		var FACTOR_IMPUESTO = func.zipCol(dic1, ["factor_impuesto", "factor_impuesto", "factor_impuesto", this.state.factor_impuesto, this.onValorCambio, this.onBlurCaja, this.state.errores.factor_impuesto]);
-		var PORC_COMERCIALIZADORA = func.zipCol(dic1, ["porc_comercializadora", "porc_comercializadora", "porc_comercializadora", this.state.porc_comercializadora, this.onValorCambio, this.onBlurCaja, this.state.errores.porc_comercializadora]);
-
-		var dic2 = ["id", "titulo", "children", "seleccionado", "onChange"];
-		var MATERIAL = func.zipCol(dic2, ["material", "Material", this.Materiales, this.state.material, this.onValorCambio]);
-		var PAIS = func.zipCol(dic2, ["pais", "Origen producto", this.Paises, this.state.pais, this.onValorCambio]);
-
-		var mostrar = Object.keys(this.props.detalle).length > 0 ? 'inline-block' : 'none';
-		var style = { display: mostrar };
-		return React.createElement(
-			'div',
-			{ style: style },
-			React.createElement(
-				'article',
-				{ className: 'bloque', id: 'el_top' },
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Producto'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(Combo, { propiedades: MATERIAL, ref: 'ComboMaterial', key: 'Material' }),
-								React.createElement(CajaDeTexto, { propiedades: CALIBRE, ref: 'cajaCalibre' }),
-								React.createElement(CajaDeTexto, { propiedades: ANCHO, ref: 'cajaAncho' }),
-								React.createElement(CajaDeTexto, { propiedades: LARGO, ref: 'cajaLargo' })
-							)
-						)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'titulo_resalta' },
-					this.state.codigo_producto
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Rollo'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(CajaDeTexto, { propiedades: NUM_ROLLO, ref: 'cajaNumRollo' }),
-							React.createElement(CajaDeTexto, { propiedades: PESO_KG, ref: 'cajaPesoKg' }),
-							React.createElement(CajaDeTexto, { propiedades: PESO_LB, ref: 'cajaPesoLb' }),
-							React.createElement(CajaDeTexto, { propiedades: TRANSPORTE, ref: 'cajaTransporte' })
-						)
-					)
-				)
-			),
-			React.createElement(
-				'article',
-				{ className: 'bloque', id: 'el_top' },
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Origen Producto'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(Combo, { propiedades: PAIS, ref: 'ComboPais', key: 'Pais' }),
-							React.createElement(
-								'li',
-								{ className: 'li_bloque' },
-								React.createElement(
-									'label',
-									{ className: 'etiquetas_bloque', 'for': 'tipo_entrada' },
-									'Tipo de entrada'
-								),
-								React.createElement(
-									'select',
-									{ name: 'tipo_entrada', className: 'select_bloque', onChange: this.onValorCambioComer },
-									React.createElement(
-										'option',
-										{ value: 'no_especificado' },
-										'NO ESPECIFICADO'
-									),
-									React.createElement(
-										'option',
-										{ value: 'con_comercializadora' },
-										'Con Comercializadora'
-									),
-									React.createElement(
-										'option',
-										{ value: 'sin_comercializadora' },
-										'Sin Comercializadora'
-									)
-								),
-								React.createElement(
-									'div',
-									{ className: 'viñeta' },
-									'*'
-								),
-								React.createElement(
-									'div',
-									{ className: 'error_ocultar' },
-									'mensaje de error del campo'
-								)
-							)
-						)
-					)
-				),
-				React.createElement('br', null),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Sin Comercializadora'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(CajaDeTexto, { propiedades: PRECIO_LIBRA, ref: 'cajaPrecioLibra' }),
-							React.createElement(CajaDeTexto, { propiedades: FACTOR, ref: 'cajaFactor' }),
-							React.createElement(CajaDeTexto, { propiedades: PRECIO_DOLAR, ref: 'cajaPrecioDolar' }),
-							React.createElement(CajaDeTexto, { propiedades: FACTOR_IMPUESTO, ref: 'cajaFactorImpuesto' })
-						)
-					)
-				),
-				React.createElement(
-					'div',
-					{ className: 'titulo_bloque' },
-					'Con Comercializadora'
-				),
-				React.createElement(
-					'div',
-					{ className: 'caja_bloque' },
-					React.createElement(
-						'div',
-						{ className: 'campos_bloque' },
-						React.createElement(
-							'ul',
-							{ className: 'ul_bloque' },
-							React.createElement(CajaDeTexto, { propiedades: PORC_COMERCIALIZADORA, ref: 'cajaPorcentajeComerzializadora' })
-						)
-					)
-				)
-			),
-			React.createElement(InventarioPrecios, { valores: valoresCalculo })
-		);
-	}
-});
-
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/inventarioCalculoPrecios.jsx":18,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestInventarios":28,"../js/opcionCombo.jsx":34,"react":207,"react-dom":51}],20:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"react":205}],20:[function(require,module,exports){
 var $ = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -2648,86 +1851,86 @@ var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 
 $(function () {
 
-				appmvc = {};
+	appmvc = {};
 
-				appmvc = {
-								Catalogos: {},
-								Datos: {},
-								Forms: {},
-								Menu: {},
-								MenuForms: {},
-								Url: {}
-				};
+	appmvc = {
+		Catalogos: {},
+		Datos: {},
+		Forms: {},
+		Menu: {},
+		MenuForms: {},
+		Url: {}
+	};
 
-				var url_local = 'http://localhost:8000/';
-				//var url_local ='http://192.168.0.15:8000/';
-				//var url_local = 'http://107.170.1.182:8000/'
+	var url_local = 'http://localhost:8000/';
+	//var url_local ='http://192.168.0.15:8000/';
+	//var url_local = 'http://107.170.1.182:8000/'
 
-				datosCatalogo = new ApiRestCatalogo();
+	datosCatalogo = new ApiRestCatalogo();
 
-				appmvc.Url.API_REST = url_local;
+	appmvc.Url.API_REST = url_local;
 
-				appmvc.Menu.PROVEEDORES = 'Proveedores';
-				appmvc.Menu.CLIENTES = 'Clientes';
-				appmvc.Menu.COMPRAS = 'Compras';
-				appmvc.Menu.INVENTARIOS = 'Inventarios';
-				appmvc.Menu.VENTAS = 'Ventas';
-				appmvc.Menu.COSTOS = 'Costos';
+	appmvc.Menu.PROVEEDORES = 'Proveedores';
+	appmvc.Menu.CLIENTES = 'Clientes';
+	appmvc.Menu.COMPRAS = 'Compras';
+	appmvc.Menu.INVENTARIOS = 'Inventarios';
+	appmvc.Menu.VENTAS = 'Ventas';
+	appmvc.Menu.COSTOS = 'Costos';
 
-				appmvc.Forms.PROVEEDORES = null;
-				appmvc.Forms.CLIENTES = null;
-				appmvc.Forms.COMPRAS = null;
-				appmvc.Forms.INVENTARIOS = null;
-				appmvc.Forms.VENTAS = null;
-				appmvc.Forms.COSTOS = null;
-				appmvc.MenuForms = {
-								'Proveedores': appmvc.Forms.PROVEEDORES,
-								'Clientes': appmvc.Forms.CLIENTES,
-								'Compras': appmvc.Forms.COMPRAS,
-								'Inventarios': appmvc.Forms.INVENTARIOS,
-								'Ventas': appmvc.Forms.VENTAS,
-								'Costos': appmvc.Forms.COSTOS
-				};
+	appmvc.Forms.PROVEEDORES = null;
+	appmvc.Forms.CLIENTES = null;
+	appmvc.Forms.COMPRAS = null;
+	appmvc.Forms.INVENTARIOS = null;
+	appmvc.Forms.VENTAS = null;
+	appmvc.Forms.COSTOS = null;
+	appmvc.MenuForms = {
+		'Proveedores': appmvc.Forms.PROVEEDORES,
+		'Clientes': appmvc.Forms.CLIENTES,
+		'Compras': appmvc.Forms.COMPRAS,
+		'Inventarios': appmvc.Forms.INVENTARIOS,
+		'Ventas': appmvc.Forms.VENTAS,
+		'Costos': appmvc.Forms.COSTOS
+	};
 
-				appmvc.Catalogos.PAISES = 1;
-				appmvc.Catalogos.ESTADOS = 2;
-				appmvc.Catalogos.BANCOS = 3;
-				appmvc.Catalogos.MONEDAS = 4;
-				appmvc.Catalogos.MATERIALES = 5;
-				appmvc.Catalogos.PARAMETROS_CALCULOS = 9;
+	appmvc.Catalogos.PAISES = 1;
+	appmvc.Catalogos.ESTADOS = 2;
+	appmvc.Catalogos.BANCOS = 3;
+	appmvc.Catalogos.MONEDAS = 4;
+	appmvc.Catalogos.MATERIALES = 5;
+	appmvc.Catalogos.PARAMETROS_CALCULOS = 9;
 
-				appmvc.Datos.PAISES = null;
-				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, function (data) {
-								appmvc.Datos.PAISES = data;
-				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
-				});
+	appmvc.Datos.PAISES = null;
+	datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, function (data) {
+		appmvc.Datos.PAISES = data;
+	}, function (model, response, options) {
+		console.log("hay errores " + response.statusText);
+	});
 
-				appmvc.Datos.BANCOS = null;
-				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.BANCOS, function (data) {
-								appmvc.Datos.BANCOS = data;
-				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
-				});
+	appmvc.Datos.BANCOS = null;
+	datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.BANCOS, function (data) {
+		appmvc.Datos.BANCOS = data;
+	}, function (model, response, options) {
+		console.log("hay errores " + response.statusText);
+	});
 
-				appmvc.Datos.MONEDAS = null;
-				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, function (data) {
-								appmvc.Datos.MONEDAS = data;
-				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
-				});
+	appmvc.Datos.MONEDAS = null;
+	datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, function (data) {
+		appmvc.Datos.MONEDAS = data;
+	}, function (model, response, options) {
+		console.log("hay errores " + response.statusText);
+	});
 
-				appmvc.Datos.MATERIALES = null;
-				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, function (data) {
-								appmvc.Datos.MATERIALES = data;
-				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
-				});
+	appmvc.Datos.MATERIALES = null;
+	datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, function (data) {
+		appmvc.Datos.MATERIALES = data;
+	}, function (model, response, options) {
+		console.log("hay errores " + response.statusText);
+	});
 
-				ReactDOM.render(React.createElement(App, null), document.getElementById("app"));
+	ReactDOM.render(React.createElement(App, null), document.getElementById("app"));
 });
 
-},{"../js/app.jsx":1,"../js/modelos/apirestCatalogos":23,"jquery":45,"react":207,"react-dom":51}],21:[function(require,module,exports){
+},{"../js/app.jsx":1,"../js/modelos/apirestCatalogos":23,"jquery":43,"react":205,"react-dom":49}],21:[function(require,module,exports){
 var React = require('react');
 var BotonMenu = require('../js/botonMenu.jsx');
 var CajaDeBusqueda = require('../js/cajaDeBusqueda.jsx');
@@ -2837,7 +2040,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../js/botonMenu.jsx":3,"../js/cajaDeBusqueda.jsx":4,"../js/modelos/apirestClientes":24,"../js/modelos/apirestCompras":26,"../js/modelos/apirestProveedores":29,"../js/resultadosLista.jsx":37,"react":207,"react-dom":51}],22:[function(require,module,exports){
+},{"../js/botonMenu.jsx":3,"../js/cajaDeBusqueda.jsx":5,"../js/modelos/apirestClientes":24,"../js/modelos/apirestCompras":26,"../js/modelos/apirestProveedores":27,"../js/resultadosLista.jsx":35,"react":205,"react-dom":49}],22:[function(require,module,exports){
 var React = require('react');
 var BotonMenu = require('../js/botonMenu.jsx');
 
@@ -2865,7 +2068,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/botonMenu.jsx":3,"react":207}],23:[function(require,module,exports){
+},{"../js/botonMenu.jsx":3,"react":205}],23:[function(require,module,exports){
 var Backbone = require('backbone');
 var ColeccionCat = require('../modelos/coleccionBase');
 
@@ -2900,7 +2103,7 @@ var catalogosApiRest = function () {
 
 module.exports = catalogosApiRest;
 
-},{"../modelos/coleccionBase":30,"backbone":42}],24:[function(require,module,exports){
+},{"../modelos/coleccionBase":28,"backbone":39}],24:[function(require,module,exports){
 var Backbone = require('backbone');
 var ColeccionCat = require('../modelos/coleccionBase');
 var ModeloBase = require('../modelos/modeloBase');
@@ -2984,7 +2187,7 @@ var apirestClientes = function () {
 
 module.exports = apirestClientes;
 
-},{"../modelos/coleccionBase":30,"../modelos/modeloBase":31,"backbone":42}],25:[function(require,module,exports){
+},{"../modelos/coleccionBase":28,"../modelos/modeloBase":29,"backbone":39}],25:[function(require,module,exports){
 var Backbone = require('backbone');
 var ColeccionCat = require('../modelos/coleccionBase');
 var ModeloBase = require('../modelos/modeloBase');
@@ -3017,7 +2220,7 @@ var apirestCompraDetalles = function () {
 
 module.exports = apirestCompraDetalles;
 
-},{"../modelos/coleccionBase":30,"../modelos/modeloBase":31,"backbone":42}],26:[function(require,module,exports){
+},{"../modelos/coleccionBase":28,"../modelos/modeloBase":29,"backbone":39}],26:[function(require,module,exports){
 var Backbone = require('backbone');
 var ColeccionCat = require('../modelos/coleccionBase');
 var ModeloBase = require('../modelos/modeloBase');
@@ -3094,142 +2297,7 @@ var apirestClientes = function () {
 
 module.exports = apirestClientes;
 
-},{"../modelos/coleccionBase":30,"../modelos/modeloBase":31,"backbone":42}],27:[function(require,module,exports){
-var Backbone = require('backbone');
-var ColeccionInv = require('../modelos/coleccionBase');
-
-var inventariosCalculoApiRest = function () {
-				return {
-								cdu_pais: function (cdu_pais) {
-												this.cdu_pais = cdu_pais;
-								},
-								precio_tonelada_dolar: function (precio_tonelada_dolar) {
-												this.precio_tonelada_dolar = precio_tonelada_dolar;
-								},
-								con_comercializadora: function (con_comercializadora) {
-												this.con_comercializadora = con_comercializadora;
-								},
-								precio_libra_centavos: function (precio_libra_centavos) {
-												this.precio_libra_centavos = precio_libra_centavos;
-								},
-								factor: function (factor) {
-												this.factor = factor;
-								},
-								precio_dolar: function (precio_dolar) {
-												this.precio_dolar = precio_dolar;
-								},
-								factor_impuesto: function (factor_impuesto) {
-												this.factor_impuesto = factor_impuesto;
-								},
-								porc_comercializadora: function (porc_comercializadora) {
-												this.porc_comercializadora = porc_comercializadora;
-								},
-								initialize: function () {
-												this.cdu_pais = '0010000';
-												this.precio_tonelada_dolar = '0';
-												this.con_comercializadora = 'False';
-												this.precio_libra_centavos = '0.27';
-												this.factor = '2.2045';
-												this.precio_dolar = '18.03';
-												this.factor_impuesto = '2.13';
-												this.porc_comercializadora = '4';
-								},
-								obtenerCalculos: function (funcion_exito, funcion_error) {
-												var valores = '?cdu_pais=' + this.cdu_pais;
-												valores = valores + '&precio_tonelada_dolar=' + this.precio_tonelada_dolar;
-												valores = valores + '&factor_impuesto_china=' + this.factor_impuesto;
-												valores = valores + '&con_comercializadora=' + this.con_comercializadora;
-												valores = valores + '&precio_libra_centavos=' + this.precio_libra_centavos;
-												valores = valores + '&factor=' + this.factor;
-												valores = valores + '&precio_dolar=' + this.precio_dolar;
-												valores = valores + '&factor_impuesto=' + this.factor_impuesto;
-												valores = valores + '&porc_comercializadora=' + this.porc_comercializadora;
-
-												var ruta = 'inventarios/calculo_precios/';
-												ruta = ruta + valores;
-												this.funcionCalculos(ruta, funcion_exito, funcion_error);
-								},
-								funcionCalculos: function (ruta, funcion_exito, funcion_error) {
-												var datosInventario = new ColeccionInv();
-												datosInventario.asignarRuta(ruta);
-												datosInventario.fetch({
-																success: function (data, data2) {
-																				funcion_exito(data2);
-																},
-																error: function (model, response, options) {
-																				funcion_error(model, response, options);
-																}
-												});
-								}
-				};
-};
-
-module.exports = inventariosCalculoApiRest;
-
-},{"../modelos/coleccionBase":30,"backbone":42}],28:[function(require,module,exports){
-var Backbone = require('backbone');
-var ColeccionInv = require('../modelos/coleccionBase');
-
-var inventariosApiRest = function () {
-  return {
-    rango: function (rango) {
-      this.rango = rango;
-    },
-    cdu_material: function (cdu_material) {
-      this.cdu_material = cdu_material;
-    },
-
-    ancho: function (ancho) {
-      this.ancho = ancho;
-    },
-    largo: function (largo) {
-      this.largo = largo;
-    },
-    initialize: function () {
-      this.rango = '0';
-      this.cdu_material = '';
-      this.ancho = '0';
-      this.largo = '0';
-    },
-    obtenerCodigoDelProducto: function (funcion_exito, funcion_error) {
-      var valores = '?rango=' + this.rango;
-      valores = valores + '&cdu_material=' + this.cdu_material;
-      valores = valores + '&ancho=' + this.ancho;
-      valores = valores + '&largo=' + this.largo;
-      var ruta = 'inventarios/codigo_producto/';
-      ruta = ruta + valores;
-      this.funcionCalculos(ruta, funcion_exito, funcion_error);
-    },
-    funcionBusqueda: function (ruta, funcion_exito, funcion_error) {
-      var datosInventario = new ColeccionInv();
-      datosInventario.asignarRuta(ruta);
-      datosInventario.fetch({
-        success: function (data, data2) {
-          funcion_exito(data.toJSON());
-        },
-        error: function (model, response, options) {
-          funcion_error(model, response, options);
-        }
-      });
-    },
-    funcionCalculos: function (ruta, funcion_exito, funcion_error) {
-      var datosInventario = new ColeccionInv();
-      datosInventario.asignarRuta(ruta);
-      datosInventario.fetch({
-        success: function (data, data2) {
-          funcion_exito(data2);
-        },
-        error: function (model, response, options) {
-          funcion_error(model, response, options);
-        }
-      });
-    }
-  };
-};
-
-module.exports = inventariosApiRest;
-
-},{"../modelos/coleccionBase":30,"backbone":42}],29:[function(require,module,exports){
+},{"../modelos/coleccionBase":28,"../modelos/modeloBase":29,"backbone":39}],27:[function(require,module,exports){
 var Backbone = require('backbone');
 var ColeccionCat = require('../modelos/coleccionBase');
 var ModeloBase = require('../modelos/modeloBase');
@@ -3313,7 +2381,7 @@ var apirestProveedores = function () {
 
 module.exports = apirestProveedores;
 
-},{"../modelos/coleccionBase":30,"../modelos/modeloBase":31,"backbone":42}],30:[function(require,module,exports){
+},{"../modelos/coleccionBase":28,"../modelos/modeloBase":29,"backbone":39}],28:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
@@ -3329,7 +2397,7 @@ module.exports = Backbone.Collection.extend({
 	}
 });
 
-},{"backbone":42}],31:[function(require,module,exports){
+},{"backbone":39}],29:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
@@ -3345,7 +2413,7 @@ module.exports = Backbone.Model.extend({
 	}
 });
 
-},{"backbone":42}],32:[function(require,module,exports){
+},{"backbone":39}],30:[function(require,module,exports){
 var $ = require('jquery');
 
 module.exports = $(function () {
@@ -3449,7 +2517,7 @@ module.exports = $(function () {
 	}
 });
 
-},{"jquery":45}],33:[function(require,module,exports){
+},{"jquery":43}],31:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var Combo = require('../js/combo.jsx');
@@ -3567,7 +2635,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/opcionCombo.jsx":34,"react":207,"react-dom":51}],34:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/opcionCombo.jsx":32,"react":205,"react-dom":49}],32:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -3583,7 +2651,7 @@ module.exports = React.createClass({
 		}
 });
 
-},{"react":207}],35:[function(require,module,exports){
+},{"react":205}],33:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var Combo = require('../js/combo.jsx');
@@ -3879,7 +2947,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/combo.jsx":9,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestProveedores":29,"../js/opcionCombo.jsx":34,"react":207,"react-dom":51}],36:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestProveedores":27,"../js/opcionCombo.jsx":32,"react":205,"react-dom":49}],34:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({
@@ -3907,7 +2975,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":207}],37:[function(require,module,exports){
+},{"react":205}],35:[function(require,module,exports){
 var React = require('react');
 var Filas = require('../js/resultadoIndividual.jsx');
 
@@ -3933,7 +3001,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/resultadoIndividual.jsx":36,"react":207}],38:[function(require,module,exports){
+},{"../js/resultadoIndividual.jsx":34,"react":205}],36:[function(require,module,exports){
 var $ = require('jquery');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
@@ -4060,178 +3128,29 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":5,"../js/celdaTabla.jsx":7,"../js/combo_simple.jsx":10,"../js/compraDetalles.jsx":11,"../js/filaTabla.jsx":14,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestCompraDetalles":25,"../js/notificaciones":32,"../js/opcionCombo.jsx":34,"jquery":45,"react":207,"react-dom":51}],39:[function(require,module,exports){
-
+},{"../js/cajaDeTexto.jsx":6,"../js/celdaTabla.jsx":8,"../js/combo_simple.jsx":11,"../js/compraDetalles.jsx":12,"../js/filaTabla.jsx":15,"../js/funcionesGenericas":16,"../js/modelos/apirestCatalogos":23,"../js/modelos/apirestCompraDetalles":25,"../js/notificaciones":30,"../js/opcionCombo.jsx":32,"jquery":43,"react":205,"react-dom":49}],37:[function(require,module,exports){
 var React = require('react');
-var FilaTabla = require('../js/filaTabla.jsx');
-var CeldaTabla = require('../js/celdaTabla.jsx');
-module.exports = React.createClass({
-  displayName: 'exports',
-
-
-  onSeleccionFila: function (pk_detalle) {
-    console.log("El detalle es: " + pk_detalle);
-    detalle = this.props.datos_compra.compra_detalles.filter(function (detalle) {
-
-      if (detalle.id === pk_detalle) {
-        return detalle;
-      }
-    });
-    this.props.onSeleccionFila(detalle[0]);
-  },
-  render: function () {
-    var funcion = this.props.funcion;
-
-    var titulosEncabezado = ["Catalogo Mat.", "Dsc Material", "Calibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
-
-    var encabezado = titulosEncabezado.map(function (titulo) {
-      return React.createElement(CeldaTabla, { key: titulo, contenido: titulo });
-    });
-
-    styles = {
-      cursor: "pointer"
-    };
-
-    var self = this;
-
-    var listado = this.props.datos_compra.compra_detalles === undefined ? [] : this.props.datos_compra.compra_detalles;
-
-    var listado_detalles = [];
-
-    listado.forEach(function (resultado) {
-      var detalle = [];
-      var catalogo = React.createElement(CeldaTabla, { key: 'a2', contenido: resultado.material.descripcion1 });
-      var material = React.createElement(CeldaTabla, { key: 'a1', contenido: resultado.dsc_material });
-      var calibre = React.createElement(CeldaTabla, { key: 'b1', contenido: resultado.calibre });
-      var ancho = React.createElement(CeldaTabla, { key: 'c1', contenido: resultado.ancho });
-      var largo = React.createElement(CeldaTabla, { key: 'd1', contenido: resultado.largo });
-      var peso_kg = React.createElement(CeldaTabla, { key: 'e1', contenido: resultado.peso_kg });
-      var peso_lb = React.createElement(CeldaTabla, { key: 'f1', contenido: resultado.peso_lb });
-      var num_rollo = React.createElement(CeldaTabla, { key: 'g1', contenido: resultado.num_rollo });
-      var precio = React.createElement(CeldaTabla, { key: 'h1', contenido: resultado.precio });
-
-      detalle.push(catalogo);
-      detalle.push(material);
-      detalle.push(calibre);
-      detalle.push(ancho);
-      detalle.push(largo);
-      detalle.push(peso_kg);
-      detalle.push(peso_lb);
-      detalle.push(num_rollo);
-      detalle.push(precio);
-      listado_detalles.push(React.createElement(FilaTabla, { key: resultado.id, id: resultado.id, childrens: detalle, estilo: styles, onSeleccionFila: self.onSeleccionFila }));
-    });
-
-    return React.createElement(
-      'table',
-      { className: 'tabla_catalogo', id: 'tabla_de_inventario_compra' },
-      React.createElement(
-        'tbody',
-        null,
-        React.createElement(FilaTabla, { childrens: encabezado, funcion: funcion }),
-        listado_detalles
-      )
-    );
-  }
-});
-
-},{"../js/celdaTabla.jsx":7,"../js/filaTabla.jsx":14,"react":207}],40:[function(require,module,exports){
-var React = require('react');
-var TablaInv = require('../js/tabla3.jsx');
-var DetalleInv = require('../js/inventarioDetalles.jsx');
-var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 
 module.exports = React.createClass({
-  displayName: 'exports',
+	displayName: 'exports',
 
-  cargarParametrosCalculo: function () {
-    var self = this;
-    dicParametros = {};
 
-    datosCatalogo = new ApiRestCatalogo();
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PARAMETROS_CALCULOS, function (data) {
-
-      lista_parametros = data.filter(function (catalogo) {
-        var cduParametros = { "0090000": "precio_libra",
-          "0090001": "factor",
-          "0090002": "factor_impuesto_eu",
-          "0090003": "porc_comercializadora",
-          "0090004": "precio_tonelada",
-          "0090005": "factor_impuesto_china",
-          "0090006": "precio_dolar"
-        };
-        if (catalogo.cdu_catalogo in cduParametros) {
-          var nom_parametro = cduParametros[catalogo.cdu_catalogo];
-          dicParametros[nom_parametro] = catalogo.monto1;
-        }
-        self.setState({ parametros_cal: dicParametros });
-      });
-    }, function (model, response, options) {
-      self.setState({ parametros_cal: {} });
-    });
-  },
-
-  //catalogo.cdu_catalogo
-  //"0090000"
-  //catalogo.descripcion1
-  //"Precio Libra en Centavos"
-  //catalogo.monto1
-  //"0.2700"
-
-  componentWillReceiveProps: function (nuevas_props) {
-    this.setState({ detalle_ind: {} });
-    this.cargarParametrosCalculo();
-  },
-  onSeleccionFila: function (detalle) {
-    this.setState({ detalle_ind: detalle });
-  },
-  funcion: function (nom) {
-    console.log(nom);
-  },
-  getInitialState: function () {
-    return {
-      detalle_ind: {},
-      parametros_cal: {}
-    };
-  },
-  getDefaultProps: function () {
-    return {
-      compra_detalles: []
-    };
-  },
-  //  var style = {
-  //       margin: "0px",
-  //      padding: "0px"
-  //     };
-  // 		return (
-
-  //   <div style={style}
-  //   'inline-block'
-  //   display
-  render: function () {
-    var cabecero = JSON.parse(JSON.stringify(this.props.datos));
-
-    delete cabecero.compra_detalles;
-
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'article',
-        { className: 'bloque' },
-        React.createElement(
-          'div',
-          { className: 'bloque_catalogo', id: 'ampliar_tabla' },
-          React.createElement(TablaInv, { datos_compra: this.props.datos, onSeleccionFila: this.onSeleccionFila })
-        )
-      ),
-      React.createElement('article', { className: 'bloque' }),
-      React.createElement(DetalleInv, { detalle: this.state.detalle_ind, cabecero: cabecero, parametros_cal: this.state.parametros_cal })
-    );
-  }
+	getDefaultProps: function () {
+		return {
+			clase: 'titulo_bloque',
+			titulo: ''
+		};
+	},
+	render: function () {
+		return React.createElement(
+			'div',
+			{ className: this.props.clase },
+			this.props.titulo
+		);
+	}
 });
 
-},{"../js/inventarioDetalles.jsx":19,"../js/modelos/apirestCatalogos":23,"../js/tabla3.jsx":39,"react":207}],41:[function(require,module,exports){
+},{"react":205}],38:[function(require,module,exports){
 
 var React = require('react');
 
@@ -4265,7 +3184,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "id" },
+									{ className: "etiquetas_bloque", forName: "id" },
 									"Id"
 								),
 								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Id", readonly: true }),
@@ -4285,7 +3204,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "fecha_venta" },
+									{ className: "etiquetas_bloque", forName: "fecha_venta" },
 									"Fecha de venta"
 								),
 								React.createElement("input", { id: "fecha_venta", className: "inputs_bloque", type: "text", placeholder: "Fecha de venta" }),
@@ -4305,13 +3224,13 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "tipo_documento" },
+									{ className: "etiquetas_bloque", forName: "tipo_documento" },
 									"Tipo de documento"
 								),
 								React.createElement("input", { className: "radio_bloque", type: "radio", name: "factura_remision", value: "si", checked: "checked" }),
 								React.createElement(
 									"label",
-									{ "for": "factura" },
+									{ forName: "factura" },
 									React.createElement(
 										"span",
 										null,
@@ -4322,7 +3241,7 @@ module.exports = React.createClass({
 								React.createElement("input", { className: "radio_bloque", type: "radio", name: "factura_remision", value: "no" }),
 								React.createElement(
 									"label",
-									{ "for": "remision" },
+									{ forName: "remision" },
 									React.createElement(
 										"span",
 										null,
@@ -4336,7 +3255,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "no_documento" },
+									{ className: "etiquetas_bloque", forName: "no_documento" },
 									"No. documento"
 								),
 								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "No. de documento" }),
@@ -4374,7 +3293,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "proveedor" },
+									{ className: "etiquetas_bloque", forName: "proveedor" },
 									"Cliente"
 								),
 								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Código, Nombre" }),
@@ -4434,7 +3353,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "tipo_pago" },
+									{ className: "etiquetas_bloque", forName: "tipo_pago" },
 									"Tipo de pago"
 								),
 								React.createElement(
@@ -4472,7 +3391,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "max_dias" },
+									{ className: "etiquetas_bloque", forName: "max_dias" },
 									"Max. días pago"
 								),
 								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Max. para días del pago" }),
@@ -4492,7 +3411,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "banco" },
+									{ className: "etiquetas_bloque", forName: "banco" },
 									"Banco"
 								),
 								React.createElement("input", { className: "inputs_bloque", type: "text", placeholder: "Banco", readonly: true }),
@@ -4512,7 +3431,7 @@ module.exports = React.createClass({
 								{ className: "li_bloque" },
 								React.createElement(
 									"label",
-									{ className: "etiquetas_bloque", "for": "estatus_venta" },
+									{ className: "etiquetas_bloque", forName: "estatus_venta" },
 									"Estatus de la venta"
 								),
 								React.createElement(
@@ -4738,7 +3657,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":207}],42:[function(require,module,exports){
+},{"react":205}],39:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 
@@ -6662,7 +5581,7 @@ module.exports = React.createClass({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":45,"underscore":208}],43:[function(require,module,exports){
+},{"jquery":43,"underscore":206}],40:[function(require,module,exports){
 'use strict';
 // For more information about browser field, check out the browser field at https://github.com/substack/browserify-handbook#browser-field.
 
@@ -6714,7 +5633,103 @@ module.exports = {
     }
 };
 
-},{}],44:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
+// shim for using process in browser
+
+var process = module.exports = {};
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = setTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    clearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        setTimeout(drainQueue, 0);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],42:[function(require,module,exports){
 var jQuery = require('jquery');
 
 /*! jQuery UI - v1.10.3 - 2013-05-03
@@ -21721,7 +20736,7 @@ $.widget( "ui.tooltip", {
 
 }( jQuery ) );
 
-},{"jquery":45}],45:[function(require,module,exports){
+},{"jquery":43}],43:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
@@ -31537,7 +30552,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],46:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 //! moment.js
 //! version : 2.13.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -35578,7 +34593,7 @@ return jQuery;
     return _moment;
 
 }));
-},{}],47:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 (function (process){
   /* globals require, module */
 
@@ -36204,7 +35219,7 @@ return jQuery;
   page.sameOrigin = sameOrigin;
 
 }).call(this,require('_process'))
-},{"_process":209,"path-to-regexp":48}],48:[function(require,module,exports){
+},{"_process":41,"path-to-regexp":46}],46:[function(require,module,exports){
 var isarray = require('isarray')
 
 /**
@@ -36596,19 +35611,19 @@ function pathToRegexp (path, keys, options) {
   return stringToRegexp(path, keys, options)
 }
 
-},{"isarray":49}],49:[function(require,module,exports){
+},{"isarray":47}],47:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],50:[function(require,module,exports){
-var css = ".react-datepicker__tether-element-attached-top .react-datepicker__triangle,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow {\n  margin-left: -8px;\n  position: absolute;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow,\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  box-sizing: content-box;\n  position: absolute;\n  border: 8px solid transparent;\n  height: 0;\n  width: 1px;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  content: \"\";\n  z-index: -1;\n  border-width: 8px;\n  left: -8px;\n  border-bottom-color: #aeaeae;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle {\n  top: 0;\n  margin-top: -8px;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle,\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before {\n  border-top: none;\n  border-bottom-color: #f0f0f0;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before {\n  top: -1px;\n  border-bottom-color: #aeaeae;\n}\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow {\n  bottom: 0;\n  margin-bottom: -8px;\n}\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  border-bottom: none;\n  border-top-color: #fff;\n}\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  bottom: -1px;\n  border-top-color: #aeaeae;\n}\n.react-datepicker {\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 11px;\n  background-color: #fff;\n  color: #000;\n  border: 1px solid #aeaeae;\n  border-radius: 4px;\n  display: inline-block;\n  position: relative;\n}\n.react-datepicker__triangle {\n  position: absolute;\n  left: 50px;\n}\n.react-datepicker__tether-element-attached-bottom.react-datepicker__tether-element {\n  margin-top: -20px;\n}\n.react-datepicker__header {\n  text-align: center;\n  background-color: #f0f0f0;\n  border-bottom: 1px solid #aeaeae;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n  padding-top: 8px;\n  position: relative;\n}\n.react-datepicker__current-month {\n  margin-top: 0;\n  color: #000;\n  font-weight: bold;\n  font-size: 13px;\n}\n.react-datepicker__current-month--hasYearDropdown {\n  margin-bottom: 16px;\n}\n.react-datepicker__navigation {\n  line-height: 24px;\n  text-align: center;\n  cursor: pointer;\n  position: absolute;\n  top: 10px;\n  width: 0;\n  border: 6px solid transparent;\n}\n.react-datepicker__navigation--previous {\n  left: 10px;\n  border-right-color: #ccc;\n}\n.react-datepicker__navigation--previous:hover {\n  border-right-color: #b3b3b3;\n}\n.react-datepicker__navigation--next {\n  right: 10px;\n  border-left-color: #ccc;\n}\n.react-datepicker__navigation--next:hover {\n  border-left-color: #b3b3b3;\n}\n.react-datepicker__navigation--years {\n  position: relative;\n  top: 0;\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\n.react-datepicker__navigation--years-previous {\n  top: 4px;\n  border-top-color: #ccc;\n}\n.react-datepicker__navigation--years-previous:hover {\n  border-top-color: #b3b3b3;\n}\n.react-datepicker__navigation--years-upcoming {\n  top: -4px;\n  border-bottom-color: #ccc;\n}\n.react-datepicker__navigation--years-upcoming:hover {\n  border-bottom-color: #b3b3b3;\n}\n.react-datepicker__month {\n  margin: 5px;\n  text-align: center;\n}\n.react-datepicker__day-name,\n.react-datepicker__day {\n  color: #000;\n  display: inline-block;\n  width: 24px;\n  line-height: 24px;\n  text-align: center;\n  margin: 2px;\n}\n.react-datepicker__day {\n  cursor: pointer;\n}\n.react-datepicker__day:hover {\n  border-radius: 4px;\n  background-color: #f0f0f0;\n}\n.react-datepicker__day--today {\n  font-weight: bold;\n}\n.react-datepicker__day--selected,\n.react-datepicker__day--in-range {\n  border-radius: 4px;\n  background-color: #216ba5;\n  color: #fff;\n}\n.react-datepicker__day--selected:hover,\n.react-datepicker__day--in-range:hover {\n  background-color: #1d5d90;\n}\n.react-datepicker__day--disabled {\n  cursor: default;\n  color: #ccc;\n}\n.react-datepicker__day--disabled:hover {\n  background-color: transparent;\n}\n.react-datepicker__input-container {\n  position: relative;\n  display: inline-block;\n}\n.react-datepicker__year-read-view {\n  width: 50%;\n  left: 25%;\n  position: absolute;\n  bottom: 25px;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.react-datepicker__year-read-view:hover {\n  cursor: pointer;\n}\n.react-datepicker__year-read-view:hover .react-datepicker__year-read-view--down-arrow {\n  border-top-color: #b3b3b3;\n}\n.react-datepicker__year-read-view--down-arrow {\n  border-top-color: #ccc;\n  margin-bottom: 3px;\n  left: 5px;\n  top: 9px;\n  position: relative;\n  border-width: 6px;\n}\n.react-datepicker__year-read-view--selected-year {\n  right: 6px;\n  position: relative;\n}\n.react-datepicker__year-dropdown {\n  background-color: #f0f0f0;\n  position: absolute;\n  width: 50%;\n  left: 25%;\n  top: 30px;\n  text-align: center;\n  border-radius: 4px;\n  border: 1px solid #aeaeae;\n}\n.react-datepicker__year-dropdown:hover {\n  cursor: pointer;\n}\n.react-datepicker__year-option {\n  line-height: 20px;\n  width: 100%;\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\n.react-datepicker__year-option:first-of-type {\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n.react-datepicker__year-option:last-of-type {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  border-bottom-left-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n.react-datepicker__year-option:hover {\n  background-color: #ccc;\n}\n.react-datepicker__year-option:hover .react-datepicker__navigation--years-upcoming {\n  border-bottom-color: #b3b3b3;\n}\n.react-datepicker__year-option:hover .react-datepicker__navigation--years-previous {\n  border-top-color: #b3b3b3;\n}\n.react-datepicker__year-option--selected {\n  position: absolute;\n  left: 30px;\n}\n.react-datepicker__close-icon {\n  background-color: transparent;\n  border: 0;\n  cursor: pointer;\n  display: inline-block;\n  height: 0;\n  outline: 0;\n  padding: 0;\n  vertical-align: middle;\n}\n.react-datepicker__close-icon::after {\n  background-color: #216ba5;\n  border-radius: 50%;\n  bottom: 0;\n  box-sizing: border-box;\n  color: #fff;\n  content: \"\\00d7\";\n  cursor: pointer;\n  font-size: 12px;\n  height: 16px;\n  width: 16px;\n  line-height: 1;\n  margin: -8px auto 0;\n  padding: 2px;\n  position: absolute;\n  right: 7px;\n  text-align: center;\n  top: 50%;\n}\n.react-datepicker__today-button {\n  background: #f0f0f0;\n  border-top: 1px solid #aeaeae;\n  cursor: pointer;\n  text-align: center;\n  font-weight: bold;\n  padding: 5px 0;\n}\n.react-datepicker__tether-element {\n  z-index: 2147483647;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules/react-datepicker/dist/react-datepicker.css"})); module.exports = css;
-},{"browserify-css":43}],51:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
+var css = ".react-datepicker__tether-element-attached-top .react-datepicker__triangle,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow {\n  margin-left: -8px;\n  position: absolute;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow,\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  box-sizing: content-box;\n  position: absolute;\n  border: 8px solid transparent;\n  height: 0;\n  width: 1px;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  content: \"\";\n  z-index: -1;\n  border-width: 8px;\n  left: -8px;\n  border-bottom-color: #aeaeae;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle {\n  top: 0;\n  margin-top: -8px;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle,\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before {\n  border-top: none;\n  border-bottom-color: #f0f0f0;\n}\n.react-datepicker__tether-element-attached-top .react-datepicker__triangle::before {\n  top: -1px;\n  border-bottom-color: #aeaeae;\n}\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow {\n  bottom: 0;\n  margin-bottom: -8px;\n}\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle,\n.react-datepicker__year-read-view--down-arrow,\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  border-bottom: none;\n  border-top-color: #fff;\n}\n.react-datepicker__tether-element-attached-bottom .react-datepicker__triangle::before,\n.react-datepicker__year-read-view--down-arrow::before {\n  bottom: -1px;\n  border-top-color: #aeaeae;\n}\n.react-datepicker {\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 11px;\n  background-color: #fff;\n  color: #000;\n  border: 1px solid #aeaeae;\n  border-radius: 4px;\n  display: inline-block;\n  position: relative;\n}\n.react-datepicker__triangle {\n  position: absolute;\n  left: 50px;\n}\n.react-datepicker__tether-element-attached-bottom.react-datepicker__tether-element {\n  margin-top: -20px;\n}\n.react-datepicker__header {\n  text-align: center;\n  background-color: #f0f0f0;\n  border-bottom: 1px solid #aeaeae;\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n  padding-top: 8px;\n  position: relative;\n}\n.react-datepicker__current-month {\n  margin-top: 0;\n  color: #000;\n  font-weight: bold;\n  font-size: 13px;\n}\n.react-datepicker__current-month--hasYearDropdown {\n  margin-bottom: 16px;\n}\n.react-datepicker__navigation {\n  line-height: 24px;\n  text-align: center;\n  cursor: pointer;\n  position: absolute;\n  top: 10px;\n  width: 0;\n  border: 6px solid transparent;\n}\n.react-datepicker__navigation--previous {\n  left: 10px;\n  border-right-color: #ccc;\n}\n.react-datepicker__navigation--previous:hover {\n  border-right-color: #b3b3b3;\n}\n.react-datepicker__navigation--next {\n  right: 10px;\n  border-left-color: #ccc;\n}\n.react-datepicker__navigation--next:hover {\n  border-left-color: #b3b3b3;\n}\n.react-datepicker__navigation--years {\n  position: relative;\n  top: 0;\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\n.react-datepicker__navigation--years-previous {\n  top: 4px;\n  border-top-color: #ccc;\n}\n.react-datepicker__navigation--years-previous:hover {\n  border-top-color: #b3b3b3;\n}\n.react-datepicker__navigation--years-upcoming {\n  top: -4px;\n  border-bottom-color: #ccc;\n}\n.react-datepicker__navigation--years-upcoming:hover {\n  border-bottom-color: #b3b3b3;\n}\n.react-datepicker__month {\n  margin: 5px;\n  text-align: center;\n}\n.react-datepicker__day-name,\n.react-datepicker__day {\n  color: #000;\n  display: inline-block;\n  width: 24px;\n  line-height: 24px;\n  text-align: center;\n  margin: 2px;\n}\n.react-datepicker__day {\n  cursor: pointer;\n}\n.react-datepicker__day:hover {\n  border-radius: 4px;\n  background-color: #f0f0f0;\n}\n.react-datepicker__day--today {\n  font-weight: bold;\n}\n.react-datepicker__day--selected,\n.react-datepicker__day--in-range {\n  border-radius: 4px;\n  background-color: #216ba5;\n  color: #fff;\n}\n.react-datepicker__day--selected:hover,\n.react-datepicker__day--in-range:hover {\n  background-color: #1d5d90;\n}\n.react-datepicker__day--disabled {\n  cursor: default;\n  color: #ccc;\n}\n.react-datepicker__day--disabled:hover {\n  background-color: transparent;\n}\n.react-datepicker__input-container {\n  position: relative;\n  display: inline-block;\n}\n.react-datepicker__year-read-view {\n  width: 50%;\n  left: 25%;\n  position: absolute;\n  bottom: 25px;\n  border: 1px solid transparent;\n  border-radius: 4px;\n}\n.react-datepicker__year-read-view:hover {\n  cursor: pointer;\n}\n.react-datepicker__year-read-view:hover .react-datepicker__year-read-view--down-arrow {\n  border-top-color: #b3b3b3;\n}\n.react-datepicker__year-read-view--down-arrow {\n  border-top-color: #ccc;\n  margin-bottom: 3px;\n  left: 5px;\n  top: 9px;\n  position: relative;\n  border-width: 6px;\n}\n.react-datepicker__year-read-view--selected-year {\n  right: 6px;\n  position: relative;\n}\n.react-datepicker__year-dropdown {\n  background-color: #f0f0f0;\n  position: absolute;\n  width: 50%;\n  left: 25%;\n  top: 30px;\n  text-align: center;\n  border-radius: 4px;\n  border: 1px solid #aeaeae;\n}\n.react-datepicker__year-dropdown:hover {\n  cursor: pointer;\n}\n.react-datepicker__year-option {\n  line-height: 20px;\n  width: 100%;\n  display: block;\n  margin-left: auto;\n  margin-right: auto;\n}\n.react-datepicker__year-option:first-of-type {\n  border-top-left-radius: 4px;\n  border-top-right-radius: 4px;\n}\n.react-datepicker__year-option:last-of-type {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  border-bottom-left-radius: 4px;\n  border-bottom-right-radius: 4px;\n}\n.react-datepicker__year-option:hover {\n  background-color: #ccc;\n}\n.react-datepicker__year-option:hover .react-datepicker__navigation--years-upcoming {\n  border-bottom-color: #b3b3b3;\n}\n.react-datepicker__year-option:hover .react-datepicker__navigation--years-previous {\n  border-top-color: #b3b3b3;\n}\n.react-datepicker__year-option--selected {\n  position: absolute;\n  left: 30px;\n}\n.react-datepicker__close-icon {\n  background-color: transparent;\n  border: 0;\n  cursor: pointer;\n  display: inline-block;\n  height: 0;\n  outline: 0;\n  padding: 0;\n  vertical-align: middle;\n}\n.react-datepicker__close-icon::after {\n  background-color: #216ba5;\n  border-radius: 50%;\n  bottom: 0;\n  box-sizing: border-box;\n  color: #fff;\n  content: \"\\00d7\";\n  cursor: pointer;\n  font-size: 12px;\n  height: 16px;\n  width: 16px;\n  line-height: 1;\n  margin: -8px auto 0;\n  padding: 2px;\n  position: absolute;\n  right: 7px;\n  text-align: center;\n  top: 50%;\n}\n.react-datepicker__today-button {\n  background: #f0f0f0;\n  border-top: 1px solid #aeaeae;\n  cursor: pointer;\n  text-align: center;\n  font-weight: bold;\n  padding: 5px 0;\n}\n.react-datepicker__tether-element {\n  z-index: 2147483647;\n}\n"; (require("browserify-css").createStyle(css, { "href": "node_modules\\react-datepicker\\dist\\react-datepicker.css"})); module.exports = css;
+},{"browserify-css":40}],49:[function(require,module,exports){
 'use strict';
 
 module.exports = require('react/lib/ReactDOM');
 
-},{"react/lib/ReactDOM":86}],52:[function(require,module,exports){
+},{"react/lib/ReactDOM":84}],50:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -36645,7 +35660,7 @@ var AutoFocusUtils = {
 };
 
 module.exports = AutoFocusUtils;
-},{"./ReactMount":116,"./findDOMNode":159,"fbjs/lib/focusNode":189}],53:[function(require,module,exports){
+},{"./ReactMount":114,"./findDOMNode":157,"fbjs/lib/focusNode":187}],51:[function(require,module,exports){
 /**
  * Copyright 2013-2015 Facebook, Inc.
  * All rights reserved.
@@ -37051,7 +36066,7 @@ var BeforeInputEventPlugin = {
 };
 
 module.exports = BeforeInputEventPlugin;
-},{"./EventConstants":65,"./EventPropagators":69,"./FallbackCompositionState":70,"./SyntheticCompositionEvent":141,"./SyntheticInputEvent":145,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/keyOf":199}],54:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPropagators":67,"./FallbackCompositionState":68,"./SyntheticCompositionEvent":139,"./SyntheticInputEvent":143,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/keyOf":197}],52:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37191,7 +36206,7 @@ var CSSProperty = {
 };
 
 module.exports = CSSProperty;
-},{}],55:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37369,7 +36384,7 @@ ReactPerf.measureMethods(CSSPropertyOperations, 'CSSPropertyOperations', {
 
 module.exports = CSSPropertyOperations;
 }).call(this,require('_process'))
-},{"./CSSProperty":54,"./ReactPerf":122,"./dangerousStyleValue":156,"_process":209,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/camelizeStyleName":183,"fbjs/lib/hyphenateStyleName":194,"fbjs/lib/memoizeStringOnly":201,"fbjs/lib/warning":206}],56:[function(require,module,exports){
+},{"./CSSProperty":52,"./ReactPerf":120,"./dangerousStyleValue":154,"_process":41,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/camelizeStyleName":181,"fbjs/lib/hyphenateStyleName":192,"fbjs/lib/memoizeStringOnly":199,"fbjs/lib/warning":204}],54:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37465,7 +36480,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 
 module.exports = CallbackQueue;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./PooledClass":74,"_process":209,"fbjs/lib/invariant":195}],57:[function(require,module,exports){
+},{"./Object.assign":71,"./PooledClass":72,"_process":41,"fbjs/lib/invariant":193}],55:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37787,7 +36802,7 @@ var ChangeEventPlugin = {
 };
 
 module.exports = ChangeEventPlugin;
-},{"./EventConstants":65,"./EventPluginHub":66,"./EventPropagators":69,"./ReactUpdates":134,"./SyntheticEvent":143,"./getEventTarget":165,"./isEventSupported":170,"./isTextInputElement":171,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/keyOf":199}],58:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPluginHub":64,"./EventPropagators":67,"./ReactUpdates":132,"./SyntheticEvent":141,"./getEventTarget":163,"./isEventSupported":168,"./isTextInputElement":169,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/keyOf":197}],56:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37811,7 +36826,7 @@ var ClientReactRootIndex = {
 };
 
 module.exports = ClientReactRootIndex;
-},{}],59:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37943,7 +36958,7 @@ ReactPerf.measureMethods(DOMChildrenOperations, 'DOMChildrenOperations', {
 
 module.exports = DOMChildrenOperations;
 }).call(this,require('_process'))
-},{"./Danger":62,"./ReactMultiChildUpdateTypes":118,"./ReactPerf":122,"./setInnerHTML":175,"./setTextContent":176,"_process":209,"fbjs/lib/invariant":195}],60:[function(require,module,exports){
+},{"./Danger":60,"./ReactMultiChildUpdateTypes":116,"./ReactPerf":120,"./setInnerHTML":173,"./setTextContent":174,"_process":41,"fbjs/lib/invariant":193}],58:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38180,7 +37195,7 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],61:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],59:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38408,7 +37423,7 @@ ReactPerf.measureMethods(DOMPropertyOperations, 'DOMPropertyOperations', {
 
 module.exports = DOMPropertyOperations;
 }).call(this,require('_process'))
-},{"./DOMProperty":60,"./ReactPerf":122,"./quoteAttributeValueForBrowser":173,"_process":209,"fbjs/lib/warning":206}],62:[function(require,module,exports){
+},{"./DOMProperty":58,"./ReactPerf":120,"./quoteAttributeValueForBrowser":171,"_process":41,"fbjs/lib/warning":204}],60:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38556,7 +37571,7 @@ var Danger = {
 
 module.exports = Danger;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/createNodesFromMarkup":186,"fbjs/lib/emptyFunction":187,"fbjs/lib/getMarkupWrap":191,"fbjs/lib/invariant":195}],63:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/createNodesFromMarkup":184,"fbjs/lib/emptyFunction":185,"fbjs/lib/getMarkupWrap":189,"fbjs/lib/invariant":193}],61:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38584,7 +37599,7 @@ var keyOf = require('fbjs/lib/keyOf');
 var DefaultEventPluginOrder = [keyOf({ ResponderEventPlugin: null }), keyOf({ SimpleEventPlugin: null }), keyOf({ TapEventPlugin: null }), keyOf({ EnterLeaveEventPlugin: null }), keyOf({ ChangeEventPlugin: null }), keyOf({ SelectEventPlugin: null }), keyOf({ BeforeInputEventPlugin: null })];
 
 module.exports = DefaultEventPluginOrder;
-},{"fbjs/lib/keyOf":199}],64:[function(require,module,exports){
+},{"fbjs/lib/keyOf":197}],62:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38709,7 +37724,7 @@ var EnterLeaveEventPlugin = {
 };
 
 module.exports = EnterLeaveEventPlugin;
-},{"./EventConstants":65,"./EventPropagators":69,"./ReactMount":116,"./SyntheticMouseEvent":147,"fbjs/lib/keyOf":199}],65:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPropagators":67,"./ReactMount":114,"./SyntheticMouseEvent":145,"fbjs/lib/keyOf":197}],63:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38802,7 +37817,7 @@ var EventConstants = {
 };
 
 module.exports = EventConstants;
-},{"fbjs/lib/keyMirror":198}],66:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":196}],64:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39084,7 +38099,7 @@ var EventPluginHub = {
 
 module.exports = EventPluginHub;
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":67,"./EventPluginUtils":68,"./ReactErrorUtils":107,"./accumulateInto":153,"./forEachAccumulated":161,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],67:[function(require,module,exports){
+},{"./EventPluginRegistry":65,"./EventPluginUtils":66,"./ReactErrorUtils":105,"./accumulateInto":151,"./forEachAccumulated":159,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],65:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39307,7 +38322,7 @@ var EventPluginRegistry = {
 
 module.exports = EventPluginRegistry;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],68:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],66:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39512,7 +38527,7 @@ var EventPluginUtils = {
 
 module.exports = EventPluginUtils;
 }).call(this,require('_process'))
-},{"./EventConstants":65,"./ReactErrorUtils":107,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],69:[function(require,module,exports){
+},{"./EventConstants":63,"./ReactErrorUtils":105,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],67:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39650,7 +38665,7 @@ var EventPropagators = {
 
 module.exports = EventPropagators;
 }).call(this,require('_process'))
-},{"./EventConstants":65,"./EventPluginHub":66,"./accumulateInto":153,"./forEachAccumulated":161,"_process":209,"fbjs/lib/warning":206}],70:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPluginHub":64,"./accumulateInto":151,"./forEachAccumulated":159,"_process":41,"fbjs/lib/warning":204}],68:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -39746,7 +38761,7 @@ assign(FallbackCompositionState.prototype, {
 PooledClass.addPoolingTo(FallbackCompositionState);
 
 module.exports = FallbackCompositionState;
-},{"./Object.assign":73,"./PooledClass":74,"./getTextContentAccessor":168}],71:[function(require,module,exports){
+},{"./Object.assign":71,"./PooledClass":72,"./getTextContentAccessor":166}],69:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -39977,7 +38992,7 @@ var HTMLDOMPropertyConfig = {
 };
 
 module.exports = HTMLDOMPropertyConfig;
-},{"./DOMProperty":60,"fbjs/lib/ExecutionEnvironment":181}],72:[function(require,module,exports){
+},{"./DOMProperty":58,"fbjs/lib/ExecutionEnvironment":179}],70:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40114,7 +39129,7 @@ var LinkedValueUtils = {
 
 module.exports = LinkedValueUtils;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocations":124,"./ReactPropTypes":125,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],73:[function(require,module,exports){
+},{"./ReactPropTypeLocations":122,"./ReactPropTypes":123,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],71:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -40162,7 +39177,7 @@ function assign(target, sources) {
 }
 
 module.exports = assign;
-},{}],74:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40284,7 +39299,7 @@ var PooledClass = {
 
 module.exports = PooledClass;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],75:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],73:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -40325,7 +39340,7 @@ React.__SECRET_DOM_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOM;
 React.__SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOMServer;
 
 module.exports = React;
-},{"./Object.assign":73,"./ReactDOM":86,"./ReactDOMServer":96,"./ReactIsomorphic":114,"./deprecated":157}],76:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactDOM":84,"./ReactDOMServer":94,"./ReactIsomorphic":112,"./deprecated":155}],74:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40364,7 +39379,7 @@ var ReactBrowserComponentMixin = {
 
 module.exports = ReactBrowserComponentMixin;
 }).call(this,require('_process'))
-},{"./ReactInstanceMap":113,"./findDOMNode":159,"_process":209,"fbjs/lib/warning":206}],77:[function(require,module,exports){
+},{"./ReactInstanceMap":111,"./findDOMNode":157,"_process":41,"fbjs/lib/warning":204}],75:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -40689,7 +39704,7 @@ ReactPerf.measureMethods(ReactBrowserEventEmitter, 'ReactBrowserEventEmitter', {
 });
 
 module.exports = ReactBrowserEventEmitter;
-},{"./EventConstants":65,"./EventPluginHub":66,"./EventPluginRegistry":67,"./Object.assign":73,"./ReactEventEmitterMixin":108,"./ReactPerf":122,"./ViewportMetrics":152,"./isEventSupported":170}],78:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPluginHub":64,"./EventPluginRegistry":65,"./Object.assign":71,"./ReactEventEmitterMixin":106,"./ReactPerf":120,"./ViewportMetrics":150,"./isEventSupported":168}],76:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -40814,7 +39829,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./ReactReconciler":127,"./instantiateReactComponent":169,"./shouldUpdateReactComponent":177,"./traverseAllChildren":178,"_process":209,"fbjs/lib/warning":206}],79:[function(require,module,exports){
+},{"./ReactReconciler":125,"./instantiateReactComponent":167,"./shouldUpdateReactComponent":175,"./traverseAllChildren":176,"_process":41,"fbjs/lib/warning":204}],77:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -40997,7 +40012,7 @@ var ReactChildren = {
 };
 
 module.exports = ReactChildren;
-},{"./PooledClass":74,"./ReactElement":103,"./traverseAllChildren":178,"fbjs/lib/emptyFunction":187}],80:[function(require,module,exports){
+},{"./PooledClass":72,"./ReactElement":101,"./traverseAllChildren":176,"fbjs/lib/emptyFunction":185}],78:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -41771,7 +40786,7 @@ var ReactClass = {
 
 module.exports = ReactClass;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactComponent":81,"./ReactElement":103,"./ReactNoopUpdateQueue":120,"./ReactPropTypeLocationNames":123,"./ReactPropTypeLocations":124,"_process":209,"fbjs/lib/emptyObject":188,"fbjs/lib/invariant":195,"fbjs/lib/keyMirror":198,"fbjs/lib/keyOf":199,"fbjs/lib/warning":206}],81:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactComponent":79,"./ReactElement":101,"./ReactNoopUpdateQueue":118,"./ReactPropTypeLocationNames":121,"./ReactPropTypeLocations":122,"_process":41,"fbjs/lib/emptyObject":186,"fbjs/lib/invariant":193,"fbjs/lib/keyMirror":196,"fbjs/lib/keyOf":197,"fbjs/lib/warning":204}],79:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -41896,7 +40911,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactComponent;
 }).call(this,require('_process'))
-},{"./ReactNoopUpdateQueue":120,"./canDefineProperty":155,"_process":209,"fbjs/lib/emptyObject":188,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],82:[function(require,module,exports){
+},{"./ReactNoopUpdateQueue":118,"./canDefineProperty":153,"_process":41,"fbjs/lib/emptyObject":186,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],80:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41938,7 +40953,7 @@ var ReactComponentBrowserEnvironment = {
 };
 
 module.exports = ReactComponentBrowserEnvironment;
-},{"./ReactDOMIDOperations":91,"./ReactMount":116}],83:[function(require,module,exports){
+},{"./ReactDOMIDOperations":89,"./ReactMount":114}],81:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -41992,7 +41007,7 @@ var ReactComponentEnvironment = {
 
 module.exports = ReactComponentEnvironment;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],84:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],82:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -42689,7 +41704,7 @@ var ReactCompositeComponent = {
 
 module.exports = ReactCompositeComponent;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactComponentEnvironment":83,"./ReactCurrentOwner":85,"./ReactElement":103,"./ReactInstanceMap":113,"./ReactPerf":122,"./ReactPropTypeLocationNames":123,"./ReactPropTypeLocations":124,"./ReactReconciler":127,"./ReactUpdateQueue":133,"./shouldUpdateReactComponent":177,"_process":209,"fbjs/lib/emptyObject":188,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],85:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactComponentEnvironment":81,"./ReactCurrentOwner":83,"./ReactElement":101,"./ReactInstanceMap":111,"./ReactPerf":120,"./ReactPropTypeLocationNames":121,"./ReactPropTypeLocations":122,"./ReactReconciler":125,"./ReactUpdateQueue":131,"./shouldUpdateReactComponent":175,"_process":41,"fbjs/lib/emptyObject":186,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],83:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42720,7 +41735,7 @@ var ReactCurrentOwner = {
 };
 
 module.exports = ReactCurrentOwner;
-},{}],86:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -42815,7 +41830,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = React;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":85,"./ReactDOMTextComponent":97,"./ReactDefaultInjection":100,"./ReactInstanceHandles":112,"./ReactMount":116,"./ReactPerf":122,"./ReactReconciler":127,"./ReactUpdates":134,"./ReactVersion":135,"./findDOMNode":159,"./renderSubtreeIntoContainer":174,"_process":209,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/warning":206}],87:[function(require,module,exports){
+},{"./ReactCurrentOwner":83,"./ReactDOMTextComponent":95,"./ReactDefaultInjection":98,"./ReactInstanceHandles":110,"./ReactMount":114,"./ReactPerf":120,"./ReactReconciler":125,"./ReactUpdates":132,"./ReactVersion":133,"./findDOMNode":157,"./renderSubtreeIntoContainer":172,"_process":41,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/warning":204}],85:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42866,7 +41881,7 @@ var ReactDOMButton = {
 };
 
 module.exports = ReactDOMButton;
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -43831,7 +42846,7 @@ assign(ReactDOMComponent.prototype, ReactDOMComponent.Mixin, ReactMultiChild.Mix
 
 module.exports = ReactDOMComponent;
 }).call(this,require('_process'))
-},{"./AutoFocusUtils":52,"./CSSPropertyOperations":55,"./DOMProperty":60,"./DOMPropertyOperations":61,"./EventConstants":65,"./Object.assign":73,"./ReactBrowserEventEmitter":77,"./ReactComponentBrowserEnvironment":82,"./ReactDOMButton":87,"./ReactDOMInput":92,"./ReactDOMOption":93,"./ReactDOMSelect":94,"./ReactDOMTextarea":98,"./ReactMount":116,"./ReactMultiChild":117,"./ReactPerf":122,"./ReactUpdateQueue":133,"./canDefineProperty":155,"./escapeTextContentForBrowser":158,"./isEventSupported":170,"./setInnerHTML":175,"./setTextContent":176,"./validateDOMNesting":179,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/keyOf":199,"fbjs/lib/shallowEqual":204,"fbjs/lib/warning":206}],89:[function(require,module,exports){
+},{"./AutoFocusUtils":50,"./CSSPropertyOperations":53,"./DOMProperty":58,"./DOMPropertyOperations":59,"./EventConstants":63,"./Object.assign":71,"./ReactBrowserEventEmitter":75,"./ReactComponentBrowserEnvironment":80,"./ReactDOMButton":85,"./ReactDOMInput":90,"./ReactDOMOption":91,"./ReactDOMSelect":92,"./ReactDOMTextarea":96,"./ReactMount":114,"./ReactMultiChild":115,"./ReactPerf":120,"./ReactUpdateQueue":131,"./canDefineProperty":153,"./escapeTextContentForBrowser":156,"./isEventSupported":168,"./setInnerHTML":173,"./setTextContent":174,"./validateDOMNesting":177,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/keyOf":197,"fbjs/lib/shallowEqual":202,"fbjs/lib/warning":204}],87:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44011,7 +43026,7 @@ var ReactDOMFactories = mapObject({
 
 module.exports = ReactDOMFactories;
 }).call(this,require('_process'))
-},{"./ReactElement":103,"./ReactElementValidator":104,"_process":209,"fbjs/lib/mapObject":200}],90:[function(require,module,exports){
+},{"./ReactElement":101,"./ReactElementValidator":102,"_process":41,"fbjs/lib/mapObject":198}],88:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44030,7 +43045,7 @@ var ReactDOMFeatureFlags = {
 };
 
 module.exports = ReactDOMFeatureFlags;
-},{}],91:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44127,7 +43142,7 @@ ReactPerf.measureMethods(ReactDOMIDOperations, 'ReactDOMIDOperations', {
 
 module.exports = ReactDOMIDOperations;
 }).call(this,require('_process'))
-},{"./DOMChildrenOperations":59,"./DOMPropertyOperations":61,"./ReactMount":116,"./ReactPerf":122,"_process":209,"fbjs/lib/invariant":195}],92:[function(require,module,exports){
+},{"./DOMChildrenOperations":57,"./DOMPropertyOperations":59,"./ReactMount":114,"./ReactPerf":120,"_process":41,"fbjs/lib/invariant":193}],90:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44283,7 +43298,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMInput;
 }).call(this,require('_process'))
-},{"./LinkedValueUtils":72,"./Object.assign":73,"./ReactDOMIDOperations":91,"./ReactMount":116,"./ReactUpdates":134,"_process":209,"fbjs/lib/invariant":195}],93:[function(require,module,exports){
+},{"./LinkedValueUtils":70,"./Object.assign":71,"./ReactDOMIDOperations":89,"./ReactMount":114,"./ReactUpdates":132,"_process":41,"fbjs/lib/invariant":193}],91:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44375,7 +43390,7 @@ var ReactDOMOption = {
 
 module.exports = ReactDOMOption;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactChildren":79,"./ReactDOMSelect":94,"_process":209,"fbjs/lib/warning":206}],94:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactChildren":77,"./ReactDOMSelect":92,"_process":41,"fbjs/lib/warning":204}],92:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44566,7 +43581,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMSelect;
 }).call(this,require('_process'))
-},{"./LinkedValueUtils":72,"./Object.assign":73,"./ReactMount":116,"./ReactUpdates":134,"_process":209,"fbjs/lib/warning":206}],95:[function(require,module,exports){
+},{"./LinkedValueUtils":70,"./Object.assign":71,"./ReactMount":114,"./ReactUpdates":132,"_process":41,"fbjs/lib/warning":204}],93:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44779,7 +43794,7 @@ var ReactDOMSelection = {
 };
 
 module.exports = ReactDOMSelection;
-},{"./getNodeForCharacterOffset":167,"./getTextContentAccessor":168,"fbjs/lib/ExecutionEnvironment":181}],96:[function(require,module,exports){
+},{"./getNodeForCharacterOffset":165,"./getTextContentAccessor":166,"fbjs/lib/ExecutionEnvironment":179}],94:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44806,7 +43821,7 @@ var ReactDOMServer = {
 };
 
 module.exports = ReactDOMServer;
-},{"./ReactDefaultInjection":100,"./ReactServerRendering":131,"./ReactVersion":135}],97:[function(require,module,exports){
+},{"./ReactDefaultInjection":98,"./ReactServerRendering":129,"./ReactVersion":133}],95:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44936,7 +43951,7 @@ assign(ReactDOMTextComponent.prototype, {
 
 module.exports = ReactDOMTextComponent;
 }).call(this,require('_process'))
-},{"./DOMChildrenOperations":59,"./DOMPropertyOperations":61,"./Object.assign":73,"./ReactComponentBrowserEnvironment":82,"./ReactMount":116,"./escapeTextContentForBrowser":158,"./setTextContent":176,"./validateDOMNesting":179,"_process":209}],98:[function(require,module,exports){
+},{"./DOMChildrenOperations":57,"./DOMPropertyOperations":59,"./Object.assign":71,"./ReactComponentBrowserEnvironment":80,"./ReactMount":114,"./escapeTextContentForBrowser":156,"./setTextContent":174,"./validateDOMNesting":177,"_process":41}],96:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -45052,7 +44067,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMTextarea;
 }).call(this,require('_process'))
-},{"./LinkedValueUtils":72,"./Object.assign":73,"./ReactDOMIDOperations":91,"./ReactUpdates":134,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],99:[function(require,module,exports){
+},{"./LinkedValueUtils":70,"./Object.assign":71,"./ReactDOMIDOperations":89,"./ReactUpdates":132,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],97:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45120,7 +44135,7 @@ var ReactDefaultBatchingStrategy = {
 };
 
 module.exports = ReactDefaultBatchingStrategy;
-},{"./Object.assign":73,"./ReactUpdates":134,"./Transaction":151,"fbjs/lib/emptyFunction":187}],100:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactUpdates":132,"./Transaction":149,"fbjs/lib/emptyFunction":185}],98:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -45220,7 +44235,7 @@ module.exports = {
   inject: inject
 };
 }).call(this,require('_process'))
-},{"./BeforeInputEventPlugin":53,"./ChangeEventPlugin":57,"./ClientReactRootIndex":58,"./DefaultEventPluginOrder":63,"./EnterLeaveEventPlugin":64,"./HTMLDOMPropertyConfig":71,"./ReactBrowserComponentMixin":76,"./ReactComponentBrowserEnvironment":82,"./ReactDOMComponent":88,"./ReactDOMTextComponent":97,"./ReactDefaultBatchingStrategy":99,"./ReactDefaultPerf":101,"./ReactEventListener":109,"./ReactInjection":110,"./ReactInstanceHandles":112,"./ReactMount":116,"./ReactReconcileTransaction":126,"./SVGDOMPropertyConfig":136,"./SelectEventPlugin":137,"./ServerReactRootIndex":138,"./SimpleEventPlugin":139,"_process":209,"fbjs/lib/ExecutionEnvironment":181}],101:[function(require,module,exports){
+},{"./BeforeInputEventPlugin":51,"./ChangeEventPlugin":55,"./ClientReactRootIndex":56,"./DefaultEventPluginOrder":61,"./EnterLeaveEventPlugin":62,"./HTMLDOMPropertyConfig":69,"./ReactBrowserComponentMixin":74,"./ReactComponentBrowserEnvironment":80,"./ReactDOMComponent":86,"./ReactDOMTextComponent":95,"./ReactDefaultBatchingStrategy":97,"./ReactDefaultPerf":99,"./ReactEventListener":107,"./ReactInjection":108,"./ReactInstanceHandles":110,"./ReactMount":114,"./ReactReconcileTransaction":124,"./SVGDOMPropertyConfig":134,"./SelectEventPlugin":135,"./ServerReactRootIndex":136,"./SimpleEventPlugin":137,"_process":41,"fbjs/lib/ExecutionEnvironment":179}],99:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45458,7 +44473,7 @@ var ReactDefaultPerf = {
 };
 
 module.exports = ReactDefaultPerf;
-},{"./DOMProperty":60,"./ReactDefaultPerfAnalysis":102,"./ReactMount":116,"./ReactPerf":122,"fbjs/lib/performanceNow":203}],102:[function(require,module,exports){
+},{"./DOMProperty":58,"./ReactDefaultPerfAnalysis":100,"./ReactMount":114,"./ReactPerf":120,"fbjs/lib/performanceNow":201}],100:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45660,7 +44675,7 @@ var ReactDefaultPerfAnalysis = {
 };
 
 module.exports = ReactDefaultPerfAnalysis;
-},{"./Object.assign":73}],103:[function(require,module,exports){
+},{"./Object.assign":71}],101:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -45910,7 +44925,7 @@ ReactElement.isValidElement = function (object) {
 
 module.exports = ReactElement;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactCurrentOwner":85,"./canDefineProperty":155,"_process":209}],104:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactCurrentOwner":83,"./canDefineProperty":153,"_process":41}],102:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -46194,7 +45209,7 @@ var ReactElementValidator = {
 
 module.exports = ReactElementValidator;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":85,"./ReactElement":103,"./ReactPropTypeLocationNames":123,"./ReactPropTypeLocations":124,"./canDefineProperty":155,"./getIteratorFn":166,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],105:[function(require,module,exports){
+},{"./ReactCurrentOwner":83,"./ReactElement":101,"./ReactPropTypeLocationNames":121,"./ReactPropTypeLocations":122,"./canDefineProperty":153,"./getIteratorFn":164,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],103:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -46250,7 +45265,7 @@ assign(ReactEmptyComponent.prototype, {
 ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 
 module.exports = ReactEmptyComponent;
-},{"./Object.assign":73,"./ReactElement":103,"./ReactEmptyComponentRegistry":106,"./ReactReconciler":127}],106:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactElement":101,"./ReactEmptyComponentRegistry":104,"./ReactReconciler":125}],104:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -46299,7 +45314,7 @@ var ReactEmptyComponentRegistry = {
 };
 
 module.exports = ReactEmptyComponentRegistry;
-},{}],107:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -46379,7 +45394,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactErrorUtils;
 }).call(this,require('_process'))
-},{"_process":209}],108:[function(require,module,exports){
+},{"_process":41}],106:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46418,7 +45433,7 @@ var ReactEventEmitterMixin = {
 };
 
 module.exports = ReactEventEmitterMixin;
-},{"./EventPluginHub":66}],109:[function(require,module,exports){
+},{"./EventPluginHub":64}],107:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46630,7 +45645,7 @@ var ReactEventListener = {
 };
 
 module.exports = ReactEventListener;
-},{"./Object.assign":73,"./PooledClass":74,"./ReactInstanceHandles":112,"./ReactMount":116,"./ReactUpdates":134,"./getEventTarget":165,"fbjs/lib/EventListener":180,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/getUnboundedScrollPosition":192}],110:[function(require,module,exports){
+},{"./Object.assign":71,"./PooledClass":72,"./ReactInstanceHandles":110,"./ReactMount":114,"./ReactUpdates":132,"./getEventTarget":163,"fbjs/lib/EventListener":178,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/getUnboundedScrollPosition":190}],108:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46669,7 +45684,7 @@ var ReactInjection = {
 };
 
 module.exports = ReactInjection;
-},{"./DOMProperty":60,"./EventPluginHub":66,"./ReactBrowserEventEmitter":77,"./ReactClass":80,"./ReactComponentEnvironment":83,"./ReactEmptyComponent":105,"./ReactNativeComponent":119,"./ReactPerf":122,"./ReactRootIndex":129,"./ReactUpdates":134}],111:[function(require,module,exports){
+},{"./DOMProperty":58,"./EventPluginHub":64,"./ReactBrowserEventEmitter":75,"./ReactClass":78,"./ReactComponentEnvironment":81,"./ReactEmptyComponent":103,"./ReactNativeComponent":117,"./ReactPerf":120,"./ReactRootIndex":127,"./ReactUpdates":132}],109:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46794,7 +45809,7 @@ var ReactInputSelection = {
 };
 
 module.exports = ReactInputSelection;
-},{"./ReactDOMSelection":95,"fbjs/lib/containsNode":184,"fbjs/lib/focusNode":189,"fbjs/lib/getActiveElement":190}],112:[function(require,module,exports){
+},{"./ReactDOMSelection":93,"fbjs/lib/containsNode":182,"fbjs/lib/focusNode":187,"fbjs/lib/getActiveElement":188}],110:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47099,7 +46114,7 @@ var ReactInstanceHandles = {
 
 module.exports = ReactInstanceHandles;
 }).call(this,require('_process'))
-},{"./ReactRootIndex":129,"_process":209,"fbjs/lib/invariant":195}],113:[function(require,module,exports){
+},{"./ReactRootIndex":127,"_process":41,"fbjs/lib/invariant":193}],111:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47147,7 +46162,7 @@ var ReactInstanceMap = {
 };
 
 module.exports = ReactInstanceMap;
-},{}],114:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47224,7 +46239,7 @@ var React = {
 
 module.exports = React;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactChildren":79,"./ReactClass":80,"./ReactComponent":81,"./ReactDOMFactories":89,"./ReactElement":103,"./ReactElementValidator":104,"./ReactPropTypes":125,"./ReactVersion":135,"./onlyChild":172,"_process":209}],115:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactChildren":77,"./ReactClass":78,"./ReactComponent":79,"./ReactDOMFactories":87,"./ReactElement":101,"./ReactElementValidator":102,"./ReactPropTypes":123,"./ReactVersion":133,"./onlyChild":170,"_process":41}],113:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47270,7 +46285,7 @@ var ReactMarkupChecksum = {
 };
 
 module.exports = ReactMarkupChecksum;
-},{"./adler32":154}],116:[function(require,module,exports){
+},{"./adler32":152}],114:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -48123,7 +47138,7 @@ ReactPerf.measureMethods(ReactMount, 'ReactMount', {
 
 module.exports = ReactMount;
 }).call(this,require('_process'))
-},{"./DOMProperty":60,"./Object.assign":73,"./ReactBrowserEventEmitter":77,"./ReactCurrentOwner":85,"./ReactDOMFeatureFlags":90,"./ReactElement":103,"./ReactEmptyComponentRegistry":106,"./ReactInstanceHandles":112,"./ReactInstanceMap":113,"./ReactMarkupChecksum":115,"./ReactPerf":122,"./ReactReconciler":127,"./ReactUpdateQueue":133,"./ReactUpdates":134,"./instantiateReactComponent":169,"./setInnerHTML":175,"./shouldUpdateReactComponent":177,"./validateDOMNesting":179,"_process":209,"fbjs/lib/containsNode":184,"fbjs/lib/emptyObject":188,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],117:[function(require,module,exports){
+},{"./DOMProperty":58,"./Object.assign":71,"./ReactBrowserEventEmitter":75,"./ReactCurrentOwner":83,"./ReactDOMFeatureFlags":88,"./ReactElement":101,"./ReactEmptyComponentRegistry":104,"./ReactInstanceHandles":110,"./ReactInstanceMap":111,"./ReactMarkupChecksum":113,"./ReactPerf":120,"./ReactReconciler":125,"./ReactUpdateQueue":131,"./ReactUpdates":132,"./instantiateReactComponent":167,"./setInnerHTML":173,"./shouldUpdateReactComponent":175,"./validateDOMNesting":177,"_process":41,"fbjs/lib/containsNode":182,"fbjs/lib/emptyObject":186,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],115:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -48622,7 +47637,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 }).call(this,require('_process'))
-},{"./ReactChildReconciler":78,"./ReactComponentEnvironment":83,"./ReactCurrentOwner":85,"./ReactMultiChildUpdateTypes":118,"./ReactReconciler":127,"./flattenChildren":160,"_process":209}],118:[function(require,module,exports){
+},{"./ReactChildReconciler":76,"./ReactComponentEnvironment":81,"./ReactCurrentOwner":83,"./ReactMultiChildUpdateTypes":116,"./ReactReconciler":125,"./flattenChildren":158,"_process":41}],116:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -48655,7 +47670,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 });
 
 module.exports = ReactMultiChildUpdateTypes;
-},{"fbjs/lib/keyMirror":198}],119:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":196}],117:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -48752,7 +47767,7 @@ var ReactNativeComponent = {
 
 module.exports = ReactNativeComponent;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"_process":209,"fbjs/lib/invariant":195}],120:[function(require,module,exports){
+},{"./Object.assign":71,"_process":41,"fbjs/lib/invariant":193}],118:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -48873,7 +47888,7 @@ var ReactNoopUpdateQueue = {
 
 module.exports = ReactNoopUpdateQueue;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/warning":206}],121:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/warning":204}],119:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -48967,7 +47982,7 @@ var ReactOwner = {
 
 module.exports = ReactOwner;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],122:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],120:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -49066,7 +48081,7 @@ function _noMeasure(objName, fnName, func) {
 
 module.exports = ReactPerf;
 }).call(this,require('_process'))
-},{"_process":209}],123:[function(require,module,exports){
+},{"_process":41}],121:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -49093,7 +48108,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactPropTypeLocationNames;
 }).call(this,require('_process'))
-},{"_process":209}],124:[function(require,module,exports){
+},{"_process":41}],122:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49116,7 +48131,7 @@ var ReactPropTypeLocations = keyMirror({
 });
 
 module.exports = ReactPropTypeLocations;
-},{"fbjs/lib/keyMirror":198}],125:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":196}],123:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49473,7 +48488,7 @@ function getClassName(propValue) {
 }
 
 module.exports = ReactPropTypes;
-},{"./ReactElement":103,"./ReactPropTypeLocationNames":123,"./getIteratorFn":166,"fbjs/lib/emptyFunction":187}],126:[function(require,module,exports){
+},{"./ReactElement":101,"./ReactPropTypeLocationNames":121,"./getIteratorFn":164,"fbjs/lib/emptyFunction":185}],124:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49625,7 +48640,7 @@ assign(ReactReconcileTransaction.prototype, Transaction.Mixin, Mixin);
 PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
-},{"./CallbackQueue":56,"./Object.assign":73,"./PooledClass":74,"./ReactBrowserEventEmitter":77,"./ReactDOMFeatureFlags":90,"./ReactInputSelection":111,"./Transaction":151}],127:[function(require,module,exports){
+},{"./CallbackQueue":54,"./Object.assign":71,"./PooledClass":72,"./ReactBrowserEventEmitter":75,"./ReactDOMFeatureFlags":88,"./ReactInputSelection":109,"./Transaction":149}],125:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49733,7 +48748,7 @@ var ReactReconciler = {
 };
 
 module.exports = ReactReconciler;
-},{"./ReactRef":128}],128:[function(require,module,exports){
+},{"./ReactRef":126}],126:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49812,7 +48827,7 @@ ReactRef.detachRefs = function (instance, element) {
 };
 
 module.exports = ReactRef;
-},{"./ReactOwner":121}],129:[function(require,module,exports){
+},{"./ReactOwner":119}],127:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49842,7 +48857,7 @@ var ReactRootIndex = {
 };
 
 module.exports = ReactRootIndex;
-},{}],130:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -49866,7 +48881,7 @@ var ReactServerBatchingStrategy = {
 };
 
 module.exports = ReactServerBatchingStrategy;
-},{}],131:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -49952,7 +48967,7 @@ module.exports = {
   renderToStaticMarkup: renderToStaticMarkup
 };
 }).call(this,require('_process'))
-},{"./ReactDefaultBatchingStrategy":99,"./ReactElement":103,"./ReactInstanceHandles":112,"./ReactMarkupChecksum":115,"./ReactServerBatchingStrategy":130,"./ReactServerRenderingTransaction":132,"./ReactUpdates":134,"./instantiateReactComponent":169,"_process":209,"fbjs/lib/emptyObject":188,"fbjs/lib/invariant":195}],132:[function(require,module,exports){
+},{"./ReactDefaultBatchingStrategy":97,"./ReactElement":101,"./ReactInstanceHandles":110,"./ReactMarkupChecksum":113,"./ReactServerBatchingStrategy":128,"./ReactServerRenderingTransaction":130,"./ReactUpdates":132,"./instantiateReactComponent":167,"_process":41,"fbjs/lib/emptyObject":186,"fbjs/lib/invariant":193}],130:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -50040,7 +49055,7 @@ assign(ReactServerRenderingTransaction.prototype, Transaction.Mixin, Mixin);
 PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
-},{"./CallbackQueue":56,"./Object.assign":73,"./PooledClass":74,"./Transaction":151,"fbjs/lib/emptyFunction":187}],133:[function(require,module,exports){
+},{"./CallbackQueue":54,"./Object.assign":71,"./PooledClass":72,"./Transaction":149,"fbjs/lib/emptyFunction":185}],131:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -50300,7 +49315,7 @@ var ReactUpdateQueue = {
 
 module.exports = ReactUpdateQueue;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactCurrentOwner":85,"./ReactElement":103,"./ReactInstanceMap":113,"./ReactUpdates":134,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],134:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactCurrentOwner":83,"./ReactElement":101,"./ReactInstanceMap":111,"./ReactUpdates":132,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],132:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -50526,7 +49541,7 @@ var ReactUpdates = {
 
 module.exports = ReactUpdates;
 }).call(this,require('_process'))
-},{"./CallbackQueue":56,"./Object.assign":73,"./PooledClass":74,"./ReactPerf":122,"./ReactReconciler":127,"./Transaction":151,"_process":209,"fbjs/lib/invariant":195}],135:[function(require,module,exports){
+},{"./CallbackQueue":54,"./Object.assign":71,"./PooledClass":72,"./ReactPerf":120,"./ReactReconciler":125,"./Transaction":149,"_process":41,"fbjs/lib/invariant":193}],133:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50541,7 +49556,7 @@ module.exports = ReactUpdates;
 'use strict';
 
 module.exports = '0.14.8';
-},{}],136:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50669,7 +49684,7 @@ var SVGDOMPropertyConfig = {
 };
 
 module.exports = SVGDOMPropertyConfig;
-},{"./DOMProperty":60}],137:[function(require,module,exports){
+},{"./DOMProperty":58}],135:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50871,7 +49886,7 @@ var SelectEventPlugin = {
 };
 
 module.exports = SelectEventPlugin;
-},{"./EventConstants":65,"./EventPropagators":69,"./ReactInputSelection":111,"./SyntheticEvent":143,"./isTextInputElement":171,"fbjs/lib/ExecutionEnvironment":181,"fbjs/lib/getActiveElement":190,"fbjs/lib/keyOf":199,"fbjs/lib/shallowEqual":204}],138:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPropagators":67,"./ReactInputSelection":109,"./SyntheticEvent":141,"./isTextInputElement":169,"fbjs/lib/ExecutionEnvironment":179,"fbjs/lib/getActiveElement":188,"fbjs/lib/keyOf":197,"fbjs/lib/shallowEqual":202}],136:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50901,7 +49916,7 @@ var ServerReactRootIndex = {
 };
 
 module.exports = ServerReactRootIndex;
-},{}],139:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -51491,7 +50506,7 @@ var SimpleEventPlugin = {
 
 module.exports = SimpleEventPlugin;
 }).call(this,require('_process'))
-},{"./EventConstants":65,"./EventPropagators":69,"./ReactMount":116,"./SyntheticClipboardEvent":140,"./SyntheticDragEvent":142,"./SyntheticEvent":143,"./SyntheticFocusEvent":144,"./SyntheticKeyboardEvent":146,"./SyntheticMouseEvent":147,"./SyntheticTouchEvent":148,"./SyntheticUIEvent":149,"./SyntheticWheelEvent":150,"./getEventCharCode":162,"_process":209,"fbjs/lib/EventListener":180,"fbjs/lib/emptyFunction":187,"fbjs/lib/invariant":195,"fbjs/lib/keyOf":199}],140:[function(require,module,exports){
+},{"./EventConstants":63,"./EventPropagators":67,"./ReactMount":114,"./SyntheticClipboardEvent":138,"./SyntheticDragEvent":140,"./SyntheticEvent":141,"./SyntheticFocusEvent":142,"./SyntheticKeyboardEvent":144,"./SyntheticMouseEvent":145,"./SyntheticTouchEvent":146,"./SyntheticUIEvent":147,"./SyntheticWheelEvent":148,"./getEventCharCode":160,"_process":41,"fbjs/lib/EventListener":178,"fbjs/lib/emptyFunction":185,"fbjs/lib/invariant":193,"fbjs/lib/keyOf":197}],138:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51531,7 +50546,7 @@ function SyntheticClipboardEvent(dispatchConfig, dispatchMarker, nativeEvent, na
 SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 
 module.exports = SyntheticClipboardEvent;
-},{"./SyntheticEvent":143}],141:[function(require,module,exports){
+},{"./SyntheticEvent":141}],139:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51569,7 +50584,7 @@ function SyntheticCompositionEvent(dispatchConfig, dispatchMarker, nativeEvent, 
 SyntheticEvent.augmentClass(SyntheticCompositionEvent, CompositionEventInterface);
 
 module.exports = SyntheticCompositionEvent;
-},{"./SyntheticEvent":143}],142:[function(require,module,exports){
+},{"./SyntheticEvent":141}],140:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51607,7 +50622,7 @@ function SyntheticDragEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeE
 SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
-},{"./SyntheticMouseEvent":147}],143:[function(require,module,exports){
+},{"./SyntheticMouseEvent":145}],141:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -51790,7 +50805,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.fourArgumentPooler);
 
 module.exports = SyntheticEvent;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./PooledClass":74,"_process":209,"fbjs/lib/emptyFunction":187,"fbjs/lib/warning":206}],144:[function(require,module,exports){
+},{"./Object.assign":71,"./PooledClass":72,"_process":41,"fbjs/lib/emptyFunction":185,"fbjs/lib/warning":204}],142:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51828,7 +50843,7 @@ function SyntheticFocusEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
-},{"./SyntheticUIEvent":149}],145:[function(require,module,exports){
+},{"./SyntheticUIEvent":147}],143:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51867,7 +50882,7 @@ function SyntheticInputEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticEvent.augmentClass(SyntheticInputEvent, InputEventInterface);
 
 module.exports = SyntheticInputEvent;
-},{"./SyntheticEvent":143}],146:[function(require,module,exports){
+},{"./SyntheticEvent":141}],144:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51953,7 +50968,7 @@ function SyntheticKeyboardEvent(dispatchConfig, dispatchMarker, nativeEvent, nat
 SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
-},{"./SyntheticUIEvent":149,"./getEventCharCode":162,"./getEventKey":163,"./getEventModifierState":164}],147:[function(require,module,exports){
+},{"./SyntheticUIEvent":147,"./getEventCharCode":160,"./getEventKey":161,"./getEventModifierState":162}],145:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52027,7 +51042,7 @@ function SyntheticMouseEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
-},{"./SyntheticUIEvent":149,"./ViewportMetrics":152,"./getEventModifierState":164}],148:[function(require,module,exports){
+},{"./SyntheticUIEvent":147,"./ViewportMetrics":150,"./getEventModifierState":162}],146:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52074,7 +51089,7 @@ function SyntheticTouchEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
-},{"./SyntheticUIEvent":149,"./getEventModifierState":164}],149:[function(require,module,exports){
+},{"./SyntheticUIEvent":147,"./getEventModifierState":162}],147:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52135,7 +51150,7 @@ function SyntheticUIEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeEve
 SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
-},{"./SyntheticEvent":143,"./getEventTarget":165}],150:[function(require,module,exports){
+},{"./SyntheticEvent":141,"./getEventTarget":163}],148:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52191,7 +51206,7 @@ function SyntheticWheelEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
-},{"./SyntheticMouseEvent":147}],151:[function(require,module,exports){
+},{"./SyntheticMouseEvent":145}],149:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52425,7 +51440,7 @@ var Transaction = {
 
 module.exports = Transaction;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],152:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],150:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52453,7 +51468,7 @@ var ViewportMetrics = {
 };
 
 module.exports = ViewportMetrics;
-},{}],153:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -52515,7 +51530,7 @@ function accumulateInto(current, next) {
 
 module.exports = accumulateInto;
 }).call(this,require('_process'))
-},{"_process":209,"fbjs/lib/invariant":195}],154:[function(require,module,exports){
+},{"_process":41,"fbjs/lib/invariant":193}],152:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52558,7 +51573,7 @@ function adler32(data) {
 }
 
 module.exports = adler32;
-},{}],155:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52585,7 +51600,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = canDefineProperty;
 }).call(this,require('_process'))
-},{"_process":209}],156:[function(require,module,exports){
+},{"_process":41}],154:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52641,7 +51656,7 @@ function dangerousStyleValue(name, value) {
 }
 
 module.exports = dangerousStyleValue;
-},{"./CSSProperty":54}],157:[function(require,module,exports){
+},{"./CSSProperty":52}],155:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52692,7 +51707,7 @@ function deprecated(fnName, newModule, newPackage, ctx, fn) {
 
 module.exports = deprecated;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"_process":209,"fbjs/lib/warning":206}],158:[function(require,module,exports){
+},{"./Object.assign":71,"_process":41,"fbjs/lib/warning":204}],156:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52731,7 +51746,7 @@ function escapeTextContentForBrowser(text) {
 }
 
 module.exports = escapeTextContentForBrowser;
-},{}],159:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52783,7 +51798,7 @@ function findDOMNode(componentOrElement) {
 
 module.exports = findDOMNode;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":85,"./ReactInstanceMap":113,"./ReactMount":116,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],160:[function(require,module,exports){
+},{"./ReactCurrentOwner":83,"./ReactInstanceMap":111,"./ReactMount":114,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],158:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52834,7 +51849,7 @@ function flattenChildren(children) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./traverseAllChildren":178,"_process":209,"fbjs/lib/warning":206}],161:[function(require,module,exports){
+},{"./traverseAllChildren":176,"_process":41,"fbjs/lib/warning":204}],159:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52864,7 +51879,7 @@ var forEachAccumulated = function (arr, cb, scope) {
 };
 
 module.exports = forEachAccumulated;
-},{}],162:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52915,7 +51930,7 @@ function getEventCharCode(nativeEvent) {
 }
 
 module.exports = getEventCharCode;
-},{}],163:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53019,7 +52034,7 @@ function getEventKey(nativeEvent) {
 }
 
 module.exports = getEventKey;
-},{"./getEventCharCode":162}],164:[function(require,module,exports){
+},{"./getEventCharCode":160}],162:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53064,7 +52079,7 @@ function getEventModifierState(nativeEvent) {
 }
 
 module.exports = getEventModifierState;
-},{}],165:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53094,7 +52109,7 @@ function getEventTarget(nativeEvent) {
 }
 
 module.exports = getEventTarget;
-},{}],166:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53135,7 +52150,7 @@ function getIteratorFn(maybeIterable) {
 }
 
 module.exports = getIteratorFn;
-},{}],167:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53209,7 +52224,7 @@ function getNodeForCharacterOffset(root, offset) {
 }
 
 module.exports = getNodeForCharacterOffset;
-},{}],168:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53243,7 +52258,7 @@ function getTextContentAccessor() {
 }
 
 module.exports = getTextContentAccessor;
-},{"fbjs/lib/ExecutionEnvironment":181}],169:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":179}],167:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -53358,7 +52373,7 @@ function instantiateReactComponent(node) {
 
 module.exports = instantiateReactComponent;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"./ReactCompositeComponent":84,"./ReactEmptyComponent":105,"./ReactNativeComponent":119,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],170:[function(require,module,exports){
+},{"./Object.assign":71,"./ReactCompositeComponent":82,"./ReactEmptyComponent":103,"./ReactNativeComponent":117,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],168:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53419,7 +52434,7 @@ function isEventSupported(eventNameSuffix, capture) {
 }
 
 module.exports = isEventSupported;
-},{"fbjs/lib/ExecutionEnvironment":181}],171:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":179}],169:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53460,7 +52475,7 @@ function isTextInputElement(elem) {
 }
 
 module.exports = isTextInputElement;
-},{}],172:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -53496,7 +52511,7 @@ function onlyChild(children) {
 
 module.exports = onlyChild;
 }).call(this,require('_process'))
-},{"./ReactElement":103,"_process":209,"fbjs/lib/invariant":195}],173:[function(require,module,exports){
+},{"./ReactElement":101,"_process":41,"fbjs/lib/invariant":193}],171:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53523,7 +52538,7 @@ function quoteAttributeValueForBrowser(value) {
 }
 
 module.exports = quoteAttributeValueForBrowser;
-},{"./escapeTextContentForBrowser":158}],174:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":156}],172:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53540,7 +52555,7 @@ module.exports = quoteAttributeValueForBrowser;
 var ReactMount = require('./ReactMount');
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
-},{"./ReactMount":116}],175:[function(require,module,exports){
+},{"./ReactMount":114}],173:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53631,7 +52646,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setInnerHTML;
-},{"fbjs/lib/ExecutionEnvironment":181}],176:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":179}],174:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53672,7 +52687,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setTextContent;
-},{"./escapeTextContentForBrowser":158,"./setInnerHTML":175,"fbjs/lib/ExecutionEnvironment":181}],177:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":156,"./setInnerHTML":173,"fbjs/lib/ExecutionEnvironment":179}],175:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -53716,7 +52731,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 }
 
 module.exports = shouldUpdateReactComponent;
-},{}],178:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -53908,7 +52923,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 
 module.exports = traverseAllChildren;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":85,"./ReactElement":103,"./ReactInstanceHandles":112,"./getIteratorFn":166,"_process":209,"fbjs/lib/invariant":195,"fbjs/lib/warning":206}],179:[function(require,module,exports){
+},{"./ReactCurrentOwner":83,"./ReactElement":101,"./ReactInstanceHandles":110,"./getIteratorFn":164,"_process":41,"fbjs/lib/invariant":193,"fbjs/lib/warning":204}],177:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -54274,7 +53289,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = validateDOMNesting;
 }).call(this,require('_process'))
-},{"./Object.assign":73,"_process":209,"fbjs/lib/emptyFunction":187,"fbjs/lib/warning":206}],180:[function(require,module,exports){
+},{"./Object.assign":71,"_process":41,"fbjs/lib/emptyFunction":185,"fbjs/lib/warning":204}],178:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -54361,7 +53376,7 @@ var EventListener = {
 
 module.exports = EventListener;
 }).call(this,require('_process'))
-},{"./emptyFunction":187,"_process":209}],181:[function(require,module,exports){
+},{"./emptyFunction":185,"_process":41}],179:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54398,7 +53413,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],182:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54431,7 +53446,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],183:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54472,7 +53487,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":182}],184:[function(require,module,exports){
+},{"./camelize":180}],182:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54528,7 +53543,7 @@ function containsNode(_x, _x2) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":197}],185:[function(require,module,exports){
+},{"./isTextNode":195}],183:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54614,7 +53629,7 @@ function createArrayFromMixed(obj) {
 }
 
 module.exports = createArrayFromMixed;
-},{"./toArray":205}],186:[function(require,module,exports){
+},{"./toArray":203}],184:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -54701,7 +53716,7 @@ function createNodesFromMarkup(markup, handleScript) {
 
 module.exports = createNodesFromMarkup;
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":181,"./createArrayFromMixed":185,"./getMarkupWrap":191,"./invariant":195,"_process":209}],187:[function(require,module,exports){
+},{"./ExecutionEnvironment":179,"./createArrayFromMixed":183,"./getMarkupWrap":189,"./invariant":193,"_process":41}],185:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54740,7 +53755,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],188:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -54763,7 +53778,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":209}],189:[function(require,module,exports){
+},{"_process":41}],187:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54790,7 +53805,7 @@ function focusNode(node) {
 }
 
 module.exports = focusNode;
-},{}],190:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54826,7 +53841,7 @@ function getActiveElement() /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],191:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -54924,7 +53939,7 @@ function getMarkupWrap(nodeName) {
 
 module.exports = getMarkupWrap;
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":181,"./invariant":195,"_process":209}],192:[function(require,module,exports){
+},{"./ExecutionEnvironment":179,"./invariant":193,"_process":41}],190:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54963,7 +53978,7 @@ function getUnboundedScrollPosition(scrollable) {
 }
 
 module.exports = getUnboundedScrollPosition;
-},{}],193:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -54997,7 +54012,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],194:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55037,7 +54052,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":193}],195:[function(require,module,exports){
+},{"./hyphenate":191}],193:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -55090,7 +54105,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":209}],196:[function(require,module,exports){
+},{"_process":41}],194:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55114,7 +54129,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],197:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55140,7 +54155,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":196}],198:[function(require,module,exports){
+},{"./isNode":194}],196:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -55191,7 +54206,7 @@ var keyMirror = function (obj) {
 
 module.exports = keyMirror;
 }).call(this,require('_process'))
-},{"./invariant":195,"_process":209}],199:[function(require,module,exports){
+},{"./invariant":193,"_process":41}],197:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55227,7 +54242,7 @@ var keyOf = function (oneKeyObj) {
 };
 
 module.exports = keyOf;
-},{}],200:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55279,7 +54294,7 @@ function mapObject(object, callback, context) {
 }
 
 module.exports = mapObject;
-},{}],201:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55311,7 +54326,7 @@ function memoizeStringOnly(callback) {
 }
 
 module.exports = memoizeStringOnly;
-},{}],202:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55335,7 +54350,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = performance || {};
-},{"./ExecutionEnvironment":181}],203:[function(require,module,exports){
+},{"./ExecutionEnvironment":179}],201:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55370,7 +54385,7 @@ if (performance.now) {
 }
 
 module.exports = performanceNow;
-},{"./performance":202}],204:[function(require,module,exports){
+},{"./performance":200}],202:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -55421,7 +54436,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],205:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -55481,7 +54496,7 @@ function toArray(obj) {
 
 module.exports = toArray;
 }).call(this,require('_process'))
-},{"./invariant":195,"_process":209}],206:[function(require,module,exports){
+},{"./invariant":193,"_process":41}],204:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -55541,12 +54556,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":187,"_process":209}],207:[function(require,module,exports){
+},{"./emptyFunction":185,"_process":41}],205:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/React');
 
-},{"./lib/React":75}],208:[function(require,module,exports){
+},{"./lib/React":73}],206:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -57095,98 +56110,5 @@ module.exports = require('./lib/React');
     });
   }
 }.call(this));
-
-},{}],209:[function(require,module,exports){
-// shim for using process in browser
-
-var process = module.exports = {};
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = setTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    clearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
 
 },{}]},{},[20]);

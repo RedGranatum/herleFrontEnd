@@ -5,10 +5,12 @@ var MenuAcciones     = require('../js/menuAcciones.jsx');
 var Proveedores      = require('../js/proveedores.jsx');
 var Clientes         = require('../js/clientes.jsx');
 var Compras          = require('../js/compras.jsx');
-var SeccionUnoInv    = require('../js/tablaYFormula.jsx');  
-var SeccionDosInv    = require('../js/formsDeInventarios.jsx');    
+//var SeccionUnoInv    = require('../js/tablaYFormula.jsx');  
+//var SeccionDosInv    = require('../js/formsDeInventarios.jsx');    
 var Ventas           = require('../js/ventas.jsx');  
 var Costos           = require('../js/costos.jsx');            
+var Inventarios      = require('../js/inventarioCabecero.jsx');            
+
 var Page             = require("page");
 var Notificaciones   = require('../js/notificaciones');
 var $                = require('jquery');
@@ -340,7 +342,8 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
-      this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
+      //this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
           var style = {

@@ -25,7 +25,7 @@ return {
       		}
       		return diccionario;
 	   },
-	   llenarComboGenerico: function(listaCatalogos){
+	   llenarComboGenerico: function(listaCatalogos){	
 	   		var ListaComponentes = listaCatalogos.map(function(tupla) {
 		  return (
         		 <OpcionCombo key={tupla.cdu_catalogo}  valorOpcion={tupla.cdu_catalogo} tituloOpcion={tupla.descripcion1} />
@@ -38,7 +38,7 @@ return {
               return(  <CeldaTabla esEditable={propie.editable} contenido={propie.contenido} /> );
          });
           return celdasTabla;
-	   }
+	   },
 	};
 }
 
