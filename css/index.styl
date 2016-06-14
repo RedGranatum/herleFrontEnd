@@ -13,6 +13,7 @@ gris_claro_rgb_1=rgb(192,192,192)
 gris_claro_rgb_2=rgb(224,224,224)
 gris_claro_rgb_3=rgb(240,240,240)
 gris_claro_rgba_1=rgba(0, 0, 0, 0.5)
+rosa=#df7250
 body
 	background fondo
 	font-size 14px
@@ -256,6 +257,11 @@ nav
 				color gris_claro
 				float right
 				margin-right 6px
+		#resaltar_titulo_caja
+			background rosa
+		#resaltar_titulo_caja_f
+			background blue
+			opacity 0.8
 		.titulo_resalta
 			background gris_oscuro
 			border-radius 0 0 5px 5px
@@ -418,6 +424,8 @@ nav
 									background-image -o-linear-gradient(verde_rgb,verde_rgb)
 									background-image -webkit-linear-gradient(verde_rgb,verde_rgb)
 									background-image linear-gradient(verde_rgb,verde_rgb)
+		#resaltar_caja_bloque
+			background gris_claro
 	.bloque_proveedor
 		//display none
 		.botones_proveedor

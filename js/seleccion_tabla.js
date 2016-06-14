@@ -11,5 +11,5 @@ $(document).ready(iniciar);
         }
 
         // Al elemento clickeado le ponemos fondo.
-        x.style.background="#E8FFF1";
+        x.style.background="#df7250";
     }
