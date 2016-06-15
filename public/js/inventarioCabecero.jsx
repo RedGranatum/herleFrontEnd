@@ -1,12 +1,13 @@
 var React       = require('react');
-var FuncGenericas   = require('../js/funcionesGenericas');
-var InventarioParam = require('../js/inventarioParametros.jsx');
-var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
-var Combo 	    	= require('../js/combo.jsx');
-var Titulo          = require('../js/titulos.jsx');
-var AreaTexto       = require('../js/areaTexto.jsx');
-var CajaConCampos   = require('../js/cajaConCampos.jsx');
-var InventarioLista = require('../js/inventarioListadoProductos.jsx');
+var FuncGenericas     = require('../js/funcionesGenericas');
+var InventarioParam   = require('../js/inventarioParametros.jsx');
+var CajaDeTexto 	  = require('../js/cajaDeTexto.jsx');
+var Combo 	    	  = require('../js/combo.jsx');
+var Titulo            = require('../js/titulos.jsx');
+var AreaTexto         = require('../js/areaTexto.jsx');
+var CajaConCampos     = require('../js/cajaConCampos.jsx');
+var InventarioLista   = require('../js/inventarioListadoProductos.jsx');
+var InventarioDetalle = require('../js/inventarioDetalleProducto.jsx');
 
 module.exports = React.createClass({
 
@@ -19,7 +20,8 @@ componentWillReceiveProps: function(nextProps) {
  					   pais:   	    nextProps.datos.proveedor.pais,
  					   comentarios: nextProps.datos.comentarios,
  					   descripcion: nextProps.datos.descripcion,
- 					   detalles_compra: nextProps.datos.compra_detalles,
+ 					   listado_compra: nextProps.datos.compra_detalles,
+ 					   transporte:  nextProps.datos.transporte,
  					});
 
  	}
@@ -38,7 +40,9 @@ getInitialState: function(){
 		"comentarios": '',
 		"descripcion": '',
 		"tentrada": 'False',
-		"detalles_compra": [],
+		"listado_compra": [],
+		"transporte": "",
+		"detalle_compra": {},
 		"errores" :{},
 	}
 },
@@ -54,6 +58,23 @@ llenarCombos: function(){
 			var entradas = [{cdu_catalogo: "",descripcion1: "NO ESPECIFICADO"},{cdu_catalogo: "True",descripcion1: "Con Comercializadora"},{cdu_catalogo: "False",descripcion1: "Sin Comercializadora"}]
 			this.TipoEntrada = func.llenarComboGenerico(entradas);
   },
+ onSeleccionFila: function(pk_detalle){
+	console.log("Se selecciono una fila del hijo " + pk_detalle );
+	var detalle = this.buscarDetalleEnFila(pk_detalle);	
+	this.setState({detalle_compra: detalle});
+	
+	//id: 9, compra: 14, material: Object, dsc_material: "material 2", calibre: "1.000", ancho: "4.00", largo: 54, peso_kg: "6.00", peso_lb: "65.00", num_rollo:
+},
+buscarDetalleEnFila: function(pk_detalle){
+	var detalle = {}
+	this.state.listado_compra.filter(function(datos){
+
+     if(datos.id === pk_detalle){
+        detalle =datos;
+      }
+  });
+	return detalle;
+},
  render: function () {  
 	func = new FuncGenericas();
 	var dic1 =         			            ["id",      "titulo", "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
@@ -66,9 +87,13 @@ llenarCombos: function(){
 
  return (
  	<div >
-		<article className="bloque">
-			<Titulo titulo={'Invoice: ' +   this.state.invoice} />
+		<article className="bloque">			
+			<Titulo titulo='Invoice' />
 			<CajaConCampos >
+				<li className="li_bloque">
+					<label className="etiquetas_bloque" for="invoice">Invoice</label>
+					<label className="etiqueta_especial" for="">{ this.state.invoice}</label>
+				</li>
 				<Combo 	propiedades = {PAIS}   ref="ComboPais" key="Pais" />	
 				<Combo 	propiedades = {TENTRADA}  ref="ComboTEntrada" key="TEntrada" />	
 			</CajaConCampos>
@@ -79,8 +104,9 @@ llenarCombos: function(){
 				<AreaTexto propiedades={COMENTARIOS} />
 			</CajaConCampos>
 			<br />
-			<InventarioLista detalles_compra={this.state.detalles_compra} />
+			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
+		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte}/>
 		<InventarioParam  pais={this.state.pais} conComercializadora={this.state.tentrada}/>
 		
 	</div>

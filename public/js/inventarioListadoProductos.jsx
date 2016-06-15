@@ -11,11 +11,14 @@ module.exports = React.createClass({
 // },
 getDefaultProps: function(){
 	return{
-		detalles_compra: [],
+		listado_compra: [],
 	}
 },
 onSeleccionFila: function(pk_detalle){
 	console.log("Fila " + pk_detalle + " seleccionada")
+	var detalleProd = {}
+	
+	this.props.onSeleccionFila(pk_detalle);
 },
 
 render: function () {	
@@ -33,7 +36,7 @@ render: function () {
 
 	var listado_detalles = [];
 	var i=1;
-	this.props.detalles_compra.forEach(function(resultado){
+	this.props.listado_compra.forEach(function(resultado){
 		var detalle = []
 		detalle.push(<CeldaTabla contenido={resultado.material.descripcion1} key="descripcion1"/>);
 		detalle.push(<CeldaTabla contenido={resultado.dsc_material}  key="dsc_material" />);
