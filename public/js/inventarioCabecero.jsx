@@ -38,6 +38,11 @@ getInitialState: function(){
 		"errores" :{},
 	}
 },
+onValorCambio: function(campo,valor){
+	var campos ={};
+	campos[campo] = valor;
+	this.setState(campos);
+},
 llenarCombos: function(){
 	   	    var func = new FuncGenericas();      
 			this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
@@ -70,7 +75,7 @@ llenarCombos: function(){
 				<AreaTexto propiedades={COMENTARIOS} />
 			</CajaConCampos>
 		</article>
-		<InventarioParam />
+		<InventarioParam  pais={this.state.pais}/>
 	</div>
 		);  
 	}
