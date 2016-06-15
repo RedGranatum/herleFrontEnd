@@ -5,7 +5,8 @@ var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
 var Combo 	    	= require('../js/combo.jsx');
 var Titulo          = require('../js/titulos.jsx');
 var AreaTexto       = require('../js/areaTexto.jsx');
-var CajaConCampos   = require('../js/cajaConCampos.jsx')
+var CajaConCampos   = require('../js/cajaConCampos.jsx');
+var InventarioLista = require('../js/inventarioListadoProductos.jsx');
 
 module.exports = React.createClass({
 
@@ -17,7 +18,9 @@ componentWillReceiveProps: function(nextProps) {
  					   invoice:     nextProps.datos.invoice,
  					   pais:   	    nextProps.datos.proveedor.pais,
  					   comentarios: nextProps.datos.comentarios,
- 					   descripcion: nextProps.datos.descripcion});
+ 					   descripcion: nextProps.datos.descripcion,
+ 					   detalles_compra: nextProps.datos.compra_detalles,
+ 					});
 
  	}
  	else{
@@ -35,6 +38,7 @@ getInitialState: function(){
 		"comentarios": '',
 		"descripcion": '',
 		"tentrada": 'False',
+		"detalles_compra": [],
 		"errores" :{},
 	}
 },
@@ -74,8 +78,11 @@ llenarCombos: function(){
 				<AreaTexto propiedades={DESCRIPCION} />
 				<AreaTexto propiedades={COMENTARIOS} />
 			</CajaConCampos>
+			<br />
+			<InventarioLista detalles_compra={this.state.detalles_compra} />
 		</article>
 		<InventarioParam  pais={this.state.pais} conComercializadora={this.state.tentrada}/>
+		
 	</div>
 		);  
 	}

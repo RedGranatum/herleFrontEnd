@@ -11,13 +11,24 @@ module.exports = React.createClass({
    onSeleccionFila:function(){
     this.props.onSeleccionFila(this.props.id);
    },
-
+    getDefaultProps: function(){
+      return{
+        estilo: {},
+        num_fila: 1
+      }
+    },
 		render: function () {
-    
-
+          var estilo = this.props.estilo;
+          estilo["background"]="#dddddc";
+        
+          if(this.props.num_fila % 2 === 0){
+            estilo["background"] = "#FFFFFF";
+          }       
+          console.log("fila " + this.props.num_fila);
+          //  this.props.estilo["cursor"]    
            return (
 	    
-					<tr key={this.props.key} onClick={this.onSeleccionFila.bind()} style={this.props.estilo}>
+					<tr key={this.props.key} onClick={this.onSeleccionFila} style={estilo}>
                          {this.props.childrens}
            </tr>
 
