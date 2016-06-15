@@ -6,12 +6,14 @@ getDefaultProps: function(){
 	return{
 		clase: 'titulo_bloque',
 		id : '',
-		titulo: ''
+		titulo: '',
+		estilo: 'block',
 	}
 },
 render: function () {
+ 	  var estilo =  {display: this.props.estilo};
       return (
-      		<div className={this.props.clase} id={this.props.id}>
+      		<div className={this.props.clase} id={this.props.id} style={estilo}>
 				{this.props.titulo}
 			</div>
 			);  

@@ -410,13 +410,15 @@ module.exports = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			clase: 'caja_bloque'
+			clase: 'caja_bloque',
+			estilo: 'block'
 		};
 	},
 	render: function () {
+		var estilo = { display: this.props.estilo };
 		return React.createElement(
 			'div',
-			{ className: this.props.clase },
+			{ className: this.props.clase, style: estilo },
 			React.createElement(
 				'div',
 				{ className: 'campos_bloque' },
@@ -1930,7 +1932,15 @@ module.exports = React.createClass({
 	onBlurCaja: function (control, valor) {
 		console.log("saliendo de la caja");
 	},
+	mostrarContenedores: function () {
+		this.estilo_china = this.props.pais === "0010002" ? 'block' : 'none';
+
+		this.estilo_eu_con_comer = this.props.pais === "0010001" && this.props.conComercializadora === "True" ? 'block' : 'none';
+		this.estilo_eu_sin_comer = this.props.pais === "0010001" && this.props.conComercializadora === "False" ? 'block' : 'none';
+	},
 	render: function () {
+		this.mostrarContenedores();
+
 		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
 		var PRECIO_LIBRA = func.zipCol(dic1, ["precio_libra", "Precio en libra", "precio_libra", this.state.precio_libra, this.onValorCambio, this.onBlurCaja, this.state.errores.precio_libra]);
 		var FACTOR = func.zipCol(dic1, ["factor", "Factor", "factor", this.state.factor, this.onValorCambio, this.onBlurCaja, this.state.errores.factor]);
@@ -1944,31 +1954,37 @@ module.exports = React.createClass({
 		return React.createElement(
 			'article',
 			{ className: 'bloque' },
-			React.createElement(Titulo, { titulo: 'Sin Comercializadora', clase: 'resaltar_titulo_caja_f' }),
+			React.createElement(Titulo, { titulo: 'DOLAR', clase: 'resaltar_titulo_caja_f' }),
 			React.createElement(
 				CajaConCampos,
 				{ clase: 'resaltar_caja_bloque' },
+				React.createElement(CajaDeTexto, { propiedades: PRECIO_DOLAR, ref: 'cajaPrecioDolar' })
+			),
+			React.createElement('br', null),
+			React.createElement(Titulo, { titulo: 'Sin Comercializadora', clase: 'resaltar_titulo_caja_f', estilo: this.estilo_eu_sin_comer }),
+			React.createElement(
+				CajaConCampos,
+				{ clase: 'resaltar_caja_bloque', estilo: this.estilo_eu_sin_comer },
 				React.createElement(CajaDeTexto, { propiedades: PRECIO_LIBRA, ref: 'cajaPrecioLibra' }),
 				React.createElement(CajaDeTexto, { propiedades: FACTOR, ref: 'cajaFactor' }),
-				React.createElement(CajaDeTexto, { propiedades: PRECIO_DOLAR, ref: 'cajaPrecioDolar' }),
 				React.createElement(CajaDeTexto, { propiedades: IMPUESTO, ref: 'cajaFactorImpuesto' })
 			),
-			React.createElement('br', null),
-			React.createElement(Titulo, { titulo: 'Con Comercializadora', clase: 'resaltar_titulo_caja_f' }),
+			this.estilo_eu_sin_comer === 'none' ? '' : React.createElement('br', null),
+			React.createElement(Titulo, { titulo: 'Con Comercializadora', clase: 'resaltar_titulo_caja_f', estilo: this.estilo_eu_con_comer }),
 			React.createElement(
 				CajaConCampos,
-				{ clase: 'resaltar_caja_bloque' },
+				{ clase: 'resaltar_caja_bloque', estilo: this.estilo_eu_con_comer },
 				React.createElement(CajaDeTexto, { propiedades: PORC_COMERCIALIZADORA, ref: 'cajaPorcentajeComerzializadora' })
 			),
-			React.createElement('br', null),
-			React.createElement(Titulo, { titulo: 'China', clase: 'resaltar_titulo_caja_f' }),
+			this.estilo_eu_con_comer === 'none' ? '' : React.createElement('br', null),
+			React.createElement(Titulo, { titulo: 'China', clase: 'resaltar_titulo_caja_f', estilo: this.estilo_china }),
 			React.createElement(
 				CajaConCampos,
-				{ clase: 'resaltar_caja_bloque' },
+				{ clase: 'resaltar_caja_bloque', estilo: this.estilo_china },
 				React.createElement(CajaDeTexto, { propiedades: PRECIO_TONELADA, ref: 'cajaPrecioToneladaDolar' }),
 				React.createElement(CajaDeTexto, { propiedades: IMPUESTO_CHINA, ref: 'cajaPorcentajeComerzializadora' })
 			),
-			React.createElement('br', null),
+			this.estilo_china === 'none' ? '' : React.createElement('br', null),
 			React.createElement(CajaCalculos, { pais: this.props.pais,
 				precio_libra: this.state.precio_libra,
 				factor: this.state.factor,
@@ -3353,13 +3369,15 @@ module.exports = React.createClass({
 		return {
 			clase: 'titulo_bloque',
 			id: '',
-			titulo: ''
+			titulo: '',
+			estilo: 'block'
 		};
 	},
 	render: function () {
+		var estilo = { display: this.props.estilo };
 		return React.createElement(
 			'div',
-			{ className: this.props.clase, id: this.props.id },
+			{ className: this.props.clase, id: this.props.id, style: estilo },
 			this.props.titulo
 		);
 	}

@@ -69,7 +69,16 @@ onValorCambio: function(campo,valor){
 onBlurCaja: function(control, valor){
 	 console.log("saliendo de la caja");
 },
+mostrarContenedores: function(){
+   	this.estilo_china = this.props.pais ==="0010002" ? 'block' : 'none';
+
+	this.estilo_eu_con_comer = this.props.pais ==="0010001" && this.props.conComercializadora ==="True" ? 'block' : 'none';		   	
+	this.estilo_eu_sin_comer = this.props.pais ==="0010001" && this.props.conComercializadora ==="False" ? 'block' : 'none';		   	
+
+},
 render: function () {
+	this.mostrarContenedores();
+
     var dic1 			=                    ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
 	var PRECIO_LIBRA  	= func.zipCol(dic1,["precio_libra",  "Precio en libra", 	"precio_libra", this.state.precio_libra,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.precio_libra ]);
 	var FACTOR        	= func.zipCol(dic1,["factor",  		 "Factor", 	"factor", this.state.factor,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.factor ]);
@@ -82,25 +91,29 @@ render: function () {
    
       return (
       	<article className="bloque">
-      		<Titulo titulo='Sin Comercializadora' clase='resaltar_titulo_caja_f' />
-			<CajaConCampos clase="resaltar_caja_bloque" >
+			<Titulo titulo='DOLAR' clase='resaltar_titulo_caja_f' />			
+      		<CajaConCampos clase="resaltar_caja_bloque" >
+      		<CajaDeTexto propiedades = {PRECIO_DOLAR} ref="cajaPrecioDolar"/>
+      		</CajaConCampos>
+			<br />
+      		<Titulo titulo='Sin Comercializadora' clase='resaltar_titulo_caja_f' estilo={this.estilo_eu_sin_comer}  />
+			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu_sin_comer} >
 				<CajaDeTexto propiedades = {PRECIO_LIBRA} ref="cajaPrecioLibra"/>
 				<CajaDeTexto propiedades = {FACTOR} ref="cajaFactor"/>
-				<CajaDeTexto propiedades = {PRECIO_DOLAR} ref="cajaPrecioDolar"/>
 				<CajaDeTexto propiedades = {IMPUESTO} ref="cajaFactorImpuesto" />
 			</CajaConCampos>
-			<br />
-      		<Titulo titulo='Con Comercializadora' clase='resaltar_titulo_caja_f' />
-			<CajaConCampos clase="resaltar_caja_bloque" >
+			{this.estilo_eu_sin_comer==='none' ? '' : <br />}
+      		<Titulo titulo='Con Comercializadora' clase='resaltar_titulo_caja_f'  estilo={this.estilo_eu_con_comer} />
+			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu_con_comer}>
 				<CajaDeTexto propiedades = {PORC_COMERCIALIZADORA} ref="cajaPorcentajeComerzializadora"/>
 			</CajaConCampos>
-			<br />		
-			<Titulo titulo='China' clase='resaltar_titulo_caja_f' />
-			<CajaConCampos clase="resaltar_caja_bloque">
+			{this.estilo_eu_con_comer==='none' ? '' : <br />}
+			<Titulo titulo='China' clase='resaltar_titulo_caja_f'  estilo={this.estilo_china} />
+			<CajaConCampos clase="resaltar_caja_bloque" estilo={this.estilo_china}>
 				<CajaDeTexto propiedades = {PRECIO_TONELADA} ref="cajaPrecioToneladaDolar"/>
 				<CajaDeTexto propiedades = {IMPUESTO_CHINA} ref="cajaPorcentajeComerzializadora"/>
 			</CajaConCampos>
-	      	<br />
+	      	{this.estilo_china==='none' ? '' : <br />}
 	      	<CajaCalculos   pais         ={this.props.pais} 
 	      				    precio_libra ={this.state.precio_libra}
 	      				    factor       ={this.state.factor}
