@@ -1,4 +1,5 @@
 var React=require('react');
+var ApirestInventarioCalculo   = require('../js/modelos/apirestInventarioCalculo');
 
 module.exports = React.createClass({
 getDefaultProps: function(){
@@ -22,14 +23,29 @@ getInitialState: function(){
 		kilo_en_pesos_final: "0"
     }
   },
-calcularFormula: function(propiedades){
+componentDidUpdate ( prevProps, prevState ) {
+	if( (prevProps.pais !== this.props.pais  || prevProps.con_comercializadora != this.props.con_comercializadora)
+		|| 
+	       (prevProps.precio_libra != this.props.precio_libra
+		|| prevProps.factor != this.props.factor
+		|| prevProps.precio_dolar != this.props.precio_dolar
+		|| prevProps.impuesto != this.props.impuesto
+		|| prevProps.impuesto_china != this.props.impuesto_china
+		|| prevProps.porc_comercializadora != this.props.porc_comercializadora
+		|| prevProps.precio_tonelada_dolar != this.props.precio_tonelada_dolar)){
+			this.calcularFormula();
+	}
+},
+calcularFormula: function(){
 	   	var self = this;
+	   	var impuesto = this.props.pais === "0010002" ? this.props.impuesto_china : this.props.impuesto;
+
 	   	var invCal = new ApirestInventarioCalculo();
 	   	invCal.cdu_pais =this.props.pais; 
 	  	invCal.precio_libra_centavos = this.props.precio_libra;
 	    invCal.factor = this.props.factor;
 	    invCal.precio_dolar = this.props.precio_dolar;
-	    invCal.factor_impuesto = this.props.impuesto;
+	    invCal.factor_impuesto = impuesto;
 	    invCal.porc_comercializadora = this.props.porc_comercializadora;
    		invCal.precio_tonelada_dolar = this.props.precio_tonelada_dolar; 
 	   	invCal.con_comercializadora = this.props.con_comercializadora; 
@@ -37,19 +53,14 @@ calcularFormula: function(propiedades){
    invCal.obtenerCalculos( 
         function(data){
         		self.setState({
-        			kilo_en_pesos : data["kilo_en_pesos"],
         			kilo_en_dolar:data["kilo_en_dolar"],
+        			kilo_en_pesos : data["kilo_en_pesos"],
         			tonelada_en_dolar: data["tonelada_en_dolar"],
         			kilo_en_pesos_final:data["kilo_en_pesos_final"]
         		})
             },
         function(model,response,options){
-        		self.setState({
-        			kilo_en_dolar:"0",
-        			kilo_en_pesos : "0",
-        			tonelada_en_dolar:"0",
-        			kilo_en_pesos_final: "0"
-        		})
+        		self.setState(this.getInitialState())
             }
     );
  },

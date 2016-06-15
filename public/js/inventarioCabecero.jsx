@@ -34,7 +34,7 @@ getInitialState: function(){
 		"pais":  '0010000',
 		"comentarios": '',
 		"descripcion": '',
-		"tentrada": '0',
+		"tentrada": 'False',
 		"errores" :{},
 	}
 },
@@ -47,7 +47,7 @@ llenarCombos: function(){
 	   	    var func = new FuncGenericas();      
 			this.Paises = func.llenarComboGenerico(appmvc.Datos.PAISES);
 
-			var entradas = [{cdu_catalogo: "0",descripcion1: "NO ESPECIFICADO"},{cdu_catalogo: "1",descripcion1: "Con Comercializadora"},{cdu_catalogo: "2",descripcion1: "Sin Comercializadora"}]
+			var entradas = [{cdu_catalogo: "",descripcion1: "NO ESPECIFICADO"},{cdu_catalogo: "True",descripcion1: "Con Comercializadora"},{cdu_catalogo: "False",descripcion1: "Sin Comercializadora"}]
 			this.TipoEntrada = func.llenarComboGenerico(entradas);
   },
  render: function () {  
@@ -75,7 +75,7 @@ llenarCombos: function(){
 				<AreaTexto propiedades={COMENTARIOS} />
 			</CajaConCampos>
 		</article>
-		<InventarioParam  pais={this.state.pais}/>
+		<InventarioParam  pais={this.state.pais} conComercializadora={this.state.tentrada}/>
 	</div>
 		);  
 	}
