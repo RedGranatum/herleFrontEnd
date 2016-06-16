@@ -27,6 +27,12 @@ var inventariosCalculoApiRest =function(){
 		porc_comercializadora : function(porc_comercializadora){
       		this.porc_comercializadora  = porc_comercializadora;
   		},
+  		kilogramos: function(kilogramos){
+  			this.kilogramos = kilogramos;
+  		}, 		
+  		libras: function(libras){
+  			this.libras = libras;
+  		},
 		initialize: function(){
   			 this.cdu_pais = '0010000';
   			 this.precio_tonelada_dolar = '0'
@@ -36,6 +42,8 @@ var inventariosCalculoApiRest =function(){
   			 this.precio_dolar = '18.03'
   			 this.factor_impuesto = '2.13'
   			 this.porc_comercializadora = '4'
+  			 this.kilogramos = '0'
+  			 this.libras = '0'
 		},
 		obtenerCalculos: function(funcion_exito,funcion_error){
 			var valores = '?cdu_pais=' + this.cdu_pais;
@@ -49,6 +57,15 @@ var inventariosCalculoApiRest =function(){
 			valores = valores + '&porc_comercializadora=' + this.porc_comercializadora;
 			
 			var ruta = 'inventarios/calculo_precios/';
+			ruta = ruta + valores;			
+			this.funcionCalculos(ruta,funcion_exito,funcion_error);
+		},
+		convertirValores: function(funcion_exito,funcion_error){
+			var valores = '?pais=' + this.cdu_pais;
+			valores = valores + '&kilogramo=' + this.kilogramo;
+			valores = valores + '&libra=' + this.libra;
+
+			var ruta = 'inventarios/conversor/';
 			ruta = ruta + valores;			
 			this.funcionCalculos(ruta,funcion_exito,funcion_error);
 		},

@@ -113,17 +113,16 @@ onGuardar: function(datos_parametros)
         	lista_nueva = self.state.listado_compra.filter(function(detalle_compra) {        		
         		return (detalle_compra.id !== response.compra_detalle)
         	});
+        	  var detalle = self.seleccionarPrimeraFila(lista_nueva)     
         	
-        	//var detalle = this.seleccionarPrimeraFila(lista_nueva)
-        	
-        	self.setState({listado_compra: lista_nueva});
+        	self.setState({listado_compra: lista_nueva, detalle_compra: detalle});
 
             $("#notify_success").text("Los datos fueron modificados con exito");
             $("#notify_success").notify();
         },
         function(model,response,options){
-               $("#notify_error").text(response.responseText);
-               $("#notify_error").notify();
+            $("#notify_error").text(response.responseText);
+            $("#notify_error").notify();
         });
     console.log("Vas a guardar el detalle del inventario");              
 },
@@ -161,7 +160,7 @@ onGuardar: function(datos_parametros)
 			<br />
 			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
-		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
+		<InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
 		{mostrar ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
 		
 	</div>

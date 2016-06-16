@@ -1,5 +1,6 @@
 var React=require('react');
 var FuncGenericas   = require('../js/funcionesGenericas');
+var ApirestInventarioCalculo   = require('../js/modelos/apirestInventarioCalculo');
 var Combo 	    	= require('../js/combo.jsx');
 var Titulo          = require('../js/titulos.jsx');
 var CajaConCampos     = require('../js/cajaConCampos.jsx');
@@ -25,7 +26,8 @@ getInitialState: function(){
 },
 getDefaultProps: function(){
 			return{
-				 detalle_compra: {},
+				pais: "0010000",
+				detalle_compra: {},
 			}
 },
 componentWillMount: function() { 
@@ -34,24 +36,49 @@ componentWillMount: function() {
 componentWillReceiveProps: function(nextProps) {
 	  var det = nextProps.detalle_compra;
 
+
 	  if(det.id !== undefined){
+
 	  	this.setState({ id: det.id,
 	  					material: det.material.cdu_catalogo,
 	  				   calibre: det.calibre,
 	  				   ancho: det.ancho,
 	  				   largo: det.largo,
 	  				   peso_kg: det.peso_kg,
-	  				   peso_lb: det.peso_lb,
+	  				   peso_lb:  det.peso_lb,
 	  				   num_rollo: det.num_rollo,
 	  				   transporte: nextProps.transporte,
 	  	})	  	
+
+	  	this.calcularKgLb(this.props.pais,det.peso_kg,det.peso_lb)
 	  }
  },
 onValorCambio: function(campo,valor){
 	var campos ={};
 	campos[campo] = valor;
-	this.setState(campos);
+	this.setState(campos);	
 },
+onBlurCaja: function(campo,valor){
+	if(campo==="peso_kg" || campo==="peso_lb"){
+		this.calcularKgLb(this.props.pais,this.state.peso_kg,this.state.peso_lb)
+	}
+},
+calcularKgLb: function(pais,kg,lb){
+	   	var self = this;
+	   	var invCal = new ApirestInventarioCalculo();
+	  
+	   	invCal.cdu_pais = pais;
+   		invCal.libra = lb; 
+   		invCal.kilogramo = kg; 
+
+   invCal.convertirValores( 
+        function(data){
+        		self.setState({peso_lb: data.libra, peso_kg: data.kilogramo }) 
+            },
+        function(model,response,options){        		
+            }
+    );
+ },
 llenarCombos: function(){
 	    var func = new FuncGenericas();      
 		this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);

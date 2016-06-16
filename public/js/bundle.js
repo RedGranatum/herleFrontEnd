@@ -1787,10 +1787,9 @@ module.exports = React.createClass({
 			lista_nueva = self.state.listado_compra.filter(function (detalle_compra) {
 				return detalle_compra.id !== response.compra_detalle;
 			});
+			var detalle = self.seleccionarPrimeraFila(lista_nueva);
 
-			//var detalle = this.seleccionarPrimeraFila(lista_nueva)
-
-			self.setState({ listado_compra: lista_nueva });
+			self.setState({ listado_compra: lista_nueva, detalle_compra: detalle });
 
 			$("#notify_success").text("Los datos fueron modificados con exito");
 			$("#notify_success").notify();
@@ -1851,7 +1850,7 @@ module.exports = React.createClass({
 				React.createElement('br', null),
 				React.createElement(InventarioLista, { listado_compra: this.state.listado_compra, onSeleccionFila: this.onSeleccionFila })
 			),
-			React.createElement(InventarioDetalle, { detalle_compra: this.state.detalle_compra, transporte: this.state.transporte, ref: 'InventarioPorDetalleProducto', estilo: estilo }),
+			React.createElement(InventarioDetalle, { detalle_compra: this.state.detalle_compra, pais: this.state.pais, transporte: this.state.transporte, ref: 'InventarioPorDetalleProducto', estilo: estilo }),
 			mostrar ? React.createElement(InventarioParam, { pais: this.state.pais, conComercializadora: this.state.tentrada, onGuardar: this.onGuardar }) : ''
 		);
 	}
@@ -2018,6 +2017,7 @@ module.exports = React.createClass({
 },{"../js/modelos/apirestInventarios":32,"react":211}],21:[function(require,module,exports){
 var React = require('react');
 var FuncGenericas = require('../js/funcionesGenericas');
+var ApirestInventarioCalculo = require('../js/modelos/apirestInventarioCalculo');
 var Combo = require('../js/combo.jsx');
 var Titulo = require('../js/titulos.jsx');
 var CajaConCampos = require('../js/cajaConCampos.jsx');
@@ -2045,6 +2045,7 @@ module.exports = React.createClass({
 	},
 	getDefaultProps: function () {
 		return {
+			pais: "0010000",
 			detalle_compra: {}
 		};
 	},
@@ -2055,6 +2056,7 @@ module.exports = React.createClass({
 		var det = nextProps.detalle_compra;
 
 		if (det.id !== undefined) {
+
 			this.setState({ id: det.id,
 				material: det.material.cdu_catalogo,
 				calibre: det.calibre,
@@ -2065,12 +2067,31 @@ module.exports = React.createClass({
 				num_rollo: det.num_rollo,
 				transporte: nextProps.transporte
 			});
+
+			this.calcularKgLb(this.props.pais, det.peso_kg, det.peso_lb);
 		}
 	},
 	onValorCambio: function (campo, valor) {
 		var campos = {};
 		campos[campo] = valor;
 		this.setState(campos);
+	},
+	onBlurCaja: function (campo, valor) {
+		if (campo === "peso_kg" || campo === "peso_lb") {
+			this.calcularKgLb(this.props.pais, this.state.peso_kg, this.state.peso_lb);
+		}
+	},
+	calcularKgLb: function (pais, kg, lb) {
+		var self = this;
+		var invCal = new ApirestInventarioCalculo();
+
+		invCal.cdu_pais = pais;
+		invCal.libra = lb;
+		invCal.kilogramo = kg;
+
+		invCal.convertirValores(function (data) {
+			self.setState({ peso_lb: data.libra, peso_kg: data.kilogramo });
+		}, function (model, response, options) {});
 	},
 	llenarCombos: function () {
 		var func = new FuncGenericas();
@@ -2129,7 +2150,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaConCampos.jsx":4,"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/inventarioCodigoProducto.jsx":20,"../js/titulos.jsx":43,"react":211}],22:[function(require,module,exports){
+},{"../js/cajaConCampos.jsx":4,"../js/cajaDeTexto.jsx":6,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/inventarioCodigoProducto.jsx":20,"../js/modelos/apirestInventarioCalculo":31,"../js/titulos.jsx":43,"react":211}],22:[function(require,module,exports){
 var React = require('react');
 var CeldaTabla = require('../js/celdaTabla.jsx');
 var FilaTabla = require('../js/filaTabla.jsx');
@@ -2837,6 +2858,12 @@ var inventariosCalculoApiRest = function () {
 								porc_comercializadora: function (porc_comercializadora) {
 												this.porc_comercializadora = porc_comercializadora;
 								},
+								kilogramos: function (kilogramos) {
+												this.kilogramos = kilogramos;
+								},
+								libras: function (libras) {
+												this.libras = libras;
+								},
 								initialize: function () {
 												this.cdu_pais = '0010000';
 												this.precio_tonelada_dolar = '0';
@@ -2846,6 +2873,8 @@ var inventariosCalculoApiRest = function () {
 												this.precio_dolar = '18.03';
 												this.factor_impuesto = '2.13';
 												this.porc_comercializadora = '4';
+												this.kilogramos = '0';
+												this.libras = '0';
 								},
 								obtenerCalculos: function (funcion_exito, funcion_error) {
 												var valores = '?cdu_pais=' + this.cdu_pais;
@@ -2859,6 +2888,15 @@ var inventariosCalculoApiRest = function () {
 												valores = valores + '&porc_comercializadora=' + this.porc_comercializadora;
 
 												var ruta = 'inventarios/calculo_precios/';
+												ruta = ruta + valores;
+												this.funcionCalculos(ruta, funcion_exito, funcion_error);
+								},
+								convertirValores: function (funcion_exito, funcion_error) {
+												var valores = '?pais=' + this.cdu_pais;
+												valores = valores + '&kilogramo=' + this.kilogramo;
+												valores = valores + '&libra=' + this.libra;
+
+												var ruta = 'inventarios/conversor/';
 												ruta = ruta + valores;
 												this.funcionCalculos(ruta, funcion_exito, funcion_error);
 								},
