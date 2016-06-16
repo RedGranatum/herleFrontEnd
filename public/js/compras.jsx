@@ -37,7 +37,7 @@ module.exports = React.createClass({
 							console.log("Date changed: ", e.target.value);
 						});
 
-	  this.CompTablaDetalles = ReactDOM.render(<Tabla key="axs"  id="ComprasTablaDetalles" listado={[]} id_compra= {-1} />, document.getElementById("ampliar_tabla"));
+	  this.CompTablaDetalles = ReactDOM.render(<Tabla key="axs" pais="0010000"  id="ComprasTablaDetalles" listado={[]} id_compra= {-1} />, document.getElementById("ampliar_tabla"));
 	    
 	},
 	cambiarValorFecha: function(control,valor){
@@ -88,7 +88,7 @@ module.exports = React.createClass({
 				 "errores" :{},
             })	   
         }
-        this.CompTablaDetalles = ReactDOM.render(<Tabla  key="axs" id="ComprasTablaDetalles" listado={nuevaPropiedades.compra_detalles} id_compra= {nuevaPropiedades.id} />, document.getElementById("ampliar_tabla"));
+        this.CompTablaDetalles = ReactDOM.render(<Tabla  key="axs" pais={nuevaPropiedades.proveedor.pais} id="ComprasTablaDetalles" listado={nuevaPropiedades.compra_detalles} id_compra= {nuevaPropiedades.id} />, document.getElementById("ampliar_tabla"));
 	    },
 		onValorCambio: function(campo,valor){
 			var update = {};

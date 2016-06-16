@@ -920,6 +920,7 @@ module.exports = React.createClass({
 
 },{"react":211}],12:[function(require,module,exports){
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
+var ApirestInventarioCalculo = require('../js/modelos/apirestInventarioCalculo');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
 var CajaDeTextoSimple = require('../js/cajaDeTextoSimple.jsx');
 var CeldaTabla = require('../js/celdaTabla.jsx');
@@ -1017,6 +1018,25 @@ module.exports = React.createClass({
 	},
 	onBlurCaja: function (control, valor) {
 		this.validarCampoErrores(control, valor);
+		console.log("aqui se convertiran los valores");
+		if (control === "peso_kg" || control === "peso_lb") {
+			this.calcularKgLb(this.props.pais, this.state.peso_kg, this.state.peso_lb);
+		}
+	},
+	obtenerPais: function () {
+		return this.props.obtenerPais();
+	},
+	calcularKgLb: function (pais, kg, lb) {
+		var self = this;
+		var invCal = new ApirestInventarioCalculo();
+
+		invCal.cdu_pais = pais;
+		invCal.libra = lb;
+		invCal.kilogramo = kg;
+
+		invCal.convertirValores(function (data) {
+			self.setState({ peso_lb: data.libra, peso_kg: data.kilogramo });
+		}, function (model, response, options) {});
 	},
 	getInitialState: function () {
 		return this.valoresDefecto();
@@ -1024,7 +1044,8 @@ module.exports = React.createClass({
 	getDefaultProps: function () {
 		return {
 			primera: false,
-			titulo: false
+			titulo: false,
+			pais: "0010000"
 		};
 	},
 	valoresDefecto: function () {
@@ -1117,7 +1138,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":6,"../js/cajaDeTextoSimple.jsx":7,"../js/celdaTabla.jsx":8,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/iconoTabla.jsx":17,"../js/modelos/apirestCatalogos":27,"../js/opcionCombo.jsx":38,"react":211,"react-dom":55}],13:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/cajaDeTextoSimple.jsx":7,"../js/celdaTabla.jsx":8,"../js/combo.jsx":10,"../js/funcionesGenericas":16,"../js/iconoTabla.jsx":17,"../js/modelos/apirestCatalogos":27,"../js/modelos/apirestInventarioCalculo":31,"../js/opcionCombo.jsx":38,"react":211,"react-dom":55}],13:[function(require,module,exports){
 var $ = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -1154,7 +1175,7 @@ module.exports = React.createClass({
 			console.log("Date changed: ", e.target.value);
 		});
 
-		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', id: 'ComprasTablaDetalles', listado: [], id_compra: -1 }), document.getElementById("ampliar_tabla"));
+		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', pais: '0010000', id: 'ComprasTablaDetalles', listado: [], id_compra: -1 }), document.getElementById("ampliar_tabla"));
 	},
 	cambiarValorFecha: function (control, valor) {
 		var update = {};
@@ -1200,7 +1221,7 @@ module.exports = React.createClass({
 				"errores": {}
 			});
 		}
-		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', id: 'ComprasTablaDetalles', listado: nuevaPropiedades.compra_detalles, id_compra: nuevaPropiedades.id }), document.getElementById("ampliar_tabla"));
+		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', pais: nuevaPropiedades.proveedor.pais, id: 'ComprasTablaDetalles', listado: nuevaPropiedades.compra_detalles, id_compra: nuevaPropiedades.id }), document.getElementById("ampliar_tabla"));
 	},
 	onValorCambio: function (campo, valor) {
 		var update = {};

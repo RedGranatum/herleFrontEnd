@@ -1,4 +1,5 @@
 var ApiRestCatalogo   = require('../js/modelos/apirestCatalogos');
+var ApirestInventarioCalculo   = require('../js/modelos/apirestInventarioCalculo');
 var CajaDeTexto 	  = require('../js/cajaDeTexto.jsx');
 var CajaDeTextoSimple = require('../js/cajaDeTextoSimple.jsx');
 var CeldaTabla        = require('../js/celdaTabla.jsx');
@@ -100,10 +101,32 @@ module.exports = React.createClass({
 			}
 		
 	 	   this.setState({errores: nuevos_errores});
-		},
+	},
 		onBlurCaja: function(control,valor){  				
-  			this.validarCampoErrores(control,valor);		  			
+  			this.validarCampoErrores(control,valor);	
+  			console.log("aqui se convertiran los valores")	
+  			if(control==="peso_kg" || control==="peso_lb"){
+				this.calcularKgLb(this.props.pais,this.state.peso_kg,this.state.peso_lb)
+			}  			
   		},
+  		obtenerPais: function(){
+  			return this.props.obtenerPais();
+  		},
+  		calcularKgLb: function(pais,kg,lb){
+	   	var self = this;
+	   	var invCal = new ApirestInventarioCalculo();
+	  
+	   	invCal.cdu_pais = pais;
+   		invCal.libra = lb; 
+   		invCal.kilogramo = kg; 
+
+	   invCal.convertirValores( 
+    		function(data){
+        		self.setState({peso_lb: data.libra, peso_kg: data.kilogramo }) 
+            },
+        	function(model,response,options){        		
+            });
+ 		},
 	 	getInitialState: function(){
 			return this.valoresDefecto();
 			
@@ -112,6 +135,7 @@ module.exports = React.createClass({
 			return{
 				primera: false,
 				titulo:  false,
+				pais: "0010000"
 			};
 		},
 		valoresDefecto: function(){
