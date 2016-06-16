@@ -1,4 +1,5 @@
-var React       = require('react');
+var React       	  = require('react');
+var $                 = require('jquery');
 var FuncGenericas     = require('../js/funcionesGenericas');
 var InventarioParam   = require('../js/inventarioParametros.jsx');
 var CajaDeTexto 	  = require('../js/cajaDeTexto.jsx');
@@ -8,6 +9,7 @@ var AreaTexto         = require('../js/areaTexto.jsx');
 var CajaConCampos     = require('../js/cajaConCampos.jsx');
 var InventarioLista   = require('../js/inventarioListadoProductos.jsx');
 var InventarioDetalle = require('../js/inventarioDetalleProducto.jsx');
+var ApiRestInventario = require('../js/modelos/apirestInventarios.js');
 
 module.exports = React.createClass({
 
@@ -75,6 +77,27 @@ buscarDetalleEnFila: function(pk_detalle){
   });
 	return detalle;
 },
+onGuardar: function(datos_parametros)
+{
+	datos_cabecero = {"descripcion":this.state.descripcion,"comentarios":this.state.comentarios}
+	var datos_producto = this.refs.InventarioPorDetalleProducto.datosGuardar(); 
+	var datos_guardar = Object.assign(datos_producto, datos_parametros, datos_cabecero)
+	datos_guardar["pais"] = this.state.pais;
+	datos_guardar["id"] = -1;
+
+    var inventario = new ApiRestInventario();
+ 
+	inventario.Guardar(datos_guardar,
+        function(datos,response){
+            $("#notify_success").text("Los datos fueron modificados con exito");
+            $("#notify_success").notify();
+        },
+        function(model,response,options){
+               $("#notify_error").text(response.responseText);
+               $("#notify_error").notify();
+        });
+    console.log("Vas a guardar el detalle del inventario");              
+},
  render: function () {  
 	func = new FuncGenericas();
 	var dic1 =         			            ["id",      "titulo", "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
@@ -106,8 +129,8 @@ buscarDetalleEnFila: function(pk_detalle){
 			<br />
 			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
-		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte}/>
-		<InventarioParam  pais={this.state.pais} conComercializadora={this.state.tentrada}/>
+		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte} ref="InventarioPorDetalleProducto"/>
+		<InventarioParam  pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/>
 		
 	</div>
 		);  

@@ -76,6 +76,15 @@ mostrarContenedores: function(){
 	this.estilo_eu_sin_comer = this.props.pais ==="0010001" && this.props.conComercializadora ==="False" ? 'block' : 'none';		   	
 
 },
+onGuardar: function(){
+    var impuesto = this.props.pais === "0010002" ? this.state.impuesto_china : this.state.impuesto;
+
+	datos_parametros = {"precio_libra":this.state.precio_libra,"factor":this.state.factor,"precio_dolar":this.state.precio_dolar,
+				"precio_tonelada_dolar":this.state.precio_tonelada_dolar,"factor_impuesto":impuesto,"con_comercializadora":this.props.conComercializadora,
+				"porc_comercializadora":this.state.porc_comercializadora}
+	
+	this.props.onGuardar(datos_parametros);	
+},
 render: function () {
 	this.mostrarContenedores();
 
@@ -124,6 +133,7 @@ render: function () {
 							precio_tonelada_dolar ={this.state.precio_tonelada_dolar}
 							con_comercializadora ={this.props.conComercializadora}
 							actualizar_calculos = {this.actualizar_calculos }
+							onGuardar = {this.onGuardar}
 	      				  />
 		</article>
 			);  

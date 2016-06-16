@@ -64,11 +64,15 @@ calcularFormula: function(){
             }
     );
  },
+ onGuardar: function(){
+ 	console.log("guardara los parametros");
+ 	this.props.onGuardar();
+ },
 render: function () {
 	return (
 			<div className="formula">
 				<figure className="formula_foto">
-					<button><p><img src="images/guardar.png" /></p></button>
+					<button  onClick={this.onGuardar}><p><img src="images/guardar.png" /></p></button>
 				</figure>
 				<div className="formula_datos">
 					<h3>Kilo en dolar: {this.state.kilo_en_dolar}</h3>

@@ -1,5 +1,6 @@
 var Backbone      = require('backbone');
 var ColeccionInv  =  require('../modelos/coleccionBase');
+var ModeloBase =  require('../modelos/modeloBase');
 
 var inventariosApiRest =function(){
 	return{
@@ -57,6 +58,30 @@ var inventariosApiRest =function(){
                 }); 
 
 		},
+    ruta_insertar: function(){
+        return 'inventarios/';
+     },
+     Guardar: function(datos,funcion_exito,funcion_error){
+      var inventarios = new ModeloBase();
+      inventarios.set(datos);
+      var operacion =''
+      if (datos.id===-1){
+        inventarios.asignarRuta(this.ruta_insertar());
+        operacion = 'POST';
+      } 
+      if(datos.id > 0){
+        return;
+      } 
+      inventarios.save(null,{
+        type: operacion,
+        success: function(datos,response){
+           funcion_exito(datos.toJSON(),response);
+        },
+        error: function(model,response,options){
+           funcion_error(model,response,options);
+        }
+      })
+    }
 };
 }
 		
