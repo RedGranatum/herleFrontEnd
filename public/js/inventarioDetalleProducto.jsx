@@ -58,6 +58,13 @@ llenarCombos: function(){
 		var largo = [{cdu_catalogo: "0",descripcion1: "0"},{cdu_catalogo: "10",descripcion1: "10"},{cdu_catalogo: "12",descripcion1: "12"}]
 		this.Largos = func.llenarComboGenerico(largo);
 },
+datosGuardar: function(){
+	datos_producto = {"compra_detalle":this.state.id,"material":this.state.material,"calibre":this.state.calibre,
+			"ancho":this.state.ancho,"largo":this.state.largo,"num_rollo":this.state.num_rollo,
+			"peso_kg":this.state.peso_kg,"peso_lb":this.state.peso_lb,"transporte":this.state.transporte,
+			}
+	return datos_producto;
+},
 render: function () {
     func = new FuncGenericas();
     var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
@@ -82,10 +89,7 @@ render: function () {
 				<CajaDeTexto propiedades = {ANCHO} ref="cajaAncho"/>
 				<Combo 		 propiedades = {LARGO}   ref="ComboLargo"/>	
 			</CajaConCampos>
-			<CodigoProducto  rango={this.state.rango} material={this.state.material} ancho={this.state.ancho} largo={this.state.largo} />
-			<div className="titulo_resalta">
-				{this.state.codigo_producto}
-			</div>
+			<CodigoProducto  calibre={this.state.calibre} material={this.state.material} ancho={this.state.ancho} largo={this.state.largo} />
 			<br />
 			<Titulo titulo='Rollo' />
 			<CajaConCampos >

@@ -5,7 +5,7 @@ module.exports = React.createClass({
 
 getDefaultProps: function(){
 	return{
-		rango: '0',
+		calibre: '0',
 		material : '',
 		ancho: '0',
 		largo: '0',
@@ -17,12 +17,12 @@ getInitialState: function(){
 		}
 },
 componentWillReceiveProps: function(nextProps) {
-	this.calcularCodigoDelProducto(nextProps.rango,nextProps.material,nextProps.ancho,nextProps.largo)
+	this.calcularCodigoDelProducto(nextProps.calibre,nextProps.material,nextProps.ancho,nextProps.largo)
  },
-calcularCodigoDelProducto: function(rango,material,ancho,largo){
+calcularCodigoDelProducto: function(calibre,material,ancho,largo){
    var self = this;
    var inv = new ApiRestInventario();
-   inv.rango 		= rango;
+   inv.rango 		= calibre;
    inv.cdu_material = material;
    inv.ancho  		= ancho;
    inv.largo        = largo;
