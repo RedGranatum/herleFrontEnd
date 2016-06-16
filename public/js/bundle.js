@@ -261,7 +261,7 @@ module.exports = React.createClass({
     }
   },
   mostrar_ocultar_Formulario: function (menu) {
-    var estilo = 'inline-block';
+    var estilo = 'inline';
     if (menu === appmvc.Menu.COMPRAS) {
       estilo = 'inline';
     }
@@ -1756,7 +1756,7 @@ module.exports = React.createClass({
 		return detalle;
 	},
 	onGuardar: function (datos_parametros) {
-		datos_cabecero = { "descripcion": this.state.descripcion, "comentarios": this.state.comentarios };
+		datos_cabecero = { "invoice_compra": this.state.invoice, "descripcion": this.state.descripcion, "comentarios": this.state.comentarios };
 		var datos_producto = this.refs.InventarioPorDetalleProducto.datosGuardar();
 		var datos_guardar = Object.assign(datos_producto, datos_parametros, datos_cabecero);
 		datos_guardar["pais"] = this.state.pais;
@@ -1783,12 +1783,14 @@ module.exports = React.createClass({
 		var PAIS = func.zipCol(dic2, ["pais", "Origen producto", this.Paises, this.state.pais, this.onValorCambio]);
 		var TENTRADA = func.zipCol(dic2, ["tentrada", "Tipo de entrada", this.TipoEntrada, this.state.tentrada, this.onValorCambio]);
 
+		var estilo = this.state.id >= 1 ? { display: 'inline-block' } : { display: 'none' };
+
 		return React.createElement(
 			'div',
 			null,
 			React.createElement(
 				'article',
-				{ className: 'bloque' },
+				{ className: 'bloque', style: estilo },
 				React.createElement(Titulo, { titulo: 'Invoice' }),
 				React.createElement(
 					CajaConCampos,
@@ -1822,7 +1824,7 @@ module.exports = React.createClass({
 				React.createElement(InventarioLista, { listado_compra: this.state.listado_compra, onSeleccionFila: this.onSeleccionFila })
 			),
 			React.createElement(InventarioDetalle, { detalle_compra: this.state.detalle_compra, transporte: this.state.transporte, ref: 'InventarioPorDetalleProducto' }),
-			React.createElement(InventarioParam, { pais: this.state.pais, conComercializadora: this.state.tentrada, onGuardar: this.onGuardar })
+			this.state.id >= 1 ? React.createElement(InventarioParam, { pais: this.state.pais, conComercializadora: this.state.tentrada, onGuardar: this.onGuardar }) : ''
 		);
 	}
 });
@@ -2069,10 +2071,12 @@ module.exports = React.createClass({
 		var MATERIAL = func.zipCol(dic2, ["material", "Material", this.Materiales, this.state.material, this.onValorCambio]);
 		var LARGO = func.zipCol(dic2, ["largo", "Largo", this.Largos, this.state.largo, this.onValorCambio]);
 
+		var estilo = this.state.id >= 1 ? { display: 'inline-block' } : { display: 'none' };
+
 		return React.createElement(
 			'article',
-			{ className: 'bloque' },
-			React.createElement(Titulo, { titulo: 'Producto' }),
+			{ className: 'bloque', style: estilo },
+			React.createElement(Titulo, { titulo: 'Producto', clase: 'resaltar_titulo_caja' }),
 			React.createElement(
 				CajaConCampos,
 				null,
@@ -2083,7 +2087,7 @@ module.exports = React.createClass({
 			),
 			React.createElement(CodigoProducto, { calibre: this.state.calibre, material: this.state.material, ancho: this.state.ancho, largo: this.state.largo }),
 			React.createElement('br', null),
-			React.createElement(Titulo, { titulo: 'Rollo' }),
+			React.createElement(Titulo, { titulo: 'Rollo', clase: 'resaltar_titulo_caja' }),
 			React.createElement(
 				CajaConCampos,
 				null,
@@ -2126,7 +2130,7 @@ module.exports = React.createClass({
 		var self = this;
 		var estilo = { cursor: "pointer" };
 
-		var titulosEncabezado = ["Catalogo Mat.", "Dsc Material", "Calibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
+		var titulosEncabezado = ["Id", "Catalogo Mat.", "Dsc Material", "Calibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
 
 		var encabezado = titulosEncabezado.map(function (titulo) {
 			return React.createElement(CeldaTabla, { key: titulo, contenido: titulo });
@@ -2136,6 +2140,7 @@ module.exports = React.createClass({
 		var i = 1;
 		this.props.listado_compra.forEach(function (resultado) {
 			var detalle = [];
+			detalle.push(React.createElement(CeldaTabla, { contenido: resultado.id, key: 'id' }));
 			detalle.push(React.createElement(CeldaTabla, { contenido: resultado.material.descripcion1, key: 'descripcion1' }));
 			detalle.push(React.createElement(CeldaTabla, { contenido: resultado.dsc_material, key: 'dsc_material' }));
 			detalle.push(React.createElement(CeldaTabla, { contenido: resultado.calibre, key: 'calibre' }));
@@ -2268,7 +2273,7 @@ module.exports = React.createClass({
 		return React.createElement(
 			'article',
 			{ className: 'bloque' },
-			React.createElement(Titulo, { titulo: 'DOLAR', clase: 'resaltar_titulo_caja_f' }),
+			React.createElement(Titulo, { titulo: 'Dolar', clase: 'resaltar_titulo_caja_f' }),
 			React.createElement(
 				CajaConCampos,
 				{ clase: 'resaltar_caja_bloque' },
@@ -2485,6 +2490,8 @@ module.exports = React.createClass({
     var rutaGuardar = this.props.formActivo.toLowerCase() + "/guardar";
     var rutaEliminar = this.props.formActivo.toLowerCase() + "/eliminar";
 
+    var estilo = this.props.formActivo.trim() !== appmvc.Menu.INVENTARIOS ? { display: 'inline-block' } : { display: 'none' };
+
     return React.createElement(
       'div',
       null,
@@ -2503,7 +2510,7 @@ module.exports = React.createClass({
         { className: 'caja_acciones' },
         React.createElement(
           'ul',
-          { className: 'menu_acciones' },
+          { className: 'menu_acciones', style: estilo },
           React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "file", tam: "2x", ruta: rutaNuevo }),
           React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "remove", tam: "2x", ruta: rutaEliminar }),
           React.createElement(BotonMenu, { colorLink: "ico_acciones", icono: "save", tam: "2x", ruta: rutaGuardar })

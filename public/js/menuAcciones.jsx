@@ -85,7 +85,7 @@ module.exports = React.createClass({
         var rutaGuardar = this.props.formActivo.toLowerCase() + "/guardar";  
         var rutaEliminar = this.props.formActivo.toLowerCase() + "/eliminar";  
         
-              
+      var estilo = (this.props.formActivo.trim() !== appmvc.Menu.INVENTARIOS) ? { display: 'inline-block'} : {display: 'none'} ;
   
     return (
 <div>
@@ -97,8 +97,8 @@ module.exports = React.createClass({
       {resultadosBusqueda}
     
   </div>   
-	<div className="caja_acciones">
-		<ul className="menu_acciones">
+	<div className="caja_acciones" >
+		<ul className="menu_acciones" style={estilo}>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"file"} tam={"2x"} ruta= {rutaNuevo}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"remove"} tam={"2x"} ruta={rutaEliminar}/>
 		    <BotonMenu colorLink={"ico_acciones"} icono={"save"} tam={"2x"} ruta={rutaGuardar}/>

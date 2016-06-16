@@ -79,10 +79,11 @@ render: function () {
    	var MATERIAL     = func.zipCol(dic2,["material",     "Material",    this.Materiales,  this.state.material,    this.onValorCambio]);
     var LARGO        = func.zipCol(dic2,["largo",     "Largo",    this.Largos,  this.state.largo,    this.onValorCambio]);
 
+	var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
 
       return (
-		<article className="bloque">	
-			<Titulo titulo='Producto' />
+		<article className="bloque" style={estilo}>	
+			<Titulo titulo='Producto' clase ="resaltar_titulo_caja" />
 			<CajaConCampos >
 				<Combo 		 propiedades = {MATERIAL}   ref="ComboMaterial" key="Material" />	
 				<CajaDeTexto propiedades = {CALIBRE} ref="cajaCalibre"/>
@@ -91,7 +92,7 @@ render: function () {
 			</CajaConCampos>
 			<CodigoProducto  calibre={this.state.calibre} material={this.state.material} ancho={this.state.ancho} largo={this.state.largo} />
 			<br />
-			<Titulo titulo='Rollo' />
+			<Titulo titulo='Rollo' clase ="resaltar_titulo_caja" />
 			<CajaConCampos >
 				<CajaDeTexto propiedades = {NUM_ROLLO} ref="cajaNumRollo"/>
 				<CajaDeTexto propiedades = {PESO_KG} ref="cajaPesKg"/>

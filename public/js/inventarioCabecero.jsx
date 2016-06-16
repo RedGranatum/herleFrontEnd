@@ -79,7 +79,7 @@ buscarDetalleEnFila: function(pk_detalle){
 },
 onGuardar: function(datos_parametros)
 {
-	datos_cabecero = {"descripcion":this.state.descripcion,"comentarios":this.state.comentarios}
+	datos_cabecero = {"invoice_compra": this.state.invoice,"descripcion":this.state.descripcion,"comentarios":this.state.comentarios}
 	var datos_producto = this.refs.InventarioPorDetalleProducto.datosGuardar(); 
 	var datos_guardar = Object.assign(datos_producto, datos_parametros, datos_cabecero)
 	datos_guardar["pais"] = this.state.pais;
@@ -108,9 +108,11 @@ onGuardar: function(datos_parametros)
 	var PAIS 	 = func.zipCol(dic2,["pais",     "Origen producto",    this.Paises,       this.state.pais,        this.onValorCambio]);
 	var TENTRADA = func.zipCol(dic2,["tentrada", "Tipo de entrada",    this.TipoEntrada,  this.state.tentrada,    this.onValorCambio]);
 
+ 	var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
+
  return (
- 	<div >
-		<article className="bloque">			
+ 	<div>
+		<article className="bloque" style ={estilo} >			
 			<Titulo titulo='Invoice' />
 			<CajaConCampos >
 				<li className="li_bloque">
@@ -130,7 +132,7 @@ onGuardar: function(datos_parametros)
 			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
 		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte} ref="InventarioPorDetalleProducto"/>
-		<InventarioParam  pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/>
+		{this.state.id>=1 ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : ''}
 		
 	</div>
 		);  

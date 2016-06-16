@@ -100,7 +100,7 @@ render: function () {
    
       return (
       	<article className="bloque">
-			<Titulo titulo='DOLAR' clase='resaltar_titulo_caja_f' />			
+			<Titulo titulo='Dolar' clase='resaltar_titulo_caja_f' />			
       		<CajaConCampos clase="resaltar_caja_bloque" >
       		<CajaDeTexto propiedades = {PRECIO_DOLAR} ref="cajaPrecioDolar"/>
       		</CajaConCampos>

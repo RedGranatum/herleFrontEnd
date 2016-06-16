@@ -291,7 +291,7 @@ module.exports = React.createClass({
                  }                                                                                           
 		},
 		mostrar_ocultar_Formulario: function(menu){
-      var estilo = 'inline-block';
+      var estilo = 'inline';
       if(menu === appmvc.Menu.COMPRAS){
        estilo = 'inline';
       }
