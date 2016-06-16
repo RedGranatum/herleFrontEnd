@@ -19,6 +19,7 @@
 	<!-- para calendario -->
 	<script src="js/jquery-ui-1.11.4.custom/jquery-ui.js" type="text/javascript"></script>
 	<script src="js/calendario.js" type="text/javascript"></script>
+	<script src="js/seleccion_tabla.js" type="text/javascript"></script>
 	<!-- js-termina -->
 </head>
 <body>
@@ -28,7 +29,7 @@
 		<p>Descripción de información adicional</p>
 	</div>
 	<div class="error message" id="notify_error">
-		<h3>Oops, un error ha ocurrid</h3>
+		<h3>Oops, un error ha ocurrido</h3>
 		<p>Descripción del error</p>
 	</div>
 	<div class="warning message" id="notify_warning">
@@ -54,36 +55,50 @@
 			<li class="li_menu"><a class="ico_logout" href="" title="Cerrar Sesión"><i class="fa fa-sign-out fa-2x"></i></a></li>
 		</ul>
 	</nav>
-	<div class="caja_busqueda">
-		<ul class="menu_busqueda">
-			<li><input type="text" placeholder="Código del producto..." class="buscar"/></li>
-		</ul>
-		<div class="bloque_resultados">
-			<div class="resultado">
-				<span class="dsc_resultado">Resultado A</span>
-			</div>
-			<div class="resultado">
-				<span class="dsc_resultado">Resultado B</span>
-			</div>
-			<div class="resultado">
-				<span class="dsc_resultado">Resultado C</span>
-			</div>
-			<div class="resultado">
-				<span class="dsc_resultado">Resultado D</span>
-			</div>
-		</div>
-	</div>
 	<div class="caja_acciones">
 		<ul class="menu_acciones">
-			<li><a class="ico_acciones" href="#" title="Nuevo"><i class="fa fa-file fa-2x"></i></a></li>
+			<li><a class="ico_acciones" href="#" title="Exportar datos a Excel"><i class="fa fa-file-excel-o fa-2x"></i></a></li>
 		</ul>
 	</div>
-	<section class="ventanas">
-		<div class="ventana">
-			<h2>1</h2>
-			<h3>2</h3>
-			<h4>3</h4>
-		</div>
+	<section class="contenido">
+		<article class="caja_lista_reporte">
+			<div class="lista_reporte">
+				<a href="#" class="lnk_reporte">
+					<div class="div_reporte">Inventario</div>
+				</a>
+				<a href="#" class="lnk_reporte">
+					<div class="div_reporte">Otros</div>
+				</a>
+			</div>
+		</article>
+		<article class="bloque">
+			<div class="caja_bloque">
+				<div class="bloque_catalogo" id="ampliar_tabla">
+					<table class="tabla_catalogo">
+						<tr>
+							<td>Columna A</td>
+							<td>Columna B</td>
+							<td>Columna C</td>
+						</tr>
+						<tr>
+							<td>Renglón A Col A</td>
+							<td>Renglón A Col B</td>
+							<td>Renglón A Col C</td>
+						</tr>
+						<tr>
+							<td>Renglón B Col A</td>
+							<td>Renglón B Col B</td>
+							<td>Renglón B Col C</td>
+						</tr>
+						<tr>
+							<td>Renglón C Col A</td>
+							<td>Renglón C Col B</td>
+							<td>Renglón C Col C</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</article>
 	</section>
 	<footer>
 	</footer>
