@@ -33,6 +33,7 @@ componentWillMount: function() {
 },
 componentWillReceiveProps: function(nextProps) {
 	  var det = nextProps.detalle_compra;
+
 	  if(det.id !== undefined){
 	  	this.setState({ id: det.id,
 	  					material: det.material.cdu_catalogo,
@@ -79,10 +80,10 @@ render: function () {
    	var MATERIAL     = func.zipCol(dic2,["material",     "Material",    this.Materiales,  this.state.material,    this.onValorCambio]);
     var LARGO        = func.zipCol(dic2,["largo",     "Largo",    this.Largos,  this.state.largo,    this.onValorCambio]);
 
-	var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
-
+	//var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
+    
       return (
-		<article className="bloque" style={estilo}>	
+		<article className="bloque" style={this.props.estilo} >	
 			<Titulo titulo='Producto' clase ="resaltar_titulo_caja" />
 			<CajaConCampos >
 				<Combo 		 propiedades = {MATERIAL}   ref="ComboMaterial" key="Material" />	

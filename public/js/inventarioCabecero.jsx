@@ -12,18 +12,37 @@ var InventarioDetalle = require('../js/inventarioDetalleProducto.jsx');
 var ApiRestInventario = require('../js/modelos/apirestInventarios.js');
 
 module.exports = React.createClass({
-
+seleccionarPrimeraFila: function(listado){
+		var detalle = {}
+	   if(listado.length > 0){
+            detalle = listado[0]; 	       	
+        }
+        return detalle;
+},
+filtrarFilasSinValidar: function(listado)
+{
+	var lista_nueva = []
+	var lista_nueva = listado.filter(function(detalle_compra) {        		
+        		return (detalle_compra.validado === false)
+        });
+	return lista_nueva;
+        	
+},
 componentWillReceiveProps: function(nextProps) {
 
  	if(nextProps.datos.id !== undefined){
+ 		var lista_nueva = this.filtrarFilasSinValidar(nextProps.datos.compra_detalles)
+        var detalle = this.seleccionarPrimeraFila(lista_nueva)     
+
  		this.setState({
  					   id :     	nextProps.datos.id,	
  					   invoice:     nextProps.datos.invoice,
  					   pais:   	    nextProps.datos.proveedor.pais,
  					   comentarios: nextProps.datos.comentarios,
  					   descripcion: nextProps.datos.descripcion,
- 					   listado_compra: nextProps.datos.compra_detalles,
+ 					   listado_compra: lista_nueva,
  					   transporte:  nextProps.datos.transporte,
+ 					   detalle_compra: detalle,
  					});
 
  	}
@@ -79,6 +98,7 @@ buscarDetalleEnFila: function(pk_detalle){
 },
 onGuardar: function(datos_parametros)
 {
+	var self = this;
 	datos_cabecero = {"invoice_compra": this.state.invoice,"descripcion":this.state.descripcion,"comentarios":this.state.comentarios}
 	var datos_producto = this.refs.InventarioPorDetalleProducto.datosGuardar(); 
 	var datos_guardar = Object.assign(datos_producto, datos_parametros, datos_cabecero)
@@ -88,7 +108,16 @@ onGuardar: function(datos_parametros)
     var inventario = new ApiRestInventario();
  
 	inventario.Guardar(datos_guardar,
-        function(datos,response){
+        function(datos,response){        	
+        	
+        	lista_nueva = self.state.listado_compra.filter(function(detalle_compra) {        		
+        		return (detalle_compra.id !== response.compra_detalle)
+        	});
+        	
+        	//var detalle = this.seleccionarPrimeraFila(lista_nueva)
+        	
+        	self.setState({listado_compra: lista_nueva});
+
             $("#notify_success").text("Los datos fueron modificados con exito");
             $("#notify_success").notify();
         },
@@ -108,10 +137,11 @@ onGuardar: function(datos_parametros)
 	var PAIS 	 = func.zipCol(dic2,["pais",     "Origen producto",    this.Paises,       this.state.pais,        this.onValorCambio]);
 	var TENTRADA = func.zipCol(dic2,["tentrada", "Tipo de entrada",    this.TipoEntrada,  this.state.tentrada,    this.onValorCambio]);
 
- 	var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
+    var mostrar =   (this.state.id >= 1 && this.state.listado_compra.length>0 );
+ 	var estilo = (mostrar) ? { display: 'inline-block'} : {display: 'none'} ;
 
  return (
- 	<div>
+ 	<div >
 		<article className="bloque" style ={estilo} >			
 			<Titulo titulo='Invoice' />
 			<CajaConCampos >
@@ -131,8 +161,8 @@ onGuardar: function(datos_parametros)
 			<br />
 			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
-		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte} ref="InventarioPorDetalleProducto"/>
-		{this.state.id>=1 ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : ''}
+		<InventarioDetalle detalle_compra={this.state.detalle_compra}  transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
+		{mostrar ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
 		
 	</div>
 		);  
