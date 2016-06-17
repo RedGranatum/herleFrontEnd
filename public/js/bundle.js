@@ -1877,6 +1877,20 @@ module.exports = React.createClass({
 		var mostrar = this.state.id >= 1 && this.state.listado_compra.length > 0;
 		var estilo = mostrar ? { display: 'inline-block' } : { display: 'none' };
 
+		var mensaje_inventariado = this.state.id >= 1 && this.state.listado_compra.length === 0 ? React.createElement(
+			'div',
+			{ className: 'caja_mensaje_solo', style: { display: 'inline-block' } },
+			React.createElement(
+				'div',
+				{ className: 'mensaje_solo' },
+				React.createElement(
+					'h1',
+					null,
+					'ESTE INVOICE YA SE ENCUENTRA INVENTARIADO'
+				)
+			)
+		) : '';
+
 		return React.createElement(
 			'div',
 			null,
@@ -1903,7 +1917,8 @@ module.exports = React.createClass({
 				React.createElement(InventarioLista, { listado_compra: this.state.listado_compra, onSeleccionFila: this.onSeleccionFila })
 			),
 			React.createElement(InventarioDetalle, { detalle_compra: this.state.detalle_compra, pais: this.state.pais, transporte: this.state.transporte, ref: 'InventarioPorDetalleProducto', estilo: estilo }),
-			mostrar ? React.createElement(InventarioParam, { pais: this.state.pais, conComercializadora: this.state.tentrada, onGuardar: this.onGuardar }) : ''
+			mostrar ? React.createElement(InventarioParam, { pais: this.state.pais, conComercializadora: this.state.tentrada, onGuardar: this.onGuardar }) : '',
+			mensaje_inventariado
 		);
 	}
 });

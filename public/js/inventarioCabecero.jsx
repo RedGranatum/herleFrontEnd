@@ -139,6 +139,14 @@ onGuardar: function(datos_parametros)
 
     var mostrar =   (this.state.id >= 1 && this.state.listado_compra.length>0 );
  	var estilo = (mostrar) ? { display: 'inline-block'} : {display: 'none'} ;
+ 
+    var mensaje_inventariado = (this.state.id >= 1 && this.state.listado_compra.length === 0 ) ? 
+    	<div className="caja_mensaje_solo" style ={{ display: 'inline-block'}} >
+			<div className="mensaje_solo">
+				<h1>ESTE INVOICE YA SE ENCUENTRA INVENTARIADO</h1>
+			</div>
+		</div>
+		: '';
 
  return (
  	<div >
@@ -160,7 +168,8 @@ onGuardar: function(datos_parametros)
 		</article>
 		<InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
 		{mostrar ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
-		
+	
+		{mensaje_inventariado}
 	</div>
 		);  
 	}
