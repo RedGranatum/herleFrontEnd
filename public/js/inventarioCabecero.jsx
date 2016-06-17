@@ -7,6 +7,7 @@ var Combo 	    	  = require('../js/combo.jsx');
 var Titulo            = require('../js/titulos.jsx');
 var AreaTexto         = require('../js/areaTexto.jsx');
 var CajaConCampos     = require('../js/cajaConCampos.jsx');
+var EtiquetaTexto     = require('../js/etiquetaDeTexto.jsx');
 var InventarioLista   = require('../js/inventarioListadoProductos.jsx');
 var InventarioDetalle = require('../js/inventarioDetalleProducto.jsx');
 var ApiRestInventario = require('../js/modelos/apirestInventarios.js');
@@ -144,10 +145,7 @@ onGuardar: function(datos_parametros)
 		<article className="bloque" style ={estilo} >			
 			<Titulo titulo='Invoice' />
 			<CajaConCampos >
-				<li className="li_bloque">
-					<label className="etiquetas_bloque" for="invoice">Invoice</label>
-					<label className="etiqueta_especial" for="">{ this.state.invoice}</label>
-				</li>
+				<EtiquetaTexto titulo="Invoice" valor={this.state.invoice} clase="etiqueta_especial" />	
 				<Combo 	propiedades = {PAIS}   ref="ComboPais" key="Pais" />	
 				<Combo 	propiedades = {TENTRADA}  ref="ComboTEntrada" key="TEntrada" />	
 			</CajaConCampos>

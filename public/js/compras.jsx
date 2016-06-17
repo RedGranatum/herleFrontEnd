@@ -4,6 +4,7 @@ var ReactDOM 		= require('react-dom') ;
 var moment 			= require('moment');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
+var EtiquetaTexto   = require('../js/etiquetaDeTexto.jsx');
 var Combo 			= require('../js/combo.jsx');
 var FuncGenericas   = require('../js/funcionesGenericas')
 var OpcionCombo 	= require('../js/opcionCombo.jsx');
@@ -330,8 +331,8 @@ module.exports = React.createClass({
 						 <CajaDeTexto propiedades={PROVEEDOR} mensajeIndicativo={icono_proveedor} />
 						 <CajaDeTexto propiedades={FECHASOLICITUD} ref="cajaFechaSolicitud" />
 						 <CajaDeTexto propiedades={FECHAADUANA} ref="cajaFechaAduana"/>
-						 <CajaDeTexto propiedades={FECHAINVENTARIO}  ref="cajaFechaInventario"/>
-						 <CajaDeTexto propiedades={FECHAREAL} ref="cajaFechaReal" />
+						 <EtiquetaTexto titulo="Fecha Inventario" valor={this.state.fec_inventario} clase="etiqueta_especial" />
+						 <EtiquetaTexto titulo="Fecha Real" valor={this.state.fec_real} clase="etiqueta_especial" />
 						 <CajaDeTexto propiedades={CASADECAMBIO} />
 						 <CajaDeTexto propiedades={PRECIODOLLAR} />
                          

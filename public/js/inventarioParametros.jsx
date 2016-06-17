@@ -71,10 +71,7 @@ onBlurCaja: function(control, valor){
 },
 mostrarContenedores: function(){
    	this.estilo_china = this.props.pais ==="0010002" ? 'block' : 'none';
-
-	this.estilo_eu_con_comer = this.props.pais ==="0010001" && this.props.conComercializadora ==="True" ? 'block' : 'none';		   	
-	this.estilo_eu_sin_comer = this.props.pais ==="0010001" && this.props.conComercializadora ==="False" ? 'block' : 'none';		   	
-
+	this.estilo_eu = this.props.pais	==="0010001" ? 'block' : 'none';
 },
 onGuardar: function(){
     var impuesto = this.props.pais === "0010002" ? this.state.impuesto_china : this.state.impuesto;
@@ -105,18 +102,18 @@ render: function () {
       		<CajaDeTexto propiedades = {PRECIO_DOLAR} ref="cajaPrecioDolar"/>
       		</CajaConCampos>
 			<br />
-      		<Titulo titulo='Sin Comercializadora' clase='resaltar_titulo_caja_f' estilo={this.estilo_eu_sin_comer}  />
-			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu_sin_comer} >
+      		<Titulo titulo='Sin Comercializadora' clase='resaltar_titulo_caja_f' estilo={this.estilo_eu}  />
+			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu} >
 				<CajaDeTexto propiedades = {PRECIO_LIBRA} ref="cajaPrecioLibra"/>
 				<CajaDeTexto propiedades = {FACTOR} ref="cajaFactor"/>
 				<CajaDeTexto propiedades = {IMPUESTO} ref="cajaFactorImpuesto" />
 			</CajaConCampos>
-			{this.estilo_eu_sin_comer==='none' ? '' : <br />}
-      		<Titulo titulo='Con Comercializadora' clase='resaltar_titulo_caja_f'  estilo={this.estilo_eu_con_comer} />
-			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu_con_comer}>
+			{this.estilo_eu==='none' ? '' : <br />}
+      		<Titulo titulo='Con Comercializadora' clase='resaltar_titulo_caja_f'  estilo={this.estilo_eu} />
+			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu}>
 				<CajaDeTexto propiedades = {PORC_COMERCIALIZADORA} ref="cajaPorcentajeComerzializadora"/>
 			</CajaConCampos>
-			{this.estilo_eu_con_comer==='none' ? '' : <br />}
+			{this.estilo_eu==='none' ? '' : <br />}
 			<Titulo titulo='China' clase='resaltar_titulo_caja_f'  estilo={this.estilo_china} />
 			<CajaConCampos clase="resaltar_caja_bloque" estilo={this.estilo_china}>
 				<CajaDeTexto propiedades = {PRECIO_TONELADA} ref="cajaPrecioToneladaDolar"/>
