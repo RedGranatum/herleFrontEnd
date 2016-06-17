@@ -1,6 +1,8 @@
 var React=require('react');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
 var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
+var ApiRestExterna  = require('../js/modelos/apirestExternas');
+
 var Titulo          = require('../js/titulos.jsx');
 var CajaConCampos   = require('../js/cajaConCampos.jsx')
 var CajaCalculos    = require('../js/inventarioCalculos.jsx')
@@ -9,6 +11,7 @@ var CajaCalculos    = require('../js/inventarioCalculos.jsx')
 module.exports = React.createClass({
 componentDidMount: function(){
 	this.cargarParametrosCalculo();
+	this.cargarPrecioDolar();
 },
 getDefaultProps: function(){
 	return{
@@ -53,13 +56,23 @@ cargarParametrosCalculo: function(){
         	});
         	self.setState({precio_libra: dicParametros.precio_libra,
         					factor     : dicParametros.factor,
-        					precio_dolar: dicParametros.precio_dolar,
+        					//precio_dolar: dicParametros.precio_dolar,
         					impuesto:     dicParametros.factor_impuesto_eu,
         					porc_comercializadora: dicParametros.porc_comercializadora,
         					precio_tonelada_dolar : dicParametros.precio_tonelada,
         					impuesto_china: dicParametros.factor_impuesto_china
         				})
         });
+ },
+ cargarPrecioDolar: function(){
+ 	var self = this;
+	datosExternos = new  ApiRestExterna();
+    datosExternos.buscarPrecioDolar( 
+    	function(data){
+    		self.setState({precio_dolar:data[0].Rate});
+    	},
+   		 function(model,response, options){
+	    });
  },
 onValorCambio: function(campo,valor){
 	var campos ={};
