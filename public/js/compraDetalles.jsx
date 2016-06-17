@@ -106,19 +106,20 @@ module.exports = React.createClass({
   			this.validarCampoErrores(control,valor);	
   			console.log("aqui se convertiran los valores")	
   			if(control==="peso_kg" || control==="peso_lb"){
-				this.calcularKgLb(this.props.pais,this.state.peso_kg,this.state.peso_lb)
+  				var pais = this.obtenerPais();
+				this.calcularKgLb(pais,this.state.peso_kg,this.state.peso_lb)
 			}  			
   		},
   		obtenerPais: function(){
-  			return this.props.obtenerPais();
+  			var pais = this.props.obtenerPais();
+  			return pais;
   		},
   		calcularKgLb: function(pais,kg,lb){
 	   	var self = this;
 	   	var invCal = new ApirestInventarioCalculo();
-	  
 	   	invCal.cdu_pais = pais;
-   		invCal.libra = lb; 
-   		invCal.kilogramo = kg; 
+   		invCal.libra     =  ((lb >=0 || lb < 0) && lb.trim()!=="") ? lb : 0; 
+   		invCal.kilogramo =  ((kg >=0 || kg < 0) && kg.trim()!=="") ? kg : 0; 
 
 	   invCal.convertirValores( 
     		function(data){
@@ -135,7 +136,6 @@ module.exports = React.createClass({
 			return{
 				primera: false,
 				titulo:  false,
-				pais: "0010000"
 			};
 		},
 		valoresDefecto: function(){

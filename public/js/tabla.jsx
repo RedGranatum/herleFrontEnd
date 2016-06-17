@@ -97,6 +97,9 @@ module.exports = React.createClass({
 			 }
 			}
 	},
+	obtenerPais: function(){
+		return this.props.obtenerPais();
+	},
 	render: function () {
       var self = this;
       var listado_detalles = [];
@@ -105,11 +108,11 @@ module.exports = React.createClass({
        var Titulos ={material:"Cat.Material", dsc_material:"Desc.Materia",calibre:"Calibre",ancho:"Ancho",largo:"Largo",pesokg:"Peso (Kgs)",pesolbs: "Peso (Lbs)", norollo:"No. Rollo",precio:"Precio", icono1:"",icono2:"" }
        var fila_titulo =  <CompraDetalle key={"titulo"} datos ={Titulos} titulo={true} />
 
-	   var fila_insercion =  <CompraDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/>
+	   var fila_insercion =  <CompraDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion} obtenerPais={this.obtenerPais}/>
 
 
        this.state.detalles_lista.forEach(function(detalle_compra){
-            var detalle= <CompraDetalle ref={"detalle_" + detalle_compra.num_consecutivo } key={"xx" + detalle_compra.num_consecutivo} datos ={detalle_compra} clickOperacion={self.clickOperacion} />
+            var detalle= <CompraDetalle ref={"detalle_" + detalle_compra.num_consecutivo } key={"xx" + detalle_compra.num_consecutivo} datos ={detalle_compra} clickOperacion={self.clickOperacion} obtenerPais={self.obtenerPais} />
              listado_detalles.push(detalle);
           });
 

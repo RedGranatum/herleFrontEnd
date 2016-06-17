@@ -37,8 +37,11 @@ module.exports = React.createClass({
 							console.log("Date changed: ", e.target.value);
 						});
 
-	  this.CompTablaDetalles = ReactDOM.render(<Tabla key="axs" pais="0010000"  id="ComprasTablaDetalles" listado={[]} id_compra= {-1} />, document.getElementById("ampliar_tabla"));
+	  this.CompTablaDetalles = ReactDOM.render(<Tabla key="axs" obtenerPais={this.obtenerPais}  id="ComprasTablaDetalles" listado={[]} id_compra= {-1} />, document.getElementById("ampliar_tabla"));
 	    
+	},
+	obtenerPais: function(){
+		return this.state.proveedor_pais;
 	},
 	cambiarValorFecha: function(control,valor){
 			var update = {};
@@ -52,6 +55,7 @@ module.exports = React.createClass({
 	    if(nuevas_props.datos.id !== undefined){
 	    	var proveedor_id     =  nuevaPropiedades.proveedor.id;
 	    	var proveedor_codigo     =  nuevaPropiedades.proveedor.codigo;
+	    	var proveedor_pais     =  nuevaPropiedades.proveedor.pais;
 	    	
         	var proveedor_nombre = "[" + proveedor_codigo + "] " + nuevaPropiedades.proveedor.nombre;
 
@@ -62,6 +66,7 @@ module.exports = React.createClass({
 	       	proveedor_nombre     = nuevaPropiedades.proveedor_nombre;
 	       	proveedor_id   		 = nuevaPropiedades.proveedor_id;
 	        proveedor_codigo     = nuevaPropiedades.proveedor_codigo;
+	        proveedor_pais     =  nuevaPropiedades.proveedor.pais;
 	       	 	
 	     }
 
@@ -72,6 +77,7 @@ module.exports = React.createClass({
             	"invoice"	      : nuevaPropiedades.invoice,
             	"proveedor"       : proveedor_id,
             	"proveedor_codigo": proveedor_codigo,
+            	"proveedor_pais"  : proveedor_pais,
             	"proveedor_nombre": proveedor_nombre,
             	"fec_solicitud"	  : nuevaPropiedades.fec_solicitud,
 		        "fec_aduana"      : nuevaPropiedades.fec_aduana,
@@ -88,7 +94,7 @@ module.exports = React.createClass({
 				 "errores" :{},
             })	   
         }
-        this.CompTablaDetalles = ReactDOM.render(<Tabla  key="axs" pais={nuevaPropiedades.proveedor.pais} id="ComprasTablaDetalles" listado={nuevaPropiedades.compra_detalles} id_compra= {nuevaPropiedades.id} />, document.getElementById("ampliar_tabla"));
+        this.CompTablaDetalles = ReactDOM.render(<Tabla  key="axs" obtenerPais={this.obtenerPais} id="ComprasTablaDetalles" listado={nuevaPropiedades.compra_detalles} id_compra= {nuevaPropiedades.id} />, document.getElementById("ampliar_tabla"));
 	    },
 		onValorCambio: function(campo,valor){
 			var update = {};
@@ -120,6 +126,7 @@ module.exports = React.createClass({
 			        proveedor: "0",
 			        proveedor_nombre: "",
 			        proveedor_codigo: "",
+			        proveedor_pais: "0010000",
 			        fec_solicitud:  moment().format('DD/MM/YYYY'),
 			        fec_aduana: moment().format('DD/MM/YYYY'),
 			        fec_inventario: moment().format('DD/MM/YYYY'),
@@ -158,11 +165,13 @@ module.exports = React.createClass({
       						    var id = data[0].id;
       						    var codigo =  data[0].codigo;
       						    var nombre ="[" + codigo + "] " + data[0].nombre; 
-      			   				self.setState({proveedor: id,proveedor_nombre: nombre,proveedor_codigo:codigo,busqueda_proveedores:[] });
+      						    var pais = data[0].pais
+      						
+      			   				self.setState({proveedor: id,proveedor_nombre: nombre,proveedor_codigo:codigo,proveedor_pais:pais,busqueda_proveedores:[] });
       						     self.validarCampoErrores("proveedor_nombre","223");		
       							},
       					function(model,response,options){
-      						     self.setState({proveedor: "0",proveedor_nombre: "",proveedor_codigo:"",busqueda_proveedores: []  });
+      						     self.setState({proveedor: "0",proveedor_nombre: "",proveedor_codigo:"",proveedor_pais:pais,busqueda_proveedores: []  });
       						     self.validarCampoErrores("proveedor_nombre","");		
       							}
 				    );
@@ -238,7 +247,7 @@ module.exports = React.createClass({
 				{
 					valVal ="";
 					var valdef = this.valoresDefecto();
-					this.setState({proveedor: valdef.proveedor,proveedor_nombre: valdef.proveedor_nombre,proveedor_codigo: valdef.proveedor_codigo })
+					this.setState({proveedor: valdef.proveedor,proveedor_nombre: valdef.proveedor_nombre,proveedor_codigo: valdef.proveedor_codigo,proveedor_pais:valdef.proveedor_pais })
 				}
   			}
 
