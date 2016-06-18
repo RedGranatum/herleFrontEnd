@@ -20,6 +20,7 @@ module.exports = $(function() {
 	}
 
 	$(document).ready(function(){
+		console.log("se carga la notifiacion....")
 		// Initially, hide them all
 		hideAllMessages();
 		// Show message

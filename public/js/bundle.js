@@ -45,20 +45,20 @@ module.exports = React.createClass({
     Page('/', function () {
       self.mostrarMenu('');
 
-      console.log("Estas en el indice");
+      void 0;
     });
 
     Page('/proveedores', function () {
       self.mostrarMenu(appmvc.Menu.PROVEEDORES);
-      console.log("Estas en el menu de proveedores");
+      void 0;
     });
     Page('/proveedores/nuevo', function () {
       self.setState({ actualizarForm: true });
       self.setState({ datosProveedor: [] });
-      console.log("Vas a dar de alta un nuevo proveedor");
+      void 0;
     });
     Page('/proveedores/guardar', function () {
-      console.log("Vas a guardar un proveedor");
+      void 0;
 
       $("#notify_success").text("Los datos fueron modificados con exito");
 
@@ -95,12 +95,12 @@ module.exports = React.createClass({
 
     Page('/clientes', function () {
       self.mostrarMenu(appmvc.Menu.CLIENTES);
-      console.log("menu de clientes");
+      void 0;
     });
     Page('/clientes/nuevo', function () {
       self.setState({ actualizarForm: true });
       self.setState({ datosCliente: [] });
-      console.log("Vas a dar de alta un nuevo cliente");
+      void 0;
     });
     Page('/clientes/guardar', function () {
       if (self.refs[appmvc.Menu.CLIENTES].hayErrores()) {
@@ -136,11 +136,11 @@ module.exports = React.createClass({
 
     Page('/compras', function () {
       self.mostrarMenu(appmvc.Menu.COMPRAS);
-      console.log("menu de compras");
+      void 0;
     });
     Page('/compras/nuevo', function () {
       self.setState({ datosCompra: [], actualizarForm: true });
-      console.log("Vas a dar de alta una nueva compra");
+      void 0;
     });
     Page('/compras/guardar', function () {
       if (self.refs[appmvc.Menu.COMPRAS].hayErrores()) {
@@ -161,7 +161,7 @@ module.exports = React.createClass({
         $("#notify_error").text(response.responseText);
         $("#notify_error").notify();
       });
-      console.log("Vas a guardar la compra");
+      void 0;
     });
     Page('/compras/eliminar', function () {
 
@@ -176,26 +176,26 @@ module.exports = React.createClass({
         $("#notify_error").text(response.responseText);
         $("#notify_error").notify();
       });
-      console.log("Vas a eliminar la compra");
+      void 0;
     });
 
     Page('/inventarios', function () {
       self.mostrarMenu(appmvc.Menu.INVENTARIOS);
-      console.log("menu de inventarios");
+      void 0;
     });
 
     Page('/ventas', function () {
       self.mostrarMenu(appmvc.Menu.VENTAS);
-      console.log("menu de ventas");
+      void 0;
     });
 
     Page('/costos', function () {
       self.mostrarMenu(appmvc.Menu.COSTOS);
-      console.log("menu de costos");
+      void 0;
     });
 
     Page('*', function () {
-      console.log("no conosco la ruta");
+      void 0;
       Page.redirect('/');
       self.mostrarMenu('');
     });
@@ -304,7 +304,7 @@ module.exports = React.createClass({
     }
   },
   llenarCombos: function () {
-    console.log("buscando datos");
+    void 0;
   },
   render: function () {
     this.crearFormulario(appmvc.Menu.PROVEEDORES, React.createElement(Proveedores, { ref: appmvc.Menu.PROVEEDORES, datos: this.state.datosProveedor, onClaveSeleccionada: this.onClaveSeleccionada }));
@@ -440,7 +440,7 @@ module.exports = React.createClass({
 
       handleChange: function (event) {
             if (event.charCode == 13) {
-                  console.log("Estoy buscando: " + this.refs.cajaBusqueda.value);
+                  void 0;
                   this.props.onValorBuscado(this.refs.cajaBusqueda.value);
             }
       },
@@ -638,7 +638,7 @@ module.exports = React.createClass({
 		// Esta lineas es temporal, mientras encuentro porque el estado no se actualiza como los demas campos
 		var combo = ReactDOM.findDOMNode(this.refs.ComboEstados);
 		var b = combo.getElementsByClassName("select_bloque");
-		console.log("estado: " + this.state.estado + "  combo: " + b.estado.value);
+		void 0;
 		datosNuevos["estado"] = b.estado.value;
 		return datosNuevos;
 	},
@@ -737,7 +737,7 @@ module.exports = React.createClass({
 		var self = this;
 		datosCatalogo = new ApiRestCatalogo();
 		datosCatalogo.buscarDetallesPorCduDefault(cdu_pais, this.relacionEstados, function (model, response, options) {
-			console.log("hay errores " + response.statusText);
+			void 0;
 		});
 	},
 	onSeleccionFila: function (id_cliente) {
@@ -875,7 +875,7 @@ module.exports = React.createClass({
      },
      render: function () {
 
-          console.log(this.props.propiedades.id);
+          void 0;
           return React.createElement(
                "li",
                { className: "li_bloque" },
@@ -909,7 +909,7 @@ module.exports = React.createClass({
           this.props.propiedades.onChange(this.props.propiedades.id, valor.target.value);
      },
      render: function () {
-          console.log(this.props.propiedades.id);
+          void 0;
           return React.createElement(
                "select",
                { name: this.props.propiedades.id, className: "select_bloque", value: this.props.propiedades.seleccionado, onChange: this.onChange },
@@ -1018,7 +1018,7 @@ module.exports = React.createClass({
 	},
 	onBlurCaja: function (control, valor) {
 		this.validarCampoErrores(control, valor);
-		console.log("aqui se convertiran los valores");
+		void 0;
 		if (control === "peso_kg" || control === "peso_lb") {
 			var pais = this.obtenerPais();
 			this.calcularKgLb(pais, this.state.peso_kg, this.state.peso_lb);
@@ -1173,7 +1173,7 @@ module.exports = React.createClass({
 		var self = this;
 		$("#fec_solicitud,#fec_aduana,#fec_inventario,#fec_real").datepicker({ dateFormat: "dd/mm/yy" }).on("input change", function (e) {
 			self.cambiarValorFecha(e.target.id, e.target.value);
-			console.log("Date changed: ", e.target.value);
+			void 0;
 		});
 
 		this.CompTablaDetalles = ReactDOM.render(React.createElement(Tabla, { key: 'axs', obtenerPais: this.obtenerPais, id: 'ComprasTablaDetalles', listado: [], id_compra: -1 }), document.getElementById("ampliar_tabla"));
@@ -1305,7 +1305,7 @@ module.exports = React.createClass({
 	},
 	onClaveSeleccionada: function (pk) {
 		this.BuscarProveedorPorPk(pk);
-		console.log("la pk :" + pk);
+		void 0;
 	},
 
 	validadarCampos: function () {
@@ -1664,7 +1664,7 @@ module.exports = React.createClass({
     if (this.props.num_fila % 2 === 0) {
       estilo["background"] = "#FFFFFF";
     }
-    console.log("fila " + this.props.num_fila);
+    void 0;
     //  this.props.estilo["cursor"]   
     return React.createElement(
       'tr',
@@ -1821,7 +1821,7 @@ module.exports = React.createClass({
 		this.TipoEntrada = func.llenarComboGenerico(entradas);
 	},
 	onSeleccionFila: function (pk_detalle) {
-		console.log("Se selecciono una fila del hijo " + pk_detalle);
+		void 0;
 		var detalle = this.buscarDetalleEnFila(pk_detalle);
 		this.setState({ detalle_compra: detalle });
 
@@ -1862,7 +1862,7 @@ module.exports = React.createClass({
 			$("#notify_error").text(response.responseText);
 			$("#notify_error").notify();
 		});
-		console.log("Vas a guardar el detalle del inventario");
+		void 0;
 	},
 	render: function () {
 		func = new FuncGenericas();
@@ -1982,7 +1982,7 @@ module.exports = React.createClass({
 		});
 	},
 	onGuardar: function () {
-		console.log("guardara los parametros");
+		void 0;
 		this.props.onGuardar();
 	},
 	render: function () {
@@ -2237,7 +2237,7 @@ module.exports = React.createClass({
 		};
 	},
 	onSeleccionFila: function (pk_detalle) {
-		console.log("Fila " + pk_detalle + " seleccionada");
+		void 0;
 		var detalleProd = {};
 
 		this.props.onSeleccionFila(pk_detalle);
@@ -2368,7 +2368,7 @@ module.exports = React.createClass({
 		this.setState(campos);
 	},
 	onBlurCaja: function (control, valor) {
-		console.log("saliendo de la caja");
+		void 0;
 	},
 	mostrarContenedores: function () {
 		this.estilo_china = this.props.pais === "0010002" ? 'block' : 'none';
@@ -2507,28 +2507,28 @@ $(function () {
 				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, function (data) {
 								appmvc.Datos.PAISES = data;
 				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
+								void 0;
 				});
 
 				appmvc.Datos.BANCOS = null;
 				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.BANCOS, function (data) {
 								appmvc.Datos.BANCOS = data;
 				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
+								void 0;
 				});
 
 				appmvc.Datos.MONEDAS = null;
 				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, function (data) {
 								appmvc.Datos.MONEDAS = data;
 				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
+								void 0;
 				});
 
 				appmvc.Datos.MATERIALES = null;
 				datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, function (data) {
 								appmvc.Datos.MATERIALES = data;
 				}, function (model, response, options) {
-								console.log("hay errores " + response.statusText);
+								void 0;
 				});
 
 				ReactDOM.render(React.createElement(App, null), document.getElementById("app"));
@@ -2587,7 +2587,7 @@ module.exports = React.createClass({
       self.setState({ listado: data });
     }, function (model, response, options) {
       self.setState({ listado: [] });
-      console.log(response.responseText);
+      void 0;
     });
   },
   onClaveSeleccionada: function (pk) {
@@ -3213,7 +3213,7 @@ module.exports = Backbone.Collection.extend({
 		}
 		if (this.ruta.toLowerCase().indexOf("http:") === -1) {
 			this.ruta = appmvc.Url.API_REST + this.ruta;
-			console.log(this.ruta);
+			void 0;
 		}
 		return this.ruta;
 	}
@@ -3229,7 +3229,7 @@ module.exports = Backbone.Model.extend({
 	url: function () {
 		if (this.ruta.toLowerCase().indexOf("http:") === -1) {
 			this.ruta = appmvc.Url.API_REST + this.ruta;
-			console.log(this.ruta);
+			void 0;
 		}
 		return this.ruta;
 	}
@@ -3258,7 +3258,7 @@ module.exports = $(function () {
 	}
 
 	$(document).ready(function () {
-		console.log("se carga la notifiacion....");
+		void 0;
 		// Initially, hide them all
 		hideAllMessages();
 		// Show message
@@ -3536,7 +3536,7 @@ module.exports = React.createClass({
 		// Esta lineas es temporal, mientras encuentro porque el estado no se actualiza como los demas campos
 		var combo = ReactDOM.findDOMNode(this.refs.ComboEstados);
 		var b = combo.getElementsByClassName("select_bloque");
-		console.log("estado: " + this.state.estado + "  combo: " + b.estado.value);
+		void 0;
 		datosNuevos["estado"] = b.estado.value;
 		return datosNuevos;
 	},
@@ -3634,7 +3634,7 @@ module.exports = React.createClass({
 		var self = this;
 		datosCatalogo = new ApiRestCatalogo();
 		datosCatalogo.buscarDetallesPorCduDefault(cdu_pais, this.relacionEstados, function (model, response, options) {
-			console.log("hay errores " + response.statusText);
+			void 0;
 		});
 	},
 	onSeleccionFila: function (id_proveedor) {
@@ -3890,12 +3890,12 @@ module.exports = React.createClass({
 			nuevo.push(nueva_fila);
 			this.setState({ detalles_lista: nuevo });
 			this.refs.NuevoDetalle.limpiarFila();
-			console.log("*** " + nueva_fila.id + " &&&& " + nueva_fila.compra);
+			void 0;
 		}
 		if (operacion == "eliminar") {
 			var filas = this.state.detalles_lista.slice();
 			var self = this;
-			console.log("*** " + fila.id + " &&&& " + fila.compra);
+			void 0;
 			if (fila.id !== -1) {
 				var comDet = new ApiRestCompraDetalles();
 				comDet.Eliminar(fila.id, function (model, response) {
@@ -3917,7 +3917,7 @@ module.exports = React.createClass({
 				});
 
 				this.setState({ detalles_lista: nuevas });
-				console.log("Quiere eliminar una fila " + fila.num_consecutivo);
+				void 0;
 			}
 		}
 	},
@@ -31543,7 +31543,7 @@ return jQuery;
     function warn(msg) {
         if (utils_hooks__hooks.suppressDeprecationWarnings === false &&
                 (typeof console !==  'undefined') && console.warn) {
-            console.warn('Deprecation warning: ' + msg);
+            void 0;
         }
     }
 
@@ -38263,7 +38263,7 @@ var Danger = {
           // we're done.
           resultListAssignmentCount += 1;
         } else if (process.env.NODE_ENV !== 'production') {
-          console.error('Danger: Discarding unexpected node:', renderNode);
+          void 0;
         }
       }
     }
@@ -42534,7 +42534,7 @@ if (process.env.NODE_ENV !== 'production') {
     if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined') {
       // If we're in Chrome or Firefox, provide a download link if not installed.
       if (navigator.userAgent.indexOf('Chrome') > -1 && navigator.userAgent.indexOf('Edge') === -1 || navigator.userAgent.indexOf('Firefox') > -1) {
-        console.debug('Download the React DevTools for a better development experience: ' + 'https://fb.me/react-devtools');
+        void 0;
       }
     }
 
@@ -42553,7 +42553,7 @@ if (process.env.NODE_ENV !== 'production') {
 
     for (var i = 0; i < expectedFeatures.length; i++) {
       if (!expectedFeatures[i]) {
-        console.error('One or more ES5 shim/shams expected by React are not available: ' + 'https://fb.me/react-warning-polyfills');
+        void 0;
         break;
       }
     }
@@ -45022,17 +45022,7 @@ var ReactDefaultPerf = {
   printExclusive: function (measurements) {
     measurements = measurements || ReactDefaultPerf._allMeasurements;
     var summary = ReactDefaultPerfAnalysis.getExclusiveSummary(measurements);
-    console.table(summary.map(function (item) {
-      return {
-        'Component class name': item.componentName,
-        'Total inclusive time (ms)': roundFloat(item.inclusive),
-        'Exclusive mount time (ms)': roundFloat(item.exclusive),
-        'Exclusive render time (ms)': roundFloat(item.render),
-        'Mount time per instance (ms)': roundFloat(item.exclusive / item.count),
-        'Render time per instance (ms)': roundFloat(item.render / item.count),
-        'Instances': item.count
-      };
-    }));
+    void 0;
     // TODO: ReactDefaultPerfAnalysis.getTotalTime() does not return the correct
     // number.
   },
@@ -45040,14 +45030,8 @@ var ReactDefaultPerf = {
   printInclusive: function (measurements) {
     measurements = measurements || ReactDefaultPerf._allMeasurements;
     var summary = ReactDefaultPerfAnalysis.getInclusiveSummary(measurements);
-    console.table(summary.map(function (item) {
-      return {
-        'Owner > component': item.componentName,
-        'Inclusive time (ms)': roundFloat(item.time),
-        'Instances': item.count
-      };
-    }));
-    console.log('Total time:', ReactDefaultPerfAnalysis.getTotalTime(measurements).toFixed(2) + ' ms');
+    void 0;
+    void 0;
   },
 
   getMeasurementsSummaryMap: function (measurements) {
@@ -45063,21 +45047,15 @@ var ReactDefaultPerf = {
 
   printWasted: function (measurements) {
     measurements = measurements || ReactDefaultPerf._allMeasurements;
-    console.table(ReactDefaultPerf.getMeasurementsSummaryMap(measurements));
-    console.log('Total time:', ReactDefaultPerfAnalysis.getTotalTime(measurements).toFixed(2) + ' ms');
+    void 0;
+    void 0;
   },
 
   printDOM: function (measurements) {
     measurements = measurements || ReactDefaultPerf._allMeasurements;
     var summary = ReactDefaultPerfAnalysis.getDOMSummary(measurements);
-    console.table(summary.map(function (item) {
-      var result = {};
-      result[DOMProperty.ID_ATTRIBUTE_NAME] = item.id;
-      result.type = item.type;
-      result.args = JSON.stringify(item.args);
-      return result;
-    }));
-    console.log('Total time:', ReactDefaultPerfAnalysis.getTotalTime(measurements).toFixed(2) + ' ms');
+    void 0;
+    void 0;
   },
 
   _recordWrite: function (id, fnName, totalTime, args) {
@@ -54095,7 +54073,7 @@ var EventListener = {
       };
     } else {
       if (process.env.NODE_ENV !== 'production') {
-        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
+        void 0;
       }
       return {
         remove: emptyFunction
@@ -55274,7 +55252,7 @@ if (process.env.NODE_ENV !== 'production') {
         return args[argIndex++];
       });
       if (typeof console !== 'undefined') {
-        console.error(message);
+        void 0;
       }
       try {
         // --- Welcome to debugging React ---
