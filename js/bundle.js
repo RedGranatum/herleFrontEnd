@@ -2537,9 +2537,9 @@ $(function () {
 								Url: {}
 				};
 
-				var url_local = 'http://localhost:8000/';
+				//var url_local = 'http://localhost:8000/'
 				//var url_local ='http://192.168.0.15:8000/';
-				//var url_local = 'http://159.203.229.118/'
+				var url_local = 'http://159.203.229.118/';
 
 				datosCatalogo = new ApiRestCatalogo();
 
