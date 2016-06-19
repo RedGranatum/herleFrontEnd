@@ -32,6 +32,10 @@ var inventariosApiRest =function(){
 			ruta = ruta + valores;			
 			this.funcionCalculos(ruta,funcion_exito,funcion_error);
 		},
+    listadoInventario: function(funcion_exito,funcion_error){
+          var ruta = 'inventarios/';
+          this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+    },
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){
 			var datosInventario = new ColeccionInv();
 			datosInventario.asignarRuta(ruta);

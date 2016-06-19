@@ -18,9 +18,9 @@ $(function() {
 	}
 
 
-	//var url_local = 'http://localhost:8000/'
+	var url_local = 'http://localhost:8000/'
 	//var url_local ='http://192.168.0.15:8000/';
-	var url_local = 'http://159.203.229.118/'
+	//var url_local = 'http://159.203.229.118/'
 
 
 	datosCatalogo = new  ApiRestCatalogo();
@@ -34,6 +34,8 @@ $(function() {
 	appmvc.Menu.INVENTARIOS = 'Inventarios';
 	appmvc.Menu.VENTAS = 'Ventas';
 	appmvc.Menu.COSTOS = 'Costos';
+	appmvc.Menu.REPORTES = 'Reportes';
+	
 	
 	
     
@@ -43,6 +45,8 @@ $(function() {
 	appmvc.Forms.INVENTARIOS=null;
 	appmvc.Forms.VENTAS=null;
 	appmvc.Forms.COSTOS=null;
+	appmvc.Forms.REPORTES=null;
+	
 	appmvc.MenuForms = {
 		 'Proveedores' : appmvc.Forms.PROVEEDORES,
 		 'Clientes'	   : appmvc.Forms.CLIENTES,
@@ -50,6 +54,7 @@ $(function() {
 		 'Inventarios' : appmvc.Forms.INVENTARIOS,
 		 'Ventas'      : appmvc.Forms.VENTAS,
 		 'Costos'      : appmvc.Forms.COSTOS, 
+		 'Reportes'    : appmvc.Forms.REPORTES,
 	};
 
 	appmvc.Catalogos.PAISES = 1;
@@ -99,7 +104,6 @@ $(function() {
                                       }
                         )
 
-	
 	ReactDOM.render(<App/>,document.getElementById("app"));
 	
   	

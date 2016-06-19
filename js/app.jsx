@@ -1,5 +1,6 @@
 var React            = require('react');
 var ReactDOM         = require('react-dom');
+var Login            = require('../js/login.jsx');
 var MenuPrincipal    = require('../js/menuPrincipal.jsx');
 var MenuAcciones     = require('../js/menuAcciones.jsx');
 var Proveedores      = require('../js/proveedores.jsx');
@@ -10,7 +11,7 @@ var Compras          = require('../js/compras.jsx');
 var Ventas           = require('../js/ventas.jsx');  
 var Costos           = require('../js/costos.jsx');            
 var Inventarios      = require('../js/inventarioCabecero.jsx');            
-
+var Reportes         = require('../js/reportes.jsx');  
 var Page             = require("page");
 var Notificaciones   = require('../js/notificaciones');
 var $                = require('jquery');
@@ -32,6 +33,7 @@ module.exports = React.createClass({
           datosVentas: {},
           datosCostos: {},
           actualizarForm: false,
+          permiso: true,
 
      		};
 	 	},
@@ -209,7 +211,11 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.COSTOS);
               console.log("menu de costos");                    
              });
-      
+           Page('/reportes',function(){
+               self.mostrarMenu(appmvc.Menu.REPORTES);
+              console.log("Estas en el menu de reportes");
+              
+            });
 
              Page('*',function(){
              	console.log("no conosco la ruta");
@@ -332,7 +338,7 @@ module.exports = React.createClass({
       }  
       if(this.state.formMostrar===appmvc.Menu.COSTOdebS){
         this.setState({datosCostos:[],actualizarForm:true});
-      }     
+      }  
       
  		},
     llenarCombos: function(){
@@ -346,27 +352,33 @@ module.exports = React.createClass({
       //this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
+      this.crearFormulario(appmvc.Menu.REPORTES,<Reportes ref={appmvc.Menu.REPORTES} />);
+ 
           var style = {
       margin: "0px",
      padding: "0px"
     };
-		return (
-    
-  <div style={style}>
-	<header>
-	</header>
-	<MenuPrincipal/>
-	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
-	<section className="contenido">
-		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
-		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
-	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
-    {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
-    {appmvc.MenuForms[appmvc.Menu.VENTAS]}
-      
-	</section>
-    {appmvc.MenuForms[appmvc.Menu.COSTOS]}
+     var estiloSistema = (this.state.permiso) ? {display: 'inline'} : {display: 'none'};
 
+		return (
+  <div style={style}>    
+    <Login permiso={this.state.permiso} />
+    <div style={estiloSistema}>
+  	<header>
+  	</header>
+  	<MenuPrincipal/>
+  	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
+  	<section className="contenido">
+  		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
+  		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
+  	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
+      {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
+      {appmvc.MenuForms[appmvc.Menu.VENTAS]}
+      {appmvc.MenuForms[appmvc.Menu.REPORTES]}
+  	</section>
+      {appmvc.MenuForms[appmvc.Menu.COSTOS]}
+
+    </div>
   </div>
 
 
