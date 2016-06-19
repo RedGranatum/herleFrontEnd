@@ -268,8 +268,8 @@ module.exports = React.createClass({
   },
   mostrar_ocultar_Formulario: function (menu) {
     var estilo = 'inline';
-    if (menu === appmvc.Menu.COMPRAS) {
-      estilo = 'inline';
+    if (menu === appmvc.Menu.COSTOS) {
+      estilo = 'inline-block';
     }
     return menu === this.state.formMostrar ? estilo : 'none';
   },
@@ -327,6 +327,7 @@ module.exports = React.createClass({
       padding: "0px"
     };
     var estiloSistema = this.state.permiso ? { display: 'inline' } : { display: 'none' };
+    // var estiloSistema = (this.state.permiso && this.state.formMostrar === appmvc.Menu.COMPRAS) ? {display:'inline-block'} : estiloSistema;
 
     return React.createElement(
       'div',
@@ -346,9 +347,9 @@ module.exports = React.createClass({
           appmvc.MenuForms[appmvc.Menu.COMPRAS],
           appmvc.MenuForms[appmvc.Menu.INVENTARIOS],
           appmvc.MenuForms[appmvc.Menu.VENTAS],
-          appmvc.MenuForms[appmvc.Menu.REPORTES]
-        ),
-        appmvc.MenuForms[appmvc.Menu.COSTOS]
+          appmvc.MenuForms[appmvc.Menu.REPORTES],
+          appmvc.MenuForms[appmvc.Menu.COSTOS]
+        )
       )
     );
   }

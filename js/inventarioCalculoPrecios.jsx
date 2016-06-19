@@ -56,7 +56,7 @@ render: function () {
 		<article className="bloque">
 			<div className="formula">
 				<figure className="formula_foto" onClick={this.onGuardar}>
-					<p><img src="images/ok.png" alt="" /></p>
+					<p><img src="images/guardar.png" alt="" /></p>
 				</figure>
 				<div className="formula_datos">
 					<h3>Kilo en dolar: {this.state.kilo_en_dolar}</h3>
