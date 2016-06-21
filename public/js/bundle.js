@@ -1460,7 +1460,7 @@ module.exports = React.createClass({
 		var FECHAREAL = func.zipCol(dic1, ["fec_real", "Fecha Real", "Fecha Real", this.state.fec_real, this.onValorCambio, "", this.onBlurCaja, this.state.errores.fec_real]);
 		var CASADECAMBIO = func.zipCol(dic1, ["casa_cambio", "Casa de Cambio", "Casa de Cambio", this.state.casa_cambio, this.onValorCambio, "", this.onBlurCaja, this.state.errores.casa_cambio]);
 
-		var PRECIODOLLAR = func.zipCol(dic1, ["precio_dolar", "Precio Dolar", "Precio Dollar", this.state.precio_dolar, this.onValorCambio, "", this.onBlurCaja, this.state.errores.precio_dolar]);
+		var PRECIODOLLAR = func.zipCol(dic1, ["precio_dolar", "Precio Dólar", "Precio Dollar", this.state.precio_dolar, this.onValorCambio, "", this.onBlurCaja, this.state.errores.precio_dolar]);
 		var TRANSPORTE = func.zipCol(dic1, ["transporte", "Transporte", "Transporte", this.state.transporte, this.onValorCambio, "", this.onBlurCaja, this.state.errores.transporte]);
 		var OBSERVACIONES = func.zipCol(dic1, ["descripcion", "Descripción", "Descripción", this.state.descripcion, this.onValorCambio, "", this.onBlurCaja, this.state.errores.descripcion]);
 		var COMENTARIOS = func.zipCol(dic1, ["comentarios", "Comentarios", "Comentarios", this.state.comentarios, this.onValorCambio, "", this.onBlurCaja, this.state.errores.comentarios]);
@@ -1951,6 +1951,7 @@ module.exports = React.createClass({
 					React.createElement(AreaTexto, { propiedades: DESCRIPCION }),
 					React.createElement(AreaTexto, { propiedades: COMENTARIOS })
 				),
+				React.createElement('br', null),
 				React.createElement('br', null),
 				React.createElement(InventarioLista, { listado_compra: this.state.listado_compra, onSeleccionFila: this.onSeleccionFila })
 			),
