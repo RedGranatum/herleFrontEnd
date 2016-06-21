@@ -303,7 +303,8 @@ module.exports = React.createClass({
             var FECHAINVENTARIO = func.zipCol(dic1,["fec_inventario", "Fecha Inventario",  "Fecha Inventario",  this.state.fec_inventario, this.onValorCambio,      "",				        this.onBlurCaja,	this.state.errores.fec_inventario]);
             var FECHAREAL       = func.zipCol(dic1,["fec_real",       "Fecha Real",        "Fecha Real",        this.state.fec_real ,      this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.fec_real]);
             var CASADECAMBIO    = func.zipCol(dic1,["casa_cambio",    "Casa de Cambio",    "Casa de Cambio",    this.state.casa_cambio ,   this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.casa_cambio]);
-            var PRECIODOLLAR    = func.zipCol(dic1,["precio_dolar",   "Precio Dollar",     "Precio Dollar",     this.state.precio_dolar ,  this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.precio_dolar]);
+          
+            var PRECIODOLLAR    = func.zipCol(dic1,["precio_dolar",   "Precio Dolar",     "Precio Dollar",     this.state.precio_dolar ,  this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.precio_dolar]);
             var TRANSPORTE      = func.zipCol(dic1,["transporte",     "Transporte",        "Transporte",        this.state.transporte ,    this.onValorCambio,      "",					    this.onBlurCaja,	this.state.errores.transporte]);
             var OBSERVACIONES   = func.zipCol(dic1,["descripcion",    "Descripción",       "Descripción",       this.state.descripcion ,   this.onValorCambio,      "",						this.onBlurCaja,	this.state.errores.descripcion]);        
             var COMENTARIOS     = func.zipCol(dic1,["comentarios",    "Comentarios",       "Comentarios",       this.state.comentarios ,   this.onValorCambio,      "",						this.onBlurCaja,	this.state.errores.comentarios]);        
@@ -331,7 +332,7 @@ module.exports = React.createClass({
 						 <CajaDeTexto propiedades={PROVEEDOR} mensajeIndicativo={icono_proveedor} />
 						 <CajaDeTexto propiedades={FECHASOLICITUD} ref="cajaFechaSolicitud" />
 						 <CajaDeTexto propiedades={FECHAADUANA} ref="cajaFechaAduana"/>
-						 <EtiquetaTexto titulo="Fecha Inventario" valor={this.state.fec_inventario} clase="etiqueta_especial" />
+						 <CajaDeTexto propiedades={FECHAINVENTARIO} ref="cajaFechaAduana"/>
 						 <EtiquetaTexto titulo="Fecha Real" valor={this.state.fec_real} clase="etiqueta_especial" />
 						 <CajaDeTexto propiedades={CASADECAMBIO} />
 						 <CajaDeTexto propiedades={PRECIODOLLAR} />

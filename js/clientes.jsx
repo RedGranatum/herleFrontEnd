@@ -103,7 +103,7 @@ module.exports = React.createClass({
 				rfc:      {valor:this.state.rfc,     expreg:/^[ñÑa-zA-Z0-9\-().\s]{12,13}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [12-13]"},
 				nombre:   {valor:this.state.nombre,  expreg:/^[ñÑa-zA-Z0-9\-().\s]{5,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [5-100]"},
 				calle:    {valor:this.state.calle,   expreg:/^[ñÑa-zA-Z0-9/\-().\s]{5,100}$/,    requerido: true,  mensaje:"Alfanumerico ,longitud [5-100]"},
-				numero:   {valor:this.state.numero,  expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,5}$/,      requerido: true,  mensaje:"Alfanumerico ,longitud [1-5]"},
+				numero:   {valor:this.state.numero,  expreg:/^[ñÑa-zA-Z0-9/\-().\s]{1,5}$/,      requerido: true,  mensaje:"Alfanumerico ,longitud [1-5]"},
 				colonia:  {valor:this.state.colonia, expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,50}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [0-50]"},
 				cp:       {valor:this.state.cp,      expreg:/^[0-9\-().\s]{1,10}$/,           requerido: true,  mensaje:"Numerico ,longitud [0-10]"},		
 			    telefono: {valor:this.state.telefono,expreg:/^[0-9\-().\s]{10,15}$/,          requerido: true, mensaje:"Numerico  ,longitud [10-15]"},

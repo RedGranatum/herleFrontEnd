@@ -1,6 +1,11 @@
 var React=require('react');
 
 module.exports = React.createClass({
+  getDefaultProps: function(){
+      return{
+        titulo2:  "",
+      };
+    },
   TeclaPresionada: function(event) {
           if(event.charCode == 13)  {
                 this.props.propiedades.onEnter(this.props.propiedades.id,this.refs.CajaTexto.value);
@@ -33,11 +38,9 @@ module.exports = React.createClass({
                                 onKeyPress ={this.TeclaPresionada} 
                                 onBlur = {this.handleBlur}
                                 />
-                              
                               <div className="viñeta">{(this.props.requerido === false) ? '' : '*'}</div>
                               <div style={divStyle} className="error_mostrar">{error}</div>
                         </li>
-
 			);  
 		}
-});
+  });
