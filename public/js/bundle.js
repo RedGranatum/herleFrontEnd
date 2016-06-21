@@ -484,56 +484,61 @@ module.exports = React.createClass({
 var React = require('react');
 
 module.exports = React.createClass({
-      displayName: "exports",
+  displayName: "exports",
 
-      TeclaPresionada: function (event) {
-            if (event.charCode == 13) {
-                  this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
-            }
-      },
-      valorCambio: function () {
-            this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
-      },
-      handleBlur: function () {
-            this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
-      },
-      render: function () {
-            var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
-            var divStyle = error !== "" ? { display: 'inline-block' } : { display: 'none' };
-            return React.createElement(
-                  "li",
-                  { className: "li_bloque" },
-                  React.createElement(
-                        "label",
-                        { className: "etiquetas_bloque" },
-                        this.props.propiedades.titulo,
-                        " ",
-                        this.props.mensajeIndicativo
-                  ),
-                  React.createElement("input", {
-                        className: "inputs_bloque",
-                        pattern: this.props.propiedades.caracteresEsp,
-                        type: "text",
-                        placeholder: this.props.propiedades.textoIndicativo,
-                        id: this.props.propiedades.id,
-                        value: this.props.propiedades.valor,
-                        onChange: this.valorCambio,
-                        ref: "CajaTexto",
-                        onKeyPress: this.TeclaPresionada,
-                        onBlur: this.handleBlur
-                  }),
-                  React.createElement(
-                        "div",
-                        { className: "viñeta" },
-                        this.props.requerido === false ? '' : '*'
-                  ),
-                  React.createElement(
-                        "div",
-                        { style: divStyle, className: "error_mostrar" },
-                        error
-                  )
-            );
-      }
+  getDefaultProps: function () {
+    return {
+      titulo2: ""
+    };
+  },
+  TeclaPresionada: function (event) {
+    if (event.charCode == 13) {
+      this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
+    }
+  },
+  valorCambio: function () {
+    this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
+  },
+  handleBlur: function () {
+    this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
+  },
+  render: function () {
+    var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
+    var divStyle = error !== "" ? { display: 'inline-block' } : { display: 'none' };
+    return React.createElement(
+      "li",
+      { className: "li_bloque" },
+      React.createElement(
+        "label",
+        { className: "etiquetas_bloque" },
+        this.props.propiedades.titulo,
+        " ",
+        this.props.mensajeIndicativo
+      ),
+      React.createElement("input", {
+        className: "inputs_bloque",
+        pattern: this.props.propiedades.caracteresEsp,
+        type: "text",
+        placeholder: this.props.propiedades.textoIndicativo,
+        id: this.props.propiedades.id,
+        value: this.props.propiedades.valor,
+        onChange: this.valorCambio,
+        ref: "CajaTexto",
+        onKeyPress: this.TeclaPresionada,
+        onBlur: this.handleBlur
+      }),
+      React.createElement(
+        "div",
+        { className: "viñeta" },
+        this.props.requerido === false ? '' : '*'
+      ),
+      React.createElement(
+        "div",
+        { style: divStyle, className: "error_mostrar" },
+        error
+      )
+    );
+  }
 });
 
 },{"react":215}],7:[function(require,module,exports){
@@ -696,7 +701,7 @@ module.exports = React.createClass({
 			rfc: { valor: this.state.rfc, expreg: /^[ñÑa-zA-Z0-9\-().\s]{12,13}$/, requerido: true, mensaje: "Alfanumerico ,longitud [12-13]" },
 			nombre: { valor: this.state.nombre, expreg: /^[ñÑa-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
 			calle: { valor: this.state.calle, expreg: /^[ñÑa-zA-Z0-9/\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
-			numero: { valor: this.state.numero, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
+			numero: { valor: this.state.numero, expreg: /^[ñÑa-zA-Z0-9/\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
 			colonia: { valor: this.state.colonia, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,50}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-50]" },
 			cp: { valor: this.state.cp, expreg: /^[0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Numerico ,longitud [0-10]" },
 			telefono: { valor: this.state.telefono, expreg: /^[0-9\-().\s]{10,15}$/, requerido: true, mensaje: "Numerico  ,longitud [10-15]" },
@@ -1072,9 +1077,9 @@ module.exports = React.createClass({
 			"material": "0050000",
 			"material_descripcion": "",
 			"dsc_material": "",
-			"calibre": "",
-			"ancho": "",
-			"largo": "",
+			"calibre": "0",
+			"ancho": "0",
+			"largo": "0",
 			"peso_kg": "",
 			"peso_lb": "",
 			"num_rollo": "",
@@ -1440,7 +1445,8 @@ module.exports = React.createClass({
 		var FECHAINVENTARIO = func.zipCol(dic1, ["fec_inventario", "Fecha Inventario", "Fecha Inventario", this.state.fec_inventario, this.onValorCambio, "", this.onBlurCaja, this.state.errores.fec_inventario]);
 		var FECHAREAL = func.zipCol(dic1, ["fec_real", "Fecha Real", "Fecha Real", this.state.fec_real, this.onValorCambio, "", this.onBlurCaja, this.state.errores.fec_real]);
 		var CASADECAMBIO = func.zipCol(dic1, ["casa_cambio", "Casa de Cambio", "Casa de Cambio", this.state.casa_cambio, this.onValorCambio, "", this.onBlurCaja, this.state.errores.casa_cambio]);
-		var PRECIODOLLAR = func.zipCol(dic1, ["precio_dolar", "Precio Dollar", "Precio Dollar", this.state.precio_dolar, this.onValorCambio, "", this.onBlurCaja, this.state.errores.precio_dolar]);
+
+		var PRECIODOLLAR = func.zipCol(dic1, ["precio_dolar", "Precio Dolar", "Precio Dollar", this.state.precio_dolar, this.onValorCambio, "", this.onBlurCaja, this.state.errores.precio_dolar]);
 		var TRANSPORTE = func.zipCol(dic1, ["transporte", "Transporte", "Transporte", this.state.transporte, this.onValorCambio, "", this.onBlurCaja, this.state.errores.transporte]);
 		var OBSERVACIONES = func.zipCol(dic1, ["descripcion", "Descripción", "Descripción", this.state.descripcion, this.onValorCambio, "", this.onBlurCaja, this.state.errores.descripcion]);
 		var COMENTARIOS = func.zipCol(dic1, ["comentarios", "Comentarios", "Comentarios", this.state.comentarios, this.onValorCambio, "", this.onBlurCaja, this.state.errores.comentarios]);
@@ -1477,7 +1483,7 @@ module.exports = React.createClass({
 							React.createElement(CajaDeTexto, { propiedades: PROVEEDOR, mensajeIndicativo: icono_proveedor }),
 							React.createElement(CajaDeTexto, { propiedades: FECHASOLICITUD, ref: 'cajaFechaSolicitud' }),
 							React.createElement(CajaDeTexto, { propiedades: FECHAADUANA, ref: 'cajaFechaAduana' }),
-							React.createElement(EtiquetaTexto, { titulo: 'Fecha Inventario', valor: this.state.fec_inventario, clase: 'etiqueta_especial' }),
+							React.createElement(CajaDeTexto, { propiedades: FECHAINVENTARIO, ref: 'cajaFechaAduana' }),
 							React.createElement(EtiquetaTexto, { titulo: 'Fecha Real', valor: this.state.fec_real, clase: 'etiqueta_especial' }),
 							React.createElement(CajaDeTexto, { propiedades: CASADECAMBIO }),
 							React.createElement(CajaDeTexto, { propiedades: PRECIODOLLAR })
@@ -2206,7 +2212,6 @@ module.exports = React.createClass({
 		var LARGO = func.zipCol(dic2, ["largo", "Largo", this.Largos, this.state.largo, this.onValorCambio]);
 
 		//var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
-
 		return React.createElement(
 			'article',
 			{ className: 'bloque', style: this.props.estilo },
@@ -2216,7 +2221,17 @@ module.exports = React.createClass({
 				null,
 				React.createElement(Combo, { propiedades: MATERIAL, ref: 'ComboMaterial', key: 'Material' }),
 				React.createElement(CajaDeTexto, { propiedades: CALIBRE, ref: 'cajaCalibre' }),
+				React.createElement(
+					'label',
+					{ className: 'etiquetas_bloque' },
+					'[0.008 - 0.025]'
+				),
 				React.createElement(CajaDeTexto, { propiedades: ANCHO, ref: 'cajaAncho' }),
+				React.createElement(
+					'label',
+					{ className: 'etiquetas_bloque' },
+					'[35 - 54]'
+				),
 				React.createElement(Combo, { propiedades: LARGO, ref: 'ComboLargo' })
 			),
 			React.createElement(CodigoProducto, { calibre: this.state.calibre, material: this.state.material, ancho: this.state.ancho, largo: this.state.largo }),
@@ -3657,7 +3672,7 @@ module.exports = React.createClass({
 			rfc: { valor: this.state.rfc, expreg: /^[ñÑa-zA-Z0-9\-().\s]{12,13}$/, requerido: true, mensaje: "Alfanumerico ,longitud [12-13]" },
 			nombre: { valor: this.state.nombre, expreg: /^[ñÑa-zA-Z0-9\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
 			calle: { valor: this.state.calle, expreg: /^[ñÑa-zA-Z0-9/\-().\s]{5,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [5-100]" },
-			numero: { valor: this.state.numero, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
+			numero: { valor: this.state.numero, expreg: /^[ñÑa-zA-Z0-9/\-().\s]{1,5}$/, requerido: true, mensaje: "Alfanumerico ,longitud [1-5]" },
 			colonia: { valor: this.state.colonia, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,50}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-50]" },
 			cp: { valor: this.state.cp, expreg: /^[0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Numerico ,longitud [0-10]" },
 			telefono: { valor: this.state.telefono, expreg: /^[0-9\-().\s]{10,15}$/, requerido: true, mensaje: "Numerico  ,longitud [10-15]" },
