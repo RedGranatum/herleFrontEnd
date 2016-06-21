@@ -70,8 +70,9 @@ module.exports = React.createClass({
 	        proveedor_pais     =  nuevaPropiedades.proveedor.pais;
 	       	 	
 	     }
-
-	   
+ 		
+ 		var tipo_moneda =this.tipoMoneda(proveedor_pais)
+  	 
 	    if(nuevaPropiedades.invoice!==undefined){
             this.setState({
             	"id"              : nuevaPropiedades.id,
@@ -91,11 +92,22 @@ module.exports = React.createClass({
 		        "descripcion"     : nuevaPropiedades.descripcion,
 		        "comentarios"     : nuevaPropiedades.comentarios,
 		        "compra_detalles" : nuevaPropiedades.compra_detalles,
+		        "tipo_moneda"     : tipo_moneda,
 				"busqueda_proveedores" : [],
 				 "errores" :{},
             })	   
         }
         this.CompTablaDetalles = ReactDOM.render(<Tabla  key="axs" obtenerPais={this.obtenerPais} id="ComprasTablaDetalles" listado={nuevaPropiedades.compra_detalles} id_compra= {nuevaPropiedades.id} />, document.getElementById("ampliar_tabla"));
+	    },
+	    tipoMoneda: function(cdu_pais){
+	    	 var tipo_moneda =""
+	      	if(cdu_pais === "0010000"){
+	      		var tipo_moneda = "Peso"
+	      	}
+	      	if(cdu_pais === "0010001" || cdu_pais === "0010002"){
+	      		var tipo_moneda = "Dolar"
+	      	}
+	      	return tipo_moneda;
 	    },
 		onValorCambio: function(campo,valor){
 			var update = {};
@@ -138,6 +150,7 @@ module.exports = React.createClass({
 			        transporte: "",
 			        descripcion: "",
 			        comentarios: "",  
+			        tipo_moneda: "Peso",
 			        compra_detalles: [],
 			        busqueda_proveedores: [],
 			        "errores" :{},
@@ -167,12 +180,12 @@ module.exports = React.createClass({
       						    var codigo =  data[0].codigo;
       						    var nombre ="[" + codigo + "] " + data[0].nombre; 
       						    var pais = data[0].pais
-      						
-      			   				self.setState({proveedor: id,proveedor_nombre: nombre,proveedor_codigo:codigo,proveedor_pais:pais,busqueda_proveedores:[] });
+      						    var tipo_moneda =self.tipoMoneda(pais)
+      							self.setState({tipo_moneda:tipo_moneda, proveedor: id,proveedor_nombre: nombre,proveedor_codigo:codigo,proveedor_pais:pais,busqueda_proveedores:[] });
       						     self.validarCampoErrores("proveedor_nombre","223");		
       							},
       					function(model,response,options){
-      						     self.setState({proveedor: "0",proveedor_nombre: "",proveedor_codigo:"",proveedor_pais:pais,busqueda_proveedores: []  });
+      						     self.setState({tipo_moneda:"" ,proveedor: "0",proveedor_nombre: "",proveedor_codigo:"",proveedor_pais:pais,busqueda_proveedores: []  });
       						     self.validarCampoErrores("proveedor_nombre","");		
       							}
 				    );
@@ -283,7 +296,7 @@ module.exports = React.createClass({
 	        fec_real: 		this.state.fec_real,
 	        casa_cambio: 	this.state.casa_cambio,
 	        precio_dolar: 	this.state.precio_dolar,
-	        tipo_moneda: "0040000",
+	        tipo_moneda: "Peso",
 	        transporte: 	this.state.transporte,
 	        bln_activa: 	this.state.bln_activa === '1' ? true : false,
 	        descripcion: 	this.state.descripcion,
@@ -336,7 +349,7 @@ module.exports = React.createClass({
 						 <EtiquetaTexto titulo="Fecha Real" valor={this.state.fec_real} clase="etiqueta_especial" />
 						 <CajaDeTexto propiedades={CASADECAMBIO} />
 						 <CajaDeTexto propiedades={PRECIODOLLAR} />
-                         
+						 <EtiquetaTexto titulo="Tipo Moneda" valor={this.state.tipo_moneda} clase="etiqueta_especial" />
 						 
 					</ul>
 				</div>
