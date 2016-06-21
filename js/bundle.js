@@ -1952,6 +1952,7 @@ module.exports = React.createClass({
 					React.createElement(AreaTexto, { propiedades: COMENTARIOS })
 				),
 				React.createElement('br', null),
+				React.createElement('br', null),
 				React.createElement(InventarioLista, { listado_compra: this.state.listado_compra, onSeleccionFila: this.onSeleccionFila })
 			),
 			React.createElement(InventarioDetalle, { detalle_compra: this.state.detalle_compra, pais: this.state.pais, transporte: this.state.transporte, ref: 'InventarioPorDetalleProducto', estilo: estilo }),

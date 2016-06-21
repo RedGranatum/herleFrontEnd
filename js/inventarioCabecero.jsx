@@ -164,6 +164,7 @@ onGuardar: function(datos_parametros)
 				<AreaTexto propiedades={COMENTARIOS} />
 			</CajaConCampos>
 			<br />
+			<br />
 			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
 		<InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
