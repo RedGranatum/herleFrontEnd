@@ -4061,6 +4061,7 @@ module.exports = React.createClass({
 var $ = require('jquery');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto = require('../js/cajaDeTexto.jsx');
+var EtiquetaTexto = require('../js/etiquetaDeTexto.jsx');
 var ComboSimple = require('../js/combo_simple.jsx');
 var FuncGenericas = require('../js/funcionesGenericas');
 var OpcionCombo = require('../js/opcionCombo.jsx');
@@ -4176,6 +4177,7 @@ module.exports = React.createClass({
 		return React.createElement(
 			'table',
 			{ className: 'tabla_catalogo' },
+			React.createElement(EtiquetaTexto, { titulo: 'IMPORTE', valor: '1220.00', clase: 'etiqueta_especial' }),
 			React.createElement(
 				'tbody',
 				null,
@@ -4187,7 +4189,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"../js/cajaDeTexto.jsx":6,"../js/celdaTabla.jsx":8,"../js/combo_simple.jsx":11,"../js/compraDetalles.jsx":12,"../js/filaTabla.jsx":16,"../js/funcionesGenericas":17,"../js/modelos/apirestCatalogos":29,"../js/modelos/apirestCompraDetalles":31,"../js/notificaciones":39,"../js/opcionCombo.jsx":41,"jquery":53,"react":215,"react-dom":59}],47:[function(require,module,exports){
+},{"../js/cajaDeTexto.jsx":6,"../js/celdaTabla.jsx":8,"../js/combo_simple.jsx":11,"../js/compraDetalles.jsx":12,"../js/etiquetaDeTexto.jsx":15,"../js/filaTabla.jsx":16,"../js/funcionesGenericas":17,"../js/modelos/apirestCatalogos":29,"../js/modelos/apirestCompraDetalles":31,"../js/notificaciones":39,"../js/opcionCombo.jsx":41,"jquery":53,"react":215,"react-dom":59}],47:[function(require,module,exports){
 var React = require('react');
 
 module.exports = React.createClass({

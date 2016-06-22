@@ -1,6 +1,7 @@
 var $                = require('jquery');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
+var EtiquetaTexto     = require('../js/etiquetaDeTexto.jsx');
 var ComboSimple 			= require('../js/combo_simple.jsx');
 var FuncGenericas   = require('../js/funcionesGenericas')
 var OpcionCombo 	= require('../js/opcionCombo.jsx');
@@ -118,7 +119,9 @@ module.exports = React.createClass({
 
 
            return (
+
 		      <table className="tabla_catalogo">
+		       <EtiquetaTexto titulo="IMPORTE" valor="1220.00" clase="etiqueta_especial" />	
 		       <tbody>
 		          {fila_titulo}
 		          {fila_insercion}
