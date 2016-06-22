@@ -545,39 +545,44 @@ module.exports = React.createClass({
 var React = require('react');
 
 module.exports = React.createClass({
-    displayName: "exports",
+  displayName: "exports",
 
-    TeclaPresionada: function (event) {
-        if (event.charCode == 13) {
-            this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
-        }
-    },
-    valorCambio: function () {
-        this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
-    },
-    handleBlur: function () {
-        this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
-    },
-    render: function () {
-        var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
-        clasError = error !== "" ? "caja_grid_error" : "caja_grid";
-        //var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
-
-        //var divStyle =  { display: 'inline-block'} 
-
-        return React.createElement("input", {
-            className: clasError,
-            pattern: this.props.propiedades.caracteresEsp,
-            type: "text",
-            placeholder: this.props.propiedades.textoIndicativo,
-            id: this.props.propiedades.id,
-            value: this.props.propiedades.valor,
-            onChange: this.valorCambio,
-            ref: "CajaTexto",
-            onKeyPress: this.TeclaPresionada,
-            onBlur: this.handleBlur
-        });
+  TeclaPresionada: function (event) {
+    if (event.charCode == 13) {
+      this.props.propiedades.onEnter(this.props.propiedades.id, this.refs.CajaTexto.value);
     }
+  },
+  valorCambio: function () {
+    this.props.propiedades.onChange(this.props.propiedades.id, this.refs.CajaTexto.value);
+  },
+  handleBlur: function () {
+    this.props.propiedades.onBlur(this.props.propiedades.id, this.refs.CajaTexto.value);
+  },
+  onFocus: function (e) {
+    console.log("entro a la caja");
+    e.target.select();
+  },
+  render: function () {
+    var error = this.props.propiedades.error === undefined ? "" : this.props.propiedades.error;
+    clasError = error !== "" ? "caja_grid_error" : "caja_grid";
+    //var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
+
+    //var divStyle =  { display: 'inline-block'} 
+
+    return React.createElement("input", {
+      className: clasError,
+      pattern: this.props.propiedades.caracteresEsp,
+      type: "text",
+      placeholder: this.props.propiedades.textoIndicativo,
+      id: this.props.propiedades.id,
+      value: this.props.propiedades.valor,
+      onChange: this.valorCambio,
+      ref: "CajaTexto",
+      onKeyPress: this.TeclaPresionada,
+      onBlur: this.handleBlur,
+      onFocus: this.onFocus
+    });
+  }
 });
 
 },{"react":215}],8:[function(require,module,exports){
@@ -1045,6 +1050,17 @@ module.exports = React.createClass({
 			var pais = this.obtenerPais();
 			this.calcularKgLb(pais, this.state.peso_kg, this.state.peso_lb);
 		}
+
+		if (control === "calibre" || control === "ancho") {
+			if (valor > 0) {
+				this.setState({ largo: "0" });
+			}
+		}
+		if (control === "largo") {
+			if (valor > 0) {
+				this.setState({ calibre: "0", ancho: "0" });
+			}
+		}
 	},
 	obtenerPais: function () {
 		var pais = this.props.obtenerPais();
@@ -1440,7 +1456,7 @@ module.exports = React.createClass({
 			fec_real: this.state.fec_real,
 			casa_cambio: this.state.casa_cambio,
 			precio_dolar: this.state.precio_dolar,
-			tipo_moneda: "Peso",
+			tipo_moneda: "0040000",
 			transporte: this.state.transporte,
 			bln_activa: this.state.bln_activa === '1' ? true : false,
 			descripcion: this.state.descripcion,
@@ -2228,6 +2244,7 @@ module.exports = React.createClass({
 		var LARGO = func.zipCol(dic2, ["largo", "Largo", this.Largos, this.state.largo, this.onValorCambio]);
 
 		//var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
+		ver_largo = this.state.largo > 0;
 		return React.createElement(
 			'article',
 			{ className: 'bloque', style: this.props.estilo },
@@ -2236,19 +2253,19 @@ module.exports = React.createClass({
 				CajaConCampos,
 				null,
 				React.createElement(Combo, { propiedades: MATERIAL, ref: 'ComboMaterial', key: 'Material' }),
-				React.createElement(CajaDeTexto, { propiedades: CALIBRE, ref: 'cajaCalibre' }),
-				React.createElement(
+				ver_largo === true ? '' : React.createElement(CajaDeTexto, { propiedades: CALIBRE, ref: 'cajaCalibre' }),
+				ver_largo === true ? '' : React.createElement(
 					'label',
 					{ className: 'etiquetas_bloque' },
 					'[0.008 - 0.025]'
 				),
-				React.createElement(CajaDeTexto, { propiedades: ANCHO, ref: 'cajaAncho' }),
-				React.createElement(
+				ver_largo === true ? '' : React.createElement(CajaDeTexto, { propiedades: ANCHO, ref: 'cajaAncho' }),
+				ver_largo === true ? '' : React.createElement(
 					'label',
 					{ className: 'etiquetas_bloque' },
 					'[35 - 54]'
 				),
-				React.createElement(Combo, { propiedades: LARGO, ref: 'ComboLargo' })
+				ver_largo === true ? React.createElement(Combo, { propiedades: LARGO, ref: 'ComboLargo' }) : ''
 			),
 			React.createElement(CodigoProducto, { calibre: this.state.calibre, material: this.state.material, ancho: this.state.ancho, largo: this.state.largo }),
 			React.createElement('br', null),
@@ -2569,9 +2586,9 @@ $(function () {
 								Url: {}
 				};
 
-				//var url_local = 'http://localhost:8000/'
+				var url_local = 'http://localhost:8000/';
 				//var url_local ='http://192.168.0.15:8000/';
-				var url_local = 'http://159.203.229.118/';
+				//var url_local = 'http://159.203.229.118/'
 
 				datosCatalogo = new ApiRestCatalogo();
 

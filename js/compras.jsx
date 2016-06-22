@@ -296,7 +296,7 @@ module.exports = React.createClass({
 	        fec_real: 		this.state.fec_real,
 	        casa_cambio: 	this.state.casa_cambio,
 	        precio_dolar: 	this.state.precio_dolar,
-	        tipo_moneda: "Peso",
+	        tipo_moneda:    "0040000",
 	        transporte: 	this.state.transporte,
 	        bln_activa: 	this.state.bln_activa === '1' ? true : false,
 	        descripcion: 	this.state.descripcion,

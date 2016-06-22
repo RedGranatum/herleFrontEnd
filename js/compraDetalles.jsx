@@ -108,7 +108,19 @@ module.exports = React.createClass({
   			if(control==="peso_kg" || control==="peso_lb"){
   				var pais = this.obtenerPais();
 				this.calcularKgLb(pais,this.state.peso_kg,this.state.peso_lb)
-			}  			
+			}  	
+
+			if((control==="calibre") || (control==="ancho")){
+					if(valor > 0){
+						this.setState({largo: "0"});
+					}
+			}	
+			if(control==="largo"){
+				if(valor > 0){
+					this.setState({calibre:"0", ancho:"0"});
+				}
+			}
+  		
   		},
   		obtenerPais: function(){
   			var pais = this.props.obtenerPais();

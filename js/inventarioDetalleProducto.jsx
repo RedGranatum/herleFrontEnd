@@ -108,16 +108,17 @@ render: function () {
     var LARGO        = func.zipCol(dic2,["largo",     "Largo",    this.Largos,  this.state.largo,    this.onValorCambio]);
 
 	//var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
+	ver_largo = (this.state.largo > 0);
       return (
 		<article className="bloque" style={this.props.estilo} >	
 			<Titulo titulo='Producto' clase ="resaltar_titulo_caja" />
 			<CajaConCampos >
 				<Combo 		 propiedades = {MATERIAL}   ref="ComboMaterial" key="Material" />	
-				<CajaDeTexto propiedades = {CALIBRE}   ref="cajaCalibre"/>
-				<label className="etiquetas_bloque">[0.008 - 0.025]</label>      
-				<CajaDeTexto propiedades = {ANCHO} ref="cajaAncho"/>
-				<label className="etiquetas_bloque">[35 - 54]</label>      
-				<Combo 		 propiedades = {LARGO}   ref="ComboLargo"/>	
+				{(ver_largo === true) ? '' : <CajaDeTexto propiedades = {CALIBRE}   ref="cajaCalibre" /> }
+				{(ver_largo === true) ? '' : <label className="etiquetas_bloque">[0.008 - 0.025]</label> }      
+				{(ver_largo === true) ? '' : <CajaDeTexto propiedades = {ANCHO} ref="cajaAncho"/> }
+				{(ver_largo === true) ? '' : <label className="etiquetas_bloque">[35 - 54]</label>  }    
+				{(ver_largo === true) ? <Combo 		 propiedades = {LARGO}   ref="ComboLargo"/> : '' }	
 			</CajaConCampos>
 			<CodigoProducto  calibre={this.state.calibre} material={this.state.material} ancho={this.state.ancho} largo={this.state.largo} />
 			<br />
