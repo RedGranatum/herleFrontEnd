@@ -41,6 +41,9 @@ module.exports = React.createClass({
          var func = new FuncGenericas();      
          this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
 
+        var largo = [{cdu_catalogo: "0",descripcion1: "0"},{cdu_catalogo: "10",descripcion1: "10"},{cdu_catalogo: "12",descripcion1: "12"}]
+		this.Largos = func.llenarComboGenerico(largo);
+
         },
   	   validarCampos: function()
 		{
@@ -115,11 +118,7 @@ module.exports = React.createClass({
 						this.setState({largo: "0"});
 					}
 			}	
-			if(control==="largo"){
-				if(valor > 0){
-					this.setState({calibre:"0", ancho:"0"});
-				}
-			}
+
 			if(control === "precio"){
   		    	this.props.sumatoria();				
 			}
@@ -173,6 +172,12 @@ module.exports = React.createClass({
 			var update = {};
 			update[campo] = valor;
 			this.setState(update);
+
+			if(campo==="largo"){
+				if(valor > 0){
+					this.setState({calibre:"0", ancho:"0"});
+				}
+			}
 		},
 		clickOperacion: function(operacion)
 		{
@@ -220,7 +225,8 @@ module.exports = React.createClass({
 		
 		    var dicCombo =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var MATERIALES = func.zipCol(dicCombo,["material",   "",  				  this.Materiales,      this.state.material,    this.onValorCambio]);
-    
+            var LARGO        = func.zipCol(dicCombo,["largo",     "",    this.Largos,  this.state.largo,    this.onValorCambio]);
+
 			var ico_nuevo = <IconoTabla clickOperacion={this.clickOperacion} key="ico_nuevo" id="nuevo"     opcionGuardar={"guardar_renglon"} tipoIcono={"plus"}/>;
             var ico_elim  = <IconoTabla clickOperacion={this.clickOperacion} key="ico_elim"  id="eliminar"  opcionGuardar={"eliminar_renglon"} tipoIcono={"remove"}/>;
             var ico_mod   = <IconoTabla clickOperacion={this.clickOperacion} key="ico_mod"   id="modificar" opcionGuardar={"actualizar_renglon"} tipoIcono={"refresh"}/>;
@@ -234,7 +240,7 @@ module.exports = React.createClass({
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.dsc_material   : <CajaDeTextoSimple estilo="caja_grid" propiedades = {DSC_MATERIAL}  requerido={false} />}  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.calibre        : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {CALIBRE}        requerido={false}  />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.ancho          : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {ANCHO}          requerido={false}  />} /> 
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.largo 		    : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {LARGO}          requerido={false}  />} /> 
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.largo 		    : <Combo 	   propiedades = {LARGO}   ref="ComboLargo" />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.pesokg 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PESOKG}         requerido={false}  />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.pesolbs		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PESOLB}         requerido={false}  />} />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.norollo 		: <CajaDeTextoSimple estilo="caja_grid"  propiedades = {NOROLLO}        requerido={false}  />} />
