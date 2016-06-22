@@ -49,4 +49,14 @@ gulp.task('html',function(){
         .pipe(gulp.dest(htmlDst));
 });
 
+gulp.task('copiar_produccion',function(){
+    var codigoSrc = './public/**/*';
+    //var codigoDst = '/home/raultr/Proyectos/herle/herleBackEnd/public';
+    var codigoDst = '/home/herleuser/herleBackEnd/herle_inventarios/public/';
+    gulp.src(codigoSrc)
+        .pipe(gulp.dest(codigoDst));
+});
+
+
+
 gulp.task('default', ['css','images','html','js',]);
