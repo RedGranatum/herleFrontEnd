@@ -68,7 +68,7 @@ module.exports = React.createClass({
 		},
         relacionCampoErrores: function(){
 			var dic_errores = {
-				material_descripcion:   {valor:this.state.material_descripcion,  expreg:/^[a-zA-Z0-9\-().\s]{0,10}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [0-10]"},	
+				material_descripcion:   {valor:this.state.material_descripcion,  expreg:/^[a-zA-Z0-9\-().\s]{0,100}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [0-10]"},	
 				calibre:    {valor:this.state.calibre,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
 				ancho:      {valor:this.state.calibre,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
 				largo:      {valor:this.state.largo,     expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
