@@ -120,7 +120,9 @@ module.exports = React.createClass({
 					this.setState({calibre:"0", ancho:"0"});
 				}
 			}
-  		
+			if(control === "precio"){
+  		    	this.props.sumatoria();				
+			}
   		},
   		obtenerPais: function(){
   			var pais = this.props.obtenerPais();

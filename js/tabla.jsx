@@ -25,7 +25,11 @@ module.exports = React.createClass({
          
 		 this.setState({detalles_lista:nuevas_props.listado })  
 		 this.refs.NuevoDetalle.limpiarFila(); 
+
 	  },
+	componentDidUpdate: function(){
+		this.sumatoria();
+	},
 	getInitialState: function(){
 			return {
 				detalles_lista : [],
@@ -101,6 +105,19 @@ module.exports = React.createClass({
 	obtenerPais: function(){
 		return this.props.obtenerPais();
 	},
+	sumatoria: function(){
+		 var self = this;
+		 var suma = 0.0; 
+		 this.state.detalles_lista.forEach(function(detalle_compra){
+		 	var detalle = self.refs["detalle_" + detalle_compra.num_consecutivo];
+		 	var precio = detalle.state.precio;
+		 	suma = parseFloat(suma) + parseFloat(precio);
+		 });
+	
+		suma = parseFloat(suma).toFixed(2)
+		ReactDOM.render( <EtiquetaTexto titulo="IMPORTE: " valor={suma} clase="etiqueta_especial" key ="dd" />,document.getElementById("suma_detalle_compra"));
+
+	},
 	render: function () {
       var self = this;
       var listado_detalles = [];
@@ -109,25 +126,27 @@ module.exports = React.createClass({
        var Titulos ={material:"Cat.Material", dsc_material:"Desc.Materia",calibre:"Calibre",ancho:"Ancho",largo:"Largo",pesokg:"Peso (Kgs)",pesolbs: "Peso (Lbs)", norollo:"No. Rollo",precio:"Precio", icono1:"",icono2:"" }
        var fila_titulo =  <CompraDetalle key={"titulo"} datos ={Titulos} titulo={true} />
 
-	   var fila_insercion =  <CompraDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion} obtenerPais={this.obtenerPais}/>
+	   var fila_insercion =  <CompraDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion} obtenerPais={this.obtenerPais} />
 
 
        this.state.detalles_lista.forEach(function(detalle_compra){
-            var detalle= <CompraDetalle ref={"detalle_" + detalle_compra.num_consecutivo } key={"xx" + detalle_compra.num_consecutivo} datos ={detalle_compra} clickOperacion={self.clickOperacion} obtenerPais={self.obtenerPais} />
+            var detalle= <CompraDetalle ref={"detalle_" + detalle_compra.num_consecutivo } key={"xx" + detalle_compra.num_consecutivo} datos ={detalle_compra} clickOperacion={self.clickOperacion} obtenerPais={self.obtenerPais} sumatoria={self.sumatoria} />
              listado_detalles.push(detalle);
           });
 
-
            return (
+		      <div>
+		      <div id="suma_detalle_compra">
 
+		      </div>  			  
 		      <table className="tabla_catalogo">
-		       <EtiquetaTexto titulo="IMPORTE" valor="1220.00" clase="etiqueta_especial" />	
-		       <tbody>
+		       <tbody>		         
 		          {fila_titulo}
 		          {fila_insercion}
 		          {listado_detalles }
 				</tbody>
 				</table>
+				</div>
 			);  
 		}
 });
