@@ -94,23 +94,34 @@
 							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="fecha_venta">Fecha de venta</label>
+							<label class="etiquetas_bloque" for="fecha_venta">Fecha</label>
 							<input id="fecha_venta" class="inputs_bloque" type="text" placeholder="Fecha de venta" />
 							<div class="viñeta">*</div>
 							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="tipo_documento">Tipo de documento</label>
-							<input class="radio_bloque" type="radio" name="factura_remision" value="si" checked="checked">
-							<label for="factura"><span><span></span></span>Factura</label>
-							<input class="radio_bloque" type="radio" name="factura_remision" value="no">
-							<label for="remision"><span><span></span></span>Nota de remisión</label>
+							<label class="etiquetas_bloque" for="tipo_documento">Tipo de pago</label>
+							<select name="tipo_documento" class="select_bloque">
+								<option value="factura">Factura</option>
+								<option value="nota_credito">Nota de crédito</option>
+							</select>
+							<div class="viñeta">*</div>
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="no_documento">No. documento</label>
-							<input class="inputs_bloque" type="text" placeholder="No. de documento" />
+							<label class="etiquetas_bloque" for="no_referencia">No. referencia</label>
+							<input class="inputs_bloque" type="text" placeholder="No. (factura/nota de crédito)" />
 							<div class="viñeta">*</div>
 							<div class="error_mostrar">mensaje de error del campo</div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="estatus_venta">Estatus</label>
+							<select name="estatus_venta" class="select_bloque">
+								<option value="activa">Activa</option>
+								<option value="cancelada">Cancelada</option>
+							</select>
+							<div class="viñeta">*</div>
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 					</ul>
 				</div>
@@ -146,32 +157,18 @@
 							<label class="etiquetas_bloque" for="tipo_pago">Tipo de pago</label>
 							<select name="tipo_pago" class="select_bloque">
 								<option value="mexico_c">Contado</option>
-								<option value="eeuu_c">Credito</option>
-								<option value="mexico_c">Transferencia</option>
+								<option value="eeuu_c">Crédito</option>
 							</select>
 							<div class="viñeta">*</div>
 							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="max_dias">Max. días pago</label>
-							<input class="inputs_bloque" type="text" placeholder="Max. para días del pago" />
-							<div class="viñeta">*</div>
-							<div class="error_mostrar">mensaje de error del campo</div>
+							<label class="etiquetas_bloque" for="invoice">Banco</label>
+							<label class="etiqueta_especial" for="">Banco cliente</label>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="banco">Banco</label>
-							<input class="inputs_bloque" type="text" placeholder="Banco" readonly />
-							<div class="viñeta">*</div>
-							<div class="error_mostrar">mensaje de error del campo</div>
-						</li>
-						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="estatus_venta">Estatus de la venta</label>
-							<select name="estatus_venta" class="select_bloque">
-								<option value="activa">Activa</option>
-								<option value="cancelada">Cancelada</option>
-							</select>
-							<div class="viñeta">*</div>
-							<div class="error_ocultar">mensaje de error del campo</div>
+							<label class="etiquetas_bloque" for="invoice">Estatus</label>
+							<label class="etiqueta_especial" for="">Debe, No Debe</label>
 						</li>
 					</ul>
 				</div>
@@ -181,6 +178,31 @@
 			</div>
 		</article>
 		<article class="bloque">
+			<div class="resaltar_titulo_caja">
+				Crédito
+			</div>
+			<div class="resaltar_caja_bloque">
+				<div class="campos_bloque">
+					<ul class="ul_bloque">
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="periodo_pago">Periodo de pago</label>
+							<select name="periodo_pago" class="select_bloque">
+								<option value="dias">Días</option>
+								<option value="meses">Meses</option>
+							</select>
+							<div class="viñeta">*</div>
+							<div class="error_ocultar">mensaje de error del campo</div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="cantidad_pago">Cantidad</label>
+							<input class="inputs_bloque" type="text" placeholder="Cantidad días/meses" />
+							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<br>
 			<div class="bloque_catalogo" id="ampliar_tabla">
 				<table class="tabla_catalogo">
 					<tr>
