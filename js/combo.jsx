@@ -16,7 +16,6 @@ module.exports = React.createClass({
               <div className="viñeta"></div>
               <div className="error_ocultar">{this.props.propiedades.error}</div>
             </li>
-
 			);  
 		}
 });

@@ -264,6 +264,10 @@ module.exports = React.createClass({
             );
          },
     llenarDatosCompra: function(pk){
+           if(pk==="-1"){
+                 Page.redirect('/compras/nuevo');
+                 return
+           }
            var self = this;
            var comp = new ApiRestCompras();
            comp.buscarCompraPorPk(pk,	
@@ -347,8 +351,8 @@ module.exports = React.createClass({
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
-      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} />);
-      this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
+      this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} onClaveCompraSeleccionada={this.onClaveSeleccionada} />);
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} onClaveCompraSeleccionada={this.onClaveSeleccionada}/>);   
       //this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);

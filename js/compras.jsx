@@ -14,7 +14,9 @@ var AreaTexto       = require('../js/areaTexto.jsx');
 var Tabla 	        = require('../js/tabla.jsx');
 var ListaResultados  = require('../js/resultadosLista.jsx');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
+
 var CompraDetalle    = require('../js/compraDetalles.jsx');
+var ListadoCompras   = require('../js/comboCompras.jsx');
 
 require('jquery-ui');
 require('react-datepicker/dist/react-datepicker.css');
@@ -39,7 +41,7 @@ module.exports = React.createClass({
 						});
 
 	  this.CompTablaDetalles = ReactDOM.render(<Tabla key="axs" obtenerPais={this.obtenerPais}  id="ComprasTablaDetalles" listado={[]} id_compra= {-1} />, document.getElementById("ampliar_tabla"));
-	    
+	   
 	},
 	obtenerPais: function(){
 		return this.state.proveedor_pais;
@@ -283,6 +285,9 @@ module.exports = React.createClass({
 		 	 return  (lista.length >0) ?  <div className="caja_busqueda" ref="busqueda_proveedores_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
               
 		},
+		onClaveCompraSeleccionada: function(id_compra){
+			this.props.onClaveCompraSeleccionada(id_compra);
+		},
 		nuevosDatos: function(){
 			var datos_detalles = this.CompTablaDetalles.valoresDetallesCompra()
 						
@@ -325,6 +330,7 @@ module.exports = React.createClass({
             var dic2 =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var STATUS = func.zipCol(dic2,["bln_activa",   "Estatus de Compra",    status_combo,      this.state.bln_activa,    this.onValorCambio]);
          
+            var LARGO        = func.zipCol(dic2,["largo",     "INVOICE SIN INVENTARIAR ",    this.Largos,  this.state.largo,    this.onValorCambio]);
 
          	icono_proveedor = <IconoTabla mensajeIndicador={"Agregar Proveedor"}  opcionGuardar={"agregar_proveedor"} tipoIcono={"truck"}/>;
          
@@ -333,7 +339,10 @@ module.exports = React.createClass({
          
            return (
 	 <section className="contenido">
+		   
 		   <article className="bloque">
+  	       <ListadoCompras name="listado_compras" onClaveCompraSeleccionada={this.onClaveCompraSeleccionada} id_compra={this.state.id}/>
+
 			<div className="titulo_bloque">
 				Compra 
 			</div>
@@ -342,7 +351,7 @@ module.exports = React.createClass({
 					<ul className="ul_bloque">
 					     <CajaDeTexto propiedades={INVOICE} />
 						 {busqueda_proveedores}
-						 <CajaDeTexto propiedades={PROVEEDOR} mensajeIndicativo={icono_proveedor} />
+						 <CajaDeTexto propiedades={PROVEEDOR} />
 						 <CajaDeTexto propiedades={FECHASOLICITUD} ref="cajaFechaSolicitud" />
 						 <CajaDeTexto propiedades={FECHAADUANA} ref="cajaFechaAduana"/>
 						 <CajaDeTexto propiedades={FECHAINVENTARIO} ref="cajaFechaAduana"/>

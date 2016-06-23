@@ -13,11 +13,11 @@ return {
          var ruta ='compras/'+pk+'/detalles/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        }, 
-       buscarComprasNoInventariadas: function(pk,funcion_exito,funcion_error){
+       buscarComprasNoInventariadas: function(funcion_exito,funcion_error){
          var ruta ='compras/validadas/false/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        }, 
-       buscarComprasInventariadas: function(pk,funcion_exito,funcion_error){
+       buscarComprasInventariadas: function(funcion_exito,funcion_error){
          var ruta ='compras/validadas/true/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },        

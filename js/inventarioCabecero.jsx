@@ -11,8 +11,12 @@ var EtiquetaTexto     = require('../js/etiquetaDeTexto.jsx');
 var InventarioLista   = require('../js/inventarioListadoProductos.jsx');
 var InventarioDetalle = require('../js/inventarioDetalleProducto.jsx');
 var ApiRestInventario = require('../js/modelos/apirestInventarios.js');
+var ListadoCompras   = require('../js/comboCompras.jsx');
 
 module.exports = React.createClass({
+onClaveCompraSeleccionada: function(id_compra){
+	this.props.onClaveCompraSeleccionada(id_compra);
+},
 seleccionarPrimeraFila: function(listado){
 		var detalle = {}
 	   if(listado.length > 0){
@@ -150,7 +154,10 @@ onGuardar: function(datos_parametros)
 
  return (
  	<div >
-		<article className="bloque" style ={estilo} >			
+			<div className="caja_acciones" >
+	 	       <ListadoCompras name="listado_compras_inventario" onClaveCompraSeleccionada={this.onClaveCompraSeleccionada} />
+			</div>
+		<article className="bloque" style={estilo}>	
 			<Titulo titulo='Invoice' />
 			<CajaConCampos >
 				<EtiquetaTexto titulo="Invoice" valor={this.state.invoice} clase="etiqueta_especial" />	
@@ -169,8 +176,8 @@ onGuardar: function(datos_parametros)
 		</article>
 		<InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
 		{mostrar ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
-	
 		{mensaje_inventariado}
+
 	</div>
 		);  
 	}
