@@ -18,13 +18,18 @@ componentWillMount: function(){
 	this.num_con =-1;
 
 },
-componentWillReceiveProps: function(nuevas_props){
+componentWillReceiveProps: function(nextProps){
 	this.num_con = -1;
+	if(nextProps.listado !== undefined){
+		this.setState({listado: nextProps.listado});
+	 }
+ 	  else{
+ 	  	this.setState({listado: []})
+  }
 },
 clickOperacion: function(operacion,fila,errores){
 	//if(operacion === "nuevo" && errores === false){
 	if(operacion === "nuevo" ){
-		debugger;
 		var nuevo = this.state.listado.slice()
 		this.num_con =  this.num_con - 1;
 		var nueva_fila = fila;
@@ -33,7 +38,7 @@ clickOperacion: function(operacion,fila,errores){
 		 nueva_fila.venta = this.state.listado.venta;
 		 nuevo.push(nueva_fila);
 		 this.setState({listado: nuevo })
-		// this.refs.NuevoDetalle.limpiarFila(); 
+		 this.refs.NuevoDetalleVenta.limpiarFila(); 
 		// console.log("*** " + nueva_fila.id + " &&&& " + nueva_fila.compra);
 	}
 },
@@ -42,12 +47,12 @@ render: function () {
 
     	var Titulos ={num_rollo:"Num.Rollo", peso_kg:"Peso Kg",precio_neto:"Precio Neto"}
         var fila_titulo =  <VentaDetalle key={"titulo"} datos ={Titulos} titulo={true} />
-        var fila_insercion =  <VentaDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/>
+        var fila_insercion =  <VentaDetalle ref="NuevoDetalleVenta" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/>
       
-
+        debugger;
       this.state.listado.forEach(function(detalle_venta){          
             var detalle= <VentaDetalle ref={"detalle_" + detalle_venta.id } 
-            						key={"xx" + detalle_venta.id} 
+            						key={"venta_det_" + detalle_venta.id} 
             						datos = {detalle_venta} 
             						id = {detalle_venta.id} 
 									venta = {detalle_venta.venta} 

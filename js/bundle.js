@@ -4670,6 +4670,25 @@ module.exports = React.createClass({
 				'$ Neto Venta'
 			),
 			React.createElement('br', null),
+			React.createElement(
+				'label',
+				null,
+				'Enter Country name:'
+			),
+			React.createElement('input', { type: 'text', list: 'countries' }),
+			React.createElement(
+				'datalist',
+				{ id: 'countries' },
+				React.createElement('option', { value: 'Afghanistan' }),
+				React.createElement('option', { value: 'Albania' }),
+				React.createElement('option', { value: 'United Kingdom' }),
+				React.createElement('option', { value: 'United States' }),
+				React.createElement('option', { value: 'Vanuatu' }),
+				React.createElement('option', { value: 'Vatican City' }),
+				React.createElement('option', { value: 'Yemen' }),
+				React.createElement('option', { value: 'Zambia' }),
+				React.createElement('option', { value: 'Zimbabwe' })
+			),
 			React.createElement(Titulo, { titulo: 'Crédito', clase: 'resaltar_titulo_caja' }),
 			React.createElement(
 				CajaConCampos,
@@ -4701,25 +4720,23 @@ var ReactDOM = require('react-dom');
 module.exports = React.createClass({
 	displayName: 'exports',
 
-
-	// componentWillReceiveProps: function(nextProps) {
-	// 	 	debugger;
-	// 	 if(nextProps.datos.id !== undefined){ 	
-	// 	 	var detalle = nextProps.datos;
-	// 	this.setState({
-	// 					   id :         detalle.id,	
-	// 					   venta:       detalle.venta,
-	// 					   num_rollo:   detalle.num_rollo,
-	// 					   peso_kg:     detalle.peso_kg,
-	// 					   precio_neto: detalle.precio_neto,
-	// 					});
-
-	//  }
-	// 	  else{
-	// 	  	this.setState(this.getInitialState())
-	//  }
-	// },
+	limpiarFila: function () {
+		var val_def = this.valoresPorDefecto();
+		this.setState(val_def);
+	},
 	getDefaultProps: function () {
+		return {
+			primera: false,
+			titulo: false,
+			id: -1,
+			venta: "0",
+			num_rollo: "",
+			peso_kg: "0.0",
+			precio_neto: "0.0",
+			datos: []
+		};
+	},
+	valoresPorDefecto: function () {
 		return {
 			primera: false,
 			titulo: false,
@@ -4767,6 +4784,8 @@ module.exports = React.createClass({
 		func = new FuncGenericas();
 
 		var dicCajas = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
+		var ID = func.zipCol(dicCajas, ["id", "", "", this.state.id, this.onValorCambio, this.onBlurCaja, this.state.errores.id]);
+
 		var NUM_ROLLO = func.zipCol(dicCajas, ["num_rollo", "", "", this.state.num_rollo, this.onValorCambio, this.onBlurCaja, this.state.errores.num_rollo]);
 		var PESO_KG = func.zipCol(dicCajas, ["peso_kg", "", "", this.state.peso_kg, this.onValorCambio, this.onBlurCaja, this.state.errores.peso_kg]);
 		var PRECIO_NETO = func.zipCol(dicCajas, ["precio_neto", "", "", this.state.precio_neto, this.onValorCambio, this.onBlurCaja, this.state.errores.precio_neto]);
@@ -4782,6 +4801,7 @@ module.exports = React.createClass({
 		return React.createElement(
 			'tr',
 			{ key: this.props.key },
+			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.id : React.createElement(CajaDeTextoSimple, { estilo: 'caja_grid', propiedades: ID, requerido: false }) }),
 			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.num_rollo : caja_numrollo }),
 			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.peso_kg : React.createElement(CajaDeTextoSimple, { estilo: 'caja_grid', propiedades: PESO_KG, requerido: false }) }),
 			React.createElement(CeldaTabla, { contenido: this.props.titulo ? this.props.datos.precio_neto : React.createElement(CajaDeTextoSimple, { estilo: 'caja_grid', propiedades: PRECIO_NETO, requerido: false }) }),
@@ -4811,13 +4831,17 @@ module.exports = React.createClass({
 	componentWillMount: function () {
 		this.num_con = -1;
 	},
-	componentWillReceiveProps: function (nuevas_props) {
+	componentWillReceiveProps: function (nextProps) {
 		this.num_con = -1;
+		if (nextProps.listado !== undefined) {
+			this.setState({ listado: nextProps.listado });
+		} else {
+			this.setState({ listado: [] });
+		}
 	},
 	clickOperacion: function (operacion, fila, errores) {
 		//if(operacion === "nuevo" && errores === false){
 		if (operacion === "nuevo") {
-			debugger;
 			var nuevo = this.state.listado.slice();
 			this.num_con = this.num_con - 1;
 			var nueva_fila = fila;
@@ -4826,7 +4850,7 @@ module.exports = React.createClass({
 			nueva_fila.venta = this.state.listado.venta;
 			nuevo.push(nueva_fila);
 			this.setState({ listado: nuevo });
-			// this.refs.NuevoDetalle.limpiarFila();
+			this.refs.NuevoDetalleVenta.limpiarFila();
 			// console.log("*** " + nueva_fila.id + " &&&& " + nueva_fila.compra);
 		}
 	},
@@ -4835,11 +4859,12 @@ module.exports = React.createClass({
 
 		var Titulos = { num_rollo: "Num.Rollo", peso_kg: "Peso Kg", precio_neto: "Precio Neto" };
 		var fila_titulo = React.createElement(VentaDetalle, { key: "titulo", datos: Titulos, titulo: true });
-		var fila_insercion = React.createElement(VentaDetalle, { ref: 'NuevoDetalle', key: "primera", primera: true, clickOperacion: this.clickOperacion });
+		var fila_insercion = React.createElement(VentaDetalle, { ref: 'NuevoDetalleVenta', key: "primera", primera: true, clickOperacion: this.clickOperacion });
 
+		debugger;
 		this.state.listado.forEach(function (detalle_venta) {
 			var detalle = React.createElement(VentaDetalle, { ref: "detalle_" + detalle_venta.id,
-				key: "xx" + detalle_venta.id,
+				key: "venta_det_" + detalle_venta.id,
 				datos: detalle_venta,
 				id: detalle_venta.id,
 				venta: detalle_venta.venta,

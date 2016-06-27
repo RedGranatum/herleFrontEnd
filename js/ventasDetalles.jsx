@@ -14,25 +14,24 @@ var ReactDOM    	  = require('react-dom') ;
 //var CatalogoApiRest   = require('../js/modelos/catalogoApiRest');
 
 module.exports = React.createClass({
-
- // componentWillReceiveProps: function(nextProps) {
- // 	 	debugger;
- // 	 if(nextProps.datos.id !== undefined){ 	 
- // 	 	var detalle = nextProps.datos;
-	// 	this.setState({
- // 					   id :         detalle.id,	
- // 					   venta:       detalle.venta,
- // 					   num_rollo:   detalle.num_rollo,
- // 					   peso_kg:     detalle.peso_kg,
- // 					   precio_neto: detalle.precio_neto,
- // 					});
-
-	//  }
- // 	  else{
- // 	  	this.setState(this.getInitialState())
- //  }
- // },
+ 		limpiarFila: function()
+		{
+			var val_def = this.valoresPorDefecto();
+			this.setState(val_def);
+		},		
   		getDefaultProps: function(){
+			return{
+				primera: false,
+				titulo:  false,	
+				id:  -1,
+				venta: "0",
+				num_rollo: "",
+				peso_kg: "0.0",
+				precio_neto: "0.0",
+				datos: [],		
+			};
+		},
+		valoresPorDefecto: function(){
 			return{
 				primera: false,
 				titulo:  false,	
@@ -83,7 +82,9 @@ clickOperacion: function(operacion)
 render: function () {			
             func = new FuncGenericas();
           
-            var dicCajas     =               	     ["id",      "titulo",      "textoIndicativo" ,    "valor",                     "onChange",      "onBlur",                  "error"   ];
+            var dicCajas     =             ["id",      "titulo",      "textoIndicativo" ,    "valor",                     "onChange",      "onBlur",                  "error"   ];
+			var ID    = func.zipCol(dicCajas,["id",  "",              "",            this.state.id,   this.onValorCambio ,  this.onBlurCaja,     this.state.errores.id     ]);
+
 			var NUM_ROLLO    = func.zipCol(dicCajas,["num_rollo",  "",              "",            this.state.num_rollo,   this.onValorCambio ,  this.onBlurCaja,     this.state.errores.num_rollo     ]);
 		   	var PESO_KG  	 = func.zipCol(dicCajas,["peso_kg",       "",  			"",			   this.state.peso_kg,     this.onValorCambio,     this.onBlurCaja,	  this.state.errores.peso_kg]);         
 		   	var PRECIO_NETO  = func.zipCol(dicCajas,["precio_neto",       "",  			"",		   this.state.precio_neto, this.onValorCambio,       this.onBlurCaja,this.state.errores.precio_neto]);
@@ -98,6 +99,8 @@ render: function () {
             var caja_numrollo = this.props.primera ? <CajaDeTextoSimple estilo="caja_grid" propiedades = {NUM_ROLLO}    requerido={false} /> : <EtiquetaTexto titulo="" valor={this.state.num_rollo} clase="etiqueta_especial" />;
         	return (
 				<tr key={this.props.key}>
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.id   : <CajaDeTextoSimple estilo="caja_grid" propiedades = {ID}      requerido={false} />}  />
+
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.num_rollo   : caja_numrollo }  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.peso_kg   : <CajaDeTextoSimple estilo="caja_grid" propiedades = {PESO_KG}      requerido={false} />}  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio_neto        : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PRECIO_NETO} requerido={false}  />} />

@@ -199,6 +199,21 @@ llenarListaClientes: function(lista){
 	</div>
 	<br/>
 
+<label>Enter Country name:</label>
+<input type="text" list="countries"  />
+
+<datalist id="countries"  >
+	<option value="Afghanistan" />
+	<option value="Albania" />
+	<option value="United Kingdom" />
+	<option value="United States" />
+	<option value="Vanuatu" />
+	<option value="Vatican City" />
+	<option value="Yemen" />
+	<option value="Zambia" />
+	<option value="Zimbabwe" />
+</datalist>
+
 	<Titulo titulo='Crédito' clase ="resaltar_titulo_caja" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
 		<Combo propiedades={PERIODO_PAGO}/>
