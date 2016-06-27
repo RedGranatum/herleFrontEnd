@@ -18,9 +18,9 @@ $(function() {
 	}
 
 
-	//var url_local = 'http://localhost:8000/'
+	var url_local = 'http://localhost:8000/'
 	//var url_local ='http://192.168.0.15:8000/';
-	var url_local = 'http://159.203.229.118/'
+	//var url_local = 'http://159.203.229.118/'
 
 
 	datosCatalogo = new  ApiRestCatalogo();
@@ -63,6 +63,9 @@ $(function() {
 	appmvc.Catalogos.MONEDAS = 4;
 	appmvc.Catalogos.MATERIALES = 5;
 	appmvc.Catalogos.PARAMETROS_CALCULOS = 9;
+	appmvc.Catalogos.TIPO_DOCUMENTO = 10;
+	appmvc.Catalogos.METODO_PAGO = 11;
+    appmvc.Catalogos.PERIODO_PAGO=12;
 
 	appmvc.Datos.PAISES = null; 
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
@@ -103,7 +106,33 @@ $(function() {
                             console.log("hay errores " + response.statusText)
                                       }
                         )
-
+    appmvc.Datos.TIPO_DOCUMENTO = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_DOCUMENTO, 
+                        function(data){
+                            appmvc.Datos.TIPO_DOCUMENTO =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
+    appmvc.Datos.METODO_PAGO = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.METODO_PAGO, 
+                        function(data){
+                            appmvc.Datos.METODO_PAGO =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
+    appmvc.Datos.PERIODO_PAGO = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PERIODO_PAGO, 
+                        function(data){
+                            appmvc.Datos.PERIODO_PAGO =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
 	ReactDOM.render(<App/>,document.getElementById("app"));
 	
   	

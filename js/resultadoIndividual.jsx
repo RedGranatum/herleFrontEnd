@@ -8,7 +8,10 @@ module.exports = React.createClass({
 			var codigo= this.props.resultado.codigo===undefined ? this.props.resultado.invoice : this.props.resultado.codigo;
 			var nombre= this.props.resultado.nombre===undefined ? this.props.resultado.fec_solicitud : this.props.resultado.nombre;
 			
-						return (
+			var codigo =  this.props.resultado.codigo===undefined && this.props.resultado.num_documento!==undefined ? this.props.resultado.num_documento : codigo;
+			var nombre =  this.props.resultado.nombre===undefined && this.props.resultado.num_documento!==undefined ? this.props.resultado.fec_venta : nombre;
+			 
+			return (
 					<div className="resultado" key={this.props.resultado.id} >
 						<span className="dsc_resultado" onClick ={this.onClick}> [{codigo}] {nombre}</span>
 					</div>

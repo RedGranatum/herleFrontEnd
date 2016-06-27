@@ -19,6 +19,8 @@ var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 var ApiRestCompras   = require('../js/modelos/apirestCompras');
+var ApiRestVentas   = require('../js/modelos/apirestVentas');
+
  
 
 
@@ -206,6 +208,10 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.VENTAS);
               console.log("menu de ventas");                    
              });
+            Page('/ventas/nuevo',function(){
+                self.setState({datosVentas:[],actualizarForm:true});
+                console.log("Vas a dar de alta una nueva venta");              
+            });
 
             Page('/costos',function(){
               self.mostrarMenu(appmvc.Menu.COSTOS);
@@ -290,7 +296,21 @@ module.exports = React.createClass({
                       self.setState({datosInventarios : [] });
                     }
             );
-         },   
+         }, 
+    llenarDatosVenta: function(pk){
+           var self = this;
+           var venta = new ApiRestVentas();
+           valor = venta.buscarVentaPorPk(pk, 
+                function(data){
+                    self.setState({datosVentas: data[0] });
+                    },
+                function(model,response,options){
+                      self.setState({datosVentas : [] });
+                    }
+            );
+
+
+         },        
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 		},
@@ -339,6 +359,7 @@ module.exports = React.createClass({
       }      
       if(this.state.formMostrar===appmvc.Menu.VENTAS){
         this.setState({datosVentas:[],actualizarForm:true});
+        this.llenarDatosVenta(pk);
       }  
       if(this.state.formMostrar===appmvc.Menu.COSTOdebS){
         this.setState({datosCostos:[],actualizarForm:true});
@@ -354,7 +375,7 @@ module.exports = React.createClass({
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} onClaveCompraSeleccionada={this.onClaveSeleccionada} />);
       this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} onClaveCompraSeleccionada={this.onClaveSeleccionada}/>);   
       //this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
-      this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS}  />);
+      this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS} datos={this.state.datosVentas}  onClaveVentaSeleccionada={this.onClaveSeleccionada}/>);
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
       this.crearFormulario(appmvc.Menu.REPORTES,<Reportes ref={appmvc.Menu.REPORTES} />);
  

@@ -100,17 +100,17 @@
 							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="tipo_documento">Tipo de pago</label>
+							<label class="etiquetas_bloque" for="tipo_documento">Tipo de documento</label>
 							<select name="tipo_documento" class="select_bloque">
 								<option value="factura">Factura</option>
-								<option value="nota_credito">Nota de crédito</option>
+								<option value="nota_credito">Nota</option>
 							</select>
 							<div class="viñeta">*</div>
 							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="no_referencia">No. referencia</label>
-							<input class="inputs_bloque" type="text" placeholder="No. (factura/nota de crédito)" />
+							<label class="etiquetas_bloque" for="no_referencia">Id documento</label>
+							<input class="inputs_bloque" type="text" placeholder="No. (factura/nota)" />
 							<div class="viñeta">*</div>
 							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
@@ -154,7 +154,7 @@
 							<div class="error_mostrar">mensaje de error del campo</div>
 						</li>
 						<li class="li_bloque">
-							<label class="etiquetas_bloque" for="tipo_pago">Tipo de pago</label>
+							<label class="etiquetas_bloque" for="tipo_pago">Método de pago</label>
 							<select name="tipo_pago" class="select_bloque">
 								<option value="mexico_c">Contado</option>
 								<option value="eeuu_c">Crédito</option>
@@ -198,6 +198,11 @@
 							<input class="inputs_bloque" type="text" placeholder="Cantidad días/meses" />
 							<div class="viñeta">*</div>
 							<div class="error_mostrar">mensaje de error del campo</div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="observaciones">Observaciones</label>
+							<textarea class="textarea_bloque" name="observaciones" placeholder="Observaciones"></textarea>
+							<div class="error_ocultar">mensaje de error del campo</div>
 						</li>
 					</ul>
 				</div>

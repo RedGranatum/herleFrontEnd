@@ -6,7 +6,7 @@ var ReactDOM         = require('react-dom');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 var ApirestCompra    = require('../js/modelos/apirestCompras');
-
+var ApiRestVenta   = require('../js/modelos/apirestVentas');
 
 module.exports = React.createClass({
 	 getInitialState: function(){
@@ -44,6 +44,10 @@ module.exports = React.createClass({
             if(formulario === appmvc.Menu.INVENTARIOS){
                    var compra= new ApirestCompra();
                    funcionBusqueda = compra.buscarCompraPorInvoice.bind(compra);
+            }
+            if(formulario === appmvc.Menu.VENTAS){
+                   var venta= new ApiRestVenta();
+                   funcionBusqueda = venta.buscarVentaPorIdDocumento.bind(venta);
             }
 
 
