@@ -7,6 +7,10 @@ var existenciasApiRest =function(){
 			var ruta = 'existencias/agrupadas/' + num_rollo ;			
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
 		},
+		buscarExistenciaAgrupadasPorRollo: function(funcion_exito,funcion_error){
+			var ruta = 'existencias/agrupadas/';	
+			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+		},
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){
 			var datosExist = new ColeccionExist();
 			datosExist.asignarRuta(ruta);

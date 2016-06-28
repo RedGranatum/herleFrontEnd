@@ -3,6 +3,8 @@ var TituloMenu = require('../js/titulos_menu.jsx');
 var CeldaTabla       = require('../js/celdaTabla.jsx');
 var FilaTabla        = require('../js/filaTabla.jsx');
 var ApiRestInventario = require('../js/modelos/apirestInventarios');
+var ApiRestExistencias = require('../js/modelos/apirestExistencias');
+
 
 module.exports = React.createClass({
 getDefaultProps: function(){
@@ -17,12 +19,24 @@ getInitialState: function(){
 },
 onClickReporte: function(){
 	console.log("Reporte seleccionado")
-	this.llenarListaClientes();
+	this.llenarListaExistencias();
 },
-llenarListaClientes: function(){
+// llenarListaClientes: function(){
+// 	var self = this;
+// 	var Inventario = new ApiRestInventario();
+// 	Inventario.listadoInventario(	
+// 		function(data){
+//    				self.setState({lista_inventario: data });
+// 		},
+// 		function(model,response,options){
+// 				    self.setState({lista_inventario : [] });
+// 		}
+// 	);
+// },
+llenarListaExistencias: function(){
 	var self = this;
-	var Inventario = new ApiRestInventario();
-	Inventario.listadoInventario(	
+	var existencias = new ApiRestExistencias();
+	existencias.buscarExistenciaAgrupadasPorRollo(	
 		function(data){
    				self.setState({lista_inventario: data });
 		},
@@ -46,7 +60,8 @@ render: function () {
 	var self= this;
 	var estilo = {cursor:"pointer"};
 
-	var titulosEncabezado=["Id", "Num.Rollo","Codigo Producto",	"Calibre",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)"];
+	//var titulosEncabezado=["Id", "Num.Rollo","Codigo Producto",	"Calibre",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)"];
+	var titulosEncabezado=[ "Num.Rollo","Entradas Kg",	"Salida Kg",	"Existencias Kg"];
 
 
 	var encabezado=titulosEncabezado.map(function(titulo){
@@ -60,16 +75,22 @@ render: function () {
 	this.state.lista_inventario.forEach(function(resultado){
 		var detalle = []
 
-			detalle.push(<CeldaTabla contenido={resultado.id} key="id"/>);
-			detalle.push(<CeldaTabla contenido={resultado.num_rollo} key="num_rollo" />);
-			detalle.push(<CeldaTabla contenido={resultado.codigo_producto}  key="codigo_producto" />);
-			detalle.push(<CeldaTabla contenido={resultado.calibre}  key="calibre" />);
-			detalle.push(<CeldaTabla contenido={resultado.ancho}  key="ancho" />);
-			detalle.push(<CeldaTabla contenido={resultado.largo}  key="largo"/>);
-			detalle.push(<CeldaTabla contenido={resultado.peso_kg}  key="peso_kg" />);
-			detalle.push(<CeldaTabla contenido={resultado.peso_lb} key="peso_lb" />);
+			// detalle.push(<CeldaTabla contenido={resultado.id} key="id"/>);
+			// detalle.push(<CeldaTabla contenido={resultado.num_rollo} key="num_rollo" />);
+			// detalle.push(<CeldaTabla contenido={resultado.codigo_producto}  key="codigo_producto" />);
+			// detalle.push(<CeldaTabla contenido={resultado.calibre}  key="calibre" />);
+			// detalle.push(<CeldaTabla contenido={resultado.ancho}  key="ancho" />);
+			// detalle.push(<CeldaTabla contenido={resultado.largo}  key="largo"/>);
+			// detalle.push(<CeldaTabla contenido={resultado.peso_kg}  key="peso_kg" />);
+			// detalle.push(<CeldaTabla contenido={resultado.peso_lb} key="peso_lb" />);
 	
-		    listado_detalles.push(<FilaTabla key={resultado.id} id={resultado.id} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
+		 //    listado_detalles.push(<FilaTabla key={resultado.id} id={resultado.id} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
+	 		detalle.push(<CeldaTabla contenido={resultado.num_rollo} key="num_rollo"/>);
+			detalle.push(<CeldaTabla contenido={resultado.entradas_kd} key="entradas_kd" />);
+			detalle.push(<CeldaTabla contenido={resultado.salidas_kg}  key="salidas_kg" />);
+			detalle.push(<CeldaTabla contenido={resultado.existencia_kg}  key="existencia_kg" />);
+		
+		     listado_detalles.push(<FilaTabla key={resultado.num_rollo} id={resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
 	   		i=i+1;
 	})
 
