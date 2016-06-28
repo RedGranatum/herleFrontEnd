@@ -48,6 +48,7 @@
 			<li class="li_menu"><a class="ico_nav" href="#" title="Clientes"><i class="fa fa-group fa-3x"></i></a></li>
 			<li class="li_menu"><a class="ico_nav" href="#" title="Compras"><i class="fa fa-shopping-cart fa-3x"></i></a></li>
 			<li class="li_menu"><a class="ico_nav" href="#" title="Ventas"><i class="fa fa-dollar fa-3x"></i></a></li>
+			<li class="li_menu"><a class="ico_nav" href="#" title="Pagos"><i class="fa fa-check-square fa-3x"></i></a></li>
 			<li class="li_menu"><a class="ico_nav" href="#" title="Costos"><i class="fa fa-money fa-3x"></i></a></li>
 			<li class="li_menu"><a class="ico_nav" href="#" title="Inventario"><i class="fa fa-info fa-3x"></i></a></li>
 			<li class="li_menu"><a class="ico_nav" href="#" title="Catálogos"><i class="fa fa-th fa-3x"></i></a></li>
@@ -56,7 +57,7 @@
 	</nav>
 	<div class="caja_busqueda">
 		<ul class="menu_busqueda">
-			<li><input type="text" placeholder="Código del producto..." class="buscar"/></li>
+			<li><input type="text" placeholder="Id Documento..." class="buscar"/></li>
 		</ul>
 		<div class="bloque_resultados">
 			<div class="resultado">
@@ -76,49 +77,75 @@
 	<div class="caja_acciones">
 		<ul class="menu_acciones">
 			<li><a class="ico_acciones" href="#" title="Nuevo"><i class="fa fa-file fa-2x"></i></a></li>
+			<li><a class="ico_acciones" href="#" title="Guardar"><i class="fa fa-save fa-2x"></i></a></li>
 		</ul>
 	</div>
-	<div class="listas">
-		<div class="lista">
-			<ul class="lista_elemento">
-				<li><a href="">rollo 1</a></li>
-				<li><a href="">rollo 2</a></li>
-				<li><a href="">rollo 3</a></li>
-				<li><a href="">rollo 4</a></li>
-				<li><a href="">rollo 5</a></li>
-				<li><a href="">rollo 6</a></li>
-				<li><a href="">rollo 7</a></li>
-				<li><a href="">rollo 8</a></li>
-				<li><a href="">rollo 9</a></li>
-				<li><a href="">rollo 10</a></li>
-			</ul>
-		</div>
-	</div>
-	<section class="ventanas">
-		<div class="ventana">
-			<h2>Compra</h2>
-			<h3>Invoice</h3>
-			<h3>Código Proveedor</h3>
-			<h4>Transporte</h4>
-			<h4>Peso (lbs)</h4>
-			<h4>Peso (kgs)</h4>
-			<h4>Precio</h4>
-		</div>
-		<div class="ventana">
-			<h2>Venta</h2>
-			<h3>Id Venta</h3>
-			<h3>Código Cliente</h3>
-			<h4>Peso (kgs)</h4>
-			<h4>Precio</h4>
-		</div>
-		<div class="ventana">
-			<h2>Utilidad</h2>
-			<h4>Compra - Venta</h4>
-		</div>
-		<div class="ventana">
-			<h2>Existencia</h2>
-			<h4>1500 kgs</h4>
-		</div>
+	<section class="contenido">
+		<article class="bloque">
+			<div class="formula">
+				<figure class="formula_foto">
+					<p><img class="img_factura" src="images/factura.png" /></p>
+				</figure>
+				<div class="formula_datos">
+					<h3>Id Documento</h3>
+					<h3>Código Cliente</h3>
+					<h5>RFC Cliente</h5>
+					<h5>Nombre Cliente</h5>
+					<h3>Id Venta</h3>
+					<h5>Neto Venta</h5>
+				</div>
+			</div>
+			<br>
+			<div class="titulo_bloque">
+				Pago
+			</div>
+			<div class="caja_bloque">
+				<div class="campos_bloque">
+					<ul class="ul_bloque">
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="tipo_documento">Tipo de documento</label>
+							<label class="etiqueta_especial" for="">Siempre será abono</label>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="fecha_pago">Fecha</label>
+							<input id="fecha_pago" class="inputs_bloque" type="text" placeholder="Fecha de pago" />
+							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
+						</li>
+						<li class="li_bloque">
+							<label class="etiquetas_bloque" for="monto">Monto</label>
+							<input class="inputs_bloque" type="text" placeholder="Monto" />
+							<div class="viñeta">*</div>
+							<div class="error_mostrar">mensaje de error del campo</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+		<article class="bloque">
+			<div class="bloque_catalogo" id="ampliar_tabla">
+				<table class="tabla_catalogo">
+					<tbody>
+					<tr>
+						<td>Fecha</td>
+						<td>Monto</td>
+					</tr>
+					<tr>
+						<td>23/01/2016</td>
+						<td>500</td>
+					</tr>
+					<tr>
+						<td>15/01/2016</td>
+						<td>12000</td>
+					</tr>
+					<tr>
+						<td>02/02/2016</td>
+						<td>20000</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</article>
 	</section>
 	<footer>
 	</footer>

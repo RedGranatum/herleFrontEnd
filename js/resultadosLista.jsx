@@ -13,7 +13,7 @@ module.exports = React.createClass({
 				filas.push(<Filas key={resultado.id}  resultado={resultado} onClaveSeleccionada={self.onClaveSeleccionada}/>);
 			});
 	        
-	        var divStyle = (filas.length >0) ? { display: 'block'} : {display: 'none'} ;
+	        var divStyle = (filas.length >0) ? { display: 'inline-block'} : {display: 'none'} ;
 			return (
 				<div className="bloque_resultados"  style ={divStyle}>
 					{filas}
