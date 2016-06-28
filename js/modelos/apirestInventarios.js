@@ -32,8 +32,15 @@ var inventariosApiRest =function(){
 			ruta = ruta + valores;			
 			this.funcionCalculos(ruta,funcion_exito,funcion_error);
 		},
+
+
     listadoInventario: function(funcion_exito,funcion_error){
           var ruta = 'inventarios/';
+          this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+    },
+
+    busquedaPorRolloCodigo: function(valor_buscado,funcion_exito,funcion_error){
+          var ruta = 'inventarios/buscar/' + valor_buscado;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
     },
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){

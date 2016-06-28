@@ -150,6 +150,10 @@ onClaveSeleccionada: function(pk){
 	this.BuscarClientePorPk(pk)
 		console.log("la pk :" +pk);
 	},
+cambio: function(v,a){
+		debugger;
+	},
+
 llenarListaClientes: function(lista){
  	 return  (lista.length >0) ?  <div className="caja_busqueda" ref="busqueda_clientes_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
       
@@ -194,26 +198,9 @@ llenarListaClientes: function(lista){
 				  <Combo propiedades={METODOS_PAGO} />
 				  <Combo propiedades={BANCOS} />
     </CajaConCampos>
-	<div className="titulo_resalta">
-		$ Neto Venta
+	<div className="titulo_resalta" id="venta_neto_venta">
 	</div>
 	<br/>
-
-<label>Enter Country name:</label>
-<input type="text" list="countries"  />
-
-<datalist id="countries"  >
-	<option value="Afghanistan" />
-	<option value="Albania" />
-	<option value="United Kingdom" />
-	<option value="United States" />
-	<option value="Vanuatu" />
-	<option value="Vatican City" />
-	<option value="Yemen" />
-	<option value="Zambia" />
-	<option value="Zimbabwe" />
-</datalist>
-
 	<Titulo titulo='Crédito' clase ="resaltar_titulo_caja" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
 		<Combo propiedades={PERIODO_PAGO}/>
