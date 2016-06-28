@@ -16,7 +16,7 @@ module.exports = React.createClass({
 	},
 	componentDidMount: function(){
 		        var self= this;
-				$("#fec_inventario").datepicker({dateFormat:"dd/mm/yy"})
+				$("#fec_inventario, #fec_venta").datepicker({dateFormat:"dd/mm/yy"})
 						.on("input change", function(e){
 							self.cambiarValorFecha(e.target.id,e.target.value);
 							console.log("Date changed: ", e.target.value);
@@ -43,6 +43,7 @@ componentWillReceiveProps: function(nextProps) {
  					   num_documento:  cabecero.num_documento,
  					   bln_activa:     cabecero.bln_activa,
  					   fec_inventario: cabecero.fec_inventario,
+ 					   fec_venta: 	   cabecero.fec_venta,
  					   cliente: 	   cliente_id,
 	   				   cliente_codigo: cliente_codigo,
 					   cliente_nombre: cliente_nombre,
@@ -65,6 +66,7 @@ getInitialState: function(){
 		num_documento:  '',
 		bln_activa: 'True',
 		fec_inventario: moment().format('DD/MM/YYYY'),
+		fec_venta: moment().format('DD/MM/YYYY'),
 		cliente: "0",
 	    cliente_codigo: "",
 		cliente_nombre:'',
@@ -151,9 +153,25 @@ onClaveSeleccionada: function(pk){
 		console.log("la pk :" +pk);
 	},
 cambio: function(v,a){
-		debugger;
+		
 	},
-
+valoresCabeceroVenta: function(){
+	  return{   
+	    id: this.state.id,
+        fec_venta: this.state.fec_venta,
+        tipo_doc: this.state.tipo_doc,
+        num_documento:this.state.num_documento,
+        bln_activa: this.state.bln_activa,
+        fec_inventario: this.state.fec_inventario,
+        fec_venta: this.state.fec_venta,
+        cliente: this.state.cliente,
+        metodo_pago: this.state.metodo_pago,
+        banco_cliente: this.state.banco_cliente,
+        periodo_pago: this.state.periodo_pago,
+        cantidad_pago: this.state.cantidad_pago,
+        observaciones: this.state.observaciones
+	  };
+},
 llenarListaClientes: function(lista){
  	 return  (lista.length >0) ?  <div className="caja_busqueda" ref="busqueda_clientes_compras"> <ListaResultados ref="ListaResultadosBusqueda"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
       
@@ -163,9 +181,11 @@ llenarListaClientes: function(lista){
 			
 	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",                  "onChange"          ,"onEnter",              "onBlur"                 ,"error"];
 			var NUM_DOCUMENTO = func.zipCol(dic1,["num_documento","Id Documento",  "Id Documento", this.state.num_documento ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
-            var FEC_INVENTARIO = func.zipCol(dic1,["fec_inventario","Fecha Inventario",  "Fecha Inventario", this.state.fec_inventario ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
-            var CANTIDAD_PAGO = func.zipCol(dic1,["cantidad_pago","Cantidad Pago",  "Cantidad Pago", this.state.cantidad_pago ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
-            var OBSERVACIONES = func.zipCol(dic1,["observaciones","Observaciones",  "Observaciones", this.state.observaciones ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
+            var FEC_VENTA = func.zipCol(dic1,["fec_venta","Fecha Venta",  "Fecha Venta", this.state.fec_venta ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_venta]);
+       
+            var FEC_INVENTARIO = func.zipCol(dic1,["fec_inventario","Fecha Inventario",  "Fecha Inventario", this.state.fec_inventario ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_inventario]);
+            var CANTIDAD_PAGO = func.zipCol(dic1,["cantidad_pago","Cantidad Pago",  "Cantidad Pago", this.state.cantidad_pago ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.cantidad_pago]);
+            var OBSERVACIONES = func.zipCol(dic1,["observaciones","Observaciones",  "Observaciones", this.state.observaciones ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.observaciones]);
 
             var CLIENTE       = func.zipCol(dic1,["cliente_nombre","Cliente",         "Cliente",         this.state.cliente_nombre,this.onValorCambio,    this.onBuscarCliente, this.onBlurCaja,	this.state.errores.cliente_nombre ]);
  
@@ -184,6 +204,7 @@ llenarListaClientes: function(lista){
 <article className="bloque">
 	<Titulo titulo='Venta' clase ="titulo_bloque" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
+				<CajaDeTexto propiedades={FEC_VENTA}/>
 				<CajaDeTexto propiedades={FEC_INVENTARIO}/>
 				<Combo propiedades={TIPOS_DOCUMENTOS} />
 				 <CajaDeTexto propiedades={NUM_DOCUMENTO} />

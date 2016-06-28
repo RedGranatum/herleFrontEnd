@@ -195,7 +195,27 @@ module.exports = React.createClass({
       self.setState({ datosVentas: [], actualizarForm: true });
       console.log("Vas a dar de alta una nueva venta");
     });
+    Page('/ventas/guardar', function () {
+      // if(self.refs[appmvc.Menu.COMPRAS].hayErrores()){
+      //        $("#notify_error").text("Hay errores en algunos campos");
+      //        $("#notify_error").notify();
+      //        return;
+      //  }
 
+      var datosNuevos = self.refs[appmvc.Menu.VENTAS].nuevosDatos();
+      var venta = new ApiRestVentas();
+
+      venta.Guardar(datosNuevos, function (datos, response) {
+        self.setState({ actualizarForm: true });
+        self.setState({ datosVentas: datos });
+        $("#notify_success").text("Los datos de la venta fueron guardados con exito");
+        $("#notify_success").notify();
+      }, function (model, response, options) {
+        $("#notify_error").text(response.responseText);
+        $("#notify_error").notify();
+      });
+      console.log("Vas a guardar la venta");
+    });
     Page('/costos', function () {
       self.mostrarMenu(appmvc.Menu.COSTOS);
       console.log("menu de costos");
@@ -3529,6 +3549,32 @@ var apirestVentas = function () {
           funcion_error(model, response, options);
         }
       });
+    },
+    ruta_insertar: function () {
+      return 'ventas_con_detalles/';
+    },
+
+    Guardar: function (datos, funcion_exito, funcion_error) {
+      var venta = new ModeloBase();
+
+      venta.set(datos);
+      var operacion = '';
+      if (datos.id === -1) {
+        venta.asignarRuta(this.ruta_insertar());
+        operacion = 'POST';
+      }
+      if (datos.id > 0) {
+        return;
+      }
+      venta.save(null, {
+        type: operacion,
+        success: function (datos, response) {
+          funcion_exito(datos.toJSON(), response);
+        },
+        error: function (model, response, options) {
+          funcion_error(model, response, options);
+        }
+      });
     }
 
   };
@@ -4496,13 +4542,19 @@ module.exports = React.createClass({
 			datos: []
 		};
 	},
+	nuevosDatos: function () {
+		var datos_cabecero = this.refs["cabecero_ventas"].valoresCabeceroVenta();
+		var datos_detalles = this.refs["listado_detalles_ventas"].valoresDetallesVenta();
+		datos_cabecero["venta_detalles"] = datos_detalles;
+		return datos_cabecero;
+	},
 	render: function () {
 		var venta_detalles = this.props.datos.venta_detalles === undefined ? [] : this.props.datos.venta_detalles;
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(VentasCabecero, { datos: this.props.datos }),
-			React.createElement(VentasListado, { listado: venta_detalles })
+			React.createElement(VentasCabecero, { datos: this.props.datos, ref: 'cabecero_ventas' }),
+			React.createElement(VentasListado, { listado: venta_detalles, ref: 'listado_detalles_ventas' })
 		);
 	}
 });
@@ -4528,7 +4580,7 @@ module.exports = React.createClass({
 	},
 	componentDidMount: function () {
 		var self = this;
-		$("#fec_inventario").datepicker({ dateFormat: "dd/mm/yy" }).on("input change", function (e) {
+		$("#fec_inventario, #fec_venta").datepicker({ dateFormat: "dd/mm/yy" }).on("input change", function (e) {
 			self.cambiarValorFecha(e.target.id, e.target.value);
 			console.log("Date changed: ", e.target.value);
 		});
@@ -4553,6 +4605,7 @@ module.exports = React.createClass({
 				num_documento: cabecero.num_documento,
 				bln_activa: cabecero.bln_activa,
 				fec_inventario: cabecero.fec_inventario,
+				fec_venta: cabecero.fec_venta,
 				cliente: cliente_id,
 				cliente_codigo: cliente_codigo,
 				cliente_nombre: cliente_nombre,
@@ -4573,6 +4626,7 @@ module.exports = React.createClass({
 			num_documento: '',
 			bln_activa: 'True',
 			fec_inventario: moment().format('DD/MM/YYYY'),
+			fec_venta: moment().format('DD/MM/YYYY'),
 			cliente: "0",
 			cliente_codigo: "",
 			cliente_nombre: '',
@@ -4647,10 +4701,24 @@ module.exports = React.createClass({
 		this.BuscarClientePorPk(pk);
 		console.log("la pk :" + pk);
 	},
-	cambio: function (v, a) {
-		debugger;
+	cambio: function (v, a) {},
+	valoresCabeceroVenta: function () {
+		return {
+			id: this.state.id,
+			fec_venta: this.state.fec_venta,
+			tipo_doc: this.state.tipo_doc,
+			num_documento: this.state.num_documento,
+			bln_activa: this.state.bln_activa,
+			fec_inventario: this.state.fec_inventario,
+			fec_venta: this.state.fec_venta,
+			cliente: this.state.cliente,
+			metodo_pago: this.state.metodo_pago,
+			banco_cliente: this.state.banco_cliente,
+			periodo_pago: this.state.periodo_pago,
+			cantidad_pago: this.state.cantidad_pago,
+			observaciones: this.state.observaciones
+		};
 	},
-
 	llenarListaClientes: function (lista) {
 		return lista.length > 0 ? React.createElement(
 			'div',
@@ -4664,9 +4732,11 @@ module.exports = React.createClass({
 
 		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onEnter", "onBlur", "error"];
 		var NUM_DOCUMENTO = func.zipCol(dic1, ["num_documento", "Id Documento", "Id Documento", this.state.num_documento, this.onValorCambio, "", this.onBlurCaja, this.state.errores.num_doc]);
-		var FEC_INVENTARIO = func.zipCol(dic1, ["fec_inventario", "Fecha Inventario", "Fecha Inventario", this.state.fec_inventario, this.onValorCambio, "", this.onBlurCaja, this.state.errores.num_doc]);
-		var CANTIDAD_PAGO = func.zipCol(dic1, ["cantidad_pago", "Cantidad Pago", "Cantidad Pago", this.state.cantidad_pago, this.onValorCambio, "", this.onBlurCaja, this.state.errores.num_doc]);
-		var OBSERVACIONES = func.zipCol(dic1, ["observaciones", "Observaciones", "Observaciones", this.state.observaciones, this.onValorCambio, "", this.onBlurCaja, this.state.errores.num_doc]);
+		var FEC_VENTA = func.zipCol(dic1, ["fec_venta", "Fecha Venta", "Fecha Venta", this.state.fec_venta, this.onValorCambio, "", this.onBlurCaja, this.state.errores.fec_venta]);
+
+		var FEC_INVENTARIO = func.zipCol(dic1, ["fec_inventario", "Fecha Inventario", "Fecha Inventario", this.state.fec_inventario, this.onValorCambio, "", this.onBlurCaja, this.state.errores.fec_inventario]);
+		var CANTIDAD_PAGO = func.zipCol(dic1, ["cantidad_pago", "Cantidad Pago", "Cantidad Pago", this.state.cantidad_pago, this.onValorCambio, "", this.onBlurCaja, this.state.errores.cantidad_pago]);
+		var OBSERVACIONES = func.zipCol(dic1, ["observaciones", "Observaciones", "Observaciones", this.state.observaciones, this.onValorCambio, "", this.onBlurCaja, this.state.errores.observaciones]);
 
 		var CLIENTE = func.zipCol(dic1, ["cliente_nombre", "Cliente", "Cliente", this.state.cliente_nombre, this.onValorCambio, this.onBuscarCliente, this.onBlurCaja, this.state.errores.cliente_nombre]);
 
@@ -4687,6 +4757,7 @@ module.exports = React.createClass({
 			React.createElement(
 				CajaConCampos,
 				{ clase: "resaltar_caja_bloque" },
+				React.createElement(CajaDeTexto, { propiedades: FEC_VENTA }),
 				React.createElement(CajaDeTexto, { propiedades: FEC_INVENTARIO }),
 				React.createElement(Combo, { propiedades: TIPOS_DOCUMENTOS }),
 				React.createElement(CajaDeTexto, { propiedades: NUM_DOCUMENTO }),
@@ -5030,6 +5101,16 @@ module.exports = React.createClass({
 
 		suma = parseFloat(suma).toFixed(2);
 		ReactDOM.render(React.createElement(EtiquetaTexto, { titulo: 'Neto Venta: ', valor: suma, clase: 'etiqueta_especial', key: 'suma_venta' }), document.getElementById("venta_neto_venta"));
+	},
+	valoresDetallesVenta: function () {
+		var self = this;
+		var detalles = this.state.listado.map(function (datos) {
+			var fila = self.refs["detalle_" + datos.id].valoresFila();
+			delete fila.existencia;
+			delete fila.venta;
+			return fila;
+		});
+		return detalles;
 	},
 	render: function () {
 		var self = this;

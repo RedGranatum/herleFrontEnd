@@ -212,7 +212,29 @@ module.exports = React.createClass({
                 self.setState({datosVentas:[],actualizarForm:true});
                 console.log("Vas a dar de alta una nueva venta");              
             });
+            Page('/ventas/guardar',function(){
+             // if(self.refs[appmvc.Menu.COMPRAS].hayErrores()){
+             //        $("#notify_error").text("Hay errores en algunos campos");
+             //        $("#notify_error").notify();
+             //        return;
+             //  }
 
+              var datosNuevos=  self.refs[appmvc.Menu.VENTAS].nuevosDatos(); 
+              var venta = new ApiRestVentas();
+             
+             venta.Guardar(datosNuevos,
+                    function(datos,response){
+                         self.setState({actualizarForm:true});
+                         self.setState({datosVentas:datos});
+                        $("#notify_success").text("Los datos de la venta fueron guardados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });
+                console.log("Vas a guardar la venta");              
+            });
             Page('/costos',function(){
               self.mostrarMenu(appmvc.Menu.COSTOS);
               console.log("menu de costos");                    

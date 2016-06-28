@@ -26,7 +26,33 @@ return {
                   },
                 }); 
 
-          },
+      },
+      ruta_insertar: function(){
+        return 'ventas_con_detalles/';
+     },
+    
+     Guardar: function(datos,funcion_exito,funcion_error){
+      var venta = new ModeloBase();
+      
+      venta.set(datos);
+      var operacion =''
+      if (datos.id===-1){
+        venta.asignarRuta(this.ruta_insertar());
+        operacion = 'POST';
+      } 
+      if(datos.id > 0){
+        return;
+      } 
+      venta.save(null,{
+        type: operacion,
+        success: function(datos,response){
+           funcion_exito(datos.toJSON(),response);
+        },
+        error: function(model,response,options){
+           funcion_error(model,response,options);
+        }
+      })
+    },
 
 };
 }

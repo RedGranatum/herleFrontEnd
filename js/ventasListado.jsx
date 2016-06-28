@@ -69,6 +69,16 @@ sumatoria: function(){
 		ReactDOM.render( <EtiquetaTexto titulo="Neto Venta: " valor={suma} clase="etiqueta_especial" key ="suma_venta" />,document.getElementById("venta_neto_venta"));
 
 },
+valoresDetallesVenta: function(){
+	 var self = this;
+	 var detalles = this.state.listado.map(function(datos){
+	 	var fila =self.refs["detalle_" + datos.id].valoresFila();
+	 	delete fila.existencia; 
+	 	delete fila.venta
+	 	return fila;
+	 })
+	 return detalles;
+},
 render: function () {
 		var self = this;
         var listado_detalles = [];
