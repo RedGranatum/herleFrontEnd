@@ -1128,7 +1128,7 @@ module.exports = React.createClass({
 		var dic_errores = {
 			material_descripcion: { valor: this.state.material_descripcion, expreg: /^[a-zA-Z0-9\-().\s]{0,100}$/, requerido: true, mensaje: "Alfanumerico ,longitud [0-10]" },
 			calibre: { valor: this.state.calibre, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
-			ancho: { valor: this.state.calibre, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
+			ancho: { valor: this.state.ancho, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
 			largo: { valor: this.state.largo, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
 			peso_kg: { valor: this.state.peso_kg, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
 			peso_lb: { valor: this.state.peso_lb, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" },
@@ -2401,7 +2401,7 @@ module.exports = React.createClass({
 	render: function () {
 		func = new FuncGenericas();
 		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
-		var CALIBRE = func.zipCol(dic1, ["calibre", "Calibre", "calibre", this.state.calibre, this.onValorCambio, this.onBlurCaja, this.state.errores.calibre]);
+		var CALIBRE = func.zipCol(dic1, ["calibre", "Milesimas", "Milesimas", this.state.calibre, this.onValorCambio, this.onBlurCaja, this.state.errores.calibre]);
 		var ANCHO = func.zipCol(dic1, ["ancho", "Ancho", "ancho", this.state.ancho, this.onValorCambio, this.onBlurCaja, this.state.errores.ancho]);
 		var NUM_ROLLO = func.zipCol(dic1, ["num_rollo", "num_rollo", "num_rollo", this.state.num_rollo, this.onValorCambio, this.onBlurCaja, this.state.errores.num_rollo]);
 		var PESO_KG = func.zipCol(dic1, ["peso_kg", "peso_kg", "peso_kg", this.state.peso_kg, this.onValorCambio, this.onBlurCaja, this.state.errores.peso_kg]);
@@ -2481,7 +2481,7 @@ module.exports = React.createClass({
 		var self = this;
 		var estilo = { cursor: "pointer" };
 
-		var titulosEncabezado = ["Id", "Catalogo Mat.", "Dsc Material", "Calibre", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
+		var titulosEncabezado = ["Id", "Catalogo Mat.", "Material", "Milesimas", "Ancho", "Largo", "Peso (Kgs)", "Peso (Lbs)", "No. Rollo", "Precio"];
 
 		var encabezado = titulosEncabezado.map(function (titulo) {
 			return React.createElement(CeldaTabla, { key: titulo, contenido: titulo });
@@ -2755,9 +2755,9 @@ $(function () {
         Url: {}
     };
 
-    //var url_local = 'http://localhost:8000/'
+    var url_local = 'http://localhost:8000/';
     //var url_local ='http://192.168.0.15:8000/';
-    var url_local = 'http://159.203.229.118/';
+    //var url_local = 'http://159.203.229.118/'
 
     datosCatalogo = new ApiRestCatalogo();
 
@@ -4508,7 +4508,7 @@ module.exports = React.createClass({
 		var listado_detalles = [];
 		var listado = this.props.listado;
 
-		var Titulos = { material: "Cat.Material", dsc_material: "Desc.Materia", calibre: "Calibre", ancho: "Ancho", largo: "Largo", pesokg: "Peso (Kgs)", pesolbs: "Peso (Lbs)", norollo: "No. Rollo", precio: "Precio", icono1: "", icono2: "" };
+		var Titulos = { material: "Cat.Material", dsc_material: "Material", calibre: "Milesimas", ancho: "Ancho", largo: "Largo", pesokg: "Peso (Kgs)", pesolbs: "Peso (Lbs)", norollo: "No. Rollo", precio: "Precio", icono1: "", icono2: "" };
 		var fila_titulo = React.createElement(CompraDetalle, { key: "titulo", datos: Titulos, titulo: true });
 
 		var fila_insercion = React.createElement(CompraDetalle, { ref: 'NuevoDetalle', key: "primera", primera: true, clickOperacion: this.clickOperacion, obtenerPais: this.obtenerPais });

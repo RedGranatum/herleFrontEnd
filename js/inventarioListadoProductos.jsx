@@ -25,7 +25,7 @@ render: function () {
 	var self= this;
 	var estilo = {cursor:"pointer"};
 
-	var titulosEncabezado=["Id", "Catalogo Mat.","Dsc Material",	"Calibre",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)",	"No. Rollo",	"Precio"];
+	var titulosEncabezado=["Id", "Catalogo Mat.","Material",	"Milesimas",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)",	"No. Rollo",	"Precio"];
 
 
 	var encabezado=titulosEncabezado.map(function(titulo){

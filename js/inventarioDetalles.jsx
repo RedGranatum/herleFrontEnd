@@ -179,7 +179,7 @@ module.exports = React.createClass({
 
 		    func = new FuncGenericas();
 	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
-			var CALIBRE   = func.zipCol(dic1,["calibre",  "Calibre ", 	 "calibre", 		  this.state.calibre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.material ] );
+			var CALIBRE   = func.zipCol(dic1,["calibre",  "Milesimas ", 	 "Milesimas", 		  this.state.calibre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.material ] );
 			var ANCHO    = func.zipCol(dic1,["ancho",     "Ancho",  	 "ancho",	          this.state.ancho ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calibre ]);
 			var LARGO   = func.zipCol(dic1,["largo",      "Largo", 	     "largo",  	          this.state.largo,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.ancho ]);
 

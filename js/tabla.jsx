@@ -123,7 +123,7 @@ module.exports = React.createClass({
       var listado_detalles = [];
       var listado = this.props.listado;
  
-       var Titulos ={material:"Cat.Material", dsc_material:"Desc.Materia",calibre:"Calibre",ancho:"Ancho",largo:"Largo",pesokg:"Peso (Kgs)",pesolbs: "Peso (Lbs)", norollo:"No. Rollo",precio:"Precio", icono1:"",icono2:"" }
+       var Titulos ={material:"Cat.Material", dsc_material:"Material",calibre:"Milesimas",ancho:"Ancho",largo:"Largo",pesokg:"Peso (Kgs)",pesolbs: "Peso (Lbs)", norollo:"No. Rollo",precio:"Precio", icono1:"",icono2:"" }
        var fila_titulo =  <CompraDetalle key={"titulo"} datos ={Titulos} titulo={true} />
 
 	   var fila_insercion =  <CompraDetalle ref="NuevoDetalle" key={"primera"}  primera={true} clickOperacion={this.clickOperacion} obtenerPais={this.obtenerPais} />

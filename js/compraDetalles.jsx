@@ -73,7 +73,7 @@ module.exports = React.createClass({
 			var dic_errores = {
 				material_descripcion:   {valor:this.state.material_descripcion,  expreg:/^[a-zA-Z0-9\-().\s]{0,100}$/,     requerido: true,  mensaje:"Alfanumerico ,longitud [0-10]"},	
 				calibre:    {valor:this.state.calibre,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
-				ancho:      {valor:this.state.calibre,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
+				ancho:      {valor:this.state.ancho,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
 				largo:      {valor:this.state.largo,     expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
 				peso_kg:    {valor:this.state.peso_kg,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
 				peso_lb:    {valor:this.state.peso_lb,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
