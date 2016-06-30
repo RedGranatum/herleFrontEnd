@@ -15,9 +15,14 @@ module.exports = React.createClass({
  			};
  		},
  		componentWillReceiveProps: function(next_props){
-
  				this.setState({listado: 
  					(this.props.formActivo !== next_props.formActivo) ? [] : this.state.listado});
+
+        if(this.props.formActivo !== next_props.formActivo){
+              if(this.refs["cajaBusquedaPrincipal"] !== undefined){
+                this.refs["cajaBusquedaPrincipal"].limpiarCaja(); 
+              }
+        }
  		},
  		manejadorValorBuscado: function(valor_buscado) {
  			   var forma =  ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
@@ -78,6 +83,7 @@ module.exports = React.createClass({
 			var indicativo = this.props.formActivo.trim() + "..."
  		    var cajaBusqueda = this.props.formActivo.trim()!=="" ? 
  		    		<CajaDeBusqueda 
+              ref = "cajaBusquedaPrincipal"
  		    			textoIndicativo ={indicativo}
  		    			onValorBuscado  = {this.manejadorValorBuscado}
  		    			onBlur  = {this.onBlurCajaDeBusqueda}
