@@ -59,7 +59,7 @@ render: function () {
 					<p><img src="images/guardar.png" alt="" /></p>
 				</figure>
 				<div className="formula_datos">
-					<h3>Kilo en dolar: {this.state.kilo_en_dolar}</h3>
+					<h3>Libra en dolar: {this.state.kilo_en_dolar}</h3>
 					<h3>Tonelada en dolar: {this.state.tonelada_en_dolar} </h3>
 					<h3>Kilo en pesos: {this.state.kilo_en_pesos}</h3>
 					<h3>Kilo en pesos final: {this.state.kilo_en_pesos_final}</h3>

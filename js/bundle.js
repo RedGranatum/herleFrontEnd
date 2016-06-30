@@ -492,31 +492,35 @@ module.exports = React.createClass({
 var React = require('react');
 
 module.exports = React.createClass({
-      displayName: "exports",
+    displayName: 'exports',
 
-      handleChange: function (event) {
-            if (event.charCode == 13) {
-                  console.log("Estoy buscando: " + this.refs.cajaBusqueda.value);
-                  this.props.onValorBuscado(this.refs.cajaBusqueda.value);
-            }
-      },
-      handleBlur: function () {
-            this.props.onBlur();
-      },
-      render: function () {
-            return React.createElement(
-                  "li",
-                  null,
-                  React.createElement("input", {
-                        ref: "cajaBusqueda",
-                        type: "text",
-                        placeholder: this.props.textoIndicativo,
-                        className: "buscar",
-                        onKeyPress: this.handleChange,
-                        onBlur: this.handleBlur
-                  })
-            );
-      }
+    handleChange: function (event) {
+        if (event.charCode == 13) {
+            console.log("Estoy buscando: " + this.refs.cajaBusqueda.value);
+            this.props.onValorBuscado(this.refs.cajaBusqueda.value);
+        }
+    },
+    handleBlur: function () {
+        this.props.onBlur();
+    },
+    limpiarCaja: function () {
+        this.refs.cajaBusqueda.value = '';
+        console.log("se limpia la caja");
+    },
+    render: function () {
+        return React.createElement(
+            'li',
+            null,
+            React.createElement('input', {
+                ref: 'cajaBusqueda',
+                type: 'text',
+                placeholder: this.props.textoIndicativo,
+                className: 'buscar',
+                onKeyPress: this.handleChange,
+                onBlur: this.handleBlur
+            })
+        );
+    }
 });
 
 },{"react":221}],6:[function(require,module,exports){
@@ -2139,7 +2143,7 @@ module.exports = React.createClass({
 			kilo_en_pesos_final: "0"
 		};
 	},
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate: function (prevProps, prevState) {
 		if (prevProps.pais !== this.props.pais || prevProps.con_comercializadora != this.props.con_comercializadora || prevProps.precio_libra != this.props.precio_libra || prevProps.factor != this.props.factor || prevProps.precio_dolar != this.props.precio_dolar || prevProps.impuesto != this.props.impuesto || prevProps.impuesto_china != this.props.impuesto_china || prevProps.porc_comercializadora != this.props.porc_comercializadora || prevProps.precio_tonelada_dolar != this.props.precio_tonelada_dolar) {
 			this.calcularFormula();
 		}
@@ -2196,7 +2200,7 @@ module.exports = React.createClass({
 				React.createElement(
 					'h3',
 					null,
-					'Kilo en dolar: ',
+					'Libra en dolar: ',
 					this.state.kilo_en_dolar
 				),
 				React.createElement(
@@ -2321,6 +2325,7 @@ module.exports = React.createClass({
 				peso_lb: det.peso_lb,
 				num_rollo: det.num_rollo,
 				transporte: nextProps.transporte
+
 			});
 
 			this.calcularKgLb(this.props.pais, det.peso_kg, det.peso_lb);
@@ -2332,8 +2337,32 @@ module.exports = React.createClass({
 		this.setState(campos);
 	},
 	onBlurCaja: function (campo, valor) {
+		var nuevos_errores = this.state.errores;
+
 		if (campo === "peso_kg" || campo === "peso_lb") {
 			this.calcularKgLb(this.props.pais, this.state.peso_kg, this.state.peso_lb);
+		}
+		if (campo === "calibre") {
+			if (this.state.largo > 0) {
+				nuevos_errores[campo] = "";
+			} else {
+				nuevos_errores[campo] = "";
+				if (valor < 0.008 || valor > 0.025) {
+					nuevos_errores[campo] = "El rango debe estar entre 0.008 y 0.025";
+				}
+			}
+			this.setState({ errores: nuevos_errores });
+		}
+		if (campo === "ancho") {
+			if (this.state.largo > 0) {
+				nuevos_errores[campo] = "";
+			} else {
+				nuevos_errores[campo] = "";
+				if (valor < 35 || valor > 54) {
+					nuevos_errores[campo] = "El ancho debe estar entre 35 y 54";
+				}
+			}
+			this.setState({ errores: nuevos_errores });
 		}
 	},
 	calcularKgLb: function (pais, kg, lb) {
@@ -2347,6 +2376,13 @@ module.exports = React.createClass({
 		invCal.convertirValores(function (data) {
 			self.setState({ peso_lb: data.libra, peso_kg: data.kilogramo });
 		}, function (model, response, options) {});
+	},
+	relacionCampoErrores: function () {
+		var dic_errores = {
+			calibre: { valor: this.state.calibre, expreg: /^[0-9\-().\s]{1,10}$/, requerido: true, mensaje: "Numerico ,longitud [0-10]" },
+			ancho: { valor: this.state.ancho, expreg: /^[0-9\-().\s]{10,15}$/, requerido: true, mensaje: "Numerico  ,longitud [0-15]" }
+		};
+		return dic_errores;
 	},
 	llenarCombos: function () {
 		var func = new FuncGenericas();
@@ -2366,7 +2402,7 @@ module.exports = React.createClass({
 		func = new FuncGenericas();
 		var dic1 = ["id", "titulo", "textoIndicativo", "valor", "onChange", "onBlur", "error"];
 		var CALIBRE = func.zipCol(dic1, ["calibre", "Calibre", "calibre", this.state.calibre, this.onValorCambio, this.onBlurCaja, this.state.errores.calibre]);
-		var ANCHO = func.zipCol(dic1, ["ancho", "Ancho", "ancho", this.state.ancho, this.onValorCambio, this.onBlurCaja, this.state.errores.calibre]);
+		var ANCHO = func.zipCol(dic1, ["ancho", "Ancho", "ancho", this.state.ancho, this.onValorCambio, this.onBlurCaja, this.state.errores.ancho]);
 		var NUM_ROLLO = func.zipCol(dic1, ["num_rollo", "num_rollo", "num_rollo", this.state.num_rollo, this.onValorCambio, this.onBlurCaja, this.state.errores.num_rollo]);
 		var PESO_KG = func.zipCol(dic1, ["peso_kg", "peso_kg", "peso_kg", this.state.peso_kg, this.onValorCambio, this.onBlurCaja, this.state.errores.peso_kg]);
 		var PESO_LB = func.zipCol(dic1, ["peso_lb", "peso_lb", "peso_lb", this.state.peso_lb, this.onValorCambio, this.onBlurCaja, this.state.errores.peso_lb]);
@@ -2719,9 +2755,9 @@ $(function () {
         Url: {}
     };
 
-    var url_local = 'http://localhost:8000/';
+    //var url_local = 'http://localhost:8000/'
     //var url_local ='http://192.168.0.15:8000/';
-    //var url_local = 'http://159.203.229.118/'
+    var url_local = 'http://159.203.229.118/';
 
     datosCatalogo = new ApiRestCatalogo();
 
@@ -2831,8 +2867,13 @@ module.exports = React.createClass({
     };
   },
   componentWillReceiveProps: function (next_props) {
-
     this.setState({ listado: this.props.formActivo !== next_props.formActivo ? [] : this.state.listado });
+
+    if (this.props.formActivo !== next_props.formActivo) {
+      if (this.refs["cajaBusquedaPrincipal"] !== undefined) {
+        this.refs["cajaBusquedaPrincipal"].limpiarCaja();
+      }
+    }
   },
   manejadorValorBuscado: function (valor_buscado) {
     var forma = ReactDOM.findDOMNode(this.refs.ListaResultadosBusqueda);
@@ -2888,6 +2929,7 @@ module.exports = React.createClass({
   render: function () {
     var indicativo = this.props.formActivo.trim() + "...";
     var cajaBusqueda = this.props.formActivo.trim() !== "" ? React.createElement(CajaDeBusqueda, {
+      ref: 'cajaBusquedaPrincipal',
       textoIndicativo: indicativo,
       onValorBuscado: this.manejadorValorBuscado,
       onBlur: this.onBlurCajaDeBusqueda

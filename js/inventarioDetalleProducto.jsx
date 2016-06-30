@@ -48,6 +48,7 @@ componentWillReceiveProps: function(nextProps) {
 	  				   peso_lb:  det.peso_lb,
 	  				   num_rollo: det.num_rollo,
 	  				   transporte: nextProps.transporte,
+
 	  	})	  	
 
 	  	this.calcularKgLb(this.props.pais,det.peso_kg,det.peso_lb)
@@ -59,9 +60,36 @@ onValorCambio: function(campo,valor){
 	this.setState(campos);	
 },
 onBlurCaja: function(campo,valor){
+	var nuevos_errores = this.state.errores;
+
 	if(campo==="peso_kg" || campo==="peso_lb"){
 		this.calcularKgLb(this.props.pais,this.state.peso_kg,this.state.peso_lb)
 	}
+	if(campo === "calibre"){
+			if(this.state.largo > 0){
+				nuevos_errores[campo] = "";
+			}
+			else{
+				nuevos_errores[campo] = "";
+				if(valor < 0.008 || valor > 0.025){
+					nuevos_errores[campo] = "El rango debe estar entre 0.008 y 0.025";
+				}
+			}	
+		    this.setState({errores: nuevos_errores});
+	}
+	if(campo === "ancho"){
+			if(this.state.largo > 0){
+				nuevos_errores[campo] = "";
+			}
+			else{
+				nuevos_errores[campo] = "";
+				if(valor < 35 || valor > 54){
+					nuevos_errores[campo] = "El ancho debe estar entre 35 y 54";
+				}
+			}	
+		    this.setState({errores: nuevos_errores});
+	}
+
 },
 calcularKgLb: function(pais,kg,lb){
 	   	var self = this;
@@ -79,6 +107,13 @@ calcularKgLb: function(pais,kg,lb){
             }
     );
  },
+relacionCampoErrores: function(){
+	var dic_errores = {
+			calibre:  {valor:this.state.calibre,  expreg:/^[0-9\-().\s]{1,10}$/,    requerido: true,  mensaje:"Numerico ,longitud [0-10]"},		
+		    ancho:    {valor:this.state.ancho,    expreg:/^[0-9\-().\s]{10,15}$/,   requerido: true, mensaje:"Numerico  ,longitud [0-15]"},
+			 }
+	    return dic_errores;
+	},
 llenarCombos: function(){
 	    var func = new FuncGenericas();      
 		this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
@@ -97,7 +132,7 @@ render: function () {
     func = new FuncGenericas();
     var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
 	var CALIBRE   = func.zipCol(dic1,["calibre",  "Calibre", 	 "calibre", 		  this.state.calibre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calibre ] );
-	var ANCHO    = func.zipCol(dic1,["ancho",     "Ancho",  	 "ancho",	          this.state.ancho ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.calibre ]);
+	var ANCHO    = func.zipCol(dic1,["ancho",     "Ancho",  	 "ancho",	          this.state.ancho ,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.ancho ]);
 	var NUM_ROLLO = func.zipCol(dic1,["num_rollo",  "num_rollo", 	"num_rollo", this.state.num_rollo,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.num_rollo ]);
 	var PESO_KG = func.zipCol(dic1,["peso_kg",  "peso_kg", 	"peso_kg", this.state.peso_kg,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.peso_kg ]);
 	var PESO_LB = func.zipCol(dic1,["peso_lb",  "peso_lb", 	"peso_lb", this.state.peso_lb,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.peso_lb ]);

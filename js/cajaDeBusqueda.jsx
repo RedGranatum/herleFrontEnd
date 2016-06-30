@@ -10,6 +10,10 @@ module.exports = React.createClass({
         handleBlur: function(){
             this.props.onBlur();
         },
+        limpiarCaja: function(){
+            this.refs.cajaBusqueda.value = '';
+            console.log("se limpia la caja")
+        },
 		render: function () {
 			return (
              	<li>
