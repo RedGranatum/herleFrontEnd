@@ -1174,6 +1174,8 @@ module.exports = React.createClass({
 		if (control === "precio") {
 			this.props.sumatoria();
 		}
+
+		console.log("El pais es: " + this.obtenerPais());
 	},
 	obtenerPais: function () {
 		var pais = this.props.obtenerPais();
@@ -4427,6 +4429,7 @@ module.exports = React.createClass({
 	},
 	valoresDetallesCompra: function () {
 		var self = this;
+
 		var detalles = this.state.detalles_lista.map(function (datos) {
 			var fila = self.refs["detalle_" + datos.num_consecutivo].valoresFila();
 			fila["dsc_material"] = fila["material_descripcion"];
@@ -4493,11 +4496,24 @@ module.exports = React.createClass({
 	},
 	sumatoria: function () {
 		var self = this;
+
+		var pais = "0010000";
+
+		if (this.props.obtenerPais !== undefined) {
+			pais = this.props.obtenerPais();
+			console.log("el pais es: " + pais);
+		}
+
 		var suma = 0.0;
 		this.state.detalles_lista.forEach(function (detalle_compra) {
+			//Si es china o EU
 			var detalle = self.refs["detalle_" + detalle_compra.num_consecutivo];
+
+			peso = pais === "0010001" || pais === "0010002" ? detalle.state.peso_lb : detalle.state.peso_kg;
+
 			var precio = detalle.state.precio;
-			suma = parseFloat(suma) + parseFloat(precio);
+
+			suma = parseFloat(suma) + parseFloat(precio) * parseFloat(peso);
 		});
 
 		suma = parseFloat(suma).toFixed(2);
@@ -4509,6 +4525,7 @@ module.exports = React.createClass({
 		var listado = this.props.listado;
 
 		var Titulos = { material: "Cat.Material", dsc_material: "Material", calibre: "Milesimas", ancho: "Ancho", largo: "Largo", pesokg: "Peso (Kgs)", pesolbs: "Peso (Lbs)", norollo: "No. Rollo", precio: "Precio", icono1: "", icono2: "" };
+
 		var fila_titulo = React.createElement(CompraDetalle, { key: "titulo", datos: Titulos, titulo: true });
 
 		var fila_insercion = React.createElement(CompraDetalle, { ref: 'NuevoDetalle', key: "primera", primera: true, clickOperacion: this.clickOperacion, obtenerPais: this.obtenerPais });

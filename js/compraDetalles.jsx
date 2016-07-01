@@ -122,6 +122,9 @@ module.exports = React.createClass({
 			if(control === "precio"){
   		    	this.props.sumatoria();				
 			}
+
+			         console.log("El pais es: " + this.obtenerPais());
+
   		},
   		obtenerPais: function(){
   			var pais = this.props.obtenerPais();
