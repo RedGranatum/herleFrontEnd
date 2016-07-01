@@ -184,7 +184,7 @@ module.exports = React.createClass({
       						    var pais = data[0].pais
       						    var tipo_moneda =self.tipoMoneda(pais)
       							self.setState({tipo_moneda:tipo_moneda, proveedor: id,proveedor_nombre: nombre,proveedor_codigo:codigo,proveedor_pais:pais,busqueda_proveedores:[] });
-      						     self.validarCampoErrores("proveedor_nombre","223");		
+      						     self.validarCampoErrores("proveedor_nombre","123");		
       							},
       					function(model,response,options){
       						     self.setState({tipo_moneda:"" ,proveedor: "0",proveedor_nombre: "",proveedor_codigo:"",proveedor_pais:pais,busqueda_proveedores: []  });

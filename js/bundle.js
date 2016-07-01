@@ -1471,7 +1471,7 @@ module.exports = React.createClass({
 			var pais = data[0].pais;
 			var tipo_moneda = self.tipoMoneda(pais);
 			self.setState({ tipo_moneda: tipo_moneda, proveedor: id, proveedor_nombre: nombre, proveedor_codigo: codigo, proveedor_pais: pais, busqueda_proveedores: [] });
-			self.validarCampoErrores("proveedor_nombre", "223");
+			self.validarCampoErrores("proveedor_nombre", "123");
 		}, function (model, response, options) {
 			self.setState({ tipo_moneda: "", proveedor: "0", proveedor_nombre: "", proveedor_codigo: "", proveedor_pais: pais, busqueda_proveedores: [] });
 			self.validarCampoErrores("proveedor_nombre", "");
@@ -4715,6 +4715,28 @@ module.exports = React.createClass({
 		var status = [{ cdu_catalogo: "True", descripcion1: "Activo" }, { cdu_catalogo: "False", descripcion1: "Cancelado" }];
 		this.STATUS = func.llenarComboGenerico(status);
 	},
+	validarCampoErrores: function (control, valor) {
+		var dic_err = this.relacionCampoErrores();
+
+		if (control === undefined || dic_err[control] === undefined) {
+			return;
+		}
+
+		//  var valorVal  = dic_err[control].valor;
+
+		var exp = dic_err[control].expreg;
+		var requer = dic_err[control].requerido;
+		var mens = dic_err[control].mensaje;
+		var nuevos_errores = this.state.errores;
+
+		if (exp.test(valor) || valor === "" && requer === false) {
+			nuevos_errores[control] = "";
+		} else {
+			nuevos_errores[control] = mens;
+		}
+
+		this.setState({ errores: nuevos_errores });
+	},
 	onBlurCaja: function (control, valor) {
 		var valVal = valor;
 		if (control === "cliente_nombre") {
@@ -4739,6 +4761,14 @@ module.exports = React.createClass({
 		campos[campo] = valor;
 		this.setState(campos);
 	},
+	relacionCampoErrores: function () {
+		var dic_errores = {
+			fec_venta: { valor: this.state.fec_venta, expreg: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, requerido: true, mensaje: "No es un formato de fecha correcto" },
+			cliente_nombre: { valor: this.state.cliente, expreg: /^[ñÑa-zA-Z0-9\-().\s]{1,110}$/, requerido: true, mensaje: "Selecciona un cliente" },
+			cantidad_pago: { valor: this.state.cantidad_pago, expreg: /^[\d.]+$/, requerido: true, mensaje: "El valor debe ser entero o decimal" }
+		};
+		return dic_errores;
+	},
 	onBuscarCliente: function (control, valor) {
 		var self = this;
 		var cliente = new ApiRestCliente();
@@ -4758,9 +4788,11 @@ module.exports = React.createClass({
 			var nombre = "[" + codigo + "] " + data[0].nombre;
 			var banco = data[0].banco;
 			self.setState({ cliente: id, cliente_codigo: codigo, cliente_nombre: nombre, banco_cliente: banco, busqueda_clientes: [] });
+			self.validarCampoErrores("cliente_nombre", "123");
 		}, function (model, response, options) {
 			var valdef = self.getInitialState();
 			self.setState({ cliente: valdef.cliente, cliente_codigo: valdef.cliente_codigo, cliente_nombre: valdef.cliente_nombre, banco_cliente: valdef.banco_cliente, busqueda_clientes: [] });
+			self.validarCampoErrores("cliente_nombre", '');
 		});
 	},
 	onClaveSeleccionada: function (pk) {
