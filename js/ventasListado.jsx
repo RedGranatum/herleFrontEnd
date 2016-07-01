@@ -6,6 +6,7 @@ var EtiquetaTexto     = require('../js/etiquetaDeTexto.jsx');
 module.exports = React.createClass({
 getDefaultProps: function(){
 			return{
+				id_venta: -1,
 				listado: [],
 			};
 		},
@@ -40,7 +41,9 @@ clickOperacion: function(operacion,fila,errores){
 		 nueva_fila.venta = this.state.listado.venta;
 		 nuevo.push(nueva_fila);
 		 this.setState({listado: nuevo })
-		 this.refs.NuevoDetalleVenta.limpiarFila(); 
+		 if(this.refs.NuevoDetalleVenta !== undefined){
+			 this.refs.NuevoDetalleVenta.limpiarFila(); 
+		 }
 	}
 		if(operacion == "eliminar"){
 				var filas = this.state.listado.slice()
@@ -84,9 +87,13 @@ render: function () {
         var listado_detalles = [];
 
     	var Titulos ={busqueda:"busqueda", num_rollo:"Num.Rollo",existencia:"Existencia" ,peso_kg:"Peso Kg",precio_neto:"Precio Neto"}
+        if(this.props.id_venta > 0){
+        	delete Titulos["busqueda"];
+        	delete Titulos["existencia"]
+        }
         var fila_titulo =  <VentaDetalle key={"titulo"} datos ={Titulos} titulo={true} />
-        var fila_insercion =  <VentaDetalle ref="NuevoDetalleVenta" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/>
-      
+        var fila_insercion =  <VentaDetalle ref="NuevoDetalleVenta" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/> ;
+        fila_insercion = (this.props.id_venta > 0) ?  <td></td> : fila_insercion;
       this.state.listado.forEach(function(detalle_venta){    
             var detalle= <VentaDetalle ref={"detalle_" + detalle_venta.id } 
             						key={"venta_det_" + detalle_venta.id} 
@@ -98,7 +105,8 @@ render: function () {
 									precio_neto = {detalle_venta.precio_neto} 
 									existencia = {detalle_venta.existencia}
             						clickOperacion={self.clickOperacion} 
-            						sumatoria = {self.sumatoria} />
+            						sumatoria = {self.sumatoria}
+            						id_venta={self.props.id_venta} />
              listado_detalles.push(detalle);
           });
 

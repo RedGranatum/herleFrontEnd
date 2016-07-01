@@ -33,6 +33,7 @@ module.exports = React.createClass({
 				peso_kg: "0.0",
 				precio_neto: "0.0",
 				existencia: "",
+				id_venta: -1,
 				datos: [],		
 			};
 		},
@@ -238,16 +239,20 @@ render: function () {
             
             var caja_busqueda = this.props.primera ? <CajaDeTextoSimple estilo="caja_grid" propiedades = {BUSQUEDA}    requerido={false} /> : <EtiquetaTexto titulo="" valor={""} clase="etiqueta_especial" />;
         
+        	var caja_peso_kg     = this.props.id_venta>0 ? <EtiquetaTexto titulo="" valor={this.state.peso_kg}   clase="etiqueta_especial"/> : <CajaDeTextoSimple estilo="caja_grid" propiedades = {PESO_KG}      requerido={false} />; 
+	    	var caja_precio_neto = this.props.id_venta>0 ? <EtiquetaTexto titulo="" valor={this.state.precio_neto}   clase="etiqueta_especial"/> : <CajaDeTextoSimple estilo="caja_grid" propiedades = {PRECIO_NETO}      requerido={false} />; 
+	    	var icono_eliminar   = this.props.id_venta>0 ? <td></td> : <CeldaTabla  contenido= { this.props.titulo ? this.props.icono1 : icono1} />;
+	        
 	        var busqueda_rollo = this.llenarListaNumRollo(this.state.busqueda_num_rollo)
         	return (
         		<tr key={this.props.key}>
 		         {busqueda_rollo}
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.busqueda   : caja_busqueda }  />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.busqueda    : caja_busqueda }  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.num_rollo   : <EtiquetaTexto titulo="" valor={this.state.num_rollo}   clase="etiqueta_especial"/>}  />     
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.existencia   : <EtiquetaTexto titulo="" valor={this.state.existencia}   clase="etiqueta_especial"/>}  />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.peso_kg   : <CajaDeTextoSimple estilo="caja_grid" propiedades = {PESO_KG}      requerido={false} />}  />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio_neto        : <CajaDeTextoSimple estilo="caja_grid"  propiedades = {PRECIO_NETO} requerido={false}  />} />
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.icono1 : icono1} />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.existencia  : <EtiquetaTexto titulo="" valor={this.state.existencia}   clase="etiqueta_especial"/>}  />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.peso_kg     : caja_peso_kg }     />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio_neto : caja_precio_neto } />
+		          {icono_eliminar}
                 </tr>
             
 			);  

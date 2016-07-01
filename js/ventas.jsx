@@ -22,7 +22,7 @@ nuevosDatos: function(){
 	
 		      		<VentasCabecero datos={this.props.datos} ref="cabecero_ventas" />
 				  
-		            <VentasListado listado ={venta_detalles} ref="listado_detalles_ventas" />
+		            <VentasListado listado ={venta_detalles} id_venta = {this.props.datos.id} ref="listado_detalles_ventas" />
 		        
             </div>
 			);  
