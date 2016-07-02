@@ -21,8 +21,8 @@ var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var ApiRestCliente   = require('../js/modelos/apirestClientes');
 var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 var ApiRestCompras   = require('../js/modelos/apirestCompras');
-var ApiRestVentas   = require('../js/modelos/apirestVentas');
-
+var ApiRestVentas    = require('../js/modelos/apirestVentas');
+var ApiRestPagos     = require('../js/modelos/apirestClientesPagos');
  
 
 
@@ -242,6 +242,30 @@ module.exports = React.createClass({
               self.mostrarMenu(appmvc.Menu.PAGOS);
               console.log("menu de ventas");                    
              });
+
+            Page('/pagos/guardar',function(){     
+             if(self.refs[appmvc.Menu.PAGOS].hayErrores()){
+                    $("#notify_error").text("Hay errores en algunos campos");
+                    $("#notify_error").notify();
+              }
+              else{    
+                var datosNuevos=  self.refs[appmvc.Menu.PAGOS].nuevosDatos(); 
+                var pagos = new ApiRestPagos();    
+
+                pagos.Guardar(datosNuevos,
+                    function(datos,response){
+                        self.setState({actualizarForm:true});
+                        $("#notify_success").text("Los datos fueron guardados con exito");
+                        $("#notify_success").notify();
+                    },
+                    function(model,response,options){
+                           $("#notify_error").text(response.responseText);
+                           $("#notify_error").notify();
+                    });
+               }                
+            });
+
+
             Page('/costos',function(){
               self.mostrarMenu(appmvc.Menu.COSTOS);
               console.log("menu de costos");                    

@@ -20,6 +20,10 @@ module.exports = React.createClass({
     handleBlur: function(){
             this.props.propiedades.onBlur( this.props.propiedades.id,this.refs.CajaTexto.value);
         },
+  onFocus: function(e){
+      console.log("entro a la caja");
+      e.target.select();
+  },
 		render: function () {
       var error = this.props.propiedades.error === undefined ? "" :  this.props.propiedades.error;
       var divStyle = (error !=="") ? { display: 'inline-block'} : {display: 'none'} ;
@@ -37,6 +41,7 @@ module.exports = React.createClass({
                                 ref = {"CajaTexto"}
                                 onKeyPress ={this.TeclaPresionada} 
                                 onBlur = {this.handleBlur}
+                                onFocus ={this.onFocus}
                                 />
                               <div className="viñeta">{(this.props.requerido === false) ? '' : '*'}</div>
                               <div style={divStyle} className="error_mostrar">{error}</div>
