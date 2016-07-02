@@ -54,7 +54,10 @@ module.exports = React.createClass({
                    var venta= new ApiRestVenta();
                    funcionBusqueda = venta.buscarVentaPorIdDocumento.bind(venta);
             }
-
+           if(formulario === appmvc.Menu.PAGOS){
+                   var venta= new ApiRestVenta();
+                   funcionBusqueda = venta.buscarVentaPorIdDocumento.bind(venta);
+            }
 
             funcionBusqueda(valor_buscado,
                       function(data){

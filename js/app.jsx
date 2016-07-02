@@ -9,6 +9,8 @@ var Compras          = require('../js/compras.jsx');
 //var SeccionUnoInv    = require('../js/tablaYFormula.jsx');  
 //var SeccionDosInv    = require('../js/formsDeInventarios.jsx');    
 var Ventas           = require('../js/ventas.jsx');  
+var ClientesPagos           = require('../js/clientesPagos.jsx');  
+
 var Costos           = require('../js/costos.jsx');            
 var Inventarios      = require('../js/inventarioCabecero.jsx');            
 var Reportes         = require('../js/reportes.jsx');  
@@ -34,6 +36,7 @@ module.exports = React.createClass({
           datosInventarios: {},
           datosVentas: {},
           datosCostos: {},
+          datosPagos: {},
           actualizarForm: false,
           permiso: true,
 
@@ -235,6 +238,10 @@ module.exports = React.createClass({
                     });
                 console.log("Vas a guardar la venta");              
             });
+            Page('/pagos',function(){
+              self.mostrarMenu(appmvc.Menu.PAGOS);
+              console.log("menu de ventas");                    
+             });
             Page('/costos',function(){
               self.mostrarMenu(appmvc.Menu.COSTOS);
               console.log("menu de costos");                    
@@ -332,7 +339,21 @@ module.exports = React.createClass({
             );
 
 
-         },        
+         }, 
+    llenarDatosPago: function(pk){
+           var self = this;
+           var venta = new ApiRestVentas();
+           valor = venta.buscarVentaPorPk(pk, 
+                function(data){
+                    self.setState({datosPagos: data[0] });
+                    },
+                function(model,response,options){
+                      self.setState({datosPagos : [] });
+                    }
+            );
+
+
+         },       
 		componentDidUpdate:function(prev_props,prev_state){
                this.mostrarForm();
 		},
@@ -383,6 +404,10 @@ module.exports = React.createClass({
         this.setState({datosVentas:[],actualizarForm:true});
         this.llenarDatosVenta(pk);
       }  
+     if(this.state.formMostrar===appmvc.Menu.PAGOS){
+        this.setState({datosPagos:[],actualizarForm:true});
+        this.llenarDatosPago(pk);
+      }  
       if(this.state.formMostrar===appmvc.Menu.COSTOdebS){
         this.setState({datosCostos:[],actualizarForm:true});
       }  
@@ -396,8 +421,9 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} onClaveCompraSeleccionada={this.onClaveSeleccionada} />);
       this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} onClaveCompraSeleccionada={this.onClaveSeleccionada}/>);   
-      //this.crearFormulario(appmvc.Menu.INVENTARIOS,<SeccionUnoInv ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} />);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS} datos={this.state.datosVentas}  onClaveVentaSeleccionada={this.onClaveSeleccionada}/>);
+      this.crearFormulario(appmvc.Menu.PAGOS,<ClientesPagos ref={appmvc.Menu.PAGOS} datos={this.state.datosPagos} onClaveVentaSeleccionada={this.onClaveSeleccionada} />);
+    
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
       this.crearFormulario(appmvc.Menu.REPORTES,<Reportes ref={appmvc.Menu.REPORTES} />);
  
@@ -422,6 +448,8 @@ module.exports = React.createClass({
   	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}
       {appmvc.MenuForms[appmvc.Menu.INVENTARIOS]}
       {appmvc.MenuForms[appmvc.Menu.VENTAS]}
+      {appmvc.MenuForms[appmvc.Menu.PAGOS]}
+      
       {appmvc.MenuForms[appmvc.Menu.REPORTES]}
       {appmvc.MenuForms[appmvc.Menu.COSTOS]}
     </section>
