@@ -65,7 +65,8 @@ sumatoria: function(){
 		 this.state.listado.forEach(function(detalle_venta){
 		 	var detalle = self.refs["detalle_" + detalle_venta.id];
 		 	var precio = detalle.state.precio_neto;
-		 	suma = parseFloat(suma) + parseFloat(precio);
+		 	var cantidad = detalle.state.peso_kg;
+		 	suma = parseFloat(suma) + (parseFloat(precio) * parseFloat(cantidad));
 		 });
 	
 		suma = parseFloat(suma).toFixed(2)

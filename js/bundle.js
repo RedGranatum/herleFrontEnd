@@ -3239,9 +3239,9 @@ $(function () {
         Url: {}
     };
 
-    //var url_local = 'http://localhost:8000/'
+    var url_local = 'http://localhost:8000/';
     //var url_local ='http://192.168.0.15:8000/';
-    var url_local = 'http://159.203.229.118/';
+    //var url_local = 'http://159.203.229.118/'
 
     datosCatalogo = new ApiRestCatalogo();
 
@@ -5769,7 +5769,8 @@ module.exports = React.createClass({
 		this.state.listado.forEach(function (detalle_venta) {
 			var detalle = self.refs["detalle_" + detalle_venta.id];
 			var precio = detalle.state.precio_neto;
-			suma = parseFloat(suma) + parseFloat(precio);
+			var cantidad = detalle.state.peso_kg;
+			suma = parseFloat(suma) + parseFloat(precio) * parseFloat(cantidad);
 		});
 
 		suma = parseFloat(suma).toFixed(2);
