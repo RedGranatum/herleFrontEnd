@@ -56,22 +56,22 @@ render: function () {
     var detalle = []
     var tipo_operacion = ''
 
-    if(num_rollo_ant !== resultado.num_rollo){
-          detalle = []
-          i=i+1;
-          detalle.push(<CeldaTabla contenido={"==== " + resultado.num_rollo + " ===="}  key={"num_rollo_" + i}/>);
-          detalle.push(<CeldaTabla contenido="" key={"codigo_producto_" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"tipo_operacion_" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"nombre_proveedor_" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"fec_compra" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"compra_peso_kg" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"venta_peso_kg" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"precio_kg" + i} />);
-          detalle.push(<CeldaTabla contenido="" key={"utilidad" + i} />);
+    // if(num_rollo_ant !== resultado.num_rollo){
+    //       detalle = []
+    //       i=i+1;
+    //       detalle.push(<CeldaTabla contenido={"==== " + resultado.num_rollo + " ===="}  key={"num_rollo_" + i}/>);
+    //       detalle.push(<CeldaTabla contenido="" key={"codigo_producto_" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"tipo_operacion_" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"nombre_proveedor_" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"fec_compra" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"compra_peso_kg" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"venta_peso_kg" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"precio_kg" + i} />);
+    //       detalle.push(<CeldaTabla contenido="" key={"utilidad" + i} />);
 
-          listado_detalles.push(<FilaTabla key={i} id={i + resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
+    //       listado_detalles.push(<FilaTabla key={i} id={i + resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
 
-    }
+    // }
 
     if(num_rollo_ant === '' || num_rollo_ant !== resultado.num_rollo)
     {
@@ -89,7 +89,7 @@ render: function () {
       detalle.push(<CeldaTabla contenido={resultado.precio_kg_compra} key={"precio_kg_compra" + i} />);
       detalle.push(<CeldaTabla contenido="" key={"utilidad" + i} />);
 
-      listado_detalles.push(<FilaTabla key={i} id={resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
+      listado_detalles.push(<FilaTabla key={i} id={resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila} cabecero={true}/>)
     }
     
 

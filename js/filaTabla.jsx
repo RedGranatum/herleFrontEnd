@@ -14,7 +14,8 @@ module.exports = React.createClass({
     getDefaultProps: function(){
       return{
         estilo: {},
-        num_fila: 1
+        num_fila: 1,
+        cabecero: false,
       }
     },
 		render: function () {
@@ -24,6 +25,9 @@ module.exports = React.createClass({
           if(this.props.num_fila % 2 === 0){
             estilo["background"] = "#FFFFFF";
           }       
+          if(this.props.cabecero === true){
+            estilo["background"] = "#b08f88";
+          }
           console.log("fila " + this.props.num_fila);
           //  this.props.estilo["cursor"]    
            return (
