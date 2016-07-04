@@ -61,7 +61,7 @@ render: function () {
 	var estilo = {cursor:"pointer"};
 
 	//var titulosEncabezado=["Id", "Num.Rollo","Codigo Producto",	"Calibre",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)"];
-	var titulosEncabezado=[ "Num.Rollo","Codigo Producto","Milesimas","Ancho","Entradas Kg",	"Salida Kg",	"Existencias Kg"];
+	var titulosEncabezado=[ "Num.Rollo","Producto","Milesimas","Ancho","Entradas Kg",	"Salida Kg",	"Existencias Kg"];
 
 
 	var encabezado=titulosEncabezado.map(function(titulo){

@@ -389,9 +389,9 @@ module.exports = React.createClass({
 		},
 		mostrar_ocultar_Formulario: function(menu){
       var estilo = 'inline';
-      if(menu === appmvc.Menu.COSTOS){
-       estilo = 'inline-block';
-      }
+      // if(menu === appmvc.Menu.COSTOS){
+      //  estilo = 'inline-block';
+      // }
 			 return (menu === this.state.formMostrar) ? estilo : 'none';
 		},
 		aplicar_estilo_Formulario: function(menu, estilo){

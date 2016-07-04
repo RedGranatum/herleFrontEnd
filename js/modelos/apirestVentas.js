@@ -13,6 +13,10 @@ return {
           var ruta ='ventas/buscar/' + valor_buscar + '';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
+      costoAgrupado: function(funcion_exito,funcion_error){
+          var ruta ='costos/agrupado/';
+          this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+       },
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
                var datosVentas = new ColeccionVenta();
                datosVentas.asignarRuta(ruta);

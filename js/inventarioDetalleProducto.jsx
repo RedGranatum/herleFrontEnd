@@ -20,7 +20,9 @@ getInitialState: function(){
 	     peso_lb: "0.0",
 	     num_rollo: "0.0",
 	     transporte: "",
+	     precio: "0.0",
 	     codigo_producto: "",
+	     pais: "0010000",
 	     "errores" :{},
 	}
 },
@@ -47,7 +49,9 @@ componentWillReceiveProps: function(nextProps) {
 	  				   peso_kg: det.peso_kg,
 	  				   peso_lb:  det.peso_lb,
 	  				   num_rollo: det.num_rollo,
+	  				   precio: det.precio,
 	  				   transporte: nextProps.transporte,
+	  				   pais: nextProps.pais
 
 	  	})	  	
 
@@ -124,7 +128,7 @@ llenarCombos: function(){
 datosGuardar: function(){
 	datos_producto = {"compra_detalle":this.state.id,"material":this.state.material,"calibre":this.state.calibre,
 			"ancho":this.state.ancho,"largo":this.state.largo,"num_rollo":this.state.num_rollo,
-			"peso_kg":this.state.peso_kg,"peso_lb":this.state.peso_lb,"transporte":this.state.transporte,
+			"peso_kg":this.state.peso_kg,"peso_lb":this.state.peso_lb,"transporte":this.state.transporte,valor_final_kilo_pesos:this.state.precio,
 			}
 	return datos_producto;
 },
@@ -137,6 +141,7 @@ render: function () {
 	var PESO_KG = func.zipCol(dic1,["peso_kg",  "peso_kg", 	"peso_kg", this.state.peso_kg,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.peso_kg ]);
 	var PESO_LB = func.zipCol(dic1,["peso_lb",  "peso_lb", 	"peso_lb", this.state.peso_lb,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.peso_lb ]);
 	var TRANSPORTE = func.zipCol(dic1,["transporte",  "transporte", 	"Transporte", this.state.transporte,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.transporte ]);
+	var PRECIO_KG = func.zipCol(dic1,["precio",  "Precio Kg", 	"Precio Kg", this.state.precio,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.precio ]);
 
     var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
    	var MATERIAL     = func.zipCol(dic2,["material",     "Material",    this.Materiales,  this.state.material,    this.onValorCambio]);
@@ -163,6 +168,8 @@ render: function () {
 				<CajaDeTexto propiedades = {PESO_KG} ref="cajaPesKg"/>
 				<CajaDeTexto propiedades = {PESO_LB} ref="cajaPesoLb"/>
 				<CajaDeTexto propiedades = {TRANSPORTE} ref="cajaPesoLb"/>
+				{this.state.pais === "0010000" ? <CajaDeTexto propiedades = {PRECIO_KG} ref="cajaPesoLb"/> : ""}
+				
 			</CajaConCampos>
 		</article>
 			);  
