@@ -21,6 +21,11 @@ return {
          var ruta ='compras/validadas/true/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },        
+       consultaComprasPorFechas: function(funcion_exito,funcion_error){
+         var ruta ='compras/consultas/';
+          this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+       },        
+ 
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
                var datosCatalogo = new ColeccionCat();
                datosCatalogo.asignarRuta(ruta);
