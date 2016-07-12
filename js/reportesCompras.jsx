@@ -12,9 +12,14 @@ getDefaultProps: function(){
 		columna_cabecero: '',
 	}
 },
+getInitialState: function(){
+  return {
+    listadoFilas: [],
+  }
+},
 llenarFila: function(diccionario, num_fila){
 	
-	estilo={}
+	  estilo={}
     estilo["background"]="#dddddc";
     estilo["fontWeight"] = "bold";   
     // if(num_fila % 2 === 0){
@@ -73,7 +78,7 @@ llenarFilaDatos: function(){
     var valor_cabecero_ant = ''
 	this.props.datos.forEach(function(datos){
         if(valor_cabecero_ant !==  datos[self.props.columna_cabecero]){ 
-       	     self.llenarFila(datos, num_fila);
+       	   self.llenarFila(datos, num_fila);
         	 self.llenarTitulosSecundarios(num_fila);
         	 self.llenarDatosSecundarios(datos,num_fila);
        }
@@ -87,18 +92,21 @@ llenarFilaDatos: function(){
 crearListado: function(){
 	this.listadoFilas = [];
 	this.llenarTitulos();
-    this.llenarFilaDatos();
+  this.llenarFilaDatos();
+
 },
 
-render: function () {
-     this.crearListado();
+render: function () {    
+     this.crearListado()
+//     var filas = (this.props.datos.length > 0) ? this.listadoFilas  : [] ;
+     var filas = this.listadoFilas ;
 
-     return (      		
-           	<table className="tabla_catalogo" id="reporte_compras" >
-				<tbody>
-					{this.listadoFilas}
-				</tbody>
-			</table>
+    return (  
+        <table className="tabla_catalogo" key="tablas"  id="reporte_tablas_listado">
+          <tbody>
+          {filas}
+          </tbody>
+        </table>
 			);  
 		}
 });

@@ -1,10 +1,25 @@
 var Backbone = require('backbone');
+var moment      = require('moment');
 var ColeccionCat  =  require('../modelos/coleccionBase');
 var ModeloBase =  require('../modelos/modeloBase');
 
 
 var apirestClientes = function(){
 return {
+    fec_inicial: function(fec_inicial){
+        this.fec_inicial = fec_inicial;        
+      },
+    fec_final: function(fec_final){
+        this.fec_final = fec_final;        
+      },
+    modulo: function(modulo){
+        this.modulo = modulo;        
+    },  
+    initialize: function(){
+         this.fec_inicial = moment().format('DD/MM/YYYY');
+         this.fec_final   = moment().format('DD/MM/YYYY');
+         this.modulo ="";
+      },
       buscarCompraPorInvoice: function(valor_buscar,funcion_exito,funcion_error){
           var ruta ='compras/buscar/' + valor_buscar + '';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
@@ -22,7 +37,12 @@ return {
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },        
        consultaComprasPorFechas: function(funcion_exito,funcion_error){
-         var ruta ='compras/consultas/';
+        var valores = '?modulo=' + this.modulo;
+        valores = valores + '&fec_inicial=' + this.fec_inicial;        
+        valores = valores + '&fec_final=' + this.fec_final;
+        
+         var ruta ='compras/consultas/' + valores;
+
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },        
  

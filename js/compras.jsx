@@ -1,6 +1,6 @@
 var $ = require('jquery');
 var React 			= require('react');
-var ReactDOM 		= require('react-dom') ;
+var ReactDOM 		= require('react-dom');
 var moment 			= require('moment');
 var ApiRestCatalogo = require('../js/modelos/apirestCatalogos');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');

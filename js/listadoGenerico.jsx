@@ -50,7 +50,7 @@ render: function () {
      this.crearListado();
 
      return (      		
-           	<table className="tabla_catalogo">
+			<table className="tabla_catalogo" key="tablas" id="reporte_tablas_listado">
 				<tbody>
 					{this.listadoFilas}
 				</tbody>

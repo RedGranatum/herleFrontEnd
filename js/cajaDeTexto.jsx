@@ -4,6 +4,7 @@ module.exports = React.createClass({
   getDefaultProps: function(){
       return{
         titulo2:  "",
+        requerido: false
       };
     },
   TeclaPresionada: function(event) {
