@@ -16,7 +16,7 @@ module.exports  = React.createClass({
 			<BotonMenu colorLink={"ico_nav"} icono={"check-square"}  tam={"3x"} ruta={"/pagos"}/>
 			<BotonMenu colorLink={"ico_nav"} icono={"dollar"}  tam={"3x"} ruta={"/costos"}/>
 			<BotonMenu colorLink={"ico_nav"} icono={"th"}  tam={"3x"} ruta={"/reportes"}/>
-			<BotonMenu colorLink={"ico_logout"} icono={"sign-out"}  tam={"2x"}/>
+			<BotonMenu colorLink={"ico_logout"} icono={"sign-out"}  tam={"2x"} ruta={"/logout"}/>
 		</ul>
 	</nav>
 			);  

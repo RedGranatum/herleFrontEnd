@@ -53,7 +53,11 @@ module.exports = React.createClass({
                  
                  console.log("Estas en el indice");
              });
+            Page('/logout',function(){
+                 self.setState({permiso: false});
 
+                 console.log("Cerrando sesion");
+             });
              Page('/proveedores',function(){
                self.mostrarMenu(appmvc.Menu.PROVEEDORES);
              	console.log("Estas en el menu de proveedores");

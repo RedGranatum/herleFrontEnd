@@ -9,6 +9,11 @@ getDefaultProps: function(){
 		permiso: false
 	}
 },
+TeclaPresionada: function(event) {
+          if(event.charCode == 13)  {
+               this.login();
+          }
+      },
 login: function(){
 	          var self = this; 
 			  var login = new ApiLogin();
@@ -42,7 +47,7 @@ render: function () {
 						<i className="fa fa-user fa-1x"></i>
 					</p>
 					<p className="field">
-						<input ref="Password" type="password" name="password" placeholder="contraseña" />
+						<input ref="Password" type="password" name="password" placeholder="contraseña"    onKeyPress ={this.TeclaPresionada} />
 						<i className="fa fa-lock fa-1x"></i>
 					</p>
 					<a >
