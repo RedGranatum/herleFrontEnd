@@ -38,7 +38,7 @@ module.exports = React.createClass({
           datosCostos: {},
           datosPagos: {},
           actualizarForm: false,
-          permiso: true,
+          permiso: false,
 
      		};
 	 	},
@@ -292,7 +292,10 @@ module.exports = React.createClass({
                this.CalalogoBancos = [];
 
 		},
-  
+   componentDidMount: function(){
+      localStorage.clear();
+      console.log("******** inicia *********")
+   },
 		mostrarMenu:function(nomform){
           this.setState({actualizarForm:false});
           this.setState({formMostrar:nomform});
@@ -440,6 +443,9 @@ module.exports = React.createClass({
     llenarCombos: function(){
         console.log("buscando datos");
     },
+    onLogin: function(con_permiso){
+      this.setState({permiso: con_permiso});
+    },
 		 render: function () {
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
@@ -456,11 +462,12 @@ module.exports = React.createClass({
      padding: "0px"
     };
      var estiloSistema = (this.state.permiso) ? {display: 'inline'} : {display: 'none'};
+
     // var estiloSistema = (this.state.permiso && this.state.formMostrar === appmvc.Menu.COMPRAS) ? {display:'inline-block'} : estiloSistema;
       
 		return (
-  <div style={style}>    
-    <Login permiso={this.state.permiso} />
+    <div style={style}>    
+    <Login permiso={this.state.permiso} onLogin={this.onLogin}/>
     <div style={estiloSistema}>
   	<header>
   	</header>
