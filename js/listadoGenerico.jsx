@@ -25,9 +25,9 @@ llenarFila: function(diccionario, num_fila){
 	var filaInd = []
 
  	Object.keys(this.props.titulos).forEach(function (titulo) {
- 		 filaInd.push(<td key={titulo} contentEditable={false} style={estilo}> {diccionario[titulo]} </td>);
+ 		 filaInd.push(<td key={titulo} contentEditable={false} style={estilo}>{diccionario[titulo]}</td>);
    });
-   		this.listadoFilas.push(<tr  key={num_fila}> {filaInd} </tr>);
+   		this.listadoFilas.push(<tr  key={num_fila}>{filaInd}</tr>);
 },
 llenarTitulos: function(){
 	this.llenarFila(this.props.titulos,'titulo');
@@ -51,7 +51,7 @@ render: function () {
 
      return (      		
 			<table className="tabla_catalogo" key="tablas" id="reporte_tablas_listado">
-				<tbody>
+				<tbody id="reporte_body_tablas_listado">
 					{this.listadoFilas}
 				</tbody>
 			</table>

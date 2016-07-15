@@ -47,7 +47,7 @@ cambiarValorFecha: function(control,valor){
 			update[control] = valor;
 			this.setState(update);
 			console.log("Cambio fecha a " + valor)
-		   this.llenarconsultaCompras();
+		   this.llenarconsultaCompras(this.state.reporte_mostrar);
 	},
 onBlurFecha: function(control,valor){  	
 	    console.log("sali con el valor " + valor);
@@ -80,19 +80,19 @@ agregarReporteCompras: function(datos){
 					 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
 								   datos={datos}
 								   columna_cabecero={this.state.columna_cabecero}/> ,
-					 document.getElementById("ampliar_tabla2"));
+					 document.getElementById("contenedor_reportes"));
 },
 agregarReporteExistencias: function(datos){
 
 	 ReactDOM.render(<ListadoGenerico id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
 					 			   datos={datos}/> ,
-					 document.getElementById("ampliar_tabla2"));
+					 document.getElementById("contenedor_reportes"));
 },
 llenarListaExistencias: function(){
 	var self = this;
 
-	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("ampliar_tabla2"));
+//	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
 
 	var titulosEncabezado={num_rollo:"Num.Rollo",codigo_producto: "Producto",calibre:"Milesimas",ancho:"Ancho",entradas_kg:"Entradas Kg",salidas_kg:"Salida Kg",existencia_kg:"Existencias Kg"};
 
@@ -121,7 +121,8 @@ llenarListaExistencias: function(){
 },
 llenarconsultaCompras: function(modulo){
 	var self = this;
-	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("ampliar_tabla2"));
+//	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
+
 	var titulosEncabezado={ invoice: "Invoice",
 							fec_solicitud:"Fec.Solicitud",fec_real:"Fec.Real",
 							proveedor_codigo:"CodigoProv",proveedor_nombre:"Proveedor",proveedor_pais:"Pais"
@@ -178,6 +179,7 @@ render: function () {
  
             var fec_ini =[];
 			var fec_fin =[];
+			console.log("Aqui esta: " + this.state.reporte_mostrar);
 			if(this.state.reporte_mostrar === "compras"){
 					FECHA_INI["titulo"] ="Fec.Solicitud Inicial"
 					FECHA_FIN["titulo"] ="Fec.Solicitud Final"
@@ -189,6 +191,7 @@ render: function () {
 					estilo_fechas["display"] = 'inline';
 					
 				}
+
 
 	  return (      		
 			<section className="contenido">
@@ -203,7 +206,8 @@ render: function () {
 				 <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
 				 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
 				</div>
-					<div className="bloque_catalogo" id="ampliar_tabla2">	
+					<div className="bloque_catalogo" id="contenedor_reportes">	
+
 					</div>
 				</article>
 			</section>
