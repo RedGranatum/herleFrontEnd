@@ -5,6 +5,7 @@ var Combo 	    	= require('../js/combo.jsx');
 var Titulo          = require('../js/titulos.jsx');
 var CajaConCampos     = require('../js/cajaConCampos.jsx');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
+var EtiquetaTexto   = require('../js/etiquetaDeTexto.jsx')
 var CodigoProducto  = require('../js/inventarioCodigoProducto.jsx');
 
 module.exports = React.createClass({
@@ -67,7 +68,7 @@ onBlurCaja: function(campo,valor){
 	var nuevos_errores = this.state.errores;
 
 	if(campo==="peso_kg" || campo==="peso_lb"){
-		this.calcularKgLb(this.props.pais,this.state.peso_kg,this.state.peso_lb)
+		this.calcularKgLb("0010000",this.state.peso_kg,this.state.peso_lb)
 	}
 	if(campo === "calibre"){
 			if(this.state.largo > 0){
@@ -166,7 +167,7 @@ render: function () {
 			<CajaConCampos >
 				<CajaDeTexto propiedades = {NUM_ROLLO} ref="cajaNumRollo"/>
 				<CajaDeTexto propiedades = {PESO_KG} ref="cajaPesKg"/>
-				<CajaDeTexto propiedades = {PESO_LB} ref="cajaPesoLb"/>
+				<EtiquetaTexto titulo="peso_lb" valor={this.state.peso_lb} clase="etiqueta_especial" />
 				<CajaDeTexto propiedades = {TRANSPORTE} ref="cajaPesoLb"/>
 				{this.state.pais === "0010000" ? <CajaDeTexto propiedades = {PRECIO_KG} ref="cajaPesoLb"/> : ""}
 				
