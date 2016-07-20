@@ -10,6 +10,7 @@ getDefaultProps: function(){
 		datos: [],
 		id: 'Id',
 		columna_cabecero: '',
+    id_reporte : 'reporte_tablas_listado',
 	}
 },
 getInitialState: function(){
@@ -79,11 +80,15 @@ llenarFilaDatos: function(){
 	this.props.datos.forEach(function(datos){
         if(valor_cabecero_ant !==  datos[self.props.columna_cabecero]){ 
        	   self.llenarFila(datos, num_fila);
-        	 self.llenarTitulosSecundarios(num_fila);
-        	 self.llenarDatosSecundarios(datos,num_fila);
+           if(Object.keys(self.props.titulos_secundarios).length>0){
+             self.llenarTitulosSecundarios(num_fila);
+             self.llenarDatosSecundarios(datos,num_fila);
+           }
        }
        else{
-       	   self.llenarDatosSecundarios(datos,num_fila);
+          if(Object.keys(self.props.titulos_secundarios).length>0){
+           	   self.llenarDatosSecundarios(datos,num_fila);
+            }
        }
      valor_cabecero_ant = datos[self.props.columna_cabecero]
          num_fila+=1;
@@ -102,7 +107,7 @@ render: function () {
      var filas = this.listadoFilas ;
 
     return (  
-        <table className="tabla_catalogo" key="tablas"  id="reporte_tablas_listado">
+        <table className="tabla_catalogo" key="tablas"  id={this.props.id_reporte}>
           <tbody>
           {filas}
           </tbody>

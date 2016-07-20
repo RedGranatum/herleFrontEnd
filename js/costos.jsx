@@ -1,144 +1,109 @@
-var React      = require('react');
-var TituloMenu = require('../js/titulos_menu.jsx'); 
-var CeldaTabla       = require('../js/celdaTabla.jsx');
-var FilaTabla        = require('../js/filaTabla.jsx');
-var ApiRestVentas = require('../js/modelos/apirestVentas');
+var $                	= require('jquery');
+global.jQuery           = require("jquery");
+var jQuery              = require('jquery');
+var moment 		    	= require('moment');
+var ReactDOM 		    = require('react-dom');
+var React  		     	= require('react');
+var FuncGenericas       = require('../js/funcionesGenericas')
+var TituloMenu 		 	= require('../js/titulos_menu.jsx');
+var CajaDeTexto 	    = require('../js/cajaDeTexto.jsx'); 
+var CeldaTabla       	= require('../js/celdaTabla.jsx');
+var FilaTabla        	= require('../js/filaTabla.jsx');
+var ApiRestVentas       = require('../js/modelos/apirestVentas');
 
+var ListadoGenerico     = require('../js/listadoGenerico.jsx');
+var ReporteCompra 		= require('../js/reportesCompras.jsx');
+var tableExport = require( '../js/ex/tableExport' );
+var Base64 = require( '../js/ex/jquery.base64' );
 
 module.exports = React.createClass({
 getDefaultProps: function(){
-  return{
-    clase: 'caja_bloque',
-  }
+	return{
+		clase: 'caja_bloque',
+	}
 },
 getInitialState: function(){
-  return {
-    lista_costo: []
-  }
+	return {
+		columna_id: 'Id',
+		lista_datos: [],
+		titulos_encabezado: {},
+		titulos_encabezado_secundario: {},
+		columna_cabecero: '',
+	}
 },
-onClickReporte: function(){
-  console.log("Reporte seleccionado")
-  this.llenarListaExistencias();
+
+agregarReporteCostos: function(){
+	ReactDOM.render(<ReporteCompra id_reporte= {'reporte_tablas_reporte_costos'}
+				   id={this.state.columna_id} 
+	               titulos={this.state.titulos_encabezado} 
+	 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
+				   datos={this.state.lista_datos}
+				   columna_cabecero={this.state.columna_cabecero}/>,
+			 document.getElementById("contenedor_reportes_costos"));
 },
-llenarListaExistencias: function(){
+
+onClickReporteCostosDetallado: function(){
+	console.log("Reporte de costos seleccionado")
+	var titulosEncabezadoSecundario = {num_documento:"Num.Doc",fec_venta:"Fecha",nombre_cliente:"Cliente"
+									,venta_peso_kg:"Venta Kg",precio_kg_venta:"Precio Venta",utilidad:"Utilidad" }
+  
+	this.llenarListaExistenciasCostos(titulosEncabezadoSecundario);
+
+},
+onClickReporteCostosResumen: function(){
+	console.log("Reporte de costos seleccionado")
+	var titulosEncabezadoSecundario = {}
+	this.llenarListaExistenciasCostos(titulosEncabezadoSecundario);
+},
+onClickExcel: function(){
+	$('#reporte_tablas_reporte_costos').tableExport({type:'excel',escape:'false'});
+},
+llenarListaExistenciasCostos: function(titulosSecundarios){
   var self = this;
+
+	var titulosEncabezado={num_rollo: "Num.Rollo",	codigo_producto:"Codigo Producto",nombre_proveedor:"Proveedor"
+				  ,fec_compra:"Fecha",compra_peso_kg:"Entrada Kg",precio_kg_compra:"Precio Compra"
+				  ,total_salida_kg:"Salidas Kg",existencia_kg:"Existencia Kg",costo_inventario:"Costo Inventario"
+				};
+  
   var ventas = new ApiRestVentas();
   ventas.costoAgrupado(  
     function(data){
-          self.setState({lista_costo: data });
+          self.setState({     lista_datos: data, 
+   							  titulos_encabezado: titulosEncabezado, 
+							  titulos_encabezado_secundario: 	titulosSecundarios,
+   							  columna_id:"id",
+   							  columna_cabecero: "num_rollo",
+   							    });
+          self.agregarReporteCostos();
     },
     function(model,response,options){
-            self.setState({lista_costo : [] });
+          self.setState({ lista_datos: [], 
+							   titulos_encabezado: titulosEncabezado, 
+						       titulos_encabezado_secundario: {},
+							   columna_id:"id",
+							   columna_cabecero: "num_rollo",
+							    });
+          self.agregarReporteCostos();
     }
   );
 },
+
 render: function () {
-
-  var self= this;
-  var estilo = {cursor:"pointer"};
-
-  //var titulosEncabezado=["Id", "Num.Rollo","Codigo Producto", "Calibre",  "Ancho",  "Largo",  "Peso (Kgs)", "Peso (Lbs)"];
-  var titulosEncabezado=[ "Num.Rollo","Codigo Producto","Operacion ","Cliente/Proveedor", "Fecha", "Entrada Kg","Salida Kg","Precio Kg","Utilidad","Total Salidas Kg","Existencia Kg","Costo Inv"];
-
-
-  var encabezado=titulosEncabezado.map(function(titulo){
-     return (
-           <CeldaTabla key={titulo} contenido={titulo} />
-      );
-  });
-
-  var listado_detalles = [];
-  var i=1;
-
-  var num_rollo_ant = '';
-
-  this.state.lista_costo.forEach(function(resultado){
-    var detalle = []
-    var tipo_operacion = ''
-
-    // if(num_rollo_ant !== resultado.num_rollo){
-    //       detalle = []
-    //       i=i+1;
-    //       detalle.push(<CeldaTabla contenido={"==== " + resultado.num_rollo + " ===="}  key={"num_rollo_" + i}/>);
-    //       detalle.push(<CeldaTabla contenido="" key={"codigo_producto_" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"tipo_operacion_" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"nombre_proveedor_" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"fec_compra" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"compra_peso_kg" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"venta_peso_kg" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"precio_kg" + i} />);
-    //       detalle.push(<CeldaTabla contenido="" key={"utilidad" + i} />);
-
-    //       listado_detalles.push(<FilaTabla key={i} id={i + resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
-
-    // }
-
-    if(num_rollo_ant === '' || num_rollo_ant !== resultado.num_rollo)
-    {
-        detalle = []
-         i=i+1;
-      tipo_operacion = 'Compra'
-     
-      detalle.push(<CeldaTabla contenido={resultado.num_rollo} key={"num_rollo_" + i}/>);
-      detalle.push(<CeldaTabla contenido={resultado.codigo_producto} key={"codigo_producto_" + i} />);
-      detalle.push(<CeldaTabla contenido={tipo_operacion} key={"tipo_operacion_" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.nombre_proveedor} key={"nombre_proveedor_" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.fec_compra} key={"fec_compra" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.compra_peso_kg} key={"compra_peso_kg" + i} />);
-      detalle.push(<CeldaTabla contenido="" key={"venta_peso_kg" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.precio_kg_compra} key={"precio_kg_compra" + i} />);
-      detalle.push(<CeldaTabla contenido="" key={"utilidad" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.total_salida_kg} key={"total_salida_kg" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.existencia_kg} key={"existencia_kg" + i} />);
-      detalle.push(<CeldaTabla contenido={resultado.costo_inventario} key={"costo_inventario" + i} />);
-
-      listado_detalles.push(<FilaTabla key={i} id={resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila} cabecero={true}/>)
-    }
-    
-
-    console.log("num_rollo :" + resultado.num_rollo)
-   
-
-    if(resultado.cliente_id > 0){
-       detalle = []
-       i=i+1;
-        tipo_operacion = 'Venta'
-     
-        detalle.push(<CeldaTabla contenido={resultado.num_rollo} key= {"num_rollo_" + i} />);
-        detalle.push(<CeldaTabla contenido={resultado.codigo_producto} key= {"codigo_producto_" + i} />);
-        detalle.push(<CeldaTabla contenido={tipo_operacion} key= {"tipo_operacion_" + i} />);
-        detalle.push(<CeldaTabla contenido={resultado.nombre_cliente} key= {"nombre_cliente_" + i} />);
-        detalle.push(<CeldaTabla contenido={resultado.fec_venta} key={"fec_venta" + i} />);
-        detalle.push(<CeldaTabla contenido="" key={"compra_peso_kg" + i} />);
-        detalle.push(<CeldaTabla contenido={resultado.venta_peso_kg} key={"venta_peso_kg" + i} />);
-        detalle.push(<CeldaTabla contenido={resultado.precio_kg_venta} key={"precio_kg_venta" + i} />);
-        detalle.push(<CeldaTabla contenido={resultado.utilidad} key={"utilidad" + i} />);
-
-         listado_detalles.push(<FilaTabla key={i} id={resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
-    }
-
-    num_rollo_ant = resultado.num_rollo;
-   
-  })
-
-    return (          
-      <section className="contenido">
-        <article className="caja_lista_reporte">
-          <TituloMenu titulo="Costos" onClick={this.onClickReporte}/>
-        </article>
-        <article className="bloque">
-          <div className="caja_bloque">
-            <div className="bloque_catalogo" id="ampliar_tabla">
-              <table className="tabla_catalogo">
-                <tbody>
-                <FilaTabla childrens={encabezado}/>
-                {listado_detalles}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </article>
-      </section>
-      );  
-    }
+	  return (      		
+			<section className="contenido">
+				<article className="caja_lista_reporte">
+					<TituloMenu titulo="Costos Detallado" onClick={this.onClickReporteCostosDetallado}/>
+					<TituloMenu titulo="Costos Resumen" onClick={this.onClickReporteCostosResumen}/>
+					<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
+				</article>
+				<article className="bloque">
+					<div className="bloque_catalogo" id="contenedor_reportes_costos">	
+					</div>
+				</article>
+			</section>
+			);  
+		}
 });
+
+
