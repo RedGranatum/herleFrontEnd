@@ -38,7 +38,7 @@ render: function () {
   var estilo = {cursor:"pointer"};
 
   //var titulosEncabezado=["Id", "Num.Rollo","Codigo Producto", "Calibre",  "Ancho",  "Largo",  "Peso (Kgs)", "Peso (Lbs)"];
-  var titulosEncabezado=[ "Num.Rollo","Codigo Producto","Operacion ","Cliente/Proveedor", "Fecha", "Entrada Kg","Salida Kg","Precio Kg","Utilidad"];
+  var titulosEncabezado=[ "Num.Rollo","Codigo Producto","Operacion ","Cliente/Proveedor", "Fecha", "Entrada Kg","Salida Kg","Precio Kg","Utilidad","Total Salidas Kg","Existencia Kg","Costo Inv"];
 
 
   var encabezado=titulosEncabezado.map(function(titulo){
@@ -88,6 +88,9 @@ render: function () {
       detalle.push(<CeldaTabla contenido="" key={"venta_peso_kg" + i} />);
       detalle.push(<CeldaTabla contenido={resultado.precio_kg_compra} key={"precio_kg_compra" + i} />);
       detalle.push(<CeldaTabla contenido="" key={"utilidad" + i} />);
+      detalle.push(<CeldaTabla contenido={resultado.total_salida_kg} key={"total_salida_kg" + i} />);
+      detalle.push(<CeldaTabla contenido={resultado.existencia_kg} key={"existencia_kg" + i} />);
+      detalle.push(<CeldaTabla contenido={resultado.costo_inventario} key={"costo_inventario" + i} />);
 
       listado_detalles.push(<FilaTabla key={i} id={resultado.num_rollo} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila} cabecero={true}/>)
     }

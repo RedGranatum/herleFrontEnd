@@ -38,7 +38,7 @@ module.exports = React.createClass({
           datosCostos: {},
           datosPagos: {},
           actualizarForm: false,
-          permiso: false,
+          permiso: true,
 
      		};
 	 	},
