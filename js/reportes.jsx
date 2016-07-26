@@ -32,6 +32,7 @@ getInitialState: function(){
 		columna_cabecero: '',
 		fec_inicial:moment().format('DD/MM/YYYY'),
 		fec_final:moment().format('DD/MM/YYYY'),
+		invoice: '',
 		reporte_mostrar: '',
 	}
 },
@@ -45,6 +46,7 @@ componentDidMount: function(){
 cambiarValorFecha: function(control,valor){
 			var update = {};
 			update[control] = valor;
+			update['invoice'] = '';
 			this.setState(update);
 			console.log("Cambio fecha a " + valor)
 		   this.llenarconsultaCompras(this.state.reporte_mostrar);
@@ -141,6 +143,7 @@ llenarconsultaCompras: function(modulo){
 	var consulta = new ApiRestCompras();
 	consulta.fec_inicial = this.state.fec_inicial;
 	consulta.fec_final   = this.state.fec_final; 
+	consulta.invoice     = this.state.invoice;
 	consulta.modulo      = modulo;
 	
 	consulta.consultaComprasPorFechas(	
@@ -166,6 +169,21 @@ llenarconsultaCompras: function(modulo){
 		}
 	);
 },
+
+onValorCambio: function(campo,valor) {
+	if(campo=== "invoice")  {
+		var campos ={};
+		campos[campo] = valor;
+		this.setState(campos);
+	}
+},
+onEnter: function(campo, valor){
+		if(campo=== "invoice"){
+			this.setState({'invoice': valor});
+		    this.llenarconsultaCompras(this.state.reporte_mostrar);
+			console.log("cambio el invoice a: " + valor)
+		}
+},
 render: function () {
 	var self= this;
 	var estilo = {cursor:"pointer"};
@@ -173,9 +191,10 @@ render: function () {
 
 		func = new FuncGenericas();
 			
-	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ];
-            var FECHA_INI  = func.zipCol(dic1,["fec_inicial",  "Fecha Inicial",   "Fecha Inicial",   this.state.fec_inicial , this.onValorCambio,  this.onBlurFecha  ]);
-            var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha   ]);
+	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ,"onEnter"];
+		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   "Invoice",   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+            var FECHA_INI  = func.zipCol(dic1,["fec_inicial",  "Fecha Inicial",   "Fecha Inicial",   this.state.fec_inicial , this.onValorCambio,  this.onBlurFecha, this.onEnter  ]);
+            var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha, this.onEnter  ]);
  
             var fec_ini =[];
 			var fec_fin =[];
@@ -203,6 +222,7 @@ render: function () {
 				</article>
 				<article className="bloque">
 				<div style={estilo_fechas}>
+				 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
 				 <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
 				 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
 				</div>

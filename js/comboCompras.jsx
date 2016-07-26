@@ -28,13 +28,17 @@ llenarCombos: function(){
 },
 BuscarComprasSinInventariar: function(){
 	   var self = this;
-	      var compras = new ApiRestCompras();
+     var combo =self.refs.comboCompras
+//     combo.hidden = true
+        var compras = new ApiRestCompras();
           funcionBusqueda = compras.buscarComprasNoInventariadas.bind(compras);
           funcionBusqueda(function(data){
-                 self.setState({listado_compras: data});          
+                 self.setState({listado_compras: data});  
+  //                combo.hidden = false
               },
               function(model,response, options) {
                  self.setState({listado_compras: []});
+    //             combo.hidden = false
               }
           );
 },
@@ -46,11 +50,13 @@ onChange: function(valor){
 },
 render: function () {
     this.llenarCombos();
+      var estilo = {display:"none"};
+      var opciones = this.ListaCompras;
   return (   
       <li className="li_bloque">   		
-         <select name={this.props.id} className="select_bloque" value={this.props.claveSeleccionada}   onFocus={this.onFocus} onChange={this.onChange}>
-          <option key={"-1"} value={"-1"}>{"== INVOICE POR VALIDAR =="}</option>
-           {this.ListaCompras}
+         <select ref="comboCompras" name={this.props.id} className="select_bloque" value={this.props.claveSeleccionada}   onFocus={this.onFocus} onChange={this.onChange} >
+              <option key={"-1"} value={"-1"} >{"== INVOICE POR VALIDAR =="}</option>
+              {opciones}
           </select>
       </li>
 		);  

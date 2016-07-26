@@ -12,6 +12,9 @@ return {
     fec_final: function(fec_final){
         this.fec_final = fec_final;        
       },
+    invoice: function(invoice){
+        this.invoice = invoice;
+    },
     modulo: function(modulo){
         this.modulo = modulo;        
     },  
@@ -19,6 +22,7 @@ return {
          this.fec_inicial = moment().format('DD/MM/YYYY');
          this.fec_final   = moment().format('DD/MM/YYYY');
          this.modulo ="";
+         this.invoice ="";
       },
       buscarCompraPorInvoice: function(valor_buscar,funcion_exito,funcion_error){
           var ruta ='compras/buscar/' + valor_buscar + '';
@@ -40,9 +44,8 @@ return {
         var valores = '?modulo=' + this.modulo;
         valores = valores + '&fec_inicial=' + this.fec_inicial;        
         valores = valores + '&fec_final=' + this.fec_final;
-        
-         var ruta ='compras/consultas/' + valores;
-
+        valores = valores + '&invoice=' + this.invoice;   
+        var ruta ='compras/consultas/' + valores;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },        
  
