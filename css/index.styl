@@ -612,27 +612,43 @@ nav
 									background-image -o-linear-gradient(verde_rgb,verde_rgb)
 									background-image -webkit-linear-gradient(verde_rgb,verde_rgb)
 									background-image linear-gradient(verde_rgb,verde_rgb)
-	.bloque_grid
-		display inline-block
+	.caja_filtro_reporte
+		position absolute
+		background rosa
+		//display inline-block
+		width 20%
 		vertical-align top
 		margin-right 1%
 		margin-left 1%
 		margin-top 10em
-		margin-bottom 4em
-		//width 70%
-		.bloque_tabla
-			//font normal medium/1.4 sans-serif
-			border-collapse collapse
-			width 100%
-		.bloque_tabla thead
-			background rosa
-			color white
-		.bloque_tabla th, td
-			padding 0.1rem
-			text-align left
-			border 1px solid rosa
-		.bloque_tabla tbody tr:hover
-			background gris_claro
+		border-radius 5px
+		//padding 0.2em
+		.ul_filtro
+			//width 800px
+			list-style-type none
+			margin 0
+			padding 0.1em
+			.li_filtro
+				color black
+				font-family arial-regular
+				font-size 14px
+				padding 0.2em
+				.etiquetas_filtro
+					width 80px
+					margin-top 2px
+					display inline-block
+					float left
+					padding 2px
+				.inputs_filtro
+					color black
+					height 16px
+					width 120px
+					padding 2px 8px
+					border 1px solid white
+					box-shadow 0px 0px 1px c1, 0 10px 15px white inset
+					border-radius 1px
+					&:focus
+						border 1px solid c1
 	.caja_lista_reporte
 		//border 1px solid gris_oscuro
 		position relative
@@ -642,7 +658,7 @@ nav
 		vertical-align top
 		margin-right 1%
 		margin-left 1%
-		margin-top 10em
+		margin-top 17em
 		border-radius 5px
 		padding 0.2em
 		.lista_reporte
@@ -662,6 +678,30 @@ nav
 		&:hover
 			background rosa
 			text-shadow 4px 4px 2px rgba(30, 30, 30, 1)
+	.bloque_grid
+		display inline-block
+		vertical-align top
+		margin-right 1%
+		margin-left 1%
+		margin-top 10em
+		margin-bottom 4em
+		//width 70%
+		.bloque_tabla
+			font-size 12px
+			border-collapse collapse
+			width 100%
+		.bloque_tabla caption
+			text-align left
+			margin-bottom 4px
+		.bloque_tabla thead
+			background rosa
+			color white
+		.bloque_tabla th, td
+			padding 0.1rem
+			text-align left
+			border 1px solid rosa
+		.bloque_tabla tbody tr:hover
+			background gris_claro
 	.bloque_proveedor
 		//display none
 		.botones_proveedor
