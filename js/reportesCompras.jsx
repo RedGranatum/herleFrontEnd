@@ -107,7 +107,7 @@ render: function () {
      var filas = this.listadoFilas ;
 
     return (  
-        <table className="tabla_catalogo" key="tablas"  id={this.props.id_reporte}>
+        <table className="bloque_tabla" key="tablas"  id={this.props.id_reporte}>
           <tbody>
           {filas}
           </tbody>

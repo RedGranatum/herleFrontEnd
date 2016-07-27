@@ -6,7 +6,7 @@ var ReactDOM 		    = require('react-dom');
 var React  		     	= require('react');
 var FuncGenericas       = require('../js/funcionesGenericas')
 var TituloMenu 		 	= require('../js/titulos_menu.jsx');
-var CajaDeTexto 	    = require('../js/cajaDeTexto.jsx'); 
+var CajaDeTexto 	    = require('../js/cajaDeTextoSimple.jsx'); 
 var CeldaTabla       	= require('../js/celdaTabla.jsx');
 var FilaTabla        	= require('../js/filaTabla.jsx');
 var ApiRestInventario   = require('../js/modelos/apirestInventarios');
@@ -86,9 +86,10 @@ agregarReporteCompras: function(datos){
 },
 agregarReporteExistencias: function(datos){
 
-	 ReactDOM.render(<ListadoGenerico id={this.state.columna_id} 
+	 ReactDOM.render(<ReporteCompra id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
-					 			   datos={datos}/> ,
+					 			   datos={datos}
+					 			   columna_cabecero ={"num_rollo"} />,
 					 document.getElementById("contenedor_reportes"));
 },
 llenarListaExistencias: function(){
@@ -210,26 +211,31 @@ render: function () {
 					estilo_fechas["display"] = 'inline';
 					
 				}
-
-
 	  return (      		
 			<section className="contenido">
 				<article className="caja_lista_reporte">
+					<div style={estilo_fechas}>
+						 <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
+						 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
+						 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
+						  <br/>
+						  <label className="etiquetas_bloque">     Fec.Inicial Fec.Final</label>      
+					</div> 		
 					<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
 					<TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
 					<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
 					<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
 				</article>
-				<article className="bloque">
+			{/*	<article className="bloque">
 				<div style={estilo_fechas}>
 				 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
 				 <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
 				 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
-				</div>
-					<div className="bloque_catalogo" id="contenedor_reportes">	
+				</div> */}
+					<article className="bloque_grid" id="contenedor_reportes">
 
-					</div>
-				</article>
+					</article>
+				{/*</article>*/}
 			</section>
 			);  
 		}

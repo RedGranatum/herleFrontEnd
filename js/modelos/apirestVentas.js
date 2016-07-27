@@ -5,6 +5,9 @@ var ModeloBase =  require('../modelos/modeloBase');
 
 var apirestVentas = function(){
 return {
+      num_rollo: function(num_rollo){
+        this.num_rollo = num_rollo;        
+      },
 	  buscarVentaPorPk: function(pk,funcion_exito,funcion_error){
          var ruta ='ventas/'+pk+'/detalles/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
@@ -14,7 +17,8 @@ return {
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
       costoAgrupado: function(funcion_exito,funcion_error){
-          var ruta ='costos/agrupado/';
+          var valores = '?num_rollo=' + this.num_rollo;
+          var ruta ='costos/agrupado/' + valores;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
