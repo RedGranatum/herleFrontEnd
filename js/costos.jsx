@@ -75,6 +75,9 @@ llenarListaExistenciasCostos: function(){
 				  ,total_salida_kg:"Salidas Kg",existencia_kg:"Existencia Kg",costo_inventario:"Costo Inventario"
 				};
   
+  var ColumnasDecimales = {costo_inventario: 5}
+
+
   var ventas = new ApiRestVentas();
   ventas.num_rollo = this.state.num_rollo;
   ventas.costoAgrupado(  
@@ -82,6 +85,7 @@ llenarListaExistenciasCostos: function(){
           self.setState({     lista_datos: data, 
    							  titulos_encabezado: titulosEncabezado, 
 							  titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+							  columnas_decimales: ColumnasDecimales,
    							  columna_id:"id",
    							  columna_cabecero: "num_rollo",
    							    });

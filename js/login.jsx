@@ -24,7 +24,7 @@ login: function(){
               login.EnviarCredenciales(
                     function(datos,response){
                     	self.props.onLogin(true);
-                        $("#notify_success").text("Los datos de la venta fueron guardados con exito");
+                        $("#notify_success").text("Bienvenido");
                         $("#notify_success").notify();
                     },
                     function(model,response,options){

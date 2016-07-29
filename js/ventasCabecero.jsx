@@ -73,7 +73,7 @@ getInitialState: function(){
 		metodo_pago: '0110000',
 		banco_cliente: "0030000",
 		periodo_pago: '0120000',
-		cantidad_pago: "0.0",
+		cantidad_pago: "0",
 		observaciones :'',
 		busqueda_clientes : [],
 		errores:[],
@@ -218,7 +218,7 @@ llenarListaClientes: function(lista){
             var FEC_VENTA = func.zipCol(dic1,["fec_venta","Fecha Venta",  "Fecha Venta", this.state.fec_venta ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_venta]);
        
             var FEC_INVENTARIO = func.zipCol(dic1,["fec_inventario","Fecha Inventario",  "Fecha Inventario", this.state.fec_inventario ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_inventario]);
-            var CANTIDAD_PAGO = func.zipCol(dic1,["cantidad_pago","Cantidad Pago",  "Cantidad Pago", this.state.cantidad_pago ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.cantidad_pago]);
+            var CANTIDAD_PAGO = func.zipCol(dic1,["cantidad_pago","Dias",  "Cantidad Pago", this.state.cantidad_pago ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.cantidad_pago]);
             var OBSERVACIONES = func.zipCol(dic1,["observaciones","Observaciones",  "Observaciones", this.state.observaciones ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.observaciones]);
 
             var CLIENTE       = func.zipCol(dic1,["cliente_nombre","Cliente",         "Cliente",         this.state.cliente_nombre,this.onValorCambio,    this.onBuscarCliente, this.onBlurCaja,	this.state.errores.cliente_nombre ]);
@@ -258,7 +258,7 @@ llenarListaClientes: function(lista){
 	<br/>
 	<Titulo titulo='Crédito' clase ="resaltar_titulo_caja" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
-		<Combo propiedades={PERIODO_PAGO}/>
+		{/*<Combo propiedades={PERIODO_PAGO}/>*/}
 		<CajaDeTexto propiedades={CANTIDAD_PAGO} />
 		<AreaTexto propiedades={OBSERVACIONES} />
 	</CajaConCampos>

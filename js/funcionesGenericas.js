@@ -39,6 +39,11 @@ return {
          });
           return celdasTabla;
 	   },
+	   redondearValores:function(valor,decimales){
+	   		potencia = Math.pow(10, decimales); 
+            resultado = (Math.floor(valor * potencia) / potencia).toFixed(decimales);
+            return resultado;
+	   },
 	};
 }
 

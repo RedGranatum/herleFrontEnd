@@ -17,6 +17,9 @@ var ReporteCompra 		= require('../js/reportesCompras.jsx');
 var tableExport = require( '../js/ex/tableExport' );
 var Base64 = require( '../js/ex/jquery.base64' );
 
+// Redondear cantidades
+//(Math.floor(valor * 1000) / 1000).toFixed(3)
+
 module.exports = React.createClass({
 getDefaultProps: function(){
 	return{
@@ -135,6 +138,7 @@ llenarconsultaCompras: function(modulo){
 							detalle_calibre:"Milesimas", detalle_ancho:"Ancho",detalle_largo:"Largo",
 							detalle_peso_kg:"Peso Kg",detalle_peso_lb:"Peso Lb",detalle_precio:"Precio"}
 
+
 	if(modulo =="inventario"){
 		var titulosEncabezadoSecundario={inv_codigo_producto:"Codigo Producto",inv_num_rollo: "Num.Rollo",
 							inv_calibre:"Milesimas", inv_ancho:"Ancho",inv_largo:"Largo",
@@ -213,19 +217,29 @@ render: function () {
 				}
 	  return (      		
 			<section className="contenido">
-				<article className="caja_lista_reporte">
-					<div style={estilo_fechas}>
-						 <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
-						 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
-						 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
-						  <br/>
-						  <label className="etiquetas_bloque">     Fec.Inicial Fec.Final</label>      
-					</div> 		
-					<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
-					<TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
-					<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
-					<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
-				</article>
+			<article className="caja_filtro_reporte" style={estilo_fechas}>
+			    <ul class="ul_filtro">
+				   <li class="li_filtro">
+					  <label className="etiquetas_filtro">Fec.Inicial</label>      
+					  <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
+				   </li>	
+ 				   <li class="li_filtro">
+ 				     <label className="etiquetas_filtro">Fec.Final </label>
+					 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
+				   </li>
+					<li class="li_filtro">
+					<label className="etiquetas_filtro">Invoice</label>
+					 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
+					 </li>
+
+				</ul>
+			</article>
+			<article className="caja_lista_reporte">
+				<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
+				<TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
+				<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
+				<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
+			</article>
 			{/*	<article className="bloque">
 				<div style={estilo_fechas}>
 				 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
