@@ -1,4 +1,5 @@
 var React=require('react');
+var FuncGenericas       = require('../js/funcionesGenericas')
 var ApirestInventarioCalculo   = require('../js/modelos/apirestInventarioCalculo');
 
 module.exports = React.createClass({
@@ -68,17 +69,22 @@ calcularFormula: function(){
  	console.log("guardara los parametros");
  	this.props.onGuardar();
  },
+ redondear: function(valor){
+ 	return func.redondearValores(valor,4);
+ },
 render: function () {
+     estiloFila = {textAlign: 'right',}
+         
 	return (
 			<div className="formula">
 				<figure className="formula_foto">
 					<button  onClick={this.onGuardar}><p><img src="images/guardar.png" /></p></button>
 				</figure>
 				<div className="formula_datos">
-					<h3>Libra en dolar: {this.state.kilo_en_dolar}</h3>
-					<h3>Kilo en pesos: {this.state.kilo_en_pesos}</h3>
-					<h3>Tonelada en dolar: {this.state.tonelada_en_dolar}</h3>
-					<h3>Kilo en pesos final: {this.state.kilo_en_pesos_final}</h3>
+					<h3>Libra en dolar:      {this.redondear(this.state.kilo_en_dolar)} </h3>
+					<h3>Kilo  en pesos:      {this.redondear(this.state.kilo_en_pesos)}</h3>
+					<h3>Tonelada en dolar:   {this.redondear(this.state.tonelada_en_dolar)}</h3>
+					<h3>Kilo en pesos final: {this.redondear(this.state.kilo_en_pesos_final)}</h3>
 				</div>
 			</div>
 			);
