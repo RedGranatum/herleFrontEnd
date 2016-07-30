@@ -37,6 +37,8 @@ getInitialState: function(){
 		fec_inicial:moment().format('DD/MM/YYYY'),
 		fec_final:moment().format('DD/MM/YYYY'),
 		invoice: '',
+		producto: '',
+		num_rollo: '',
 		reporte_mostrar: '',
 	}
 },
@@ -109,6 +111,9 @@ llenarListaExistencias: function(){
 
 
 	var existencias = new ApiRestExistencias();
+	existencias.producto = this.state.producto;
+	existencias.num_rollo   = this.state.num_rollo; 
+	
 	existencias.buscarExistenciaAgrupadasPorRollo(	
 		function(data){
    				self.setState({lista_datos: data,
@@ -190,11 +195,24 @@ llenarconsultaCompras: function(modulo){
 },
 
 onValorCambio: function(campo,valor) {
-	if(campo=== "invoice")  {
+	if(campo=== "invoice" )  {
 		var campos ={};
 		campos[campo] = valor;
 		this.setState(campos);
 	}
+	if(campo ==="producto")  {
+		var campos ={};
+		campos[campo] = valor;
+		campos["num_rollo"] = '';
+		this.setState(campos);
+	}
+	if(campo==="num_rollo")  {
+		var campos ={};
+		campos[campo] = valor;
+		campos["producto"] = '';
+		this.setState(campos);
+	}
+
 },
 onEnter: function(campo, valor){
 		if(campo=== "invoice"){
@@ -202,37 +220,51 @@ onEnter: function(campo, valor){
 		    this.llenarconsultaCompras(this.state.reporte_mostrar);
 			console.log("cambio el invoice a: " + valor)
 		}
+		if(campo=== "producto" || campo=== "num_rollo"){
+			this.setState({campo: valor});
+		    this.llenarListaExistencias();
+			console.log("cambio el " + campo + " a: " + valor)
+		}
 },
 render: function () {
 	var self= this;
 	var estilo = {cursor:"pointer"};
-	var estilo_fechas = {display: 'none'};
-
+	var estilo_filtros = {display: 'none'};
+	var estilo_filtro_compras = {display: 'none'};
+    var estilo_filtro_existencias = {display: 'none'}
+	
 		func = new FuncGenericas();
 			
 	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ,"onEnter"];
 		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   "Invoice",   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
             var FECHA_INI  = func.zipCol(dic1,["fec_inicial",  "Fecha Inicial",   "Fecha Inicial",   this.state.fec_inicial , this.onValorCambio,  this.onBlurFecha, this.onEnter  ]);
             var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha, this.onEnter  ]);
+		    var PRODUCTO    = func.zipCol(dic1,["producto",  "Producto",   "Producto",   this.state.producto , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+		    var NUM_ROLLO    = func.zipCol(dic1,["num_rollo",  "Num.Rollo",   "Num.Rollo",   this.state.num_rollo , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
  
             var fec_ini =[];
 			var fec_fin =[];
 			console.log("Aqui esta: " + this.state.reporte_mostrar);
+			if(this.state.reporte_mostrar === "existencias"){
+				estilo_filtro_existencias["display"] = 'inline';
+				estilo_filtros["display"] = 'inline';
+			}
 			if(this.state.reporte_mostrar === "compras"){
 					FECHA_INI["titulo"] ="Fec.Solicitud Inicial"
 					FECHA_FIN["titulo"] ="Fec.Solicitud Final"
-					estilo_fechas["display"] = 'inline';
+					estilo_filtro_compras["display"] = 'inline';
+					estilo_filtros["display"] = 'inline';
 				}
 			if(this.state.reporte_mostrar === "inventario"){
 					FECHA_INI["titulo"] ="Fec.Real Inicial"
 					FECHA_FIN["titulo"] ="Fec.Real Final"
-					estilo_fechas["display"] = 'inline';
-					
+					estilo_filtro_compras["display"] = 'inline';
+					estilo_filtros["display"] = 'inline';					
 				}
 	  return (      		
 			<section className="contenido">
-			<article className="caja_filtro_reporte" style={estilo_fechas}>
-			    <ul class="ul_filtro">
+			<article className="caja_filtro_reporte" style={estilo_filtros} >
+			    <ul class="ul_filtro" id="filtro_reportes_compras" style={estilo_filtro_compras}>
 				   <li class="li_filtro">
 					  <label className="etiquetas_filtro">Fec.Inicial</label>      
 					  <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
@@ -245,7 +277,16 @@ render: function () {
 					<label className="etiquetas_filtro">Invoice</label>
 					 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
 					 </li>
-
+				</ul>
+				 <ul class="ul_filtro" id="filtro_reportes_existencias" style={estilo_filtro_existencias}>
+					<li class="li_filtro">
+					  <label className="etiquetas_filtro">Producto</label>
+					  <CajaDeTexto propiedades={PRODUCTO} />
+					</li>
+					<li class="li_filtro">
+					  <label className="etiquetas_filtro">Num.Rollo</label>
+					  <CajaDeTexto propiedades={NUM_ROLLO} />
+					</li>
 				</ul>
 			</article>
 			<article className="caja_lista_reporte">
