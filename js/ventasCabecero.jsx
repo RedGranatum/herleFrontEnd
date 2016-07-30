@@ -239,7 +239,7 @@ llenarListaClientes: function(lista){
 	<Titulo titulo='Venta' clase ="titulo_bloque" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
 				<CajaDeTexto propiedades={FEC_VENTA}/>
-				<CajaDeTexto propiedades={FEC_INVENTARIO}/>
+				{/*<CajaDeTexto propiedades={FEC_INVENTARIO}/>*/}
 				<Combo propiedades={TIPOS_DOCUMENTOS} />
 				 <CajaDeTexto propiedades={NUM_DOCUMENTO} />
 				<Combo propiedades={STATUS}/>

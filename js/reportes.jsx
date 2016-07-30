@@ -32,6 +32,7 @@ getInitialState: function(){
 		lista_datos: [],
 		titulos_encabezado: {},
 		titulos_encabezado_secundario: {},
+		columnas_decimales: {},
 		columna_cabecero: '',
 		fec_inicial:moment().format('DD/MM/YYYY'),
 		fec_final:moment().format('DD/MM/YYYY'),
@@ -83,6 +84,7 @@ agregarReporteCompras: function(datos){
 	ReactDOM.render(<ReporteCompra id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
 					 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
+					 			   columnas_decimales={this.state.columnas_decimales}
 								   datos={datos}
 								   columna_cabecero={this.state.columna_cabecero}/> ,
 					 document.getElementById("contenedor_reportes"));
@@ -91,6 +93,7 @@ agregarReporteExistencias: function(datos){
 
 	 ReactDOM.render(<ReporteCompra id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
+					               columnas_decimales={this.state.columnas_decimales}
 					 			   datos={datos}
 					 			   columna_cabecero ={"num_rollo"} />,
 					 document.getElementById("contenedor_reportes"));
@@ -101,13 +104,16 @@ llenarListaExistencias: function(){
 //	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
 
 	var titulosEncabezado={num_rollo:"Num.Rollo",codigo_producto: "Producto",calibre:"Milesimas",ancho:"Ancho",entradas_kg:"Entradas Kg",salidas_kg:"Salida Kg",existencia_kg:"Existencias Kg"};
+     
+     var ColumnasDecimales = {ancho:0,calibre:3,entradas_kg:4,salidas_kg:4,existencia_kg:4}
 
 
 	var existencias = new ApiRestExistencias();
 	existencias.buscarExistenciaAgrupadasPorRollo(	
 		function(data){
    				self.setState({lista_datos: data,
-   				               titulos_encabezado: titulosEncabezado, 			               
+   				               titulos_encabezado: titulosEncabezado, 
+   				               columnas_decimales: ColumnasDecimales,			               
    				               columna_id:"num_rollo",
    				                reporte_mostrar: "existencias",
    				           });
@@ -117,6 +123,7 @@ llenarListaExistencias: function(){
 		function(model,response,options){
 				    self.setState({lista_datos : [] ,
 				                   titulos_encabezado: titulosEncabezado,
+				                   columnas_decimales: columnas_decimales,
 				                   columna_id:"num_rollo",
    				                   reporte_mostrar: "existencias",
 				                    });
@@ -139,10 +146,15 @@ llenarconsultaCompras: function(modulo){
 							detalle_peso_kg:"Peso Kg",detalle_peso_lb:"Peso Lb",detalle_precio:"Precio"}
 
 
+    var columnas_decimales = {detalle_ancho:0,detalle_largo:0,detalle_calibre:3,entradas_kg:4,salidas_kg:4,existencia_kg:4,
+    					      detalle_peso_kg:4,detalle_peso_lb:4,detalle_precio:4}
+
 	if(modulo =="inventario"){
 		var titulosEncabezadoSecundario={inv_codigo_producto:"Codigo Producto",inv_num_rollo: "Num.Rollo",
 							inv_calibre:"Milesimas", inv_ancho:"Ancho",inv_largo:"Largo",
-							inv_peso_kg:"Peso Kg",inv_valor_final_kilo_pesos:"Kilo en Pesos"}	
+							inv_peso_kg:"Peso Kg",inv_valor_final_kilo_pesos:"Kilo en Pesos"}
+		 columnas_decimales = {inv_calibre:3,inv_ancho:0,inv_largo:0,inv_peso_kg:4,inv_valor_final_kilo_pesos:4,inv_valor_final_kilo_pesos:4}
+	
 	}
   
 	var consulta = new ApiRestCompras();
@@ -156,6 +168,7 @@ llenarconsultaCompras: function(modulo){
    				self.setState({lista_datos: data, 
    							   titulos_encabezado: titulosEncabezado, 
 							   titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+							    columnas_decimales: columnas_decimales,
    							   columna_id:"num_rollo",
    							   columna_cabecero: "id_compra",
    							   reporte_mostrar: modulo,
@@ -166,6 +179,7 @@ llenarconsultaCompras: function(modulo){
 				 self.setState({lista_datos : [] ,
 				 			    titulos_encabezado: titulosEncabezado, 
 				 			    titulos_encabezado_secundario: titulosEncabezadoSecundario,
+				 			     columnas_decimales: {},
 				 			    columna_id:"num_rollo",
 				 			    columna_cabecero: "id_compra",
 				 			    reporte_mostrar: modulo,

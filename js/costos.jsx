@@ -4,7 +4,7 @@ var jQuery              = require('jquery');
 var moment 		    	= require('moment');
 var ReactDOM 		    = require('react-dom');
 var React  		     	= require('react');
-var FuncGenericas       = require('../js/funcionesGenericas')
+var FuncGenericas       = require('../js/funcionesGenericas');
 var TituloMenu 		 	= require('../js/titulos_menu.jsx');
 var CajaDeTexto 	    = require('../js/cajaDeTexto.jsx'); 
 var CeldaTabla       	= require('../js/celdaTabla.jsx');
@@ -29,6 +29,7 @@ getInitialState: function(){
 		lista_datos: [],
 		titulos_encabezado: {},
 		titulos_encabezado_secundario: {},
+		columnas_decimales: {},
 		columna_cabecero: '',
 		num_rollo: '',
 	}
@@ -41,6 +42,7 @@ agregarReporteCostos: function(){
 				   id={this.state.columna_id} 
 	               titulos={this.state.titulos_encabezado} 
 	 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
+	 			   columnas_decimales={this.state.columnas_decimales}
 				   datos={this.state.lista_datos}
 				   columna_cabecero={this.state.columna_cabecero}/>,
 			 document.getElementById("contenedor_reportes_costos"));
@@ -75,7 +77,8 @@ llenarListaExistenciasCostos: function(){
 				  ,total_salida_kg:"Salidas Kg",existencia_kg:"Existencia Kg",costo_inventario:"Costo Inventario"
 				};
   
-  var ColumnasDecimales = {costo_inventario: 5}
+  var ColumnasDecimales = {compra_peso_kg:4,precio_kg_compra:4,total_salida_kg:4,existencia_kg:4,costo_inventario: 4,
+  						   venta_peso_kg:4,precio_kg_venta:4,utilidad:4}
 
 
   var ventas = new ApiRestVentas();
@@ -95,6 +98,7 @@ llenarListaExistenciasCostos: function(){
           self.setState({ lista_datos: [], 
 							   titulos_encabezado: titulosEncabezado, 
 						       titulos_encabezado_secundario: titulosEncabezadoSecundario,
+						       columnas_decimales: {},
 							   columna_id:"id",
 							   columna_cabecero: "num_rollo",
 							    });

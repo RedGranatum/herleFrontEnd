@@ -1,4 +1,5 @@
 var React=require('react');
+var FuncGenericas       = require('../js/funcionesGenericas')
 var Titulo       = require('../js/titulos.jsx');
 
 module.exports = React.createClass({
@@ -7,6 +8,7 @@ getDefaultProps: function(){
 		estilo: 'block',
 		titulos: {},
 		titulos_secundarios: {},
+    columnas_decimales: {},
 		datos: [],
 		id: 'Id',
 		columna_cabecero: '',
@@ -18,28 +20,40 @@ getInitialState: function(){
     listadoFilas: [],
   }
 },
-llenarFila: function(diccionario, num_fila){
-	
-	  estilo={}
-    estilo["background"]="#dddddc";
-    estilo["fontWeight"] = "bold";   
-    // if(num_fila % 2 === 0){
-    //     estilo["background"] = "#FFFFFF";
-    // }       
+llenarFila: function(diccionario, num_fila, son_datos){
+	  var self = this;
+    func= new FuncGenericas();
+	  estilo={background:"#dddddc",fontWeight:"bold",textAlign:"left"};  
+    if(Object.keys(self.props.titulos_secundarios).length===0){
+      estilo = {background:"#dddddc", textAlign: 'left',}
+    } 
     if(num_fila === 'titulo'){
         estilo["background"] = "#b08f88";
     }
 	
 	var filaInd = []
-
  	Object.keys(this.props.titulos).forEach(function (titulo) {
- 		 filaInd.push(<td key={titulo}  style={estilo}> {diccionario[titulo]} </td>);
+    var valor = diccionario[titulo]
+    var deci  = self.props.columnas_decimales[titulo]
+     if(son_datos === true &&  deci !== undefined && valor!==null && valor >= 0){
+        valor = func.redondearValores(valor,deci)
+        var estiloFila = {background:"#dddddc",fontWeight:"bold", textAlign: 'right',};
+        if(Object.keys(self.props.titulos_secundarios).length===0){
+              estiloFila = {background:"#dddddc", textAlign: 'right',}
+            }
+        filaInd.push(<td key={titulo}  style={estiloFila}>{valor}</td>);
+     }
+     else
+     {
+  	    filaInd.push(<td key={titulo}  style={estilo}>{valor}</td>);
+     }     
    });
  	
-           this.listadoFilas.push(<tr  key={num_fila}> {filaInd} </tr>); 
+    this.listadoFilas.push(<tr  key={num_fila}> {filaInd} </tr>); 
 },
-llenarFilaSecundaria: function(diccionario, num_fila, i){
-	
+llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
+	var self = this;
+  func= new FuncGenericas();
 	estilo={}
    
      estilo["background"]="#FFFFFF";
@@ -55,10 +69,22 @@ llenarFilaSecundaria: function(diccionario, num_fila, i){
 	
     Object.keys(this.props.titulos_secundarios).forEach(function (titulo) {
          var valor = diccionario[titulo] 
-         if(valor === "true" || valor ===true){
-         	valor ="Si"
-         }
-     	 filaInd.push(<td key={titulo}  style={estilo}> {valor} </td>);
+      
+        var deci  = self.props.columnas_decimales[titulo]
+        estilo["textAlign"]="";
+  
+    if(son_datos === true &&  deci !== undefined && valor!==null && valor >= 0){
+        valor = func.redondearValores(valor,deci)
+        var estiloFila = {background:"#FFFFFF",textAlign: 'right',};
+        filaInd.push(<td key={titulo}  style={estiloFila}>{valor}</td>);
+     }
+     else
+     {
+      if(valor === "true" || valor ===true){
+          valor ="Si"
+       }
+       filaInd.push(<td key={titulo} style={estilo} >{valor}</td>);
+     }     
    });
    		this.listadoFilas.push(<tr  key={num_fila}> {filaInd} </tr>);
 },
@@ -69,7 +95,7 @@ llenarTitulosSecundarios: function(i){
 	this.llenarFilaSecundaria(this.props.titulos_secundarios,'tit_secundario',i);
 },
 llenarDatosSecundarios: function(datos,i){
-	this.llenarFilaSecundaria(datos,'datos_sec' + i);
+	this.llenarFilaSecundaria(datos,'datos_sec' + i,0,true);
 },
 
 
@@ -79,7 +105,7 @@ llenarFilaDatos: function(){
     var valor_cabecero_ant = ''
 	this.props.datos.forEach(function(datos){
         if(valor_cabecero_ant !==  datos[self.props.columna_cabecero]){ 
-       	   self.llenarFila(datos, num_fila);
+       	   self.llenarFila(datos, num_fila,true);
            if(Object.keys(self.props.titulos_secundarios).length>0){
              self.llenarTitulosSecundarios(num_fila);
              self.llenarDatosSecundarios(datos,num_fila);
