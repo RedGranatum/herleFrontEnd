@@ -19,7 +19,7 @@ getInitialState: function(){
 	     largo: "0",
 	     peso_kg: "0.0",
 	     peso_lb: "0.0",
-	     num_rollo: "0.0",
+	     num_rollo: "",
 	     transporte: "",
 	     precio: "0.0",
 	     codigo_producto: "",

@@ -1,5 +1,6 @@
-var React       	  = require('react');
 var $                 = require('jquery');
+var React       	  = require('react');
+var ReactDOM 		  = require('react-dom');
 var FuncGenericas     = require('../js/funcionesGenericas');
 var InventarioParam   = require('../js/inventarioParametros.jsx');
 var CajaDeTexto 	  = require('../js/cajaDeTexto.jsx');
@@ -11,7 +12,10 @@ var EtiquetaTexto     = require('../js/etiquetaDeTexto.jsx');
 var InventarioLista   = require('../js/inventarioListadoProductos.jsx');
 var InventarioDetalle = require('../js/inventarioDetalleProducto.jsx');
 var ApiRestInventario = require('../js/modelos/apirestInventarios.js');
-var ListadoCompras   = require('../js/comboCompras.jsx');
+var ApiRestCompras 	  = require('../js/modelos/apirestCompras');
+var ListadoCompras    = require('../js/comboCompras.jsx');
+var ReporteCompra 	  = require('../js/reportesCompras.jsx');
+
 
 module.exports = React.createClass({
 onClaveCompraSeleccionada: function(id_compra){
@@ -49,11 +53,16 @@ componentWillReceiveProps: function(nextProps) {
  					   transporte:  nextProps.datos.transporte,
  					   detalle_compra: detalle,
  					});
+	 	
 
  	}
  	else{
  		this.setState(this.getInitialState())
- 	}
+	}
+
+ },
+ componentDidUpdate: function(){
+ 	this.llenarconsultaComprasInvetariadas();
  },
 componentWillMount: function() { 
 	this.llenarCombos();
@@ -131,6 +140,50 @@ onGuardar: function(datos_parametros)
         });
     console.log("Vas a guardar el detalle del inventario");              
 },
+agregarReporteComprasInvetariadas: function(id,titulos,titulos_secundarios,columnas_decimales,datos,columna_cabecero){
+
+	ReactDOM.render(<ReporteCompra id={id} 
+					               titulos={titulos} 
+					 			   titulos_secundarios={titulos_secundarios}	
+					 			   columnas_decimales={columnas_decimales}
+								   datos={datos}
+								   columna_cabecero={columna_cabecero}/> ,
+					 document.getElementById("contenedor_detalle_compra_inventariada"));
+},
+llenarconsultaComprasInvetariadas: function(invoice){
+	var self = this;
+
+	var titulosEncabezado={ invoice: "Invoice Compra",
+							fec_solicitud:"Fec.Solicitud",fec_real:"Fec.Real",
+							proveedor_codigo:"CodigoProv",proveedor_nombre:"Proveedor",proveedor_pais:"Pais"
+						};
+
+    var columnas_decimales = {detalle_ancho:0,detalle_largo:0,detalle_calibre:3,entradas_kg:4,salidas_kg:4,existencia_kg:4,
+    					      detalle_peso_kg:4,detalle_peso_lb:4,detalle_precio:4}
+
+	var titulosEncabezadoSecundario={inv_codigo_producto:"Codigo Producto",inv_num_rollo: "Num.Rollo",
+							inv_calibre:"Milesimas", inv_ancho:"Ancho",inv_largo:"Largo",
+							inv_peso_kg:"Peso Kg",inv_valor_final_kilo_pesos:"Kilo en Pesos"}
+	
+	columnas_decimales = {inv_calibre:3,inv_ancho:0,inv_largo:0,inv_peso_kg:4,inv_valor_final_kilo_pesos:4,inv_valor_final_kilo_pesos:4}
+	
+	var consulta = new ApiRestCompras();
+	consulta.fec_inicial = '01/01/1900';
+	consulta.fec_final   = '01/01/1900'; 
+	consulta.invoice     = this.state.invoice;
+	consulta.modulo      = 'inventario';
+    
+	consulta.consultaComprasPorFechas(	
+		function(data){
+   				self.agregarReporteComprasInvetariadas("num_rollo",titulosEncabezado,titulosEncabezadoSecundario,columnas_decimales,data,"id_compra")
+		},
+		function(model,response,options){
+				self.agregarReporteComprasInvetariadas("num_rollo",titulosEncabezado,titulosEncabezadoSecundario,columnas_decimales,[],"id_compra")
+		}
+	);
+},
+
+
  render: function () {  
 	func = new FuncGenericas();
 	var dic1 =         			            ["id",      "titulo", "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
@@ -174,10 +227,11 @@ onGuardar: function(datos_parametros)
 			<br />
 			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
-		<InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> 
+		{mostrar ? <InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> : []}
+
 		{mostrar ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
 		{mensaje_inventariado}
-
+		{mostrar ? [] : <div id="contenedor_detalle_compra_inventariada" className="campos_bloque"></div>}
 	</div>
 		);  
 	}

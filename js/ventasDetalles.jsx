@@ -246,15 +246,14 @@ render: function () {
 	        var busqueda_rollo = this.llenarListaNumRollo(this.state.busqueda_num_rollo)
         	return (
         		<tr key={this.props.key}>
-		         {busqueda_rollo}
-		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.busqueda    : caja_busqueda }  />
+        		  <td>{busqueda_rollo} </td>
+        		  <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.busqueda    : caja_busqueda }  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.num_rollo   : <EtiquetaTexto titulo="" valor={this.state.num_rollo}   clase="etiqueta_especial"/>}  />     
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.existencia  : <EtiquetaTexto titulo="" valor={this.state.existencia}   clase="etiqueta_especial"/>}  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.peso_kg     : caja_peso_kg }     />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio_neto : caja_precio_neto } />
 		          {icono_eliminar}
                 </tr>
-            
 			);  
 		}
 	});

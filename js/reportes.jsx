@@ -141,7 +141,7 @@ llenarconsultaCompras: function(modulo){
 	var self = this;
 //	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
 
-	var titulosEncabezado={ invoice: "Invoice",
+	var titulosEncabezado={ invoice: "Invoice Compra",
 							fec_solicitud:"Fec.Solicitud",fec_real:"Fec.Real",
 							proveedor_codigo:"CodigoProv",proveedor_nombre:"Proveedor",proveedor_pais:"Pais"
 						};
