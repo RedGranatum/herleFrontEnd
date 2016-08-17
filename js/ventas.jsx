@@ -11,6 +11,9 @@ getDefaultProps: function(){
 },
 nuevosDatos: function(){
 	var datos_cabecero = this.refs["cabecero_ventas"].valoresCabeceroVenta()
+	if(datos_cabecero.id>0){
+		return datos_cabecero;
+	}
 	var datos_detalles = this.refs["listado_detalles_ventas"].valoresDetallesVenta()
     datos_cabecero["venta_detalles"] = datos_detalles;
     return datos_cabecero;	

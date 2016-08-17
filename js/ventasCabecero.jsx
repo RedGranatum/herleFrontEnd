@@ -64,7 +64,7 @@ getInitialState: function(){
 	   	id: -1,
 		tipo_doc:'0100000',
 		num_documento:  '',
-		bln_activa: 'True',
+		bln_activa: 'true',
 		fec_inventario: moment().format('DD/MM/YYYY'),
 		fec_venta: moment().format('DD/MM/YYYY'),
 		cliente: "0",
@@ -86,8 +86,8 @@ llenarCombos: function(){
         this.periodos_pago = func.llenarComboGenerico(appmvc.Datos.PERIODO_PAGO);
         this.bancos = func.llenarComboGenerico(appmvc.Datos.BANCOS);
         
-		var status = [{cdu_catalogo: "True",descripcion1: "Activo"},{cdu_catalogo: "False",descripcion1: "Cancelado"}]
-		this.STATUS = func.llenarComboGenerico(status);
+        var status = [{cdu_catalogo: "true",descripcion1: "Activo"},{cdu_catalogo: "false",descripcion1: "Cancelado"}]
+        this.STATUS = func.llenarComboGenerico(status);
 },
 validarCampoErrores: function(control, valor){
 	var dic_err = this.relacionCampoErrores();
@@ -190,6 +190,7 @@ cambio: function(v,a){
 		
 	},
 valoresCabeceroVenta: function(){
+	  var fec_cance = (this.state.bln_activa === 'false') ? moment().format('DD/MM/YYYY') : '01/01/1900';
 	  return{   
 	    id: this.state.id,
         fec_venta: this.state.fec_venta,
@@ -203,7 +204,9 @@ valoresCabeceroVenta: function(){
         banco_cliente: this.state.banco_cliente,
         periodo_pago: this.state.periodo_pago,
         cantidad_pago: this.state.cantidad_pago,
-        observaciones: this.state.observaciones
+        observaciones: this.state.observaciones,
+        fec_cancelacion: fec_cance,
+
 	  };
 },
 llenarListaClientes: function(lista){

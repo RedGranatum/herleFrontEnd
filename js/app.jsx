@@ -38,7 +38,7 @@ module.exports = React.createClass({
           datosCostos: {},
           datosPagos: {},
           actualizarForm: false,
-          permiso: false,
+          permiso: true,
 
      		};
 	 	},
@@ -225,10 +225,8 @@ module.exports = React.createClass({
              //        $("#notify_error").notify();
              //        return;
              //  }
-
               var datosNuevos=  self.refs[appmvc.Menu.VENTAS].nuevosDatos(); 
               var venta = new ApiRestVentas();
-             
              venta.Guardar(datosNuevos,
                     function(datos,response){
                          self.setState({actualizarForm:true});

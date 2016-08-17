@@ -38,7 +38,10 @@ return {
       ruta_insertar: function(){
         return 'ventas_con_detalles/';
      },
-    
+     ruta_modificar: function(pk){
+        return 'ventas/' + pk +'/';
+     },
+
      Guardar: function(datos,funcion_exito,funcion_error){
       var venta = new ModeloBase();
       
@@ -49,7 +52,8 @@ return {
         operacion = 'POST';
       } 
       if(datos.id > 0){
-        return;
+        venta.asignarRuta(this.ruta_modificar(datos.id));
+        operacion = 'PUT'
       } 
       venta.save(null,{
         type: operacion,
