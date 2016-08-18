@@ -219,6 +219,10 @@ module.exports = React.createClass({
                 self.setState({datosVentas:[],actualizarForm:true});
                 console.log("Vas a dar de alta una nueva venta");              
             });
+            Page('/ventas/eliminar',function(){
+                 $("#notify_info").text("La venta no se puede Eliminar. \r\n para cancelar la venta: \r\n  cambie el status de la venta a cancelado, y guarde los datos.");
+                 $("#notify_info").notify();             
+            });
             Page('/ventas/guardar',function(){
              // if(self.refs[appmvc.Menu.COMPRAS].hayErrores()){
              //        $("#notify_error").text("Hay errores en algunos campos");
