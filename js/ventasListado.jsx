@@ -1,3 +1,4 @@
+var $        = require('jquery');
 var React           = require('react');
 var ReactDOM 		= require('react-dom');
 var VentaDetalle   = require('../js/ventasDetalles.jsx');
@@ -110,7 +111,7 @@ render: function () {
             						id_venta={self.props.id_venta} />
              listado_detalles.push(detalle);
           });
-
+          $('#impresion_registro').attr('src', '');
 		   return(  
 		   	     <article className="bloque">
 	          <div className="bloque_catalogo" id="ampliar_tabla">
@@ -121,6 +122,15 @@ render: function () {
 					{listado_detalles}					
 				  </tbody>
 				</table>
+				 {this.props.id_venta>0 ? <button onClick={this.props.generarPDF}>Imprimir Orden de Compra</button> : ''}
+				 <iframe id="impresion_registro"  
+				         className="preview-pane" 
+		       		     type="application/pdf" 
+		       		     width="100%" 
+		       		     height="750" 
+		       		     frameBorder="0" 
+		       		     style={{position:"relative",zIndex:"5"}}>
+				</iframe>
 				<div className="error_mostrar_grid">mensaje de error del campo</div>
 			</div>		
             </article>

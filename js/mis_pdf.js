@@ -70,6 +70,42 @@ function generaPDF(){
 	doc.setFontSize(10);
 	doc.text(178, 67, 'IMPORTE');
 	doc.text(13, 73, '1');
+    
+    var valor = "10123.2345";
+    var num_decimales = 4;
+    var separacion = valor.split(".");
+    var enteros = separacion[0]
+    var decimales = separacion[1]
+    
+    var pos_ini = 20;
+    var longitud = 10;
+    var pos_fin = pos_ini + ((longitud-1)*2);
+    var pos_deci = pos_fin - ((num_decimales -1)*2)-1;
+    
+    var pos_entero = pos_deci - ((enteros.length*2))
+
+    doc.text(pos_deci, 70, "." + decimales);
+    doc.text(pos_entero, 70,  enteros);
+
+
+    var valor = "123.45";
+    var num_decimales = 4;
+    var separacion = valor.split(".");
+    var enteros = separacion[0]
+    var decimales = separacion[1]
+    
+    var pos_ini = 20;
+    var longitud = 10;
+    var pos_fin = pos_ini + ((longitud-1)*2);
+    var pos_deci = pos_fin - ((num_decimales -1)*2)-1;
+    
+    var pos_entero = pos_deci - ((enteros.length *2))
+
+
+    doc.text(pos_deci, 77, "." + decimales);
+    doc.text(pos_entero, 77,  enteros);
+
+	
 	doc.text(13, 79, '2');
 	doc.text(13, 85, '3');
 	doc.text(13, 91, '4');

@@ -28,7 +28,7 @@ module.exports = $(function() {
 			showMessage(myMessages[i]);
 		}
 		// When message is clicked, hide it
-		$('.message').click(function(){
+		$('.message_n').click(function(){
 			$(this).animate({top: -$(this).outerHeight()}, 500);
 		});
 	});
@@ -37,7 +37,7 @@ module.exports = $(function() {
 	$.fn.notify = function(settings_overwrite){
 		settings = {
 					placement:"top",
-					default_class: ".message",
+					default_class: ".message_n",
 					delay:0
 					};
 		$.extend(settings, settings_overwrite);

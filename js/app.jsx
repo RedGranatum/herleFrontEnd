@@ -43,8 +43,7 @@ module.exports = React.createClass({
      		};
 	 	},
 		componentWillMount:function(){
-		 
-			 //Para que self sea this dentro de las funciones de Page
+   		 //Para que self sea this dentro de las funciones de Page
 			 var self=this;
 	
 			 //Rutas del navegador
