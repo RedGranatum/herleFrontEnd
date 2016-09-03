@@ -23,7 +23,7 @@ var ApiRestProveedor = require('../js/modelos/apirestProveedores');
 var ApiRestCompras   = require('../js/modelos/apirestCompras');
 var ApiRestVentas    = require('../js/modelos/apirestVentas');
 var ApiRestPagos     = require('../js/modelos/apirestClientesPagos');
- 
+var ApiRestPermisos  = require('../js/modelos/apirestPermisos');
 
 
 module.exports = React.createClass({
@@ -43,6 +43,7 @@ module.exports = React.createClass({
      		};
 	 	},
 		componentWillMount:function(){
+      
    		 //Para que self sea this dentro de las funciones de Page
 			 var self=this;
 	
@@ -451,7 +452,22 @@ module.exports = React.createClass({
     onLogin: function(con_permiso){
       this.setState({permiso: con_permiso});
     },
+    permisosMenu:function(){
+        var permiso = new ApiRestPermisos();    
+
+            permiso.permisoAdministrador(
+                function(datos,response){
+                  debugger;
+                  datos[0]['permisos']
+                  console.log("permisos en " + datos);
+                },
+                function(model,response,options){
+                  debugger;
+                  console.log("no tienes permisos");
+                });
+     },
 		 render: function () {
+      this.permisosMenu();
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} onClaveCompraSeleccionada={this.onClaveSeleccionada} />);

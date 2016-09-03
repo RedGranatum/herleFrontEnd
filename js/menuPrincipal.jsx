@@ -1,9 +1,7 @@
 var React     =require('react');
 var BotonMenu =require('../js/botonMenu.jsx');
 
-
 module.exports  = React.createClass({
-		
 		render: function () {
 			return (
     <nav>
