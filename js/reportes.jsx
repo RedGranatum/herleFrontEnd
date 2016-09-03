@@ -12,13 +12,13 @@ var FilaTabla        	= require('../js/filaTabla.jsx');
 var ApiRestInventario   = require('../js/modelos/apirestInventarios');
 var ApiRestExistencias  = require('../js/modelos/apirestExistencias');
 var ApiRestCompras 		= require('../js/modelos/apirestCompras');
+var ApiRestVentas 		= require('../js/modelos/apirestVentas');
 var ListadoGenerico     = require('../js/listadoGenerico.jsx');
 var ReporteCompra 		= require('../js/reportesCompras.jsx');
+var ReporteVenta        = require('../js/reportesCompras.jsx'); 
 var tableExport = require( '../js/ex/tableExport' );
 var Base64 = require( '../js/ex/jquery.base64' );
 
-// Redondear cantidades
-//(Math.floor(valor * 1000) / 1000).toFixed(3)
 
 module.exports = React.createClass({
 getDefaultProps: function(){
@@ -55,7 +55,12 @@ cambiarValorFecha: function(control,valor){
 			update['invoice'] = '';
 			this.setState(update);
 			console.log("Cambio fecha a " + valor)
-		   this.llenarconsultaCompras(this.state.reporte_mostrar);
+			if(this.state.reporte_mostrar==="ventas"){
+			   this.llenarconsultaVentas(this.state.reporte_mostrar);
+			}
+			else{				
+		 	  this.llenarconsultaCompras(this.state.reporte_mostrar);
+			}
 	},
 onBlurFecha: function(control,valor){  	
 	    console.log("sali con el valor " + valor);
@@ -71,6 +76,11 @@ onClickReporteInventario: function(){
 	console.log("Reporte seleccionado")
 	this.llenarconsultaCompras("inventario");
 },
+onClickReporteVentas: function(){
+	console.log("Reporte seleccionado")
+	this.llenarconsultaVentas("ventas");
+},
+
 onClickExcel: function(){
 	//$('#customers').tableExport({type:'excel',escape:'false'});
 	
@@ -98,6 +108,16 @@ agregarReporteExistencias: function(datos){
 					               columnas_decimales={this.state.columnas_decimales}
 					 			   datos={datos}
 					 			   columna_cabecero ={"num_rollo"} />,
+					 document.getElementById("contenedor_reportes"));
+},
+agregarReporteVentas: function(datos){
+
+	ReactDOM.render(<ReporteVenta id={this.state.columna_id} 
+					               titulos={this.state.titulos_encabezado} 
+					 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
+					 			   columnas_decimales={this.state.columnas_decimales}
+								   datos={datos}
+								   columna_cabecero={this.state.columna_cabecero}/> ,
 					 document.getElementById("contenedor_reportes"));
 },
 llenarListaExistencias: function(){
@@ -193,6 +213,65 @@ llenarconsultaCompras: function(modulo){
 		}
 	);
 },
+llenarconsultaVentas: function(modulo){
+	var self = this;
+
+	var titulosEncabezado={ num_documento: "Num.Documento",
+							fec_venta:"Fec.Venta",cliente_codigo:"Cod.Cliente",cliente:"Cliente",venta_neta:"Venta Neta",total:"0.0"
+						};
+
+	var titulosEncabezadoSecundario={id_detalle:"Id Detalle",venta_id:"Con",num_rollo: "Num.Rollo",inventario_codigo_producto:"Codigo.Producto",
+						  	         peso_kg:"Peso Kg",precio_neto:"Precio"}
+
+
+    var columnas_decimales = {peso_kg:4,precio_neto:4,venta_neta:4}
+  
+	var consulta = new ApiRestVentas();
+	consulta.fec_inicial   = this.state.fec_inicial;
+	consulta.fec_final     = this.state.fec_final; 
+	consulta.num_documento = this.state.invoice;
+	
+	consulta.consultaVentasPorFechas(	
+		function(data){
+			
+			var total = 0.0
+			var venta_id =[]
+
+			  data.forEach(function (venta) {
+					
+					var i = venta_id.indexOf(venta.venta_id);
+					if(i < 0){
+						total = total + venta.venta_neta;
+						venta_id.push(venta.venta_id)
+					}
+			});
+
+			func = new FuncGenericas();
+			titulosEncabezado["total"] = func.redondearValores(total,4);
+
+   				self.setState({lista_datos: data, 
+   							   titulos_encabezado: titulosEncabezado, 
+							   titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+							    columnas_decimales: columnas_decimales,
+   							   columna_id:"id_detalle",
+   							   columna_cabecero: "venta_id",
+   							   reporte_mostrar: modulo,
+   							    });
+   				self.agregarReporteVentas(data);
+		},
+		function(model,response,options){
+				 self.setState({lista_datos : [] ,
+				 			    titulos_encabezado: titulosEncabezado, 
+				 			    titulos_encabezado_secundario: titulosEncabezadoSecundario,
+				 			     columnas_decimales: {},
+				 			    columna_id:"id_detalle",
+				 			    columna_cabecero: "venta_id",
+				 			    reporte_mostrar: modulo,
+				 			      });
+				 self.agregarReporteVentas([]);
+		}
+	);
+},
 
 onValorCambio: function(campo,valor) {
 	if(campo=== "invoice" )  {
@@ -217,7 +296,12 @@ onValorCambio: function(campo,valor) {
 onEnter: function(campo, valor){
 		if(campo=== "invoice"){
 			this.setState({'invoice': valor});
-		    this.llenarconsultaCompras(this.state.reporte_mostrar);
+			if(this.state.reporte_mostrar==="ventas"){
+			    this.llenarconsultaVentas(this.state.reporte_mostrar);
+			 }
+			 else{
+			    this.llenarconsultaCompras(this.state.reporte_mostrar);
+			 }   
 			console.log("cambio el invoice a: " + valor)
 		}
 		if(campo=== "producto" || campo=== "num_rollo"){
@@ -236,7 +320,7 @@ render: function () {
 		func = new FuncGenericas();
 			
 	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ,"onEnter"];
-		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   "Invoice",   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   this.state.reporte_mostrar==="ventas" ? "Documento" : "Invoice" ,   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
             var FECHA_INI  = func.zipCol(dic1,["fec_inicial",  "Fecha Inicial",   "Fecha Inicial",   this.state.fec_inicial , this.onValorCambio,  this.onBlurFecha, this.onEnter  ]);
             var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha, this.onEnter  ]);
 		    var PRODUCTO    = func.zipCol(dic1,["producto",  "Producto",   "Producto",   this.state.producto , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
@@ -261,6 +345,12 @@ render: function () {
 					estilo_filtro_compras["display"] = 'inline';
 					estilo_filtros["display"] = 'inline';					
 				}
+			if(this.state.reporte_mostrar === "ventas"){
+					FECHA_INI["titulo"] ="Fec.Solicitud Inicial"
+					FECHA_FIN["titulo"] ="Fec.Solicitud Final"
+					estilo_filtro_compras["display"] = 'inline';
+					estilo_filtros["display"] = 'inline';
+				}
 	  return (      		
 			<section className="contenido">
 			<article className="caja_filtro_reporte" style={estilo_filtros} >
@@ -274,7 +364,7 @@ render: function () {
 					 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
 				   </li>
 					<li class="li_filtro">
-					<label className="etiquetas_filtro">Invoice</label>
+					<label className="etiquetas_filtro">{this.state.reporte_mostrar==="ventas" ? "Documento" : "Invoice" }</label>
 					 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
 					 </li>
 				</ul>
@@ -293,6 +383,7 @@ render: function () {
 				<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
 				<TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
 				<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
+				<TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>
 				<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
 			</article>
 			{/*	<article className="bloque">

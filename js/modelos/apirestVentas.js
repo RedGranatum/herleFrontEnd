@@ -8,6 +8,15 @@ return {
       num_rollo: function(num_rollo){
         this.num_rollo = num_rollo;        
       },
+    fec_inicial: function(fec_inicial){
+        this.fec_inicial = fec_inicial;        
+      },
+    fec_final: function(fec_final){
+        this.fec_final = fec_final;        
+      },
+    num_documento: function(num_documento){
+        this.num_documento = num_documento;
+    },
 	  buscarVentaPorPk: function(pk,funcion_exito,funcion_error){
          var ruta ='ventas/'+pk+'/detalles/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
@@ -21,6 +30,13 @@ return {
           var ruta ='costos/agrupado/' + valores;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
+      consultaVentasPorFechas: function(funcion_exito,funcion_error){
+        var valores =  '?fec_inicial=' + this.fec_inicial;        
+        valores = valores + '&fec_final=' + this.fec_final;
+        valores = valores + '&num_documento=' + this.num_documento;   
+        var ruta ='ventas/consultas/' + valores;
+          this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+       },  
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
                var datosVentas = new ColeccionVenta();
                datosVentas.asignarRuta(ruta);

@@ -3,6 +3,7 @@ var $ = require('jquery');
 var moment 			= require('moment');
 var FuncGenericas   = require('../js/funcionesGenericas');
 var CajaDeTexto 	= require('../js/cajaDeTexto.jsx');
+var EtiquetaTexto   = require('../js/etiquetaDeTexto.jsx');
 var Combo 			= require('../js/combo.jsx');
 var AreaTexto       = require('../js/areaTexto.jsx');
 var CajaConCampos     = require('../js/cajaConCampos.jsx');
@@ -52,6 +53,7 @@ componentWillReceiveProps: function(nextProps) {
  					   periodo_pago:   cabecero.periodo_pago,
  					   cantidad_pago:  cabecero.cantidad_pago,
  					   observaciones:  cabecero.observaciones,
+ 					   empresa:        cabecero.empresa,
  					});
 
 	 }
@@ -63,7 +65,7 @@ getInitialState: function(){
 	return{
 	   	id: -1,
 		tipo_doc:'0100000',
-		num_documento:  '',
+		num_documento:  'Automatico',
 		bln_activa: 'true',
 		fec_inventario: moment().format('DD/MM/YYYY'),
 		fec_venta: moment().format('DD/MM/YYYY'),
@@ -75,6 +77,7 @@ getInitialState: function(){
 		periodo_pago: '0120000',
 		cantidad_pago: "0",
 		observaciones :'',
+		empresa: "0140000",
 		busqueda_clientes : [],
 		errores:[],
 	}
@@ -85,6 +88,7 @@ llenarCombos: function(){
         this.metodos_pago = func.llenarComboGenerico(appmvc.Datos.METODO_PAGO);
         this.periodos_pago = func.llenarComboGenerico(appmvc.Datos.PERIODO_PAGO);
         this.bancos = func.llenarComboGenerico(appmvc.Datos.BANCOS);
+        this.empresa = func.llenarComboGenerico(appmvc.Datos.EMPRESA);
         
         var status = [{cdu_catalogo: "true",descripcion1: "Activo"},{cdu_catalogo: "false",descripcion1: "Cancelado"}]
         this.STATUS = func.llenarComboGenerico(status);
@@ -205,6 +209,7 @@ valoresCabeceroVenta: function(){
         periodo_pago: this.state.periodo_pago,
         cantidad_pago: this.state.cantidad_pago,
         observaciones: this.state.observaciones,
+        empresa:       this.state.empresa,
         fec_cancelacion: fec_cance,
 
 	  };
@@ -217,7 +222,7 @@ llenarListaClientes: function(lista){
              var func = new FuncGenericas();
 			
 	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",                  "onChange"          ,"onEnter",              "onBlur"                 ,"error"];
-			var NUM_DOCUMENTO = func.zipCol(dic1,["num_documento","Id Documento",  "Id Documento", this.state.num_documento ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
+			//var NUM_DOCUMENTO = func.zipCol(dic1,["num_documento","Id Documento",  "Id Documento", this.state.num_documento ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
             var FEC_VENTA = func.zipCol(dic1,["fec_venta","Fecha Venta",  "Fecha Venta", this.state.fec_venta ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_venta]);
        
             var FEC_INVENTARIO = func.zipCol(dic1,["fec_inventario","Fecha Inventario",  "Fecha Inventario", this.state.fec_inventario ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_inventario]);
@@ -233,6 +238,7 @@ llenarListaClientes: function(lista){
             var PERIODO_PAGO = func.zipCol(dic2,["periodo_pago",   "Periodo Pago",    this.periodos_pago,      this.state.periodo_pago,    this.onValorCambio]); 
 
 	        var BANCOS = func.zipCol(dic2,["banco_cliente",   "Banco",    this.bancos,      this.state.banco_cliente,    this.onValorCambio]); 
+	        var EMPRESA = func.zipCol(dic2,["empresa",   "Empresa",    this.empresa,      this.state.empresa,    this.onValorCambio]); 
 
    			var busqueda_clientes = this.llenarListaClientes(this.state.busqueda_clientes)
             //debugger;
@@ -241,10 +247,12 @@ llenarListaClientes: function(lista){
 <article className="bloque">
 	<Titulo titulo='Venta' clase ="titulo_bloque" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
+				<Combo propiedades={EMPRESA} />	
 				<CajaDeTexto propiedades={FEC_VENTA}/>
 				{/*<CajaDeTexto propiedades={FEC_INVENTARIO}/>*/}
 				<Combo propiedades={TIPOS_DOCUMENTOS} />
-				 <CajaDeTexto propiedades={NUM_DOCUMENTO} />
+				<EtiquetaTexto titulo="Id Documento" valor={this.state.num_documento} clase="etiqueta_especial" />
+				<br/>
 				<Combo propiedades={STATUS}/>
 	</CajaConCampos>
 	<br/>

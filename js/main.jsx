@@ -68,7 +68,8 @@ $(function() {
 	appmvc.Catalogos.PARAMETROS_CALCULOS = 9;
 	appmvc.Catalogos.TIPO_DOCUMENTO = 10;
 	appmvc.Catalogos.METODO_PAGO = 11;
-    appmvc.Catalogos.PERIODO_PAGO=12;
+  appmvc.Catalogos.PERIODO_PAGO=12;
+  appmvc.Catalogos.EMPRESA=14;
 
 	appmvc.Datos.PAISES = null; 
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
@@ -136,6 +137,16 @@ $(function() {
                             console.log("hay errores " + response.statusText)
                                       }
                         )
+    appmvc.Datos.EMPRESA = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.EMPRESA, 
+                        function(data){
+                            appmvc.Datos.EMPRESA =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
+
 	ReactDOM.render(<App/>,document.getElementById("app"));
 	
   	
