@@ -2,19 +2,30 @@ var React     =require('react');
 var BotonMenu =require('../js/botonMenu.jsx');
 
 module.exports  = React.createClass({
-		render: function () {
+	getDefaultProps: function(){
+	return{
+		permisos_menu: [],
+		}
+	},
+	mostraMenu: function(menu,icono,color){
+		if (menu==="logout" || this.props.permisos_menu.indexOf("*")>=0 || this.props.permisos_menu.indexOf(menu)>=0){
+			return <BotonMenu colorLink={color} icono={icono} tam={"3x"} ruta={"/" + menu}/>;
+		}
+		return '';
+	},
+	render: function () {
 			return (
     <nav>
 		<ul className="menu">
-		    <BotonMenu colorLink={"ico_nav"} icono={"truck"} tam={"3x"} ruta={"/proveedores"}/>
-		    <BotonMenu colorLink={"ico_nav"} icono={"group"}  tam={"3x"} ruta={"/clientes"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"shopping-cart"}  tam={"3x"} ruta={"/compras"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"info"}  tam={"3x"} ruta={"/inventarios"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"money"}  tam={"3x"} ruta={"/ventas"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"check-square"}  tam={"3x"} ruta={"/pagos"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"dollar"}  tam={"3x"} ruta={"/costos"}/>
-			<BotonMenu colorLink={"ico_nav"} icono={"th"}  tam={"3x"} ruta={"/reportes"}/>
-			<BotonMenu colorLink={"ico_logout"} icono={"sign-out"}  tam={"2x"} ruta={"/logout"}/>
+		    {this.mostraMenu("proveedores","truck","ico_nav")} 
+		    {this.mostraMenu("clientes","group","ico_nav")}
+			{this.mostraMenu("compras","shopping-cart","ico_nav")} 
+			{this.mostraMenu("inventarios","info","ico_nav")}  
+			{this.mostraMenu("ventas","money","ico_nav")}
+			{this.mostraMenu("pagos","check-square","ico_nav")}
+			{this.mostraMenu("costos","dollar","ico_nav")}
+			{this.mostraMenu("reportes","th","ico_nav")}
+			{this.mostraMenu("logout","sign-out","ico_logout")} 
 		</ul>
 	</nav>
 			);  

@@ -39,7 +39,7 @@ module.exports = React.createClass({
           datosPagos: {},
           actualizarForm: false,
           permiso: false,
-
+          permisos_menu: [],
      		};
 	 	},
 		componentWillMount:function(){
@@ -303,8 +303,12 @@ module.exports = React.createClass({
       console.log("******** inicia *********")
    },
 		mostrarMenu:function(nomform){
+        var menu = nomform.toLowerCase();
+    
+        if(this.state.permisos_menu.indexOf("*")>=0 || this.state.permisos_menu.indexOf(menu)>=0){
           this.setState({actualizarForm:false});
           this.setState({formMostrar:nomform});
+        }
     },
     llenarDatosProveedor: function(pk){
          	 var self = this;
@@ -451,23 +455,25 @@ module.exports = React.createClass({
     },
     onLogin: function(con_permiso){
       this.setState({permiso: con_permiso});
+      this.permisosMenu();
     },
     permisosMenu:function(){
+      var self = this;
         var permiso = new ApiRestPermisos();    
 
             permiso.permisoAdministrador(
                 function(datos,response){
-                  debugger;
-                  datos[0]['permisos']
-                  console.log("permisos en " + datos);
+                 self.setState({permisos_menu: datos[0]['permisos']});
                 },
                 function(model,response,options){
-                  debugger;
+                  self.setState({permisos_menu: []});
                   console.log("no tienes permisos");
                 });
      },
 		 render: function () {
-      this.permisosMenu();
+      //var permisos_menu = this.permisosMenu();
+      console.log("Permisos en " + this.state.permisos_menu);
+
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} onClaveCompraSeleccionada={this.onClaveSeleccionada} />);
@@ -492,7 +498,7 @@ module.exports = React.createClass({
     <div style={estiloSistema}>
   	<header>
   	</header>
-  	<MenuPrincipal/>
+  	<MenuPrincipal permisos_menu={this.state.permisos_menu}/>
   	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
   	<section className="contenido">
   		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
