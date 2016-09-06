@@ -18,10 +18,10 @@ function generaPDF(){
 	doc.text(82, 12, 'LAMINAS Y MAQUILAS');
 	doc.text(85, 17, 'HERLE S.A. DE C.V.');
 	doc.setFontSize(10);
-	doc.text(73, 22, 'CARRETERA A COLOMBIA KM 0.5 S/N');
+	doc.text(73, 22, 'CARR. A COLOMBIA KM 8.5 S/N');
 	doc.text(67, 25, 'COL. ANDRES CABALLERO MORENO AGROP.');
 	doc.text(81, 28, 'ESCOBEDO, N. L., C.P. 66080');
-	doc.text(69, 31, 'TEL. 01 (81) 2238-0101 Y 01 (81) 8239-0500');
+	doc.text(69, 31, 'TEL. 01 (81) 8239-0101 Y 01 (81) 8239-0100');
 	doc.text(10, 35, 'ORDEN DE COMPRA');
 	doc.text(87, 35, 'R.F.C. LMH070918K95');
 	// RECTANGULO
@@ -36,7 +36,7 @@ function generaPDF(){
 	doc.line(10, 47, 160, 47);
 	doc.text(12, 52, 'DIRECCION:');
 	doc.line(10, 53, 160, 53);
-	doc.text(12, 58, 'CIUDAD:');
+	doc.text(12, 58, 'CIUDAD:                                                                             R.F.C.');
 	doc.setFillColor(255, 255, 255);
 	doc.roundedRect(162, 37, 40, 10, 2, 2, 'FD');
 	doc.text(176, 40, 'PEDIDO');
@@ -167,13 +167,26 @@ function generaPDF(){
 	doc.roundedRect(10, 250, 192, 6, 2, 2, 'FD');
 	doc.setFontSize(6);
 	doc.text(13, 254, 'NOTA: A ESTOS PRECIOS SE LES INCLUIRA EL I.V.A CORRESPONDIENTE');
+
+	// BLOQUE HERLE
+	// doc.setFillColor(255, 255, 255);
+	// doc.roundedRect(10, 258, 192, 23, 0, 0, 'FD');
+	// doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (AMOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
+	// doc.text(13, 266, 'A LA ORDEN DE LAMINAS Y MAQUILAS HERLE S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( __________________________________________________________________');
+	// doc.text(13, 270, '_____________________________ ) QUE HE (MOS) RECIBIDO A MI (NUESTRA) ENTERA SATISFACCION EN MERCANCIA. LA FALTA DE PAGO A SU VENCIMIENTO CAUSARA INTERESES');
+	// doc.text(13, 274, 'AL ______ % MENSUAL SIN QUE POR ESTO SE CONSIDERE PRORROGADO EL PLAZO FIJADO PARA EL CUMPLIMIENTO DE ESTA OBLIGACION.');
+	// doc.text(140, 278, 'DEUDOR __________________________________________');
+
+	// BLOQUE CENTAURO
 	doc.setFillColor(255, 255, 255);
 	doc.roundedRect(10, 258, 192, 23, 0, 0, 'FD');
-	doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (ARNOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
-	doc.text(13, 266, 'A LA ORDEN DE LAMINAS Y MAQUILAS HERLE S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( __________________________________________________________________');
+	doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (AMOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
+	doc.text(13, 266, 'A LA ORDEN DE CENTAURO STEEL S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( ___________________________________________________________________________');
 	doc.text(13, 270, '_____________________________ ) QUE HE (MOS) RECIBIDO A MI (NUESTRA) ENTERA SATISFACCION EN MERCANCIA. LA FALTA DE PAGO A SU VENCIMIENTO CAUSARA INTERESES');
 	doc.text(13, 274, 'AL ______ % MENSUAL SIN QUE POR ESTO SE CONSIDERE PRORROGADO EL PLAZO FIJADO PARA EL CUMPLIMIENTO DE ESTA OBLIGACION.');
 	doc.text(140, 278, 'DEUDOR __________________________________________');
+
+
 
 	//doc.addImage(imgTexto, 'JPEG', 9, 46, 192, 110);
 	// doc.setFontSize(12);
