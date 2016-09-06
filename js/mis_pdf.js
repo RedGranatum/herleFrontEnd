@@ -20,8 +20,8 @@ function generaPDF(){
 	doc.setFontSize(10);
 	doc.text(73, 22, 'CARRETERA A COLOMBIA KM 0.5 S/N');
 	doc.text(67, 25, 'COL. ANDRES CABALLERO MORENO AGROP.');
-	doc.text(81, 28, 'ESCOBEDO, N. L., C.P. 66060');
-	doc.text(69, 31, 'TEL. 01 (67) 2228-0108 Y 03 (61) 8229-0100');
+	doc.text(81, 28, 'ESCOBEDO, N. L., C.P. 66080');
+	doc.text(69, 31, 'TEL. 01 (81) 2238-0101 Y 01 (81) 8239-0500');
 	doc.text(10, 35, 'ORDEN DE COMPRA');
 	doc.text(87, 35, 'R.F.C. LMH070918K95');
 	// RECTANGULO
@@ -50,7 +50,7 @@ function generaPDF(){
 	doc.line(162, 53, 202, 53);
 	// CUADRO GRANDE
 	doc.setFillColor(255, 255, 255);
-	doc.roundedRect(10, 62, 192, 66, 2, 2, 'FD');
+	doc.roundedRect(10, 62, 192, 186, 2, 2, 'FD');
 	doc.line(10, 68, 202, 68);
 	doc.line(10, 74, 202, 74);
 	doc.line(10, 80, 202, 80);
@@ -61,6 +61,28 @@ function generaPDF(){
 	doc.line(10, 110, 202, 110);
 	doc.line(10, 116, 202, 116);
 	doc.line(10, 122, 202, 122);
+	doc.line(10, 128, 202, 128);
+	doc.line(10, 134, 202, 134);
+	doc.line(10, 140, 202, 140);
+	doc.line(10, 146, 202, 146);
+	doc.line(10, 152, 202, 152);
+	doc.line(10, 158, 202, 158);
+	doc.line(10, 164, 202, 164);
+	doc.line(10, 170, 202, 170);
+	doc.line(10, 176, 202, 176);
+	doc.line(10, 182, 202, 182);
+	doc.line(10, 188, 202, 188);
+	doc.line(10, 194, 202, 194);
+	doc.line(10, 200, 202, 200);
+	doc.line(10, 206, 202, 206);
+	doc.line(10, 212, 202, 212);
+	doc.line(10, 218, 202, 218);
+	doc.line(10, 224, 202, 224);
+	doc.line(10, 230, 202, 230);
+	doc.line(10, 236, 202, 236);
+	doc.line(10, 242, 202, 242);
+
+
 	
 	doc.text(21, 67, 'CANTIDAD');
 	doc.text(80, 67, 'DESCRIPCION');
@@ -69,43 +91,42 @@ function generaPDF(){
 	doc.text(155, 67, 'UNITARIO');
 	doc.setFontSize(10);
 	doc.text(178, 67, 'IMPORTE');
-	doc.text(13, 73, '1');
     
-    var valor = "10123.2345";
-    var num_decimales = 4;
-    var separacion = valor.split(".");
-    var enteros = separacion[0]
-    var decimales = separacion[1]
+    // var valor = "10123.2345";
+    // var num_decimales = 4;
+    // var separacion = valor.split(".");
+    // var enteros = separacion[0]
+    // var decimales = separacion[1]
     
-    var pos_ini = 20;
-    var longitud = 10;
-    var pos_fin = pos_ini + ((longitud-1)*2);
-    var pos_deci = pos_fin - ((num_decimales -1)*2)-1;
+    // var pos_ini = 20;
+    // var longitud = 10;
+    // var pos_fin = pos_ini + ((longitud-1)*2);
+    // var pos_deci = pos_fin - ((num_decimales -1)*2)-1;
     
-    var pos_entero = pos_deci - ((enteros.length*2))
+    // var pos_entero = pos_deci - ((enteros.length*2))
 
-    doc.text(pos_deci, 70, "." + decimales);
-    doc.text(pos_entero, 70,  enteros);
+    // doc.text(pos_deci, 70, "." + decimales);
+    // doc.text(pos_entero, 70,  enteros);
 
 
-    var valor = "123.45";
-    var num_decimales = 4;
-    var separacion = valor.split(".");
-    var enteros = separacion[0]
-    var decimales = separacion[1]
+    // var valor = "123.45";
+    // var num_decimales = 4;
+    // var separacion = valor.split(".");
+    // var enteros = separacion[0]
+    // var decimales = separacion[1]
     
-    var pos_ini = 20;
-    var longitud = 10;
-    var pos_fin = pos_ini + ((longitud-1)*2);
-    var pos_deci = pos_fin - ((num_decimales -1)*2)-1;
+    // var pos_ini = 20;
+    // var longitud = 10;
+    // var pos_fin = pos_ini + ((longitud-1)*2);
+    // var pos_deci = pos_fin - ((num_decimales -1)*2)-1;
     
-    var pos_entero = pos_deci - ((enteros.length *2))
+    // var pos_entero = pos_deci - ((enteros.length *2))
 
 
-    doc.text(pos_deci, 77, "." + decimales);
-    doc.text(pos_entero, 77,  enteros);
+    // doc.text(pos_deci, 77, "." + decimales);
+    // doc.text(pos_entero, 77,  enteros);
 
-	
+	doc.text(13, 73, '1');	
 	doc.text(13, 79, '2');
 	doc.text(13, 85, '3');
 	doc.text(13, 91, '4');
@@ -115,17 +136,44 @@ function generaPDF(){
 	doc.text(13, 115, '8');
 	doc.text(13, 121, '9');
 	doc.text(13, 127, '10');
+	doc.text(13, 133, '11');
+	doc.text(13, 139, '12');
+	doc.text(13, 145, '13');
+	doc.text(13, 151, '14');
+	doc.text(13, 157, '15');
+	doc.text(13, 163, '16');
+	doc.text(13, 169, '17');
+	doc.text(13, 175, '18');
+	doc.text(13, 181, '19');
+	doc.text(13, 187, '20');
+	doc.text(13, 193, '21');
+	doc.text(13, 199, '22');
+	doc.text(13, 205, '23');
+	doc.text(13, 211, '24');
+	doc.text(13, 217, '25');
+	doc.text(13, 223, '26');
+	doc.text(13, 229, '27');
+	doc.text(13, 235, '28');
+	doc.text(13, 241, '29');
+	doc.text(13, 247, '30');
+
 	// LINEAS VERTICALES
-	doc.line(20, 62, 20, 128);
-	doc.line(40, 62, 40, 128);
-	doc.line(150, 62, 150, 128);
-	doc.line(170, 62, 170, 128);
+	doc.line(20, 62, 20, 248);
+	doc.line(40, 62, 40, 248);
+	doc.line(150, 62, 150, 248);
+	doc.line(170, 62, 170, 248);
+	// CUADROS BAJOS
 	doc.setFillColor(255, 255, 255);
-	doc.roundedRect(10, 130, 192, 6, 2, 2, 'FD');
+	doc.roundedRect(10, 250, 192, 6, 2, 2, 'FD');
+	doc.setFontSize(6);
+	doc.text(13, 254, 'NOTA: A ESTOS PRECIOS SE LES INCLUIRA EL I.V.A CORRESPONDIENTE');
 	doc.setFillColor(255, 255, 255);
-	doc.roundedRect(10, 138, 192, 18, 2, 2, 'FD');
-
-
+	doc.roundedRect(10, 258, 192, 23, 0, 0, 'FD');
+	doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (ARNOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
+	doc.text(13, 266, 'A LA ORDEN DE LAMINAS Y MAQUILAS HERLE S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( __________________________________________________________________');
+	doc.text(13, 270, '_____________________________ ) QUE HE (MOS) RECIBIDO A MI (NUESTRA) ENTERA SATISFACCION EN MERCANCIA. LA FALTA DE PAGO A SU VENCIMIENTO CAUSARA INTERESES');
+	doc.text(13, 274, 'AL ______ % MENSUAL SIN QUE POR ESTO SE CONSIDERE PRORROGADO EL PLAZO FIJADO PARA EL CUMPLIMIENTO DE ESTA OBLIGACION.');
+	doc.text(140, 278, 'DEUDOR __________________________________________');
 
 	//doc.addImage(imgTexto, 'JPEG', 9, 46, 192, 110);
 	// doc.setFontSize(12);
