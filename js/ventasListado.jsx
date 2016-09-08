@@ -7,6 +7,7 @@ var EtiquetaTexto     = require('../js/etiquetaDeTexto.jsx');
 module.exports = React.createClass({
 getDefaultProps: function(){
 			return{
+				activa: false,
 				id_venta: -1,
 				listado: [],
 			};
@@ -112,6 +113,7 @@ render: function () {
              listado_detalles.push(detalle);
           });
           $('#impresion_registro').attr('src', '');
+         
 		   return(  
 		   	     <article className="bloque">
 	          <div className="bloque_catalogo" id="ampliar_tabla">
@@ -122,7 +124,7 @@ render: function () {
 					{listado_detalles}					
 				  </tbody>
 				</table>
-				 {this.props.id_venta>0 ? <button onClick={this.props.generarPDF}>Imprimir Orden de Compra</button> : ''}
+				 {this.props.id_venta>0 && this.props.activa ? <button onClick={this.props.generarPDF}>Imprimir Orden de Compra</button> : ''}
 				 <iframe id="impresion_registro"  
 				         className="preview-pane" 
 		       		     type="application/pdf" 

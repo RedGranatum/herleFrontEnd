@@ -40,12 +40,13 @@ return {
 	if(datos.empresa ==="0140000"){
 	    var titulo1 ='LAMINAS Y MAQUILAS';
 		var titulo2 ='HERLE S.A. DE C.V.';
-		var titulo3 ='CARRETERA A COLOMBIA KM 0.5 S/N';
+		var titulo3 = 'CARR. A COLOMBIA KM 8.5 S/N';
 		var titulo4 ='COL. ANDRES CABALLERO MORENO AGROP.';
-		var titulo5 ='ESCOBEDO, N. L., C.P. 66060';
-		var titulo6 ='TEL. 01 (67) 2228-0108 Y 03 (61) 8229-0100';
+		var titulo5 ='ESCOBEDO, N. L., C.P. 66080';
+		var titulo6 ='TEL. 01 (81) 8239-0101 Y 01 (81) 8239-0100'
 		var titulo7 ='ORDEN DE COMPRA';
 		var titulo8 ='R.F.C. LMH070918K95';
+
 		doc.text(82, 12, titulo1);
 		doc.text(85, 17, titulo2);
 		doc.setFontSize(10);
@@ -55,6 +56,8 @@ return {
 		doc.text(69, 31, titulo6);
 		doc.text(10, 35, titulo7);
 		doc.text(87, 35, titulo8);	
+
+ 
 	}
 
 	if(datos.empresa ==="0140001"){
@@ -89,6 +92,7 @@ return {
 	doc.setDrawColor(0);
 	doc.setFillColor(255, 255, 255);
 	doc.roundedRect(10, 37, 150, 22, 2, 2, 'FD');
+
 	// LINEA
 	//datos.cliente.codigo
 	//nombre
@@ -101,7 +105,9 @@ return {
 	doc.line(10, 47, 160, 47);
 	doc.text(12, 52, 'DIRECCION: ' + datos.cliente.calle + ' numero:' + datos.cliente.numero);
 	doc.line(10, 53, 160, 53);
-	doc.text(12, 58, 'CIUDAD: ' + datos.cliente.colonia);
+	doc.text(12, 58, 'CIUDAD: ' + datos.cliente.colonia );
+  doc.text(115, 58, 'R.F.C.: ' + datos.cliente.rfc );
+  
 	doc.setFillColor(255, 255, 255);
 	doc.roundedRect(162, 37, 40, 10, 2, 2, 'FD');
 	doc.text(176, 40, 'PEDIDO');
@@ -116,17 +122,37 @@ return {
 	doc.text(170, 57, datos.fec_venta);
 	// CUADRO GRANDE
 	doc.setFillColor(255, 255, 255);
-	doc.roundedRect(10, 62, 192, 66, 2, 2, 'FD');
-	doc.line(10, 68, 202, 68);
-	doc.line(10, 74, 202, 74);
-	doc.line(10, 80, 202, 80);
-	doc.line(10, 86, 202, 86);
-	doc.line(10, 92, 202, 92);
-	doc.line(10, 98, 202, 98);
-	doc.line(10, 104, 202, 104);
-	doc.line(10, 110, 202, 110);
-	doc.line(10, 116, 202, 116);
-	doc.line(10, 122, 202, 122);
+	doc.roundedRect(10, 62, 192, 186, 2, 2, 'FD');
+  doc.line(10, 68, 202, 68);
+  doc.line(10, 74, 202, 74);
+  doc.line(10, 80, 202, 80);
+  doc.line(10, 86, 202, 86);
+  doc.line(10, 92, 202, 92);
+  doc.line(10, 98, 202, 98);
+  doc.line(10, 104, 202, 104);
+  doc.line(10, 110, 202, 110);
+  doc.line(10, 116, 202, 116);
+  doc.line(10, 122, 202, 122);
+  doc.line(10, 128, 202, 128);
+  doc.line(10, 134, 202, 134);
+  doc.line(10, 140, 202, 140);
+  doc.line(10, 146, 202, 146);
+  doc.line(10, 152, 202, 152);
+  doc.line(10, 158, 202, 158);
+  doc.line(10, 164, 202, 164);
+  doc.line(10, 170, 202, 170);
+  doc.line(10, 176, 202, 176);
+  doc.line(10, 182, 202, 182);
+  doc.line(10, 188, 202, 188);
+  doc.line(10, 194, 202, 194);
+  doc.line(10, 200, 202, 200);
+  doc.line(10, 206, 202, 206);
+  doc.line(10, 212, 202, 212);
+  doc.line(10, 218, 202, 218);
+  doc.line(10, 224, 202, 224);
+  doc.line(10, 230, 202, 230);
+  doc.line(10, 236, 202, 236);
+  doc.line(10, 242, 202, 242);
 	
 	doc.text(21, 67, 'CANTIDAD');
 	doc.text(80, 67, 'DESCRIPCION');
@@ -171,15 +197,71 @@ return {
 	doc.text(13, 115, '8');
 	doc.text(13, 121, '9');
 	doc.text(13, 127, '10');
-	// LINEAS VERTICALES
-	doc.line(20, 62, 20, 128);
-	doc.line(40, 62, 40, 128);
-	doc.line(150, 62, 150, 128);
-	doc.line(170, 62, 170, 128);
-	doc.setFillColor(255, 255, 255);
-	doc.roundedRect(10, 130, 192, 6, 2, 2, 'FD');
-	doc.setFillColor(255, 255, 255);
-	doc.roundedRect(10, 138, 192, 18, 2, 2, 'FD');
+  doc.text(13, 133, '11');
+  doc.text(13, 139, '12');
+  doc.text(13, 145, '13');
+  doc.text(13, 151, '14');
+  doc.text(13, 157, '15');
+  doc.text(13, 163, '16');
+  doc.text(13, 169, '17');
+  doc.text(13, 175, '18');
+  doc.text(13, 181, '19');
+  doc.text(13, 187, '20');
+  doc.text(13, 193, '21');
+  doc.text(13, 199, '22');
+  doc.text(13, 205, '23');
+  doc.text(13, 211, '24');
+  doc.text(13, 217, '25');
+  doc.text(13, 223, '26');
+  doc.text(13, 229, '27');
+  doc.text(13, 235, '28');
+  doc.text(13, 241, '29');
+  doc.text(13, 247, '30');
+
+  // LINEAS VERTICALES
+  doc.line(20, 62, 20, 248);
+  doc.line(40, 62, 40, 248);
+  doc.line(150, 62, 150, 248);
+  doc.line(170, 62, 170, 248);
+// CUADROS BAJOS
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(10, 249, 192, 6, 2, 2, 'FD');
+  doc.setFontSize(6);
+  doc.text(13, 253, 'NOTA: A ESTOS PRECIOS SE LES INCLUIRA EL I.V.A CORRESPONDIENTE');
+
+
+ if(datos.empresa ==="0140000"){
+     // BLOQUE HERLE
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(10, 256, 192, 23, 0, 0, 'FD');
+    doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (AMOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
+    doc.text(13, 266, 'A LA ORDEN DE LAMINAS Y MAQUILAS HERLE S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( __________________________________________________________________');
+    doc.text(13, 270, '_____________________________ ) QUE HE (MOS) RECIBIDO A MI (NUESTRA) ENTERA SATISFACCION EN MERCANCIA. LA FALTA DE PAGO A SU VENCIMIENTO CAUSARA INTERESES');
+    doc.text(13, 274, 'AL ______ % MENSUAL SIN QUE POR ESTO SE CONSIDERE PRORROGADO EL PLAZO FIJADO PARA EL CUMPLIMIENTO DE ESTA OBLIGACION.');
+    doc.text(140, 278, 'DEUDOR __________________________________________');
+ }
+ 
+if(datos.empresa ==="0140001"){
+     // BLOQUE CENTAURO
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(10, 256, 192, 23, 0, 0, 'FD');
+    doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (AMOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
+    doc.text(13, 266, 'A LA ORDEN DE CENTAURO STEEL S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( ___________________________________________________________________________');
+    doc.text(13, 270, '_____________________________ ) QUE HE (MOS) RECIBIDO A MI (NUESTRA) ENTERA SATISFACCION EN MERCANCIA. LA FALTA DE PAGO A SU VENCIMIENTO CAUSARA INTERESES');
+    doc.text(13, 274, 'AL ______ % MENSUAL SIN QUE POR ESTO SE CONSIDERE PRORROGADO EL PLAZO FIJADO PARA EL CUMPLIMIENTO DE ESTA OBLIGACION.');
+    doc.text(140, 278, 'DEUDOR __________________________________________');
+  }
+
+  // BLOQUE HERLE
+  // doc.setFillColor(255, 255, 255);
+  // doc.roundedRect(10, 258, 192, 23, 0, 0, 'FD');
+  // doc.text(13, 262, 'POR ESTE PAGARE ME (NOS) OBLIGO (AMOS) A PAGAR INCONDICIONALMENTE EL DIA _____ DE _____________________ DEL 20 ____ EN LA CIUDAD DE _______________________');
+  // doc.text(13, 266, 'A LA ORDEN DE LAMINAS Y MAQUILAS HERLE S.A. DE C.V., LA CANTIDAD DE $ _____________________  ( __________________________________________________________________');
+  // doc.text(13, 270, '_____________________________ ) QUE HE (MOS) RECIBIDO A MI (NUESTRA) ENTERA SATISFACCION EN MERCANCIA. LA FALTA DE PAGO A SU VENCIMIENTO CAUSARA INTERESES');
+  // doc.text(13, 274, 'AL ______ % MENSUAL SIN QUE POR ESTO SE CONSIDERE PRORROGADO EL PLAZO FIJADO PARA EL CUMPLIMIENTO DE ESTA OBLIGACION.');
+  // doc.text(140, 278, 'DEUDOR __________________________________________');
+
+
 	// Esto lo visualiza en el iFrame
 	var string = doc.output('datauristring');
 	$('#impresion_registro').attr('src', string);
