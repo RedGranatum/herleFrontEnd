@@ -24,6 +24,7 @@ var ApiRestCompras   = require('../js/modelos/apirestCompras');
 var ApiRestVentas    = require('../js/modelos/apirestVentas');
 var ApiRestPagos     = require('../js/modelos/apirestClientesPagos');
 var ApiRestPermisos  = require('../js/modelos/apirestPermisos');
+var ApiRestCalendarioPagos = require('../js/modelos/apirestClientesPagos');
 
 module.exports = React.createClass({
 		getInitialState: function(){
@@ -39,13 +40,14 @@ module.exports = React.createClass({
           actualizarForm: false,
           permiso: false,
           permisos_menu: [],
+          aviso_ventas: 0,
      		};
 	 	},
 		componentWillMount:function(){
       
    		 //Para que self sea this dentro de las funciones de Page
 			 var self=this;
-	
+	     console.log("se montara");
 			 //Rutas del navegador
              Page('/',function(){
                    self.mostrarMenu('');
@@ -130,6 +132,7 @@ module.exports = React.createClass({
                     function(datos,response){
                         self.setState({actualizarForm:true});
                         self.setState({datosCliente:datos});
+                    
                         $("#notify_success").text("Los datos fueron modificados con exito");
                         $("#notify_success").notify();
                     },
@@ -146,6 +149,7 @@ module.exports = React.createClass({
                     function(model,response){
                         self.setState({actualizarForm:true});
                         self.setState({datosCliente:[]});
+                       
                         $("#notify_success").text("Los datos del cliente fueron eliminados con exito");
                         $("#notify_success").notify();
                     },
@@ -234,6 +238,7 @@ module.exports = React.createClass({
                     function(datos,response){
                          self.setState({actualizarForm:true});
                          self.setState({datosVentas:datos});
+                         self.consularAvisosVentas();
                         $("#notify_success").text("Los datos de la venta fueron guardados con exito");
                         $("#notify_success").notify();
                     },
@@ -260,6 +265,7 @@ module.exports = React.createClass({
                 pagos.Guardar(datosNuevos,
                     function(datos,response){
                         self.setState({actualizarForm:true});
+                         self.consularAvisosVentas();
                         $("#notify_success").text("Los datos fueron guardados con exito");
                         $("#notify_success").notify();
                     },
@@ -303,11 +309,25 @@ module.exports = React.createClass({
    },
 		mostrarMenu:function(nomform){
         var menu = nomform.toLowerCase();
-    
         if(this.state.permisos_menu.indexOf("*")>=0 || this.state.permisos_menu.indexOf(menu)>=0){
           this.setState({actualizarForm:false});
           this.setState({formMostrar:nomform});
         }
+        this.consularAvisosVentas();
+    },
+    consularAvisosVentas: function(){
+        var self = this;
+        var consulta = new ApiRestCalendarioPagos();
+  
+        consulta.calendarioAcumuladoPagos( 
+            function(data){
+              self.setState({aviso_ventas:data[0].total});
+      
+            },
+            function(model,response,options){
+              self.setState({aviso_ventas:data[0].total});
+            }
+          );
     },
     llenarDatosProveedor: function(pk){
          	 var self = this;
@@ -497,7 +517,7 @@ module.exports = React.createClass({
     <div style={estiloSistema}>
   	<header>
   	</header>
-  	<MenuPrincipal permisos_menu={this.state.permisos_menu}/>
+  	<MenuPrincipal permisos_menu={this.state.permisos_menu} aviso_ventas={this.state.aviso_ventas}/>
   	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
     <section className="contenido">
   		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}

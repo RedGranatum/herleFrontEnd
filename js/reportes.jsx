@@ -448,7 +448,7 @@ render: function () {
 				 <CajaDeTexto propiedades={FECHA_INI} ref="cajaFechaSolicitudIni" />
 				 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
 				</div> */}
-					<article className="bloque_grid" id="contenedor_reportes">
+					<article className="bloque_grid" id="contenedor_reportes" >
 
 					</article>
 				{/*</article>*/}

@@ -5,6 +5,7 @@ module.exports  = React.createClass({
 	getDefaultProps: function(){
 	return{
 		permisos_menu: [],
+		aviso_ventas: 0,
 		}
 	},
 	mostraMenu: function(menu,icono,color){
@@ -26,6 +27,8 @@ module.exports  = React.createClass({
 			{this.mostraMenu("costos","dollar","ico_nav")}
 			{this.mostraMenu("reportes","th","ico_nav")}
 			{this.mostraMenu("logout","sign-out","ico_logout")} 
+
+			<li className="li_menu"><a className="ico_avisos_v" href="" title="Avisos de ventas"><span>{this.props.aviso_ventas}</span></a></li>
 		</ul>
 	</nav>
 			);  
