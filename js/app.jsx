@@ -25,7 +25,6 @@ var ApiRestVentas    = require('../js/modelos/apirestVentas');
 var ApiRestPagos     = require('../js/modelos/apirestClientesPagos');
 var ApiRestPermisos  = require('../js/modelos/apirestPermisos');
 
-
 module.exports = React.createClass({
 		getInitialState: function(){
 	 	 return {
@@ -500,7 +499,7 @@ module.exports = React.createClass({
   	</header>
   	<MenuPrincipal permisos_menu={this.state.permisos_menu}/>
   	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
-  	<section className="contenido">
+    <section className="contenido">
   		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
   		{appmvc.MenuForms[appmvc.Menu.CLIENTES]}
   	  {appmvc.MenuForms[appmvc.Menu.COMPRAS]}

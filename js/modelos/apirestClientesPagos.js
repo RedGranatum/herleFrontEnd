@@ -12,6 +12,10 @@ var clientesPagosApiRest =function(){
 			var ruta = 'clientes_pagos/agrupados/adeudos/';			
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
 		},
+        calendarioPagos: function(funcion_exito,funcion_error){
+            var ruta = 'calendario_pagos/';         
+            this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+        },
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){
 			var datosExist = new ColeccionExist();
 			datosExist.asignarRuta(ruta);

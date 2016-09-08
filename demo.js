@@ -10,7 +10,7 @@ $(function() {
     notifications.initMenu({
         projects:'#projects',
         tasks:'#tasks',
-        messages:'#messages'
+        messages:'#messagess'
     });
 
 
