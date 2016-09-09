@@ -6,6 +6,7 @@ module.exports  = React.createClass({
 	return{
 		permisos_menu: [],
 		aviso_ventas: 0,
+		aviso_compras: 0,
 		}
 	},
 	mostraMenu: function(menu,icono,color){
@@ -28,7 +29,9 @@ module.exports  = React.createClass({
 			{this.mostraMenu("reportes","th","ico_nav")}
 			{this.mostraMenu("logout","sign-out","ico_logout")} 
 
-			<li className="li_menu"><a className="ico_avisos_v" href="" title="Avisos de ventas"><span>{this.props.aviso_ventas}</span></a></li>
+			<li className="li_menu"><a className="ico_avisos_c" href="/compras_avisos" title="Avisos de compras"><span>{this.props.aviso_compras}</span></a></li>
+			<li className="li_menu"><a className="ico_avisos_v" href="/ventas_avisos" title="Avisos de ventas"><span>{this.props.aviso_ventas}</span></a></li>
+
 		</ul>
 	</nav>
 			);  

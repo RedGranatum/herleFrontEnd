@@ -48,7 +48,15 @@ return {
         var ruta ='compras/consultas/' + valores;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },        
- 
+      calendarioFechaAduana: function(funcion_exito,funcion_error){
+            var ruta = 'compras/calendario_aduana/';         
+            this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+        },
+        calendarioAcumuladoFechaAduana: function(funcion_exito,funcion_error){
+            var ruta = 'compras/calendario_acumulado_aduana/';         
+            this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+        },
+
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
                var datosCatalogo = new ColeccionCat();
                datosCatalogo.asignarRuta(ruta);

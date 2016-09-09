@@ -130,7 +130,7 @@ onGuardar: function(datos_parametros)
         	  var detalle = self.seleccionarPrimeraFila(lista_nueva)     
         	
         	self.setState({listado_compra: lista_nueva, detalle_compra: detalle});
-
+        	self.props.consularAvisosCompras();
             $("#notify_success").text("Los datos fueron modificados con exito");
             $("#notify_success").notify();
         },

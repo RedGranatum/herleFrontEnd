@@ -88,6 +88,10 @@ onClickReporteCalendarioPagos: function(){
 	console.log("Reporte calendario de pagos")
 	this.llenarconsultaCalendarioPagos("pagos");
 },
+onClickReporteCalendarioAduana: function(){
+	console.log("Reporte calendario fecha de aduana")
+	this.llenarconsultaCalendarioAduana("compras_aduana");
+},
 onClickExcel: function(){
 	//$('#customers').tableExport({type:'excel',escape:'false'});
 	
@@ -136,7 +140,15 @@ agregarReporteCalendarioPagos: function(datos){
 								   columna_cabecero={this.state.columna_cabecero}/> ,
 					 document.getElementById("contenedor_reportes"));
 },
+agregarReporteCalendarioAduana: function(datos){
 
+	ReactDOM.render(<ReportePagos id={this.state.columna_id} 
+					               titulos={this.state.titulos_encabezado} 
+					 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
+								   datos={datos}
+								   columna_cabecero={this.state.columna_cabecero}/> ,
+					 document.getElementById("contenedor_reportes"));
+},
 
 llenarListaExistencias: function(){
 	var self = this;
@@ -327,6 +339,42 @@ llenarconsultaCalendarioPagos: function(modulo){
 		}
 	);
 },
+llenarconsultaCalendarioAduana: function(modulo){
+	var self = this;
+
+	var titulosEncabezado={ estatus: "Estatus"};
+
+	var titulosEncabezadoSecundario={fec_aduana:"Fec.Aduana",invoice:"Invoice",
+					proveedor_nombre:"Proveedor",fec_solicitud:"Fec.Solicitud"}
+
+  
+	var consulta = new ApiRestCompras();
+	
+	consulta.calendarioFechaAduana(	
+		function(data){
+   				self.setState({lista_datos: data, 
+   							   titulos_encabezado: titulosEncabezado, 
+							   titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+							   columnas_decimales: {},
+   							   columna_id:"num_documento",
+   							   columna_cabecero: "estatus",
+   							   reporte_mostrar: modulo,
+   							    });
+   				self.agregarReporteCalendarioPagos(data);
+		},
+		function(model,response,options){
+				 self.setState({lista_datos : [] ,
+				 			    titulos_encabezado: titulosEncabezado, 
+				 			    titulos_encabezado_secundario: titulosEncabezadoSecundario,
+				 			     columnas_decimales: {},
+				 			    columna_id:"invoice",
+				 			    columna_cabecero: "estatus",
+				 			    reporte_mostrar: modulo,
+				 			      });
+				 self.agregarReporteCalendarioAduana([]);
+		}
+	);
+},
 onValorCambio: function(campo,valor) {
 	if(campo=== "invoice" )  {
 		var campos ={};
@@ -439,6 +487,7 @@ render: function () {
 				<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
 				<TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>
 				<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>
+				<TituloMenu titulo="Compras en espera" onClick={this.onClickReporteCalendarioAduana}/>
 			
 				<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
 			</article>

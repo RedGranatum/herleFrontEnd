@@ -41,6 +41,7 @@ module.exports = React.createClass({
           permiso: false,
           permisos_menu: [],
           aviso_ventas: 0,
+          aviso_compras: 0,
      		};
 	 	},
 		componentWillMount:function(){
@@ -184,6 +185,7 @@ module.exports = React.createClass({
                          self.setState({datosCompra:datos});
                         $("#notify_success").text("Los datos fueron modificados con exito");
                         $("#notify_success").notify();
+                         self.consularAvisosCompras();
                     },
                     function(model,response,options){
                            $("#notify_error").text(response.responseText);
@@ -201,6 +203,7 @@ module.exports = React.createClass({
                          //self.setState({datosCompra:datos});
                         $("#notify_success").text("Los datos fueron modificados con exito");
                         $("#notify_success").notify();
+                        self.consularAvisosCompras();
                     },
                     function(model,response,options){
                            $("#notify_error").text(response.responseText);
@@ -287,6 +290,18 @@ module.exports = React.createClass({
               
             });
 
+           Page('/compras_avisos',function(){
+              self.mostrarMenu(appmvc.Menu.REPORTES);
+              self.refs[appmvc.Menu.REPORTES].onClickReporteCalendarioAduana();
+              console.log("menu de compras avisos");                    
+             });
+
+          Page('/ventas_avisos',function(){
+              self.mostrarMenu(appmvc.Menu.REPORTES);
+              self.refs[appmvc.Menu.REPORTES].onClickReporteCalendarioPagos();
+              console.log("menu de ventas avisos");                    
+             });
+
              Page('*',function(){
              	console.log("no conosco la ruta");
              	Page.redirect('/');
@@ -314,6 +329,7 @@ module.exports = React.createClass({
           this.setState({formMostrar:nomform});
         }
         this.consularAvisosVentas();
+        this.consularAvisosCompras()
     },
     consularAvisosVentas: function(){
         var self = this;
@@ -326,6 +342,20 @@ module.exports = React.createClass({
             },
             function(model,response,options){
               self.setState({aviso_ventas:data[0].total});
+            }
+          );
+    },
+    consularAvisosCompras: function(){
+        var self = this;
+        var consulta = new ApiRestCompras();
+  
+        consulta.calendarioAcumuladoFechaAduana( 
+            function(data){
+              self.setState({aviso_compras:data[0].total});
+      
+            },
+            function(model,response,options){
+              self.setState({aviso_compras:data[0].total});
             }
           );
     },
@@ -496,7 +526,7 @@ module.exports = React.createClass({
 			this.crearFormulario(appmvc.Menu.PROVEEDORES,<Proveedores ref={appmvc.Menu.PROVEEDORES}  datos={this.state.datosProveedor} onClaveSeleccionada={this.onClaveSeleccionada} />);
 			this.crearFormulario(appmvc.Menu.CLIENTES,<Clientes  ref={appmvc.Menu.CLIENTES}  datos={this.state.datosCliente} onClaveSeleccionada={this.onClaveSeleccionada} />);		
       this.crearFormulario(appmvc.Menu.COMPRAS,<Compras ref={appmvc.Menu.COMPRAS} datos={this.state.datosCompra} onClaveCompraSeleccionada={this.onClaveSeleccionada} />);
-      this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} onClaveCompraSeleccionada={this.onClaveSeleccionada}/>);   
+      this.crearFormulario(appmvc.Menu.INVENTARIOS,<Inventarios ref={appmvc.Menu.INVENTARIOS} datos={this.state.datosInventarios} onClaveCompraSeleccionada={this.onClaveSeleccionada} consularAvisosCompras={this.consularAvisosCompras}/>);   
       this.crearFormulario(appmvc.Menu.VENTAS,<Ventas ref={appmvc.Menu.VENTAS} datos={this.state.datosVentas}  onClaveVentaSeleccionada={this.onClaveSeleccionada}/>);
       this.crearFormulario(appmvc.Menu.PAGOS,<ClientesPagos ref={appmvc.Menu.PAGOS} datos={this.state.datosPagos} onClaveVentaSeleccionada={this.onClaveSeleccionada} />);
     
@@ -517,7 +547,7 @@ module.exports = React.createClass({
     <div style={estiloSistema}>
   	<header>
   	</header>
-  	<MenuPrincipal permisos_menu={this.state.permisos_menu} aviso_ventas={this.state.aviso_ventas}/>
+  	<MenuPrincipal permisos_menu={this.state.permisos_menu} aviso_ventas={this.state.aviso_ventas} aviso_compras={this.state.aviso_compras}/>
   	<MenuAcciones formActivo = {this.state.formMostrar} onClaveSeleccionada={this.onClaveSeleccionada} />
     <section className="contenido">
   		{appmvc.MenuForms[appmvc.Menu.PROVEEDORES]}
