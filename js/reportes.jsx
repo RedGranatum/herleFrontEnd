@@ -191,7 +191,7 @@ llenarconsultaCompras: function(modulo){
 	var self = this;
 //	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
 
-	var titulosEncabezado={ invoice: "Invoice Compra",
+	var titulosEncabezado={ estatus:"Estatus",invoice: "Invoice Compra",
 							fec_solicitud:"Fec.Solicitud",fec_real:"Fec.Real",
 							proveedor_codigo:"CodigoProv",proveedor_nombre:"Proveedor",proveedor_pais:"Pais"
 						};
@@ -246,7 +246,7 @@ llenarconsultaCompras: function(modulo){
 llenarconsultaVentas: function(modulo){
 	var self = this;
 
-	var titulosEncabezado={ num_documento: "Num.Documento",
+	var titulosEncabezado={estatus:"Estatus", num_documento: "Num.Documento",
 							fec_venta:"Fec.Venta",cliente_codigo:"Cod.Cliente",cliente:"Cliente",venta_neta:"Venta Neta",total:"0.0"
 						};
 

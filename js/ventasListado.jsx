@@ -124,7 +124,7 @@ render: function () {
 					{listado_detalles}					
 				  </tbody>
 				</table>
-				 {this.props.id_venta>0 && this.props.activa ? <button onClick={this.props.generarPDF}>Imprimir Orden de Compra</button> : ''}
+				 {this.props.id_venta>0 && this.props.activa ? <button onClick={this.props.generarPDF}>Imprimir Nota de Remisión</button> : ''}
 				 <iframe id="impresion_registro"  
 				         className="preview-pane" 
 		       		     type="application/pdf" 
