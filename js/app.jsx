@@ -1,6 +1,7 @@
 var React            = require('react');
 var ReactDOM         = require('react-dom');
 var Login            = require('../js/login.jsx');
+
 var MenuPrincipal    = require('../js/menuPrincipal.jsx');
 var MenuAcciones     = require('../js/menuAcciones.jsx');
 var Proveedores      = require('../js/proveedores.jsx');
@@ -55,6 +56,10 @@ module.exports = React.createClass({
                  
                  console.log("Estas en el indice");
              });
+             Page('/#target-item-3',function(){
+                 console.log("Este es el carrusel");
+             });
+
             Page('/logout',function(){
                  self.setState({permiso: false});
 
@@ -537,7 +542,7 @@ module.exports = React.createClass({
       margin: "0px",
      padding: "0px"
     };
-     var estiloSistema = (this.state.permiso) ? {display: 'inline'} : {display: 'none'};
+     var estiloSistema = (this.state.permiso) ? {display: 'inline-block'} : {display: 'none'};
 
     // var estiloSistema = (this.state.permiso && this.state.formMostrar === appmvc.Menu.COMPRAS) ? {display:'inline-block'} : estiloSistema;
       
@@ -560,11 +565,8 @@ module.exports = React.createClass({
       {appmvc.MenuForms[appmvc.Menu.REPORTES]}
       {appmvc.MenuForms[appmvc.Menu.COSTOS]}
     </section>
-
     </div>
   </div>
-
-
 			);  
 		}
 

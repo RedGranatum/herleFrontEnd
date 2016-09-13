@@ -1,6 +1,7 @@
 var $        = require('jquery');
 var React    = require('react');
 var ApiLogin = require('../js/modelos/apirestLogin');
+var Carrusel = require('../js/carrusel.jsx');
 
 module.exports = React.createClass({
 getDefaultProps: function(){
