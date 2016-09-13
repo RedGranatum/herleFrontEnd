@@ -542,7 +542,7 @@ module.exports = React.createClass({
       margin: "0px",
      padding: "0px"
     };
-     var estiloSistema = (this.state.permiso) ? {display: 'inline-block'} : {display: 'none'};
+     var estiloSistema = (this.state.permiso) ? {display: 'inline'} : {display: 'none'};
 
     // var estiloSistema = (this.state.permiso && this.state.formMostrar === appmvc.Menu.COMPRAS) ? {display:'inline-block'} : estiloSistema;
       

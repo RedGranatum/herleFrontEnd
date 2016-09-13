@@ -1,7 +1,6 @@
 var $        = require('jquery');
 var React    = require('react');
 var ApiLogin = require('../js/modelos/apirestLogin');
-var Carrusel = require('../js/carrusel.jsx');
 
 module.exports = React.createClass({
 getDefaultProps: function(){
@@ -39,7 +38,8 @@ render: function () {
 	  if(this.props.permiso === true){
       	return(<div></div>);
       }
-      return (   	
+      return (  
+    <div> 	
 		<div className="login" >
 			<div className="bloque_login" >
 				<div className="form">
@@ -60,7 +60,13 @@ render: function () {
 					</a>
 				</div>
 			</div>
+	   	</div>
+		<div className="caja_foto">
+			<figure className="foto">
+				<p/><img src="images/collage-herle.png" alt="logos" />
+			</figure>
 		</div>
+	</div>
 			);  
 		}
 });
