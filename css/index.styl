@@ -152,15 +152,15 @@ nav
 				background c2
 			button:active
 				box-shadow inset 0 0 5px rgba(0,0,0,0.3), inset 0 3px 4px rgba(0,0,0,0.3)
-.bloque_logo
-	overflow-x auto
-	.logo
-		img
-			width 215px
-			height 200px
-	.logo p
-		width 100%
-		text-align center
+// .bloque_logo
+// 	overflow-x auto
+// 	.logo
+// 		img
+// 			width 215px
+// 			height 200px
+// 	.logo p
+// 		width 100%
+// 		text-align center
 .caja_busqueda
 	margin-top 5em
 	position absolute
@@ -1012,65 +1012,18 @@ nav
 			box-sizing border-box
 			-webkit-box-sizing border-box
 			-moz-box-sizing border-box
-// inicia carousel
-.carousel-wrapper
-	//position relative
-	.carousel-item
-		margin-top 40px
-		margin-right 100px
-		margin-left 280px
-		position absolute
-		top 0
-		bottom 0
-		left 0
-		right 0
-		padding 25px 25px
-		opacity 0
-		transition all 0.5s ease-in-out
-		.arrow
-			position absolute
-			top 0
-			display block
-			width 50px
-			height 100%
-			-webkit-tap-highlight-color rgba(0,0,0,0)
-			background url('arrow.png') 50% 50% / 45px no-repeat
-			&.arrow-prev
-				left 0
-			&.arrow-next
-				right 0
-				-webkit-transform rotate(180deg)
-				transform rotate(180deg)
-		// para una flecha blanca
-		&.light
-			color white
-			.arrow
-				background: url('arrow-light.png') 50% 50% / 45px no-repeat
-		//
-		.foto-item
-			.imagen_normal
-				width 450px
-				height 450px
-			.imagen_otra
-				width 600px
-				height 400px
-		.foto-item p
-			text-align center
-[id^="target-item"]
-	display none
-.item-1
-	z-index 2
-	opacity 1
-*:target ~ .item-1
-	opacity 0
-#target-item-1:target ~ .item-1
-	opacity 1
-#target-item-2:target ~ .item-2, #target-item-3:target ~ .item-3
-	z-index 3
-	opacity 1
-// termina carousel
-
-
+.caja_foto
+	margin-left 180px
+	//background gris_medio
+	.foto
+		margin 0
+		img
+			margin-top 80px
+			width 800px
+			height 520px
+	.foto p
+		margin 0
+		text-align center
 
 /*==================================
 	Alert container
@@ -1374,21 +1327,12 @@ nav
 			margin-bottom -7em
 		#el_top
 			margin-top 8em
-	.carousel-wrapper
-		.carousel-item
-			margin-right 10px
-			margin-left 200px
-			.arrow, &.light .arrow
-				background-size 25px
-				background-position 10px 50%
-			.foto-item
-				margin-top 100px
-				.imagen_normal
-					width 150px
-					height 150px
-				.imagen_otra
-					width 180px
-					height 150px
+	.caja_foto
+		.foto
+			img
+				margin-top 120px
+				width 320px
+				height 220px
 // para tablets
 @media only screen and (min-width : 768px) and (max-width : 1325px)
 	nav
@@ -1419,18 +1363,9 @@ nav
 		.bloque_catalogo
 			.tabla_catalogo
 				width 62%
-	.carousel-wrapper
-		.carousel-item
-			margin-right 50px
-			margin-left 225px
-			.arrow, &.light .arrow
-				background-size 40px
-				background-position 10px 50%
-			.foto-item
-				margin-top 50px
-				.imagen_normal
-					width 250px
-					height 250px
-				.imagen_otra
-					width 280px
-					height 180px
+	.caja_foto
+		.foto
+			img
+				margin-top 120px
+				width 500px
+				height 320px
