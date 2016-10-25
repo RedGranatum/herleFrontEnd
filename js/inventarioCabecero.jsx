@@ -42,10 +42,10 @@ componentWillReceiveProps: function(nextProps) {
  	if(nextProps.datos.id !== undefined){
  		var lista_nueva = this.filtrarFilasSinValidar(nextProps.datos.compra_detalles)
         var detalle = this.seleccionarPrimeraFila(lista_nueva)     
-
- 		this.setState({
+        this.setState({
  					   id :     	nextProps.datos.id,	
  					   invoice:     nextProps.datos.invoice,
+ 					   precio_dolar:nextProps.datos.precio_dolar,
  					   pais:   	    nextProps.datos.proveedor.pais,
  					   comentarios: nextProps.datos.comentarios,
  					   descripcion: nextProps.datos.descripcion,
@@ -61,8 +61,12 @@ componentWillReceiveProps: function(nextProps) {
 	}
 
  },
- componentDidUpdate: function(){
+ componentDidUpdate: function(prevProps, prevState){
  	this.llenarconsultaComprasInvetariadas();
+ 	var pk_sel_filas = this.refs.listadoFilasInventario.seleccionarPrimeraFila();
+ 	if(pk_sel_filas>0 && prevState.id !=this.state.id){
+ 		this.onSeleccionFila(pk_sel_filas); 		
+ 	}
  },
 componentWillMount: function() { 
 	this.llenarCombos();
@@ -72,6 +76,7 @@ getInitialState: function(){
 	   	"id": -1,
 		"invoice":'',
 		"pais":  '0010000',
+		"precio_dolar": "0.00",
 		"comentarios": '',
 		"descripcion": '',
 		"tentrada": 'False',
@@ -114,9 +119,10 @@ onGuardar: function(datos_parametros)
 {
 	var self = this;
 	datos_cabecero = {"invoice_compra": this.state.invoice,"descripcion":this.state.descripcion,"comentarios":this.state.comentarios}
-	var datos_producto = this.refs.InventarioPorDetalleProducto.datosGuardar(); 
+	var datos_producto = this.refs.InventarioPorDetalleProducto.datosGuardar();
 	var datos_guardar = Object.assign(datos_producto, datos_parametros, datos_cabecero)
 	datos_guardar["pais"] = this.state.pais;
+	//datos_guardar["precio_dolar"] = this.state.precio_dolar;
 	datos_guardar["id"] = -1;
 
     var inventario = new ApiRestInventario();
@@ -181,6 +187,7 @@ llenarconsultaComprasInvetariadas: function(invoice){
 				self.agregarReporteComprasInvetariadas("num_rollo",titulosEncabezado,titulosEncabezadoSecundario,columnas_decimales,[],"id_compra")
 		}
 	);
+	console.log("se actualizo **********");
 },
 
 
@@ -225,11 +232,11 @@ llenarconsultaComprasInvetariadas: function(invoice){
 			</CajaConCampos>
 			<br />
 			<br />
-			<InventarioLista listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
+			<InventarioLista ref="listadoFilasInventario" listado_compra={this.state.listado_compra} onSeleccionFila={this.onSeleccionFila} />			
 		</article>
 		{mostrar ? <InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> : []}
 
-		{mostrar ? <InventarioParam   pais={this.state.pais} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
+		{mostrar ? <InventarioParam   pais={this.state.pais} precio_dolar={this.state.precio_dolar} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
 		{mensaje_inventariado}
 		{mostrar ? [] : <div id="contenedor_detalle_compra_inventariada" className="campos_bloque"></div>}
 	</div>

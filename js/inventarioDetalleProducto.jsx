@@ -94,7 +94,12 @@ onBlurCaja: function(campo,valor){
 			}	
 		    this.setState({errores: nuevos_errores});
 	}
-
+	if(campo === "num_rollo"){
+		nuevos_errores[campo] = "";
+		if(this.state.num_rollo.trim().length === 0){
+			nuevos_errores[campo] = "El numero de rollo no puede estar vacio";
+		}
+	}
 },
 calcularKgLb: function(pais,kg,lb){
 	   	var self = this;
@@ -116,6 +121,7 @@ relacionCampoErrores: function(){
 	var dic_errores = {
 			calibre:  {valor:this.state.calibre,  expreg:/^[0-9\-().\s]{1,10}$/,    requerido: true,  mensaje:"Numerico ,longitud [0-10]"},		
 		    ancho:    {valor:this.state.ancho,    expreg:/^[0-9\-().\s]{10,15}$/,   requerido: true, mensaje:"Numerico  ,longitud [0-15]"},
+		    num_rollo: {valor:this.state.num_rollo,  expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,30}$/,   requerido: true, mensaje:"Alfanumerico  ,longitud [1-30]"},
 			 }
 	    return dic_errores;
 	},

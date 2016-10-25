@@ -11,11 +11,12 @@ var CajaCalculos    = require('../js/inventarioCalculos.jsx')
 module.exports = React.createClass({
 componentDidMount: function(){
 	this.cargarParametrosCalculo();
-	this.cargarPrecioDolar();
+	//this.cargarPrecioDolar();
 },
 getDefaultProps: function(){
 	return{
 		pais:  '0010000',
+		precio_dolar: '0.00',
 		conComercializadora: 'False',
 	}
 },
@@ -23,7 +24,7 @@ getInitialState: function(){
 	return{
 	    precio_libra 	: "0.0",
 	    factor       	: "0.0",
-	    precio_dolar 	: "0.0",
+	    precio_dolar 	: this.props.precio_dolar,
 	    impuesto : "0.0",
 	    porc_comercializadora: "0.0",
 	    precio_tonelada_dolar : '0.0',

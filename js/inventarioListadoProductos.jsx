@@ -9,6 +9,9 @@ module.exports = React.createClass({
 // 	};
 
 // },
+seleccionarPrimeraFila: function(){
+	return this.pk_seleccionada;
+},
 getDefaultProps: function(){
 	return{
 		listado_compra: [],
@@ -17,7 +20,6 @@ getDefaultProps: function(){
 onSeleccionFila: function(pk_detalle){
 	console.log("Fila " + pk_detalle + " seleccionada")
 	var detalleProd = {}
-	
 	this.props.onSeleccionFila(pk_detalle);
 },
 
@@ -36,6 +38,8 @@ render: function () {
 
 	var listado_detalles = [];
 	var i=1;
+    this.pk_seleccionada = 0;
+	
 	this.props.listado_compra.forEach(function(resultado){
 		var detalle = []
 
@@ -51,7 +55,13 @@ render: function () {
 			detalle.push(<CeldaTabla contenido={resultado.precio}  key="precio"/>);
 		    listado_detalles.push(<FilaTabla key={resultado.id} id={resultado.id} childrens={detalle} num_fila={i} estilo={estilo} onSeleccionFila={self.onSeleccionFila}/>)
 	   		i=i+1;
-	})
+
+	   		self.pk_seleccionada = self.pk_seleccionada===0 ? resultado.id : self.pk_seleccionada;
+	});
+
+	//if(pk_sel>0){
+	//	this.onSeleccionFila(pk_sel);
+	//}
 	return (
 			<div className="bloque_catalogo" id="ampliar_tabla">
 				<table className="tabla_catalogo" id="tabla">
