@@ -133,6 +133,7 @@ module.exports = React.createClass({
 		onValorCambioComer: function(campo,valor){
 			var bln_com = (campo.target.value==="con_comercializadora") ? "True" : "False"
 			this.setState({con_comercializadora: bln_com})	
+			this.mostrar_comercializadora(bln_com)
 		},
 		calcularCodigoDelProducto: function(rango,cdu_material,ancho,largo){
 		   var self = this;
@@ -176,7 +177,6 @@ module.exports = React.createClass({
   		   		con_comercializadora : this.state.con_comercializadora,
   		   		porc_comercializadora: this.state.porc_comercializadora}
 
-  		   	debugger;
 		    func = new FuncGenericas();
 	        var dic1 =                      ["id",      "titulo",      "textoIndicativo" ,    "valor",             "onChange"      , "onBlur"				 , "error"];
 			var CALIBRE   = func.zipCol(dic1,["calibre",  "Milesimas ", 	 "Milesimas", 		  this.state.calibre,   this.onValorCambio  , this.onBlurCaja,  this.state.errores.material ] );

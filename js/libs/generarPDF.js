@@ -71,7 +71,7 @@ return {
 		titulo5 ='APODACA, Nuevo Leon MEXICO';
 		titulo6 ='C.P. 66610';
 		titulo7 = 'ORDEN DE COMPRA';
-		titulo8 ='Correo: centaurosteel@hotmail.com  Telefono: 8120630740';	
+		titulo8 ='Correo: aaron.hdz@centaurosteel.com  Telefono: 8120630740';	
 	    doc.text(82, 12, titulo1);
 	    doc.text(97, 17, titulo2);
 	    doc.setFontSize(10);

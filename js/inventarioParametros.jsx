@@ -86,6 +86,7 @@ onBlurCaja: function(control, valor){
 mostrarContenedores: function(){
    	this.estilo_china = this.props.pais ==="0010002" ? 'block' : 'none';
 	this.estilo_eu = this.props.pais	==="0010001" ? 'block' : 'none';
+	this.estilo_eu_con_comer = this.props.pais	==="0010001" && this.props.conComercializadora==='True' ? 'block' : 'none';
 },
 onGuardar: function(){
     var impuesto = this.props.pais === "0010002" ? this.state.impuesto_china : this.state.impuesto;
@@ -123,8 +124,8 @@ render: function () {
 				<CajaDeTexto propiedades = {IMPUESTO} ref="cajaFactorImpuesto" />
 			</CajaConCampos>
 			{this.estilo_eu==='none' ? '' : <br />}
-      		<Titulo titulo='Con Comercializadora' clase='resaltar_titulo_caja_f'  estilo={this.estilo_eu} />
-			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu}>
+      		<Titulo titulo='Con Comercializadora' clase='resaltar_titulo_caja_f'  estilo={this.estilo_eu_con_comer} />
+			<CajaConCampos clase="resaltar_caja_bloque"  estilo={this.estilo_eu_con_comer}>
 				<CajaDeTexto propiedades = {PORC_COMERCIALIZADORA} ref="cajaPorcentajeComerzializadora"/>
 			</CajaConCampos>
 			{this.estilo_eu==='none' ? '' : <br />}
