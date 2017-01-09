@@ -236,7 +236,7 @@ module.exports = React.createClass({
 
             var icono1 = this.props.primera ? ico_nuevo : ico_elim;
             var icono2 = this.props.primera ? "" : ico_mod;
-        
+        	
         	return (
 				<tr key={this.props.key}>
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.material       : <Combo       propiedades = {MATERIALES}   />} />

@@ -84,7 +84,7 @@ render: function () {
 					<h3>Libra en dolar:      {this.redondear(this.state.kilo_en_dolar)} </h3>
 					<h3>Kilo  en pesos:      {this.redondear(this.state.kilo_en_pesos)}</h3>
 					<h3>Tonelada en dolar:   {this.redondear(this.state.tonelada_en_dolar)}</h3>
-					<h3>Kilo en pesos final: {this.redondear(this.state.kilo_en_pesos_final)}</h3>
+					<h3>Kilo en pesos final: {this.state.kilo_en_pesos_final}</h3>
 				</div>
 			</div>
 			);

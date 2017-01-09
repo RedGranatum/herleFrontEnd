@@ -27,7 +27,7 @@ render: function () {
 	var self= this;
 	var estilo = {cursor:"pointer"};
 
-	var titulosEncabezado=["Id", "Catalogo Mat.","Material",	"Milesimas",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)",	"No. Rollo",	"Precio"];
+	var titulosEncabezado=["Val", "Id", "Catalogo Mat.","Material",	"Milesimas",	"Ancho",	"Largo",	"Peso (Kgs)",	"Peso (Lbs)",	"No. Rollo",	"Precio"];
 
 
 	var encabezado=titulosEncabezado.map(function(titulo){
@@ -42,7 +42,10 @@ render: function () {
 	
 	this.props.listado_compra.forEach(function(resultado){
 		var detalle = []
+			var validado = resultado.validado === true ? "**" : "";
 
+			detalle.push(<CeldaTabla contenido={validado} key="validado"/>);
+			
 			detalle.push(<CeldaTabla contenido={resultado.id} key="id"/>);
 			detalle.push(<CeldaTabla contenido={resultado.material.descripcion1} key="descripcion1"/>);
 			detalle.push(<CeldaTabla contenido={resultado.dsc_material}  key="dsc_material" />);
