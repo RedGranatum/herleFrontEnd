@@ -10,6 +10,7 @@ getDefaultProps: function(){
 				activa: false,
 				id_venta: -1,
 				listado: [],
+				iva: 0,
 			};
 		},
 getInitialState: function(){
@@ -19,7 +20,6 @@ getInitialState: function(){
 	},
 componentWillMount: function(){
 	this.num_con =-1;
-
 },
 componentDidUpdate: function(){
 	this.sumatoria();

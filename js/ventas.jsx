@@ -1,10 +1,28 @@
 
 var React = require('react');
+var ApiRestCatalogo  = require('../js/modelos/apirestCatalogos');
 var VentasCabecero = require('../js/ventasCabecero.jsx');
 var VentasListado = require('../js/ventasListado.jsx');
 var generarPDF = require('../js/libs/generarPDF.js')
 
 module.exports = React.createClass({
+
+componentWillMount: function(){
+	var self = this;
+    this.iva = 0;
+
+	datosCatalogo = new  ApiRestCatalogo();
+    
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PARAMETROS_CALCULOS, 
+        function(data){
+        	
+        	for(cat in data){
+        		if(data[cat].cdu_catalogo ===  '0090007'){
+        			self.iva = parseInt(data[cat].monto1)
+        		}
+        	}
+        });
+},
 getDefaultProps: function(){
 	return{
 		datos : []
@@ -26,12 +44,11 @@ nuevosDatos: function(){
       // var registro = this.state.detalles.id.toString();
       // generar.nombre = nombre;
       //generar.num_participante = registro;
-      generar.generaPDF(this.props.datos);
+      generar.generaPDF(this.props.datos,this.iva);
       console.log("generando pdf");
   },
 		render: function () {         
        	   var venta_detalles = (this.props.datos.venta_detalles === undefined) ? [] : this.props.datos.venta_detalles;
-		 
 		   return(  
 		   	<div >
 		       	
@@ -40,6 +57,7 @@ nuevosDatos: function(){
 		         <VentasListado 
  		                activa ={this.props.datos.bln_activa}
 		                listado ={venta_detalles} 
+		                iva = {this.iva}
 		                id_venta = {this.props.datos.id} 
 		                ref="listado_detalles_ventas" 
 		                generarPDF={this.generarPDF}/>
