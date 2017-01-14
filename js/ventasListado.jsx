@@ -89,7 +89,7 @@ render: function () {
 		var self = this;
         var listado_detalles = [];
 
-    	var Titulos ={busqueda:"busqueda", num_rollo:"Num.Rollo",existencia:"Existencia" ,peso_kg:"Peso Kg",precio_neto:"Precio Neto"}
+    	var Titulos ={busqueda:"busqueda", num_rollo:"Num.Rollo",existencia:"Existencia" ,peso_kg:"Peso Kg",precio_neto:"Precio Neto",tipo_rollo:"Tipo"}
         if(this.props.id_venta > 0){
         	delete Titulos["busqueda"];
         	delete Titulos["existencia"]
@@ -97,13 +97,15 @@ render: function () {
         var fila_titulo =  <VentaDetalle key={"titulo"} datos ={Titulos} titulo={true} />
         var fila_insercion =  <VentaDetalle ref="NuevoDetalleVenta" key={"primera"}  primera={true} clickOperacion={this.clickOperacion}/> ;
         fila_insercion = (this.props.id_venta > 0) ?  <td></td> : fila_insercion;
-      this.state.listado.forEach(function(detalle_venta){    
+      this.state.listado.forEach(function(detalle_venta){   
+      	    var tipo_rollo = detalle_venta.tipo_rollo.cdu_catalogo === undefined ?  detalle_venta.tipo_rollo : detalle_venta.tipo_rollo.cdu_catalogo;
             var detalle= <VentaDetalle ref={"detalle_" + detalle_venta.id } 
             						key={"venta_det_" + detalle_venta.id} 
             						datos = {detalle_venta} 
             						id = {detalle_venta.id} 
 									venta = {detalle_venta.venta} 
 									num_rollo = {detalle_venta.num_rollo} 
+									tipo_rollo = {tipo_rollo}
 									peso_kg = {detalle_venta.peso_kg} 
 									precio_neto = {detalle_venta.precio_neto} 
 									existencia = {detalle_venta.existencia}

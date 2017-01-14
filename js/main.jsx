@@ -73,6 +73,8 @@ $(function() {
 	appmvc.Catalogos.METODO_PAGO = 11;
   appmvc.Catalogos.PERIODO_PAGO=12;
   appmvc.Catalogos.EMPRESA=14;
+  appmvc.Catalogos.TIPO_ROLLOS=15;
+
 
 	appmvc.Datos.PAISES = null; 
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
@@ -144,6 +146,16 @@ $(function() {
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.EMPRESA, 
                         function(data){
                             appmvc.Datos.EMPRESA =  data; 
+                                      },
+                        function(model,response,options){
+                            console.log("hay errores " + response.statusText)
+                                      }
+                        )
+    
+    appmvc.Datos.TIPO_ROLLOS = null; 
+    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_ROLLOS, 
+                        function(data){
+                            appmvc.Datos.TIPO_ROLLOS =  data; 
                                       },
                         function(model,response,options){
                             console.log("hay errores " + response.statusText)

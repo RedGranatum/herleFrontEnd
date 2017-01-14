@@ -241,7 +241,7 @@ llenarListaClientes: function(lista){
 	        var EMPRESA = func.zipCol(dic2,["empresa",   "Empresa",    this.empresa,      this.state.empresa,    this.onValorCambio]); 
 
    			var busqueda_clientes = this.llenarListaClientes(this.state.busqueda_clientes)
-            //debugger;
+       
 			return (
        		
 <article className="bloque">

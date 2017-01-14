@@ -30,6 +30,7 @@ module.exports = React.createClass({
 				id:  -1,
 				venta: "0",
 				num_rollo: "",
+				tipo_rollo:"0150000",
 				peso_kg: "0.0",
 				precio_neto: "0.0",
 				existencia: "",
@@ -44,6 +45,7 @@ module.exports = React.createClass({
 				id:  -1,
 				venta: "0",
 				num_rollo: "",
+				tipo_rollo:"0150000",
 				peso_kg: "0.0",
 				precio_neto: "0.0",
 				existencia: "",
@@ -56,6 +58,7 @@ module.exports = React.createClass({
 				id : this.props.id,
 				venta: this.props.venta,
 				num_rollo: this.props.num_rollo,
+				tipo_rollo:this.props.tipo_rollo,
 				peso_kg: this.props.peso_kg,
 				precio_neto: this.props.precio_neto,
 				existencia: this.props.existencia,
@@ -64,6 +67,11 @@ module.exports = React.createClass({
 				busqueda_num_rollo: [],
 			};		
 		},
+
+llenarCombos: function(){    
+     var func = new FuncGenericas();    
+     this.TipoRollos= func.llenarComboGenerico(appmvc.Datos.TIPO_ROLLOS);
+    },
 relacionCampoErrores: function(){
 	var dic_errores = {
 		peso_kg:    {valor:this.state.peso_kg,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},
@@ -157,14 +165,15 @@ onValorCambio: function(campo,valor){
 			this.setState(update);
 },
 valoresFila: function()
-{              
+{             
 		return{
 			    id : this.state.id,
 				venta: this.state.venta,
 				num_rollo: this.state.num_rollo,
 				peso_kg: this.state.peso_kg,
 				precio_neto: this.state.precio_neto,	
-				existencia: this.state.existencia,		
+				existencia: this.state.existencia,	
+				tipo_rollo: this.state.tipo_rollo,	
 		};
 },
 onClaveSeleccionada: function(pk){
@@ -218,9 +227,12 @@ llenarListaNumRollo: function(lista){
  	 return  (lista.length >0) ?  <div className="caja_busqueda" ref="busqueda_num_rollo"> <ListaResultados ref="ListaResultadosBusquedaNumRollo"	resultados={lista} onClaveSeleccionada={this.onClaveSeleccionada}/></div> :[];
       
 },
-render: function () {			
+render: function () {		
+            this.llenarCombos();
+
             func = new FuncGenericas();
           
+
             var dicCajas     =             ["id",      "titulo",      "textoIndicativo" ,    "valor",                     "onChange",   "onEnter",   "onBlur",                  "error"   ];
 			var ID    = func.zipCol(dicCajas,["id",  "",              "",            this.state.id,   this.onValorCambio , "", this.onBlurCaja,     this.state.errores.id     ]);
 
@@ -229,6 +241,10 @@ render: function () {
 		   	var EXISTENCIA  	 = func.zipCol(dicCajas,["existencia",       "",  			"",			   this.state.existencia,     this.onValorCambio,    "",                  this.onBlurCaja,	  this.state.errores.existencia]);         
 		   	var PESO_KG  	 = func.zipCol(dicCajas,["peso_kg",       "",  			"",			   this.state.peso_kg,     this.onValorCambio,    "",                  this.onBlurCaja,	  this.state.errores.peso_kg]);         
 		   	var PRECIO_NETO  = func.zipCol(dicCajas,["precio_neto",       "",  			"",		   this.state.precio_neto, this.onValorCambio,  "",                this.onBlurCaja,this.state.errores.precio_neto]);
+
+	        var dicCombo =                        ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
+	
+		   	var TIPO_ROLLO = func.zipCol(dicCombo,["tipo_rollo",   "",  				  this.TipoRollos,      this.state.tipo_rollo,    this.onValorCambio]);
 
 			var ico_nuevo = <IconoTabla clickOperacion={this.clickOperacion} key="ico_nuevo" id="nuevo"     opcionGuardar={"guardar_renglon"} tipoIcono={"plus"}/>;
             var ico_elim  = <IconoTabla clickOperacion={this.clickOperacion} key="ico_elim"  id="eliminar"  opcionGuardar={"eliminar_renglon"} tipoIcono={"remove"}/>;
@@ -247,11 +263,13 @@ render: function () {
         	return (
         		<tr key={this.props.key}>
         		  <td>{busqueda_rollo} </td>
+        		 
         		  <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.busqueda    : caja_busqueda }  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.num_rollo   : <EtiquetaTexto titulo="" valor={this.state.num_rollo}   clase="etiqueta_especial"/>}  />     
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.existencia  : <EtiquetaTexto titulo="" valor={this.state.existencia}   clase="etiqueta_especial"/>}  />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.peso_kg     : caja_peso_kg }     />
 		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.precio_neto : caja_precio_neto } />
+		          <CeldaTabla  contenido= { this.props.titulo ? this.props.datos.tipo_rollo  : <Combo       propiedades = {TIPO_ROLLO}   />} />
 		          {icono_eliminar}
                 </tr>
 			);  
