@@ -211,7 +211,6 @@ llenarconsultaComprasInvetariadas: function(invoice){
 			</div>
 		</div>
 		: '';
-
  return (
  	<div >
 			<div className="caja_acciones" >
@@ -236,7 +235,7 @@ llenarconsultaComprasInvetariadas: function(invoice){
 		</article>
 		{mostrar ? <InventarioDetalle detalle_compra={this.state.detalle_compra}  pais={this.state.pais} transporte={this.state.transporte} ref="InventarioPorDetalleProducto" estilo={estilo}/> : []}
 
-		{mostrar ? <InventarioParam   pais={this.state.pais} precio_dolar={this.state.precio_dolar} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
+		{mostrar ? <InventarioParam precio_libra={this.state.detalle_compra.precio}  pais={this.state.pais} precio_dolar={this.state.precio_dolar} conComercializadora={this.state.tentrada} onGuardar={this.onGuardar}/> : '' }
 		{mensaje_inventariado}
 		{mostrar ? [] : <div id="contenedor_detalle_compra_inventariada" className="campos_bloque"></div>}
 	</div>

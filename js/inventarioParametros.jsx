@@ -18,11 +18,12 @@ getDefaultProps: function(){
 		pais:  '0010000',
 		precio_dolar: '0.00',
 		conComercializadora: 'False',
+		precio_libra: '0.00'
 	}
 },
 getInitialState: function(){
 	return{
-	    precio_libra 	: "0.0",
+	    precio_libra 	: this.props.precio_libra,
 	    factor       	: "0.0",
 	    precio_dolar 	: this.props.precio_dolar,
 	    impuesto : "0.0",
@@ -32,6 +33,13 @@ getInitialState: function(){
 		"errores" :{},
 	}
 },
+componentWillReceiveProps: function(nextProps) {
+	  var precio_libra = nextProps.precio_libra;
+
+	  if(precio_libra !== undefined){
+	  	this.setState({ precio_libra: precio_libra});	 
+	  } 		 
+ },
 cargarParametrosCalculo: function(){
 	var self = this;
 	dicParametros = {};
@@ -55,7 +63,7 @@ cargarParametrosCalculo: function(){
         			return dicParametros
         		}
         	});
-        	self.setState({precio_libra: dicParametros.precio_libra,
+        	self.setState({/*precio_libra: dicParametros.precio_libra,*/
         					factor     : dicParametros.factor,
         					//precio_dolar: dicParametros.precio_dolar,
         					impuesto:     dicParametros.factor_impuesto_eu,

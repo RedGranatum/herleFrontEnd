@@ -61,8 +61,7 @@ module.exports = React.createClass({
              });
 
             Page('/logout',function(){
-                 self.setState({permiso: false});
-
+                 self.setState({permiso: false,formMostrar:""});
                  console.log("Cerrando sesion");
              });
              Page('/proveedores',function(){
@@ -536,7 +535,7 @@ module.exports = React.createClass({
       this.crearFormulario(appmvc.Menu.PAGOS,<ClientesPagos ref={appmvc.Menu.PAGOS} datos={this.state.datosPagos} onClaveVentaSeleccionada={this.onClaveSeleccionada} />);
     
       this.crearFormulario(appmvc.Menu.COSTOS,<Costos ref={appmvc.Menu.COSTOS} datos={this.state.datosCostos}/>);
-      this.crearFormulario(appmvc.Menu.REPORTES,<Reportes ref={appmvc.Menu.REPORTES} />);
+      this.crearFormulario(appmvc.Menu.REPORTES,<Reportes ref={appmvc.Menu.REPORTES} permisos_menu={this.state.permisos_menu}/>);
  
           var style = {
       margin: "0px",

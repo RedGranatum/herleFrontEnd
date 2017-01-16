@@ -44,8 +44,10 @@ getInitialState: function(){
 		producto: '',
 		num_rollo: '',
 		reporte_mostrar: '',
+		solo_reportes: false,
 	}
 },
+
 componentDidMount: function(){
 		        var self= this;
 				$("#fec_inicial,#fec_final").datepicker({dateFormat:"dd/mm/yy"})
@@ -483,7 +485,7 @@ render: function () {
 			</article>
 			<article className="caja_lista_reporte">
 				<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
-				<TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
+  			    <TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
 				<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
 				<TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>
 				<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>
