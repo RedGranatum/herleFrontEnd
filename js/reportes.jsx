@@ -44,7 +44,6 @@ getInitialState: function(){
 		producto: '',
 		num_rollo: '',
 		reporte_mostrar: '',
-		solo_reportes: false,
 	}
 },
 
@@ -415,6 +414,10 @@ onEnter: function(campo, valor){
 		}
 },
 render: function () {
+    var solo_reportes = false;
+	if(this.props.permisos_menu.length===1 && this.props.permisos_menu.indexOf("reportes")===0){
+		solo_reportes = true;
+	}
 	var self= this;
 	var estilo = {cursor:"pointer"};
 	var estilo_filtros = {display: 'none'};
@@ -485,11 +488,11 @@ render: function () {
 			</article>
 			<article className="caja_lista_reporte">
 				<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
-  			    <TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>
-				<TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>
+  			    {solo_reportes===true ? '' : <TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>}
+				{solo_reportes===true ? '' : <TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>}
 				<TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>
-				<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>
-				<TituloMenu titulo="Compras en espera" onClick={this.onClickReporteCalendarioAduana}/>
+				{solo_reportes===true ? '' :<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>}
+				{solo_reportes===true ? '' : <TituloMenu titulo="Compras en espera" onClick={this.onClickReporteCalendarioAduana}/>}
 			
 				<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>
 			</article>

@@ -61,6 +61,8 @@ module.exports = React.createClass({
              });
 
             Page('/logout',function(){
+                 appmvc.Forms.REPORTES=null;
+                 appmvc.MenuForms["Reportes"] = null;
                  self.setState({permiso: false,formMostrar:""});
                  console.log("Cerrando sesion");
              });
