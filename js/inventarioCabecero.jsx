@@ -101,6 +101,7 @@ llenarCombos: function(){
  onSeleccionFila: function(pk_detalle){
 	console.log("Se selecciono una fila del hijo " + pk_detalle );
 	var detalle = this.buscarDetalleEnFila(pk_detalle);	
+	console.log("se selecciono la fila " + pk_detalle);
 	this.setState({detalle_compra: detalle});
 	
 	//id: 9, compra: 14, material: Object, dsc_material: "material 2", calibre: "1.000", ancho: "4.00", largo: 54, peso_kg: "6.00", peso_lb: "65.00", num_rollo:

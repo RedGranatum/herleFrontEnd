@@ -38,7 +38,8 @@ componentWillReceiveProps: function(nextProps) {
 
 	  if(precio_libra !== undefined){
 	  	this.setState({ precio_libra: precio_libra});	 
-	  } 		 
+	  } 
+	  this.cargarParametrosCalculo();		 
  },
 cargarParametrosCalculo: function(){
 	var self = this;
