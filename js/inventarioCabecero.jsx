@@ -38,7 +38,6 @@ filtrarFilasSinValidar: function(listado)
         	
 },
 componentWillReceiveProps: function(nextProps) {
-
  	if(nextProps.datos.id !== undefined){
  		var lista_nueva = this.filtrarFilasSinValidar(nextProps.datos.compra_detalles)
         var detalle = this.seleccionarPrimeraFila(lista_nueva)     
@@ -131,15 +130,15 @@ onGuardar: function(datos_parametros)
 	inventario.Guardar(datos_guardar,
         function(datos,response){        	
         	
-        	lista_nueva = self.state.listado_compra.filter(function(detalle_compra) {        		
-        		return (detalle_compra.id !== response.compra_detalle)
-        	});
-        	  var detalle = self.seleccionarPrimeraFila(lista_nueva)     
-        	
-        	self.setState({listado_compra: lista_nueva, detalle_compra: detalle});
-        	self.props.consularAvisosCompras();
+        	// lista_nueva = self.state.listado_compra.filter(function(detalle_compra) {        		
+        	// 	return (detalle_compra.id !== response.compra_detalle)
+        	// });
+        	//   var detalle = self.seleccionarPrimeraFila(lista_nueva)     
+        	//self.setState({listado_compra: lista_nueva, detalle_compra: detalle});
+        	//self.props.consularAvisosCompras();
             $("#notify_success").text("Los datos fueron modificados con exito");
             $("#notify_success").notify();
+            self.onClaveCompraSeleccionada(self.props.datos.id);
         },
         function(model,response,options){
             $("#notify_error").text(response.responseText);
@@ -158,8 +157,10 @@ agregarReporteComprasInvetariadas: function(id,titulos,titulos_secundarios,colum
 					 document.getElementById("contenedor_detalle_compra_inventariada"));
 },
 llenarconsultaComprasInvetariadas: function(invoice){
+	if( this.state.invoice===''){
+		return;
+	}
 	var self = this;
-
 	var titulosEncabezado={ invoice: "Invoice Compra",
 							fec_solicitud:"Fec.Solicitud",fec_real:"Fec.Real",
 							proveedor_codigo:"CodigoProv",proveedor_nombre:"Proveedor",proveedor_pais:"Pais"
@@ -179,7 +180,7 @@ llenarconsultaComprasInvetariadas: function(invoice){
 	consulta.fec_final   = '01/01/1900'; 
 	consulta.invoice     = this.state.invoice;
 	consulta.modulo      = 'inventario';
-    
+
 	consulta.consultaComprasPorFechas(	
 		function(data){
    				self.agregarReporteComprasInvetariadas("num_rollo",titulosEncabezado,titulosEncabezadoSecundario,columnas_decimales,data,"id_compra")
