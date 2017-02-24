@@ -17,8 +17,15 @@ return {
     num_documento: function(num_documento){
         this.num_documento = num_documento;
     },
+    empresa: function(empresa){
+        this.empresa = empresa;
+    },
 	  buscarVentaPorPk: function(pk,funcion_exito,funcion_error){
          var ruta ='ventas/'+pk+'/detalles/';
+          this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+       }, 
+    buscarSiguienteConsecutivo: function(pk,funcion_exito,funcion_error){
+          var ruta ='ventas/siguiente_consecutivo/?empresa=' + this.empresa;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        }, 
       buscarVentaPorIdDocumento: function(valor_buscar,funcion_exito,funcion_error){

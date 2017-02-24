@@ -30,6 +30,7 @@ cambiarValorFecha: function(control,valor){
 	this.setState(update);
 },
 componentWillReceiveProps: function(nextProps) {
+	 console.log("** Esta recibiendo nuevas propiedades **");
  	 if(nextProps.datos.id !== undefined){
  	 	var cabecero = nextProps.datos; 
   		var cliente_id     =  cabecero.cliente.id;
@@ -65,7 +66,7 @@ getInitialState: function(){
 	return{
 	   	id: -1,
 		tipo_doc:'0100000',
-		num_documento:  'Automatico',
+		num_documento:  '',
 		bln_activa: 'true',
 		fec_inventario: moment().format('DD/MM/YYYY'),
 		fec_venta: moment().format('DD/MM/YYYY'),
@@ -143,6 +144,9 @@ onValorCambio:function(campo,valor){
 	 var campos ={};
 	 campos[campo] = valor;
 	 this.setState(campos);	
+	 if(campo === "empresa"){
+	 	console.log("cambio la empresa a:" + valor)
+	 }
 
 },
 relacionCampoErrores: function(){
@@ -150,6 +154,7 @@ relacionCampoErrores: function(){
 		fec_venta:      {valor:this.state.fec_venta,   expreg:/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/,    requerido: true,  mensaje:"No es un formato de fecha correcto"},	
 		cliente_nombre: {valor:this.state.cliente,     expreg:/^[ñÑa-zA-Z0-9\-().\s]{1,110}$/,    requerido: true,  mensaje:"Selecciona un cliente"},
 		cantidad_pago:  {valor:this.state.cantidad_pago,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},				
+		num_documento:  {valor:this.state.num_documento,   expreg:/^[\d]+$/,    requerido: true,  mensaje:"El valor debe ser entero"},				
 		 }
     return dic_errores;
 },
@@ -222,7 +227,6 @@ llenarListaClientes: function(lista){
              var func = new FuncGenericas();
 			
 	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",                  "onChange"          ,"onEnter",              "onBlur"                 ,"error"];
-			//var NUM_DOCUMENTO = func.zipCol(dic1,["num_documento","Id Documento",  "Id Documento", this.state.num_documento ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
             var FEC_VENTA = func.zipCol(dic1,["fec_venta","Fecha Venta",  "Fecha Venta", this.state.fec_venta ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_venta]);
        
             var FEC_INVENTARIO = func.zipCol(dic1,["fec_inventario","Fecha Inventario",  "Fecha Inventario", this.state.fec_inventario ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.fec_inventario]);
@@ -233,6 +237,9 @@ llenarListaClientes: function(lista){
  
             var dic2 =                      ["id",         "titulo",               "children" ,   "seleccionado",        "onChange"     ];
 		   	var TIPOS_DOCUMENTOS = func.zipCol(dic2,["tipo_doc",   "Tipo de documento",    this.tipos_docs,      this.state.tipo_doc,    this.onValorCambio]);
+			//var NUM_DOCUMENTO = func.zipCol(dic1,["num_documento","Id Documento",  "Id Documento", this.state.num_documento ,       this.onValorCambio,      "",                     this.onBlurCaja,	this.state.errores.num_doc]);
+            var NUMERO_DOCUMENTO = func.zipCol(dic1,["num_documento",   "Documento",    "Numero Documento",      this.state.num_documento,    this.onValorCambio]);
+            
             var METODOS_PAGO = func.zipCol(dic2,["metodo_pago",   "Metodo Pago",    this.metodos_pago,      this.state.metodo_pago,    this.onValorCambio]);
             var STATUS = func.zipCol(dic2,["bln_activa",   "Status",    this.STATUS,      this.state.bln_activa,    this.onValorCambio]); 
             var PERIODO_PAGO = func.zipCol(dic2,["periodo_pago",   "Periodo Pago",    this.periodos_pago,      this.state.periodo_pago,    this.onValorCambio]); 
@@ -251,7 +258,9 @@ llenarListaClientes: function(lista){
 				<CajaDeTexto propiedades={FEC_VENTA}/>
 				{/*<CajaDeTexto propiedades={FEC_INVENTARIO}/>*/}
 				<Combo propiedades={TIPOS_DOCUMENTOS} />
-				<EtiquetaTexto titulo="Id Documento" valor={this.state.num_documento} clase="etiqueta_especial" />
+				<CajaDeTexto propiedades={NUMERO_DOCUMENTO} />
+
+				{/*<EtiquetaTexto titulo="Id Documento" valor={this.state.num_documento} clase="etiqueta_especial" />*/}
 				<br/>
 				<Combo propiedades={STATUS}/>
 	</CajaConCampos>
