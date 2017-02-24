@@ -25,7 +25,7 @@ $(function() {
   var url_local = 'http://159.203.229.118/'
 //ssh -p 2234 miregion@104.131.161.180
 //ssh herleuser@159.203.229.118
-//herle753
+
 
 
 
