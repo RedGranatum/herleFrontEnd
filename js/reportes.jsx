@@ -104,7 +104,8 @@ onClickExcel: function(){
 
 },
 agregarReporteCompras: function(datos){
-
+    console.log(datos);
+    
 	ReactDOM.render(<ReporteCompra id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
 					 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	

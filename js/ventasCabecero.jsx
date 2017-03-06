@@ -66,7 +66,7 @@ getInitialState: function(){
 	return{
 	   	id: -1,
 		tipo_doc:'0100000',
-		num_documento:  '',
+		num_documento:  '0',
 		bln_activa: 'true',
 		fec_inventario: moment().format('DD/MM/YYYY'),
 		fec_venta: moment().format('DD/MM/YYYY'),

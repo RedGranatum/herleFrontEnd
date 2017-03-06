@@ -1,6 +1,7 @@
 var React=require('react');
 var FuncGenericas       = require('../js/funcionesGenericas')
 var Titulo       = require('../js/titulos.jsx');
+var ApiRestCompraDetalle  = require('../js/modelos/apirestCompraDetalles');
 
 module.exports = React.createClass({
 getDefaultProps: function(){
@@ -74,8 +75,10 @@ llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
         estilo["textAlign"]="";
   
     if(son_datos === true &&  deci !== undefined && valor!==null && valor >= 0){
+        //debugger;   
+        //id
         valor = func.redondearValores(valor,deci)
-        var estiloFila = {background:"#FFFFFF",textAlign: 'right',};
+              var estiloFila = {background:"#FFFFFF",textAlign: 'right',};
         filaInd.push(<td key={titulo}  style={estiloFila}>{valor}</td>);
      }
      else
@@ -83,10 +86,28 @@ llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
       if(valor === "true" || valor ===true){
           valor ="Si"
        }
-       filaInd.push(<td key={titulo} style={estilo} >{valor}</td>);
-     }     
+        console.log(valor);   
+        filaInd.push(<td key={titulo} style={estilo} >{valor}</td>);
+        if(titulo === "inv_num_rollo" ){
+          if(diccionario["id"]>0 && valor!== null && valor!= undefined && valor !==""){
+            fila = filaInd[0];
+            filaInd[0] = <td key={fila.key} style={fila.props.style} onClick={self.Deshacer.bind(this,diccionario["id"])} >{"Deshacer"}</td>;        
+          }
+        }
+     }  
    });
    		this.listadoFilas.push(<tr  key={num_fila}> {filaInd} </tr>);
+},
+Deshacer: function(id_det_compra, e){
+  console.log("Se va a deshacer el detalle de compra Numero: " + id_det_compra );
+  var self = this;
+  var compDet = new ApiRestCompraDetalle();
+  compDet.Deshacer(id_det_compra,  
+                function(datos){
+                    },
+                function(model,response,options){
+                    }
+            );
 },
 llenarTitulos: function(){
 	this.llenarFila(this.props.titulos,'titulo');
