@@ -104,18 +104,21 @@ onClickExcel: function(){
 
 },
 agregarReporteCompras: function(datos){
-    console.log(datos);
-    
+    var solo_reportes = false;
+	if(this.props.permisos_menu.length===1 && this.props.permisos_menu.indexOf("reportes")===0){
+		solo_reportes = true;
+	}
 	ReactDOM.render(<ReporteCompra id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
 					 			   titulos_secundarios={this.state.titulos_encabezado_secundario}	
 					 			   columnas_decimales={this.state.columnas_decimales}
 								   datos={datos}
-								   columna_cabecero={this.state.columna_cabecero}/> ,
+								   columna_cabecero={this.state.columna_cabecero}
+								   refrescar ={this.onClickReporteInventario}
+								   solo_reportes ={solo_reportes} /> ,
 					 document.getElementById("contenedor_reportes"));
 },
 agregarReporteExistencias: function(datos){
-
 	 ReactDOM.render(<ReporteCompra id={this.state.columna_id} 
 					               titulos={this.state.titulos_encabezado} 
 					               columnas_decimales={this.state.columnas_decimales}

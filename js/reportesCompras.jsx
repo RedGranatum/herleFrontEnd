@@ -14,6 +14,7 @@ getDefaultProps: function(){
 		id: 'Id',
 		columna_cabecero: '',
     id_reporte : 'reporte_tablas_listado',
+    solo_reportes: true,
 	}
 },
 getInitialState: function(){
@@ -88,10 +89,10 @@ llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
        }
         console.log(valor);   
         filaInd.push(<td key={titulo} style={estilo} >{valor}</td>);
-        if(titulo === "inv_num_rollo" ){
+        if(self.props.solo_reportes===false && titulo === "inv_num_rollo" ){
           if(diccionario["id"]>0 && valor!== null && valor!= undefined && valor !==""){
             fila = filaInd[0];
-            filaInd[0] = <td key={fila.key} style={fila.props.style} onClick={self.Deshacer.bind(this,diccionario["id"])} >{"Deshacer"}</td>;        
+            filaInd[0] = <td key={fila.key} style={fila.props.style} onDoubleClick={self.Deshacer.bind(this,diccionario["id"])} >{"Deshacer"}</td>;        
           }
         }
      }  
@@ -104,6 +105,7 @@ Deshacer: function(id_det_compra, e){
   var compDet = new ApiRestCompraDetalle();
   compDet.Deshacer(id_det_compra,  
                 function(datos){
+                     self.props.refrescar();
                     },
                 function(model,response,options){
                     }
