@@ -10,6 +10,7 @@ var CajaConCampos     = require('../js/cajaConCampos.jsx');
 var Titulo          = require('../js/titulos.jsx')
 var ListaResultados  = require('../js/resultadosLista.jsx');
 var ApiRestCliente = require('../js/modelos/apirestClientes');
+var ApiRestVentas = require('../js/modelos/apirestVentas');
 
 module.exports = React.createClass({
 	componentWillMount:function(){
@@ -22,6 +23,7 @@ module.exports = React.createClass({
 							self.cambiarValorFecha(e.target.id,e.target.value);
 							console.log("Date changed: ", e.target.value);
 						});
+				this.asignarNumeroConsecutivoDocumento(this.state.empresa,-1);
 
 	},
 cambiarValorFecha: function(control,valor){
@@ -38,7 +40,7 @@ componentWillReceiveProps: function(nextProps) {
 	    var banco_cliente  =  cabecero.cliente.banco;
 	    	
         var cliente_nombre = "[" + cliente_codigo + "] " + cabecero.cliente.nombre;
-
+        this.asignarNumeroConsecutivoDocumento( cabecero.empresa,cabecero.id);
 		this.setState({
  					   id :     	   cabecero.id,	
  					   tipo_doc:       cabecero.tipo_doc,
@@ -56,10 +58,13 @@ componentWillReceiveProps: function(nextProps) {
  					   observaciones:  cabecero.observaciones,
  					   empresa:        cabecero.empresa,
  					});
+		
+		console.log("id de la venta: " + self.id);
 
 	 }
  	  else{
  	  	this.setState(this.getInitialState())
+ 	  	this.asignarNumeroConsecutivoDocumento("0140000",-1);
   }
  },
 getInitialState: function(){
@@ -145,9 +150,24 @@ onValorCambio:function(campo,valor){
 	 campos[campo] = valor;
 	 this.setState(campos);	
 	 if(campo === "empresa"){
-	 	console.log("cambio la empresa a:" + valor)
-	 }
-
+			this.asignarNumeroConsecutivoDocumento(valor,this.state.id);
+	     	console.log("cambio la empresa a:" + valor)
+		 }
+},
+asignarNumeroConsecutivoDocumento: function(empresa,id){
+	   if(id>0){
+	   	return;
+	   }
+       var self = this;
+	   var venta = new ApiRestVentas();
+	   venta.empresa = empresa
+	   venta.buscarSiguienteConsecutivo(empresa,	
+						function(data){
+									self.setState({num_documento :data[0].Siguiente});
+								},
+						function(model,response,options){
+								}
+			    );
 },
 relacionCampoErrores: function(){
 	var dic_errores = {
