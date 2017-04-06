@@ -185,17 +185,18 @@ return {
 	});
 
     if(importe_total>0){
-    	sub_total = importe_total.toFixed(2).toString();
-      self.imprimirDecimales(170,fila, sub_total,15,2,doc);
+      //importe_total.toFixed(2).toString();
+    	sub_total = importe_total / (1+ (el_iva/100))
+      self.imprimirDecimales(170,fila, sub_total.toFixed(2).toString(),15,2,doc);
       doc.text(152, fila, "SUB.TOTAL: ");
 
       fila = fila + 6;
-      iva = importe_total * (el_iva/100)
+      iva = sub_total * (el_iva/100)
       self.imprimirDecimales(170,fila, iva.toFixed(2).toString(),15,2,doc);
     	doc.text(152, fila, "IVA: ");
 
       fila = fila + 6;
-      total = importe_total + iva
+      total = importe_total;
       total = total.toFixed(2).toString();
       self.imprimirDecimales(170,fila, total,15,2,doc);
       doc.text(152, fila, "TOTAL: ");
