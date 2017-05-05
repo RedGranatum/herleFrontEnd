@@ -37,7 +37,7 @@ llenarFila: function(diccionario, num_fila, son_datos){
  	Object.keys(this.props.titulos).forEach(function (titulo) {
     var valor = diccionario[titulo]
     var deci  = self.props.columnas_decimales[titulo]
-     if(son_datos === true &&  deci !== undefined && valor!==null && valor >= 0){
+     if(son_datos === true &&  deci !== undefined && valor!==null && valor >= -99999999999){
         valor = func.redondearValores(valor,deci)
         var estiloFila = {background:"#dddddc",fontWeight:"bold", textAlign: 'right',};
         if(Object.keys(self.props.titulos_secundarios).length===0){
@@ -75,7 +75,7 @@ llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
         var deci  = self.props.columnas_decimales[titulo]
         estilo["textAlign"]="";
   
-    if(son_datos === true &&  deci !== undefined && valor!==null && valor >= 0){
+    if(son_datos === true &&  deci !== undefined && valor!==null && valor >= -9999999){
         //debugger;   
         //id
         valor = func.redondearValores(valor,deci)

@@ -17,6 +17,10 @@ return {
     num_documento: function(num_documento){
         this.num_documento = num_documento;
     },
+    clave_cliente: function(clave_cliente){
+        this.clave_cliente = clave_cliente;
+    },
+    
     empresa: function(empresa){
         this.empresa = empresa;
     },
@@ -41,6 +45,8 @@ return {
         var valores =  '?fec_inicial=' + this.fec_inicial;        
         valores = valores + '&fec_final=' + this.fec_final;
         valores = valores + '&num_documento=' + this.num_documento;   
+        valores = valores + '&clave_cliente=' + this.clave_cliente;   
+
         var ruta ='ventas/consultas/' + valores;
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },  

@@ -43,6 +43,7 @@ getInitialState: function(){
 		invoice: '',
 		producto: '',
 		num_rollo: '',
+		clave_cliente: '',
 		reporte_mostrar: '',
 	}
 },
@@ -221,6 +222,7 @@ llenarconsultaCompras: function(modulo){
 	consulta.fec_inicial = this.state.fec_inicial;
 	consulta.fec_final   = this.state.fec_final; 
 	consulta.invoice     = this.state.invoice;
+	consulta.clave_cliente = this.state.clave_cliente;
 	consulta.modulo      = modulo;
 	
 	consulta.consultaComprasPorFechas(	
@@ -252,20 +254,21 @@ llenarconsultaVentas: function(modulo){
 	var self = this;
 
 	var titulosEncabezado={estatus:"Estatus", num_documento: "Num.Documento",
-							fec_venta:"Fec.Venta",cliente_codigo:"Cod.Cliente",cliente:"Cliente",venta_neta:"Venta Neta",total:"0.0"
+							fec_venta:"Fec.Venta",cliente_codigo:"Cod.Cliente",cliente:"Cliente",venta_neta:"Venta Neta",venta_iva:"Iva",total:"0.0",venta_utilidad:"T.Utilidad"
 						};
 
 	var titulosEncabezadoSecundario={id_detalle:"Id Detalle",venta_id:"Con",num_rollo: "Num.Rollo",inventario_codigo_producto:"Codigo.Producto",
-						  	         peso_kg:"Peso Kg",precio_neto:"Precio"}
-
-
-    var columnas_decimales = {peso_kg:4,precio_neto:4,venta_neta:4}
-  
+						  	         peso_kg:"Peso Kg",precio_neto:"P.Venta",inventario_precio_kg_compra:"P.Compra", total_neto_venta:"TotalVenta",iva:"Iva",total_neto_compra:"TotalPCompra",utilidad:"Utilidad"}
+    
+    
+    var columnas_decimales = {peso_kg:4,inventario_precio_kg_compra:4,precio_neto:4 ,total_neto_venta:3,iva:4,venta_iva:2,total_neto_compra:3,utilidad:3,venta_neta:3,venta_utilidad:3}
+    
 	var consulta = new ApiRestVentas();
 	consulta.fec_inicial   = this.state.fec_inicial;
 	consulta.fec_final     = this.state.fec_final; 
 	consulta.num_documento = this.state.invoice;
-	
+	consulta.clave_cliente = this.state.clave_cliente;
+
 	consulta.consultaVentasPorFechas(	
 		function(data){
 			
@@ -398,11 +401,18 @@ onValorCambio: function(campo,valor) {
 		campos["producto"] = '';
 		this.setState(campos);
 	}
+	if(campo==="clave_cliente")  {
+		var campos ={};
+		campos[campo] = valor;
+		this.setState(campos);
+	}
+
+
 
 },
 onEnter: function(campo, valor){
-		if(campo=== "invoice"){
-			this.setState({'invoice': valor});
+		if(campo=== "invoice" || campo=== "clave_cliente"){
+			this.setState({campo: valor});
 			if(this.state.reporte_mostrar==="ventas"){
 			    this.llenarconsultaVentas(this.state.reporte_mostrar);
 			 }
@@ -430,8 +440,9 @@ render: function () {
 	
 		func = new FuncGenericas();
 			
-	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ,"onEnter"];
+	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ,"onEnter"];		  
 		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   this.state.reporte_mostrar==="ventas" ? "Documento" : "Invoice" ,   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+            var CLIENTE    = func.zipCol(dic1,["clave_cliente",  "Cliente",   this.state.reporte_mostrar==="ventas" ? "Cliente" : "clave_cliente" ,   this.state.clave_cliente , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
             var FECHA_INI  = func.zipCol(dic1,["fec_inicial",  "Fecha Inicial",   "Fecha Inicial",   this.state.fec_inicial , this.onValorCambio,  this.onBlurFecha, this.onEnter  ]);
             var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha, this.onEnter  ]);
 		    var PRODUCTO    = func.zipCol(dic1,["producto",  "Producto",   "Producto",   this.state.producto , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
@@ -477,6 +488,10 @@ render: function () {
 					<li class="li_filtro">
 					<label className="etiquetas_filtro">{this.state.reporte_mostrar==="ventas" ? "Documento" : "Invoice" }</label>
 					 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
+					 </li>
+					 <li class="li_filtro">
+					<label className="etiquetas_filtro">{this.state.reporte_mostrar==="ventas" ? "Cliente" : "clave_cliente" }</label>
+					 <CajaDeTexto propiedades={CLIENTE} ref="cajaClienteIni" />
 					 </li>
 				</ul>
 				 <ul class="ul_filtro" id="filtro_reportes_existencias" style={estilo_filtro_existencias}>
