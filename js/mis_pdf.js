@@ -37,7 +37,7 @@ function generaPDF(){
     doc.text(115, 58, 'R.F.C.: ');
 	doc.setFillColor(255, 255, 255);
 	doc.roundedRect(162, 37, 40, 10, 2, 2, 'FD');
-	doc.text(176, 40, 'PEDIDO');
+	doc.text(176, 40, 'REMISION');
 	doc.line(162, 41, 202, 41);
 	doc.setTextColor(255, 0, 0);
 	doc.text(176, 45, 'No. 256');
