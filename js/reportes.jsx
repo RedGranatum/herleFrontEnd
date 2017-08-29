@@ -61,7 +61,7 @@ cambiarValorFecha: function(control,valor){
 			update['invoice'] = '';
 			this.setState(update);
 			console.log("Cambio fecha a " + valor)
-			if(this.state.reporte_mostrar==="ventas"){
+			if(this.state.reporte_mostrar==="ventas" || this.state.reporte_mostrar==="ventas_canceladas" ){
 			   this.llenarconsultaVentas(this.state.reporte_mostrar);
 			}
 			else{				
@@ -85,6 +85,10 @@ onClickReporteInventario: function(){
 onClickReporteVentas: function(){
 	console.log("Reporte seleccionado")
 	this.llenarconsultaVentas("ventas");
+},
+onClickReporteVentasCanceladas: function(){
+	console.log("Reporte seleccionado")
+	this.llenarconsultaVentas("ventas_canceladas");
 },
 onClickReporteCalendarioPagos: function(){
 	console.log("Reporte calendario de pagos")
@@ -274,9 +278,14 @@ llenarconsultaVentas: function(modulo){
 			
 			var total = 0.0
 			var venta_id =[]
-
+			if(modulo=='ventas'){
+                data = data.filter(venta => venta.estatus  != 'CANCELADA');
+            }
+            if(modulo=='ventas_canceladas'){
+                data = data.filter(venta => venta.estatus  == 'CANCELADA');
+            }
+            
 			  data.forEach(function (venta) {
-					
 					var i = venta_id.indexOf(venta.venta_id);
 					if(i < 0){
 						total = total + venta.venta_neta;
@@ -413,7 +422,7 @@ onValorCambio: function(campo,valor) {
 onEnter: function(campo, valor){
 		if(campo=== "invoice" || campo=== "clave_cliente"){
 			this.setState({campo: valor});
-			if(this.state.reporte_mostrar==="ventas"){
+			if(this.state.reporte_mostrar==="ventas" || this.state.reporte_mostrar==="ventas_canceladas"){
 			    this.llenarconsultaVentas(this.state.reporte_mostrar);
 			 }
 			 else{
@@ -441,8 +450,8 @@ render: function () {
 		func = new FuncGenericas();
 			
 	        var dic1 =                               ["id",           "titulo",            "textoIndicativo" ,    "valor",          "onChange"   , "onBlur" ,"onEnter"];		  
-		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   this.state.reporte_mostrar==="ventas" ? "Documento" : "Invoice" ,   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
-            var CLIENTE    = func.zipCol(dic1,["clave_cliente",  "Cliente",   this.state.reporte_mostrar==="ventas" ? "Cliente" : "clave_cliente" ,   this.state.clave_cliente , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+		    var INVOICE    = func.zipCol(dic1,["invoice",  "Invoice",   (this.state.reporte_mostrar==="ventas"  || this.state.reporte_mostrar==="ventas_canceladas") ? "Documento" : "Invoice" ,   this.state.invoice , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+            var CLIENTE    = func.zipCol(dic1,["clave_cliente",  "Cliente",   (this.state.reporte_mostrar==="ventas"  || this.state.reporte_mostrar==="ventas_canceladas") ? "Cliente" : "clave_cliente" ,   this.state.clave_cliente , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
             var FECHA_INI  = func.zipCol(dic1,["fec_inicial",  "Fecha Inicial",   "Fecha Inicial",   this.state.fec_inicial , this.onValorCambio,  this.onBlurFecha, this.onEnter  ]);
             var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha, this.onEnter  ]);
 		    var PRODUCTO    = func.zipCol(dic1,["producto",  "Producto",   "Producto",   this.state.producto , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
@@ -467,7 +476,7 @@ render: function () {
 					estilo_filtro_compras["display"] = 'inline';
 					estilo_filtros["display"] = 'inline';					
 				}
-			if(this.state.reporte_mostrar === "ventas"){
+			if(this.state.reporte_mostrar === "ventas" || this.state.reporte_mostrar === "ventas_canceladas"){
 					FECHA_INI["titulo"] ="Fec.Solicitud Inicial"
 					FECHA_FIN["titulo"] ="Fec.Solicitud Final"
 					estilo_filtro_compras["display"] = 'inline';
@@ -486,12 +495,12 @@ render: function () {
 					 <CajaDeTexto propiedades={FECHA_FIN} ref="cajaFechaSolicitudFin" />
 				   </li>
 					<li class="li_filtro">
-					<label className="etiquetas_filtro">{this.state.reporte_mostrar==="ventas" ? "Documento" : "Invoice" }</label>
+					<label className="etiquetas_filtro">{ (this.state.reporte_mostrar==="ventas"  || this.state.reporte_mostrar==="ventas_canceladas") ? "Documento" : "Invoice" }</label>
 					 <CajaDeTexto propiedades={INVOICE} ref="cajaInvoiceIni" />
 					 </li>
 					 <li class="li_filtro">
-					<label className="etiquetas_filtro">{this.state.reporte_mostrar==="ventas" ? "Cliente" : "clave_cliente" }</label>
-					 <CajaDeTexto propiedades={CLIENTE} ref="cajaClienteIni" />
+					<label className="etiquetas_filtro">{ (this.state.reporte_mostrar==="ventas"  || this.state.reporte_mostrar==="ventas_canceladas") ? "Cliente" : "clave_cliente" }</label>
+					 <CajaDeTexto propiedades={CLIENTE} ref="cajaClienteIni" /> 
 					 </li>
 				</ul>
 				 <ul class="ul_filtro" id="filtro_reportes_existencias" style={estilo_filtro_existencias}>
@@ -510,6 +519,8 @@ render: function () {
   			    {solo_reportes===true ? '' : <TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>}
 				{solo_reportes===true ? '' : <TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>}
 				<TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>
+				<TituloMenu titulo="Ventas Canceladas" onClick={this.onClickReporteVentasCanceladas}/>
+				
 				{solo_reportes===true ? '' :<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>}
 				{solo_reportes===true ? '' : <TituloMenu titulo="Compras en espera" onClick={this.onClickReporteCalendarioAduana}/>}
 			
