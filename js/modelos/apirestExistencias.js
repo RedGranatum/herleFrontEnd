@@ -1,5 +1,7 @@
 var Backbone      = require('backbone');
 var ColeccionExist  =  require('../modelos/coleccionBase');
+var ModeloBase =  require('../modelos/modeloBase');
+
 
 var existenciasApiRest =function(){
 	return{
@@ -35,6 +37,30 @@ var existenciasApiRest =function(){
                 }); 
 
 		},
+
+    ruta_residuos: function(pk){
+        return 'existencias_sobrantes/';
+     },
+
+   
+     Guardar: function(datos,funcion_exito,funcion_error){
+      var residuos = new ModeloBase();
+      
+      residuos.set(datos);
+      residuos.asignarRuta(this.ruta_residuos());
+      operacion = 'POST';
+       
+      residuos.save(null,{
+        type: operacion,
+        success: function(datos,response){
+           funcion_exito(datos.toJSON(),response);
+        },
+        error: function(model,response,options){
+           funcion_error(model,response,options);
+        }
+      })
+    },
+
 
 };
 }

@@ -2,6 +2,7 @@ var React=require('react');
 var FuncGenericas       = require('../js/funcionesGenericas')
 var Titulo       = require('../js/titulos.jsx');
 var ApiRestCompraDetalle  = require('../js/modelos/apirestCompraDetalles');
+var ApiRestExistencias = require('../js/modelos/apirestExistencias');
 
 module.exports = React.createClass({
 getDefaultProps: function(){
@@ -48,6 +49,25 @@ llenarFila: function(diccionario, num_fila, son_datos){
      else
      {
   	    filaInd.push(<td key={titulo}  style={estilo}>{valor}</td>);
+        
+        if(self.props.solo_reportes===true && titulo === "bln_residuo" ){
+            fila = filaInd[9];
+            a_residuo = ""
+            if(valor === 1){
+              a_residuo='A residuo'
+            }
+            
+            filaInd[9] = <td key={fila.key} style={fila.props.style} onDoubleClick={self.EnviarAResiduo.bind(this,diccionario["num_rollo"],a_residuo)} >{a_residuo}</td>;        
+        }
+         if(self.props.solo_reportes===true && titulo === "bln_residuo_env" ){
+            fila = filaInd[8];
+            a_residuo = ""
+            if(valor === 1){
+              a_residuo='Rev.Res'
+            }
+            filaInd[8] = <td key={fila.key} style={fila.props.style} onDoubleClick={self.EnviarAResiduo.bind(this,diccionario["num_rollo"],a_residuo)} >{a_residuo}</td>;        
+        }
+
      }     
    });
  	
@@ -76,7 +96,6 @@ llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
         estilo["textAlign"]="";
   
     if(son_datos === true &&  deci !== undefined && valor!==null && valor >= -9999999){
-        //debugger;   
         //id
         valor = func.redondearValores(valor,deci)
               var estiloFila = {background:"#FFFFFF",textAlign: 'right',};
@@ -98,6 +117,34 @@ llenarFilaSecundaria: function(diccionario, num_fila, i,son_datos){
      }  
    });
    		this.listadoFilas.push(<tr  key={num_fila}> {filaInd} </tr>);
+},
+EnviarAResiduo: function(num_rollo,operacion,e){
+  console.log("Se va a enviar a desperdicio o revertir un envio del rollo " + num_rollo );
+  var self = this;
+  tipo_op = ''
+  if(operacion==='A residuo'){
+    tipo_op = 'desperdicios'
+  }
+  if(operacion==='Rev.Res'){
+    tipo_op = 'revertir'
+  }
+
+
+  if(tipo_op  ==='desperdicios' || tipo_op  ==='revertir'){
+      var apiResi = ApiRestExistencias()
+      var datResiduo = {}
+      datResiduo['num_rollo'] = num_rollo;
+      datResiduo['operacion'] = tipo_op;
+      apiResi.Guardar(datResiduo,  
+                function(datos){
+                    self.props.refrescar();
+                    },
+                function(model,response,options){
+                    }
+            );
+      console.log(operacion + ' : ' + num_rollo);
+    }
+ 
 },
 Deshacer: function(id_det_compra, e){
   console.log("Se va a deshacer el detalle de compra Numero: " + id_det_compra );

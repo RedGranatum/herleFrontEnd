@@ -128,7 +128,8 @@ agregarReporteExistencias: function(datos){
 					               titulos={this.state.titulos_encabezado} 
 					               columnas_decimales={this.state.columnas_decimales}
 					 			   datos={datos}
-					 			   columna_cabecero ={"num_rollo"} />,
+					 			   columna_cabecero ={"num_rollo"}
+					 			   refrescar ={this.onClickReporteExistencias} />,
 					 document.getElementById("contenedor_reportes"));
 },
 agregarReporteVentas: function(datos){
@@ -165,9 +166,9 @@ llenarListaExistencias: function(){
 
 //	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
 
-	var titulosEncabezado={num_rollo:"Num.Rollo",codigo_producto: "Producto",calibre:"Milesimas",ancho:"Ancho",entradas_kg:"Entradas Kg",salidas_kg:"Salida Kg",existencia_kg:"Existencias Kg"};
+	var titulosEncabezado={num_rollo:"Num.Rollo",codigo_producto: "Producto",calibre:"Milesimas",ancho:"Ancho",entradas_kg:"Entradas Kg",salidas_kg:"Salida Kg",existencia_kg:"Existencias Kg",en_residuo:"En Residuo",bln_residuo_env:"Env",bln_residuo:"Res"};
      
-     var ColumnasDecimales = {ancho:0,calibre:3,entradas_kg:4,salidas_kg:4,existencia_kg:4}
+     var ColumnasDecimales = {ancho:0,calibre:3,entradas_kg:4,salidas_kg:4,existencia_kg:4,en_residuo:4}
 
 
 	var existencias = new ApiRestExistencias();
