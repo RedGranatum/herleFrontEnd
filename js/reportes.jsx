@@ -45,6 +45,7 @@ getInitialState: function(){
 		num_rollo: '',
 		clave_cliente: '',
 		reporte_mostrar: '',
+		exist_mayor_a: 0.0001,
 	}
 },
 
@@ -174,7 +175,8 @@ llenarListaExistencias: function(){
 	var existencias = new ApiRestExistencias();
 	existencias.producto = this.state.producto;
 	existencias.num_rollo   = this.state.num_rollo; 
-	
+	existencias.mayor_a = this.state.exist_mayor_a;
+
 	existencias.buscarExistenciaAgrupadasPorRollo(	
 		function(data){
    				self.setState({lista_datos: data,
@@ -416,7 +418,15 @@ onValorCambio: function(campo,valor) {
 		campos[campo] = valor;
 		this.setState(campos);
 	}
-
+	if(campo==="exist_mayor_a")  {
+		var campos ={};
+		if(!isNaN(valor)){
+			campos["producto"] = '';
+			campos["num_rollo"] = '';
+			campos[campo] = valor;
+			this.setState(campos);
+		}
+	}
 
 
 },
@@ -431,7 +441,7 @@ onEnter: function(campo, valor){
 			 }   
 			console.log("cambio el invoice a: " + valor)
 		}
-		if(campo=== "producto" || campo=== "num_rollo"){
+		if(campo=== "producto" || campo=== "num_rollo"  || campo=== "exist_mayor_a"){
 			this.setState({campo: valor});
 		    this.llenarListaExistencias();
 			console.log("cambio el " + campo + " a: " + valor)
@@ -457,6 +467,8 @@ render: function () {
             var FECHA_FIN  = func.zipCol(dic1,["fec_final",  "Fecha Final",   "Fecha Final",   this.state.fec_final , this.onValorCambio,          this.onBlurFecha, this.onEnter  ]);
 		    var PRODUCTO    = func.zipCol(dic1,["producto",  "Producto",   "Producto",   this.state.producto , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
 		    var NUM_ROLLO    = func.zipCol(dic1,["num_rollo",  "Num.Rollo",   "Num.Rollo",   this.state.num_rollo , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+		    var EXIST_MAYOR   = func.zipCol(dic1,["exist_mayor_a",  "Exist.Mayor",   "Exist.Mayor",   this.state.exist_mayor_a , this.onValorCambio,  this.onBlurInvoice  , this.onEnter ]);
+ 
  
             var fec_ini =[];
 			var fec_fin =[];
@@ -512,6 +524,10 @@ render: function () {
 					<li class="li_filtro">
 					  <label className="etiquetas_filtro">Num.Rollo</label>
 					  <CajaDeTexto propiedades={NUM_ROLLO} />
+					</li>
+					<li class="li_filtro">
+					  <label className="etiquetas_filtro">Existencias >=</label>
+					  <CajaDeTexto propiedades={EXIST_MAYOR} />
 					</li>
 				</ul>
 			</article>

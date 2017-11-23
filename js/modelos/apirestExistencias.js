@@ -11,6 +11,9 @@ var existenciasApiRest =function(){
     	num_rollo: function(num_rollo){
         	this.num_rollo = num_rollo;
     	},
+      mayor_a: function(mayor_a){
+          this.mayor_a = mayor_a;
+      },
 		buscarExistenciaPorNumRollo: function(num_rollo,funcion_exito,funcion_error){
 			var ruta = 'existencias/agrupadas/' + num_rollo ;			
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
@@ -19,8 +22,8 @@ var existenciasApiRest =function(){
 			var valores = '?producto=' + this.producto;
        		valores = valores + '&num_rollo=' + this.num_rollo;   
        		if(this.producto === '' && this.num_rollo ===''){
-       			valores ='';
-       		}     
+       			valores ='?mayor_a=' + this.mayor_a;
+       		}   
         	var ruta = 'existencias/agrupadas/' + valores;	
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
 		},
