@@ -535,8 +535,8 @@ render: function () {
 				<TituloMenu titulo="Existencias" onClick={this.onClickReporteExistencias}/>
   			    {solo_reportes===true ? '' : <TituloMenu titulo="Orden de Compra" onClick={this.onClickReporteCompras}/>}
 				{solo_reportes===true ? '' : <TituloMenu titulo="Compra inventariada" onClick={this.onClickReporteInventario}/>}
-				<TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>
-				<TituloMenu titulo="Ventas Canceladas" onClick={this.onClickReporteVentasCanceladas}/>
+				{solo_reportes===true ? '' : <TituloMenu titulo="Ventas" onClick={this.onClickReporteVentas}/>}
+				{solo_reportes===true ? '' : <TituloMenu titulo="Ventas Canceladas" onClick={this.onClickReporteVentasCanceladas}/>}
 				
 				{solo_reportes===true ? '' :<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>}
 				{solo_reportes===true ? '' : <TituloMenu titulo="Compras en espera" onClick={this.onClickReporteCalendarioAduana}/>}
