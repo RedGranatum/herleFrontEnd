@@ -126,7 +126,6 @@ onGuardar: function(datos_parametros)
 	datos_guardar["id"] = -1;
 
     var inventario = new ApiRestInventario();
- 
 	inventario.Guardar(datos_guardar,
         function(datos,response){        	
         	

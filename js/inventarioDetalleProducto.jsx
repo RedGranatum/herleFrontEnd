@@ -24,6 +24,7 @@ getInitialState: function(){
 	     precio: "0.0",
 	     codigo_producto: "",
 	     pais: "0010000",
+	     sucursal:"0140000",
 	     "errores" :{},
 	}
 },
@@ -50,9 +51,10 @@ componentWillReceiveProps: function(nextProps) {
 	  				   peso_kg: det.peso_kg,
 	  				   peso_lb:  det.peso_lb,
 	  				   num_rollo: det.num_rollo,
+	  				   sucursal: "0140000",
 	  				   precio: det.precio,
 	  				   transporte: nextProps.transporte,
-	  				   pais: nextProps.pais
+	  				   pais: nextProps.pais,
 
 	  	})	  	
 
@@ -129,6 +131,9 @@ llenarCombos: function(){
 	    var func = new FuncGenericas();      
 		this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
 
+		this.Sucursales = func.llenarComboGenerico(appmvc.Datos.EMPRESA);
+
+
 		var largo = [{cdu_catalogo: "0",descripcion1: "0"},{cdu_catalogo: "10",descripcion1: "10"},{cdu_catalogo: "12",descripcion1: "12"}]
 		this.Largos = func.llenarComboGenerico(largo);
 },
@@ -136,6 +141,7 @@ datosGuardar: function(){
 	datos_producto = {"compra_detalle":this.state.id,"material":this.state.material,"calibre":this.state.calibre,
 			"ancho":this.state.ancho,"largo":this.state.largo,"num_rollo":this.state.num_rollo,
 			"peso_kg":this.state.peso_kg,"peso_lb":this.state.peso_lb,"transporte":this.state.transporte,valor_final_kilo_pesos:this.state.precio,
+			"sucursal": this.state.sucursal,
 			}
 	return datos_producto;
 },
@@ -153,13 +159,16 @@ render: function () {
     var dic2 =                      ["id",       "titulo",   "children" ,              "seleccionado",        "onChange"     ];
    	var MATERIAL     = func.zipCol(dic2,["material",     "Material",    this.Materiales,  this.state.material,    this.onValorCambio]);
     var LARGO        = func.zipCol(dic2,["largo",     "Largo",    this.Largos,  this.state.largo,    this.onValorCambio]);
-
+    
+    var SUCURSAL     = func.zipCol(dic2,["sucursal",     "Sucursal",    this.Sucursales,  this.state.sucursal,    this.onValorCambio]);
+    
 	//var estilo = (this.state.id >= 1) ? { display: 'inline-block'} : {display: 'none'} ;
 	ver_largo = (this.state.largo > 0);
       return (
 		<article className="bloque" style={this.props.estilo} >	
-			<Titulo titulo='Producto' clase ="resaltar_titulo_caja" />
+			<Titulo titulo='Productos' clase ="resaltar_titulo_caja" />
 			<CajaConCampos >
+				<Combo 		 propiedades = {SUCURSAL}   ref="ComboSucursal" key="Sucursal" />
 				<Combo 		 propiedades = {MATERIAL}   ref="ComboMaterial" key="Material" />	
 				{(ver_largo === true) ? '' : <CajaDeTexto propiedades = {CALIBRE}   ref="cajaCalibre" /> }
 				{(ver_largo === true) ? '' : <label className="etiquetas_bloque">[0.008 - 0.025]</label> }      
