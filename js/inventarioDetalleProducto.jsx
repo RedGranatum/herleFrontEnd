@@ -24,7 +24,7 @@ getInitialState: function(){
 	     precio: "0.0",
 	     codigo_producto: "",
 	     pais: "0010000",
-	     sucursal:"0140000",
+	     sucursal:appmvc.Datos.EMPRESA[0].cdu_catalogo,
 	     "errores" :{},
 	}
 },
@@ -40,9 +40,7 @@ componentWillMount: function() {
 componentWillReceiveProps: function(nextProps) {
 	  var det = nextProps.detalle_compra;
 
-
 	  if(det.id !== undefined){
-
 	  	this.setState({ id: det.id,
 	  					material: det.material.cdu_catalogo,
 	  				   calibre: det.calibre,
@@ -51,7 +49,7 @@ componentWillReceiveProps: function(nextProps) {
 	  				   peso_kg: det.peso_kg,
 	  				   peso_lb:  det.peso_lb,
 	  				   num_rollo: det.num_rollo,
-	  				   sucursal: "0140000",
+	  				   sucursal: appmvc.Datos.EMPRESA[0].cdu_catalogo,
 	  				   precio: det.precio,
 	  				   transporte: nextProps.transporte,
 	  				   pais: nextProps.pais,
@@ -132,7 +130,6 @@ llenarCombos: function(){
 		this.Materiales = func.llenarComboGenerico(appmvc.Datos.MATERIALES);
 
 		this.Sucursales = func.llenarComboGenerico(appmvc.Datos.EMPRESA);
-
 
 		var largo = [{cdu_catalogo: "0",descripcion1: "0"},{cdu_catalogo: "10",descripcion1: "10"},{cdu_catalogo: "12",descripcion1: "12"}]
 		this.Largos = func.llenarComboGenerico(largo);

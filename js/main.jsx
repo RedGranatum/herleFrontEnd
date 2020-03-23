@@ -150,7 +150,9 @@ $(function() {
     appmvc.Datos.EMPRESA = null; 
     datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.EMPRESA, 
                         function(data){
+                            data.sort((a, b) => Number(a.monto2) - Number(b.monto2));
                             appmvc.Datos.EMPRESA =  data; 
+
                                       },
                         function(model,response,options){
                             console.log("hay errores " + response.statusText)
