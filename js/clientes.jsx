@@ -81,7 +81,8 @@ module.exports = React.createClass({
                 comentarios: "",
                 pais: "0010001",
                 estado: "0020001",
-                banco: "0030000",
+				banco: "0030000",
+				limite_credito: 0.0,
                 "errores" :{},
                 lista_clientes: []
 			};	
@@ -108,7 +109,9 @@ module.exports = React.createClass({
 				cp:       {valor:this.state.cp,      expreg:/^[0-9\-().\s]{1,10}$/,           requerido: true,  mensaje:"Numerico ,longitud [0-10]"},		
 			    telefono: {valor:this.state.telefono,expreg:/^[0-9\-().\s]{10,15}$/,          requerido: true, mensaje:"Numerico  ,longitud [10-15]"},
 			    email:    {valor:this.state.email,   expreg:/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/,    requerido: true, mensaje:"El email no es valido"},		
-				 }
+				monto:  {valor:this.state.limite_credito,   expreg:/^[\d.]+$/,    requerido: true,  mensaje:"El valor debe ser entero o decimal"},				
+
+			}
 		    return dic_errores;
 		},
 
@@ -199,7 +202,8 @@ module.exports = React.createClass({
 		   	var PAIS     = func.zipCol(dic2,["pais",     "País",      this.Paises,               this.state.pais,    this.onValorCambio]);
          	var ESTADO   = func.zipCol(dic2,["estado",   "Estado",      this.state.llenarEstados,  this.state.estado,  this.onValorCambio]);
             var BANCOS	 =	func.zipCol(dic2,["banco",     "Banco",      this.Bancos,            this.state.banco,    this.onValorCambio]);  
-			
+			var LIMITE   = func.zipCol(dic1,["limite_credito", "Limite Cred.",  "Limite Cred", this.state.limite_credito ,  this.onValorCambio,  "",  this.onBlurCaja,	this.state.errores.monto]);
+
 			var listaCliente = []
 			listaCliente = this.state.lista_clientes.map(function(valores){
 				return(
@@ -232,6 +236,7 @@ module.exports = React.createClass({
                         <CajaDeTexto propiedades={TELEFONO} />
                         <CajaDeTexto propiedades={EMAIL}/>
                         <Combo  propiedades={BANCOS}/>
+						<CajaDeTexto propiedades={LIMITE}/>
                         <li className="li_bloque">
 							<label className="etiquetas_bloque" htmlFor="comentarios_c">Comentarios</label>
 							<textarea className="textarea_bloque" name="comentarios_c" placeholder="Comentarios" value={this.state.comentarios} onChange={this.onValorCambio.bind(this,'comentarios')} ></textarea>

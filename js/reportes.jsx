@@ -19,6 +19,7 @@ var ListadoGenerico     = require('../js/listadoGenerico.jsx');
 var ReporteCompra 		= require('../js/reportesCompras.jsx');
 var ReporteVenta        = require('../js/reportesCompras.jsx'); 
 var ReportePagos        = require('../js/reportesCompras.jsx'); 
+var ReporteLimiteCredito        = require('../js/reportesCompras.jsx'); 
 
 var tableExport = require( '../js/ex/tableExport' );
 var Base64 = require( '../js/ex/jquery.base64' );
@@ -95,6 +96,10 @@ onClickReporteCalendarioPagos: function(){
 	console.log("Reporte calendario de pagos")
 	this.llenarconsultaCalendarioPagos("pagos");
 },
+onClickReporteLimiteCreditoClientes: function(){
+	console.log("Reporte limite credito clientes")
+	this.llenarconsultaLimiteCreditoClientes("limite_credito_clientes");
+},
 onClickReporteCalendarioAduana: function(){
 	console.log("Reporte calendario fecha de aduana")
 	this.llenarconsultaCalendarioAduana("compras_aduana");
@@ -151,6 +156,16 @@ agregarReporteCalendarioPagos: function(datos){
 								   datos={datos}
 								   columna_cabecero={this.state.columna_cabecero}/> ,
 					 document.getElementById("contenedor_reportes"));
+},
+agregarReporteLimiteCreditoClientes: function(datos){
+	ReactDOM.render(<ReporteLimiteCredito id={this.state.columna_id} 
+								   titulos={this.state.titulos_encabezado} 
+								   titulos_secundarios={this.state.titulos_encabezado_secundario}
+								   columnas_decimales={this.state.columnas_decimales}
+								   datos={datos}
+								   columna_cabecero={this.state.columna_cabecero}/> ,
+					 document.getElementById("contenedor_reportes"));
+
 },
 agregarReporteCalendarioAduana: function(datos){
 
@@ -359,6 +374,43 @@ llenarconsultaCalendarioPagos: function(modulo){
 		}
 	);
 },
+llenarconsultaLimiteCreditoClientes: function(modulo){
+	var self = this;
+
+	var titulosEncabezado={limite:"Limite"};
+	
+	var titulosEncabezadoSecundario={"cliente_id":"NumCliente", nombre: "Nombre",cargo:"Cargo",abono:"Abono",saldo:"Saldo",limite_credito:"Limite Cred",limite_actual:"Limite Actual"};
+	
+	var columnas_decimales = {cargo:4,abono:4,saldo:4,limite_credito:4,limite_actual:4}
+    
+	var consulta = new ApiRestCalendarioPagos();
+
+	consulta.clientesLimiteCredito(0,
+		function(data){
+			
+   				self.setState({lista_datos: data, 
+								titulos_encabezado: titulosEncabezado, 
+								titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+							    columnas_decimales: columnas_decimales,
+								columna_id:"cliente_id",
+								columna_cabecero:"limite",
+   							   reporte_mostrar: modulo,
+   							    });
+   				self.agregarReporteLimiteCreditoClientes(data);
+		},
+		function(model,response,options){
+				 self.setState({lista_datos : [] ,
+								 titulos_encabezado: titulosEncabezado, 
+								 titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+				 			     columnas_decimales: {},
+								 columna_id:"cliente_id",
+								 columna_cabecero:"limite",
+				 			    reporte_mostrar: modulo,
+				 			      });
+				 self.agregarReporteLimiteCreditoClientes([]);
+		}
+	);
+},
 llenarconsultaCalendarioAduana: function(modulo){
 	var self = this;
 
@@ -539,6 +591,8 @@ render: function () {
 				{solo_reportes===true ? '' : <TituloMenu titulo="Ventas Canceladas" onClick={this.onClickReporteVentasCanceladas}/>}
 				
 				{solo_reportes===true ? '' :<TituloMenu titulo="Calendario Pagos" onClick={this.onClickReporteCalendarioPagos}/>}
+				{solo_reportes===true ? '' :<TituloMenu titulo="Limite Credito Clientes" onClick={this.onClickReporteLimiteCreditoClientes}/>}
+
 				{solo_reportes===true ? '' : <TituloMenu titulo="Compras en espera" onClick={this.onClickReporteCalendarioAduana}/>}
 			
 				<TituloMenu titulo="Excel" onClick={this.onClickExcel}/>

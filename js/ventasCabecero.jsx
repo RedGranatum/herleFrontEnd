@@ -11,6 +11,8 @@ var Titulo          = require('../js/titulos.jsx')
 var ListaResultados  = require('../js/resultadosLista.jsx');
 var ApiRestCliente = require('../js/modelos/apirestClientes');
 var ApiRestVentas = require('../js/modelos/apirestVentas');
+var ApiRestCalendarioPagos = require('../js/modelos/apirestClientesPagos');
+
 
 module.exports = React.createClass({
 	componentWillMount:function(){
@@ -37,7 +39,8 @@ componentWillReceiveProps: function(nextProps) {
  	 	var cabecero = nextProps.datos; 
   		var cliente_id     =  cabecero.cliente.id;
 	    var cliente_codigo =  cabecero.cliente.codigo;
-	    var banco_cliente  =  cabecero.cliente.banco;
+		var banco_cliente  =  cabecero.cliente.banco;
+		var cliente_limite_credito = cabecero.cliente.limite_credito
 	    	
         var cliente_nombre = "[" + cliente_codigo + "] " + cabecero.cliente.nombre;
         this.asignarNumeroConsecutivoDocumento( cabecero.empresa,cabecero.id);
@@ -52,13 +55,15 @@ componentWillReceiveProps: function(nextProps) {
 	   				   cliente_codigo: cliente_codigo,
 					   cliente_nombre: cliente_nombre,
  					   metodo_pago:    cabecero.metodo_pago,
- 					   banco_cliente:  banco_cliente,
+					   banco_cliente:  banco_cliente,
+					   limite_credito: cliente_limite_credito,
  					   periodo_pago:   cabecero.periodo_pago,
  					   cantidad_pago:  cabecero.cantidad_pago,
  					   observaciones:  cabecero.observaciones,
  					   empresa:        cabecero.empresa,
  					});
-		
+					 
+		this.BuscarClienteLimiteCred(cliente_id)
 		console.log("id de la venta: " + self.id);
 
 	 }
@@ -82,6 +87,8 @@ getInitialState: function(){
 		banco_cliente: "0030000",
 		periodo_pago: '0120000',
 		cantidad_pago: "0",
+		limite_credito: "0",
+		limite_actual: "0",
 		observaciones :'',
 		empresa: "0140000",
 		busqueda_clientes : [],
@@ -138,8 +145,7 @@ onBlurCaja: function(control,valor){
 		{
 			valVal ="";
 			var valdef = this.getInitialState();
-			    this.setState({cliente: valdef.cliente,cliente_codigo:valdef.cliente_codigo, cliente_nombre: valdef.cliente_nombre,banco_cliente:valdef.banco_cliente});
-						
+			    this.setState({cliente: valdef.cliente,cliente_codigo:valdef.cliente_codigo, cliente_nombre: valdef.cliente_nombre,banco_cliente:valdef.banco_cliente,limite_credito: valdef.limite_credito});						
 		}
 		}
 
@@ -195,21 +201,60 @@ onBuscarCliente: function(control,valor){
  BuscarClientePorPk: function(pk){
  	 var self = this;
    var cliente = new ApiRestCliente();
+   
    cliente.buscarClientePorPk(pk,	
 					function(data){
 						    var id = data[0].id;
 						    var codigo =  data[0].codigo;
 						    var nombre ="[" + codigo + "] " + data[0].nombre; 
-						    var banco = data[0].banco;
-							self.setState({cliente: id, cliente_codigo:codigo,cliente_nombre: nombre,banco_cliente:banco,busqueda_clientes:[]});
+							var banco = data[0].banco;
+							var limite = data[0].limite_credito
+							self.setState({cliente: id, cliente_codigo:codigo,cliente_nombre: nombre,banco_cliente:banco, limite_credito: limite ,busqueda_clientes:[]});
 						    self.validarCampoErrores("cliente_nombre","123");
-							},
+							self.BuscarClienteLimiteCred(id)
+						
+						},
 					function(model,response,options){
 							var valdef = self.getInitialState();
-			   				self.setState({cliente: valdef.cliente,cliente_codigo:valdef.cliente_codigo, cliente_nombre: valdef.cliente_nombre,banco_cliente:valdef.banco_cliente,busqueda_clientes:[]});
+							   self.setState({cliente: valdef.cliente,cliente_codigo:valdef.cliente_codigo, cliente_nombre: valdef.cliente_nombre,banco_cliente:valdef.banco_cliente,limite_credito: valdef.limite_credito,
+								busqueda_clientes:[]});
 							self.validarCampoErrores("cliente_nombre",'');
 							}
 		    );
+ },
+ BuscarClienteLimiteCred: function(cliente){
+	var self = this;
+	var calpagos = new ApiRestCalendarioPagos();
+
+	calpagos.clientesLimiteCredito(cliente,
+		function(data){
+				console.log(data)
+				var limite_act = data.length>0 ? data[0].limite_actual :"0";
+				self.setState({limite_actual: limite_act });
+				
+   				// self.setState({lista_datos: data, 
+				// 				titulos_encabezado: titulosEncabezado, 
+				// 				titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+				// 			    columnas_decimales: columnas_decimales,
+				// 				columna_id:"cliente_id",
+				// 				columna_cabecero:"limite",
+   				// 			   reporte_mostrar: modulo,
+   				// 			    });
+		},
+		function(model,response,options){
+			self.setState({ limite_actual: "0"});
+
+				//  self.setState({lista_datos : [] ,
+				// 				 titulos_encabezado: titulosEncabezado, 
+				// 				 titulos_encabezado_secundario: 	titulosEncabezadoSecundario,
+				//  			     columnas_decimales: {},
+				// 				 columna_id:"cliente_id",
+				// 				 columna_cabecero:"limite",
+				//  			    reporte_mostrar: modulo,
+				//  			      });
+		}
+	);
+
  },
 onClaveSeleccionada: function(pk){
 	this.BuscarClientePorPk(pk)
@@ -299,9 +344,18 @@ llenarListaClientes: function(lista){
 	<Titulo titulo='Crédito' clase ="resaltar_titulo_caja" />
 	<CajaConCampos clase={"resaltar_caja_bloque"}>
 		{/*<Combo propiedades={PERIODO_PAGO}/>*/}
-		<CajaDeTexto propiedades={CANTIDAD_PAGO} />
+		<CajaDeTexto propiedades={CANTIDAD_PAGO} />					
 		<AreaTexto propiedades={OBSERVACIONES} />
 	</CajaConCampos>
+	<div className="caja_bloque">
+		<div className="campos_bloque">
+			<ul className="ul_bloque">
+				<EtiquetaTexto titulo="Limite Cred" valor={this.state.limite_credito} clase="etiqueta_especial" />
+				<EtiquetaTexto titulo="Limite Act" valor={this.state.limite_actual} clase="etiqueta_especial" />	 
+			</ul>
+		</div>
+	</div>
+	
 </article>
 		
 

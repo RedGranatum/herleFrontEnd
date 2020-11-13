@@ -20,7 +20,10 @@ var clientesPagosApiRest =function(){
             var ruta = 'calendario_acumulado_pagos/';         
             this.funcionBusqueda(ruta,funcion_exito,funcion_error);
         },
-
+        clientesLimiteCredito: function(cliente,funcion_exito,funcion_error){
+            var ruta = 'clientes_limite_credito/' + cliente;         
+            this.funcionBusqueda(ruta,funcion_exito,funcion_error);
+        },
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){
 			var datosExist = new ColeccionExist();
 			datosExist.asignarRuta(ruta);
