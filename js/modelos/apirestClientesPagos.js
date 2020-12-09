@@ -28,6 +28,7 @@ var clientesPagosApiRest =function(){
 			var datosExist = new ColeccionExist();
 			datosExist.asignarRuta(ruta);
 				 datosExist.fetch({
+					headers: {'Authorization' :localStorage.token},	 
                  success: function(data){
                  		 funcion_exito(data.toJSON());
                     },

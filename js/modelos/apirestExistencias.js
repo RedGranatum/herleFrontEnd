@@ -15,7 +15,8 @@ var existenciasApiRest =function(){
           this.mayor_a = mayor_a;
       },
 		buscarExistenciaPorNumRollo: function(num_rollo,funcion_exito,funcion_error){
-			var ruta = 'existencias/agrupadas/' + num_rollo ;			
+			var ruta = 'existencias/agrupadas/' + num_rollo ;		
+				
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
 		},
 		buscarExistenciaAgrupadasPorRollo: function(funcion_exito,funcion_error){
@@ -24,13 +25,15 @@ var existenciasApiRest =function(){
        		if(this.producto === '' && this.num_rollo ===''){
        			valores ='?mayor_a=' + this.mayor_a;
        		}   
-        	var ruta = 'existencias/agrupadas/' + valores;	
+			var ruta = 'existencias/agrupadas/' + valores;	
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
 		},
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){
+
 			var datosExist = new ColeccionExist();
 			datosExist.asignarRuta(ruta);
 				 datosExist.fetch({
+				       headers: {'Authorization' :localStorage.token},
                  success: function(data){
                  		 funcion_exito(data.toJSON());
                     },

@@ -54,6 +54,7 @@ return {
                var datosVentas = new ColeccionVenta();
                datosVentas.asignarRuta(ruta);
                      datosVentas.fetch({
+                 headers: {'Authorization' :localStorage.token},
 
                  success: function(data){
                           funcion_exito(data.toJSON());

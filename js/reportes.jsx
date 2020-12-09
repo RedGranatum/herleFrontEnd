@@ -179,7 +179,6 @@ agregarReporteCalendarioAduana: function(datos){
 
 llenarListaExistencias: function(){
 	var self = this;
-
 //	 ReactDOM.render(<ListadoGenerico /> , document.getElementById("contenedor_reportes"));
 
 	var titulosEncabezado={num_rollo:"Num.Rollo",codigo_producto: "Producto",calibre:"Milesimas",ancho:"Ancho",entradas_kg:"Entradas Kg",salidas_kg:"Salida Kg",existencia_kg:"Existencias Kg",en_residuo:"En Residuo",bln_residuo_env:"Env",bln_residuo:"Res"};

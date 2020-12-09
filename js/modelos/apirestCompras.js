@@ -61,7 +61,7 @@ return {
                var datosCatalogo = new ColeccionCat();
                datosCatalogo.asignarRuta(ruta);
                      datosCatalogo.fetch({
-
+                      headers: {'Authorization' :localStorage.token},
                  success: function(data){
                           funcion_exito(data.toJSON());
                     },
