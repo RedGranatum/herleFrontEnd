@@ -11,17 +11,18 @@ return {
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
        buscarClientePorPk: function(pk,funcion_exito,funcion_error){
-          var ruta = 'clientes/' + pk;
+          var ruta = 'clientes/' + pk  + '/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
        buscarClientePorValor: function(valor_buscar,funcion_exito,funcion_error){
-          var ruta ='clientes/buscar/' + valor_buscar + '';
+          var ruta ='clientes/buscar/' + valor_buscar + '/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
                var datosCatalogo = new ColeccionCat();
                datosCatalogo.asignarRuta(ruta);
                      datosCatalogo.fetch({
+                        headers: {'Authorization' :localStorage.token},
                  success: function(data){
                           funcion_exito(data.toJSON());
                     },
@@ -52,6 +53,7 @@ return {
      		operacion = 'PUT'
      	} 
      	cliente.save(null,{
+         headers: {'Authorization' :localStorage.token},
      		type: operacion,
      		success: function(datos,response){
      			 funcion_exito(datos.toJSON(),response);
@@ -68,6 +70,7 @@ return {
           cliente.asignarRuta(this.ruta_modificar(id));
 
           cliente.destroy({
+            headers: {'Authorization' :localStorage.token},
               success: function(model,response){
 
            funcion_exito(model,response);

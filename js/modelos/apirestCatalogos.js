@@ -19,11 +19,12 @@ var catalogosApiRest =function(){
 			var datosCatalogo = new ColeccionCat();
 			datosCatalogo.asignarRuta(ruta);
 				 datosCatalogo.fetch({
+					headers: {'Authorization' :localStorage.token},
                  success: function(data){
-                 		 funcion_exito(data.toJSON());
+				 		 funcion_exito(data.toJSON());
                     },
                  error: function(model,response, options) {
-               	     funcion_error(model,response,options);				
+				     funcion_error(model,response,options);				
                   },
                 }); 
 
