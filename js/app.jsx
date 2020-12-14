@@ -334,13 +334,14 @@ module.exports = React.createClass({
           this.setState({actualizarForm:false});
           this.setState({formMostrar:nomform});
         }
+        console.log("Mostrando avisos")
         this.consularAvisosVentas();
         this.consularAvisosCompras()
     },
     consularAvisosVentas: function(){
         var self = this;
         var consulta = new ApiRestCalendarioPagos();
-  
+        
         consulta.calendarioAcumuladoPagos( 
             function(data){
               self.setState({aviso_ventas:data[0].total});
@@ -509,8 +510,105 @@ module.exports = React.createClass({
         console.log("buscando datos");
     },
     onLogin: function(con_permiso){
+      if(con_permiso==true){
+        this.cargarCatalogos();
+      }
       this.setState({permiso: con_permiso});
       this.permisosMenu();
+    },
+    cargarCatalogos:function(){
+      datosCatalogo = new  ApiRestCatalogo();
+      appmvc.Datos.PAISES = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
+                         function(data){
+                             appmvc.Datos.PAISES =  data; 
+                                       },
+                         function(model,response,options){
+                             console.log("hay errores " + response.statusText)
+                                       }
+                         );
+
+      appmvc.Datos.BANCOS = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.BANCOS, 
+                          function(data){
+                              appmvc.Datos.BANCOS =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+  
+      appmvc.Datos.MONEDAS = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, 
+                          function(data){
+                              appmvc.Datos.MONEDAS =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      
+      appmvc.Datos.MATERIALES = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, 
+                          function(data){
+                              appmvc.Datos.MATERIALES =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      appmvc.Datos.TIPO_DOCUMENTO = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_DOCUMENTO, 
+                          function(data){
+                              appmvc.Datos.TIPO_DOCUMENTO =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      appmvc.Datos.METODO_PAGO = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.METODO_PAGO, 
+                          function(data){
+                              appmvc.Datos.METODO_PAGO =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      appmvc.Datos.PERIODO_PAGO = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PERIODO_PAGO, 
+                          function(data){
+                              appmvc.Datos.PERIODO_PAGO =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      appmvc.Datos.EMPRESA = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.EMPRESA, 
+                          function(data){
+                              data.sort((a, b) => Number(a.monto2) - Number(b.monto2));
+                              appmvc.Datos.EMPRESA =  data; 
+  
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      
+      appmvc.Datos.TIPO_ROLLOS = null; 
+      datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_ROLLOS, 
+                          function(data){
+                              appmvc.Datos.TIPO_ROLLOS =  data; 
+                                        },
+                          function(model,response,options){
+                              console.log("hay errores " + response.statusText)
+                                        }
+                          );
+      
+        // Avisos
+        this.consularAvisosVentas();
+        this.consularAvisosCompras()
     },
     permisosMenu:function(){
       var self = this;

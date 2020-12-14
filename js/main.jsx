@@ -21,12 +21,12 @@ $(function() {
  
   //var url_local ='http://192.168.0.15:8000/';
   //var url_local = 'http://192.241.197.67/herleapp/'
-	var url_local = 'http://127.0.0.1:8000/'
+    var url_local = 'http://127.0.0.1:8000/'
   //var url_local = 'http://159.203.229.118/'
  //var url_local = 'http://45.55.173.212'
 //ssh -p 2234 miregion@104.131.161.180
 //ssh herleuser@159.203.229.118
- //var url_local = 'http://159.203.229.118/'
+ //var url_local = 'http://167.71.85.212/'
 
 
 
@@ -81,93 +81,93 @@ $(function() {
   appmvc.Catalogos.TIPO_ROLLOS=15;
 
 
-	appmvc.Datos.PAISES = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
-                        function(data){
-                            appmvc.Datos.PAISES =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
+	// appmvc.Datos.PAISES = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PAISES, 
+    //                     function(data){
+    //                         appmvc.Datos.PAISES =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
 
-    appmvc.Datos.BANCOS = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.BANCOS, 
-                        function(data){
-                            appmvc.Datos.BANCOS =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
+    // appmvc.Datos.BANCOS = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.BANCOS, 
+    //                     function(data){
+    //                         appmvc.Datos.BANCOS =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
 
-    appmvc.Datos.MONEDAS = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, 
-                        function(data){
-                            appmvc.Datos.MONEDAS =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
+    // appmvc.Datos.MONEDAS = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MONEDAS, 
+    //                     function(data){
+    //                         appmvc.Datos.MONEDAS =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
     
-    appmvc.Datos.MATERIALES = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, 
-                        function(data){
-                            appmvc.Datos.MATERIALES =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
-    appmvc.Datos.TIPO_DOCUMENTO = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_DOCUMENTO, 
-                        function(data){
-                            appmvc.Datos.TIPO_DOCUMENTO =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
-    appmvc.Datos.METODO_PAGO = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.METODO_PAGO, 
-                        function(data){
-                            appmvc.Datos.METODO_PAGO =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
-    appmvc.Datos.PERIODO_PAGO = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PERIODO_PAGO, 
-                        function(data){
-                            appmvc.Datos.PERIODO_PAGO =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
-    appmvc.Datos.EMPRESA = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.EMPRESA, 
-                        function(data){
-                            data.sort((a, b) => Number(a.monto2) - Number(b.monto2));
-                            appmvc.Datos.EMPRESA =  data; 
+    // appmvc.Datos.MATERIALES = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.MATERIALES, 
+    //                     function(data){
+    //                         appmvc.Datos.MATERIALES =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
+    // appmvc.Datos.TIPO_DOCUMENTO = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_DOCUMENTO, 
+    //                     function(data){
+    //                         appmvc.Datos.TIPO_DOCUMENTO =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
+    // appmvc.Datos.METODO_PAGO = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.METODO_PAGO, 
+    //                     function(data){
+    //                         appmvc.Datos.METODO_PAGO =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
+    // appmvc.Datos.PERIODO_PAGO = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.PERIODO_PAGO, 
+    //                     function(data){
+    //                         appmvc.Datos.PERIODO_PAGO =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
+    // appmvc.Datos.EMPRESA = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.EMPRESA, 
+    //                     function(data){
+    //                         data.sort((a, b) => Number(a.monto2) - Number(b.monto2));
+    //                         appmvc.Datos.EMPRESA =  data; 
 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
     
-    appmvc.Datos.TIPO_ROLLOS = null; 
-    datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_ROLLOS, 
-                        function(data){
-                            appmvc.Datos.TIPO_ROLLOS =  data; 
-                                      },
-                        function(model,response,options){
-                            console.log("hay errores " + response.statusText)
-                                      }
-                        )
+    // appmvc.Datos.TIPO_ROLLOS = null; 
+    // datosCatalogo.buscarDetallesPorNumCatalogo(appmvc.Catalogos.TIPO_ROLLOS, 
+    //                     function(data){
+    //                         appmvc.Datos.TIPO_ROLLOS =  data; 
+    //                                   },
+    //                     function(model,response,options){
+    //                         console.log("hay errores " + response.statusText)
+    //                                   }
+    //                     )
 
 	ReactDOM.render(<App/>,document.getElementById("app"));
 	
