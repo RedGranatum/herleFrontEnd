@@ -5,7 +5,7 @@ var ModeloBase =  require('../modelos/modeloBase');
 var clientesPagosApiRest =function(){
 	return{
 		detallesPagosPorVenta: function(venta,funcion_exito,funcion_error){
-			var ruta = 'clientes_pagos/detalles/' + venta ;			
+			var ruta = 'clientes_pagos/detalles/' + venta + '/';			
 			this.funcionBusqueda(ruta,funcion_exito,funcion_error);
 		},
 		ventasConAdeudos: function(funcion_exito,funcion_error){
