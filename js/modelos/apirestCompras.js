@@ -25,7 +25,7 @@ return {
          this.invoice ="";
       },
       buscarCompraPorInvoice: function(valor_buscar,funcion_exito,funcion_error){
-          var ruta ='compras/buscar/' + valor_buscar + '';
+          var ruta ='compras/buscar/' + valor_buscar + '/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
        buscarCompraPorPk: function(pk,funcion_exito,funcion_error){
