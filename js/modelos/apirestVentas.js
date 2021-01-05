@@ -33,7 +33,7 @@ return {
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        }, 
       buscarVentaPorIdDocumento: function(valor_buscar,funcion_exito,funcion_error){
-          var ruta ='ventas/buscar/' + valor_buscar + '';
+          var ruta ='ventas/buscar/' + valor_buscar + '/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
       costoAgrupado: function(funcion_exito,funcion_error){
