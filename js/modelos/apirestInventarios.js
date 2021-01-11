@@ -40,13 +40,14 @@ var inventariosApiRest =function(){
     },
 
     busquedaPorRolloCodigo: function(valor_buscado,funcion_exito,funcion_error){
-          var ruta = 'inventarios/buscar/' + valor_buscado;
+          var ruta = 'inventarios/buscar/' + valor_buscado +'/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
     },
 		funcionBusqueda: function(ruta,funcion_exito,funcion_error){
 			var datosInventario = new ColeccionInv();
 			datosInventario.asignarRuta(ruta);
 				 datosInventario.fetch({
+                headers: {'Authorization' :localStorage.token},
                  success: function(data,data2){
                  		 funcion_exito(data.toJSON());
                     },
@@ -84,7 +85,9 @@ var inventariosApiRest =function(){
         return;
       } 
       inventarios.save(null,{
+        headers:{'Authorization' :localStorage.token},
         type: operacion,
+        
         success: function(datos,response){
            funcion_exito(datos.toJSON(),response);
         },

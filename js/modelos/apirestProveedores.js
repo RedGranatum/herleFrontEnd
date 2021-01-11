@@ -11,17 +11,18 @@ return {
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
        buscarProveedorPorPk: function(pk,funcion_exito,funcion_error){
-          var ruta = 'proveedores/' + pk;
+          var ruta = 'proveedores/' + pk + '/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
        buscarProveedorPorValor: function(valor_buscar,funcion_exito,funcion_error){
-          var ruta ='proveedores/buscar/' + valor_buscar + '';
+          var ruta ='proveedores/buscar/' + valor_buscar + '/';
           this.funcionBusqueda(ruta,funcion_exito,funcion_error);
        },
       funcionBusqueda: function(ruta,funcion_exito,funcion_error){
                var datosCatalogo = new ColeccionCat();
                datosCatalogo.asignarRuta(ruta);
                      datosCatalogo.fetch({
+                        headers: {'Authorization' :localStorage.token},
                  success: function(data){
                           funcion_exito(data.toJSON());
                     },
